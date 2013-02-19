@@ -3,9 +3,6 @@ include_once('Protocols/EPP/eppConnection.php');
 include_once('Protocols/EPP/eppRequests/eppIncludes.php');
 include_once('Protocols/EPP/eppResponses/eppIncludes.php');
 include_once('Protocols/EPP/eppData/eppIncludes.php');
-include_once('../../../../Config/ConfigStore.php');
-include_once('../../../../Modules/Tools/Main.php');
-include_once('./pdnssec.php');
 
 
 error_reporting(E_ALL ^ E_NOTICE);
@@ -21,13 +18,7 @@ if (!stristr(PHP_OS, 'WIN'))
 $host = null;
 $port = null;
 $interfaces = array(
-    '1'=>array('name'=>'Metaregistrar test localhost','host'=>'172.31.0.99','port'=>31337,'user'=>'metaregistrar2','pass'=>'39cd7fe09b','class'=>'metaregEppConnection', 'classpath'=>'Registries/Metareg'),
-    '2'=>array('name'=>'Metaregistrar live','host'=>'188.93.148.95','port'=>7000,'user'=>'metaregistrar','pass'=>'39cd7fe09b','class'=>'metaregEppConnection','classpath'=>'Registries/Metareg'),
-    '3'=>array('name'=>'Unifiedroot','host'=>'188.93.148.95','port'=>7000,'user'=>'unifiedroot','pass'=>'cuJighyDxTGXZs','class'=>'metaregEppConnection','classpath'=>'Registries/Metareg'),
-    '4'=>array('name'=>'Metaregistrar tunnel naar windows','host'=>'127.0.0.1','port'=>31337, 'user'=>'metaregistrar2','pass'=>'39cd7fe09b','class'=>'metaregEppConnection','classpath'=>'Registries/Metareg'),
-    '99'=>array('name'=>'SIDN test via proxy','host'=>'ssl://epp2.metaregistrar.com','port'=>11000,'user'=>'302225','pass'=>'39cd7fe09b','class'=>'sidnEppConnection','classpath'=>'Registries/SIDN'),
-    '11'=>array('name'=>'DNSBE test interface 1','host'=>'ssl://epp1.metaregistrar.com','port'=>12000,'user'=>'t1-geenpunt','pass'=>'test3918','class'=>'dnsbeEppConnection','classpath'=>'Registries/DNSBE','classparm' => 'DNSBE-EPP'),
-    '12'=>array('name'=>'DNSBE test interface 2','host'=>'ssl://epp2.metaregistrar.com','port'=>12001,'user'=>'t2-geenpunt','pass'=>'test3918','class'=>'dnsbeEppConnection','classpath'=>'Registries/DNSBE','classparm' => 'DNSBE-EPP2'),
+    '1'=>array('name'=>'Metaregistrar test','host'=>'epp1.metaregistrar.com','port'=>31337,'user'=>'','pass'=>'','class'=>'metaregEppConnection', 'classpath'=>'Registries/Metareg'),
 );
 
 if ($argc <= 1)
