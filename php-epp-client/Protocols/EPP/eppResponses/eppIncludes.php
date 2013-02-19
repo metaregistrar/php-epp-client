@@ -1,0 +1,15 @@
+<?php
+include_once(dirname(__FILE__).'/eppCheckResponse.php');
+include_once(dirname(__FILE__).'/eppCreateResponse.php');
+include_once(dirname(__FILE__).'/eppDeleteResponse.php');
+include_once(dirname(__FILE__).'/eppHelloResponse.php');
+include_once(dirname(__FILE__).'/eppInfoHostResponse.php');
+include_once(dirname(__FILE__).'/eppInfoContactResponse.php');
+include_once(dirname(__FILE__).'/eppInfoDomainResponse.php');
+include_once(dirname(__FILE__).'/eppLoginResponse.php');
+include_once(dirname(__FILE__).'/eppLogoutResponse.php');
+include_once(dirname(__FILE__).'/eppPollResponse.php');
+include_once(dirname(__FILE__).'/eppRenewResponse.php');
+include_once(dirname(__FILE__).'/eppTransferResponse.php');
+include_once(dirname(__FILE__).'/eppUpdateResponse.php');
+include_once(dirname(__FILE__).'/eppDnssecInfoResponse.php');

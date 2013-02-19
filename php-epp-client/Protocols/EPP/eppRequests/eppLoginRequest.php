@@ -1,0 +1,116 @@
+<?php
+include_once(dirname(__FILE__).'/../eppRequest.php');
+/*
+ * This object contains all the logic to create an EPP hello command
+ */
+
+class eppLoginRequest extends eppRequest
+{
+    
+    protected $options = null;
+    
+    function __construct()
+    {
+        parent::__construct();
+        #
+        # Create command structure
+        #
+        $this->command = $this->createElement('command');
+        #
+        # Login parameters
+        #
+        $this->login = $this->createElement('login');  
+        $this->command->appendChild($this->login);
+        #
+        # This is only the basic command structure. 
+        # Userid, password, version and language info will be added later by the connection object
+        #        
+        $this->epp->appendChild($this->command);
+        $this->addSessionId();
+    }
+
+    function __destruct()
+    {
+    }
+
+    private function checkForOptions()
+    {
+        if (!$this->options)
+        {
+            $this->options = $this->createElement('options');
+            $this->login->appendChild($this->options);
+        }        
+    }
+    
+    public function addUsername($username)
+    {
+        if (!strlen($username))
+        {
+            throw new eppException('No userid specified for login attempt');
+        }
+        $this->login->appendChild($this->createElement('clID',$username));
+    }
+    
+    public function addPassword($password)
+    {
+        if (!strlen($password))
+        {
+            throw new eppException('No password specified for login attempt');
+        }
+        $this->login->appendChild($this->createElement('pw',$password));        
+    }
+            
+    public function addVersion($version)
+    {
+        $this->checkForOptions();
+        if (!strlen($version))
+        {
+            throw new eppException('No version number specified for login attempt');
+        }        
+        $this->options->appendChild($this->createElement('version',$version));
+    }
+    
+    public function addLanguage($language)
+    {
+        $this->checkForOptions();
+        if (!strlen($language))
+        {
+            throw new eppException('No language specified for login attempt');
+        }         
+        $this->options->appendChild($this->createElement('lang',$language));
+    }
+    
+    /** 
+     * Add the services and extensions to the login request
+     * The services and extensions are retrieved from the epp Hello response and saved in the connection object
+     * The connection procedures will call this function to set the login parameters
+     * 
+     * @param array $services
+     * @param array $extensions 
+     */
+    public function addServices($services,$extensions)
+    {
+        #
+        # Login options: Requested services
+        #
+        if (is_array($services))
+        {
+            $svcs = $this->createElement('svcs');
+            foreach ($services as $service)
+            {
+                $svcs->appendChild($this->createElement('objURI',$service));
+            }
+            if ((is_array($extensions)) && (count($extensions)>0))
+            {
+                $svcextension=$this->createElement('svcExtension');
+                foreach ($extensions as $extension)
+                {
+                    $svcextension->appendChild($this->createElement('extURI',$extension));
+                }
+                $svcs->appendChild($svcextension);
+            }
+            $this->login->appendChild($svcs);            
+        }   
+    }    
+    
+}

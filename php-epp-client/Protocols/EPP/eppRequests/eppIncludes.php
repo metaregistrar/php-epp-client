@@ -1,0 +1,16 @@
+<?php
+include_once(dirname(__FILE__).'/eppCheckRequest.php');
+include_once(dirname(__FILE__).'/eppCreateRequest.php');
+include_once(dirname(__FILE__).'/eppDeleteRequest.php');
+include_once(dirname(__FILE__).'/eppHelloRequest.php');
+include_once(dirname(__FILE__).'/eppInfoHostRequest.php');
+include_once(dirname(__FILE__).'/eppInfoContactRequest.php');
+include_once(dirname(__FILE__).'/eppInfoDomainRequest.php');
+include_once(dirname(__FILE__).'/eppLoginRequest.php');
+include_once(dirname(__FILE__).'/eppLogoutRequest.php');
+include_once(dirname(__FILE__).'/eppPollRequest.php');
+include_once(dirname(__FILE__).'/eppRenewRequest.php');
+include_once(dirname(__FILE__).'/eppTransferRequest.php');
+include_once(dirname(__FILE__).'/eppUpdateRequest.php');
+include_once(dirname(__FILE__).'/eppDnssecInfoRequest.php');
+include_once(dirname(__FILE__).'/eppDnssecUpdateRequest.php');
