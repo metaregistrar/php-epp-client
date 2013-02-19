@@ -1,0 +1,12 @@
+php-epp-client
+==============
+
+Object-oriented PHP EPP Client
+
+Welcome to the object-oriented EPP client in PHP project
+
+This code will provide you with a fully functional EPP client to connect to any registry world-wide.
+
+All code is organized in objects, so connecting to a new registry is just a matter of object re-use and extension.
+
+Samples are provided in the Registries directory. An sample connect script is provided in eppTest.php
