@@ -9,6 +9,13 @@ include_once('Registries/Metaregistrar/metaregEppConnection.php');
 // Base EPP commands: hello, login and logout
 include_once('base.php');
 
+/*
+ * This script checks for the availability of domain names
+ *
+ * You can specify multiple domain names to be checked
+ */
+
+
 if ($argc <= 1)
 {
     echo "Usage: checkdomain.php <domainnames>\n";

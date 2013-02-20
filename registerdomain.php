@@ -9,6 +9,14 @@ include_once('Registries/Metaregistrar/metaregEppConnection.php');
 // Base EPP commands: hello, login and logout
 include_once('base.php');
 
+/*
+ * This sample script registers a domain name within your account
+ * 
+ * The nameservers of metaregistrar are used as nameservers
+ * In this scrips, the same contact id is used for registrant, admin-contact, tech-contact and billing contact
+ * Recommended usage is that you use a tech-contact and billing contact of your own, and set registrant and admin-contact to the domain name owner or reseller.
+ */
+
 
 if ($argc <= 1)
 {
