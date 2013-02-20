@@ -9,4 +9,6 @@ This code will provide you with a fully functional EPP client to connect to any 
 
 All code is organized in objects, so connecting to a new registry is just a matter of object re-use and extension.
 
-Samples are provided in the Registries directory. An sample connect script is provided in eppTest.php
+Sample registry connections are provided in the Registries directory.
+
+Sample domain check an domain create scripts are provided in checkdomain.php and registerdomain.php
