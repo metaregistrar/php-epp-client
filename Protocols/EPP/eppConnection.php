@@ -95,6 +95,7 @@ class EppConnection
     
     function __construct($logging = false)
     {
+		$logging = true;
         if ($logging)
         {
             $this->enableLogging();
@@ -188,6 +189,7 @@ class EppConnection
             stream_set_timeout($this->connection,$this->timeout);
             if ($errno == 0)
             {
+				$this->read();
                 return true;
             }
             else
@@ -228,13 +230,20 @@ class EppConnection
             //of whats to come
             if ((!isset($length)) || ($length == 0))
             {
-                if ($read = fread($this->connection, 4))
-                {
-                    $this->writeLog("Reading 4 bytes for integer.");
-                    $this->writeLog($read);
-                    $length = $this->readInteger($read)-4;
-                    $this->writeLog("Reading next: $length bytes");
-                }
+				$readLength = 4;
+				$readbuffer = "";
+				while ($readLength > 0)
+				{
+					if ($readbuffer = fread($this->connection, $readLength))
+					{					
+						$readLength = $readLength - strlen($readbuffer);
+						$read .= $readbuffer;
+					}
+				}
+				$this->writeLog("Reading 4 bytes for integer. (read: ".strlen($read).")");
+				$this->writeLog($read);
+				$length = $this->readInteger($read)-4;
+				$this->writeLog("Reading next: $length bytes");
             }
             //We know the length of what to read, so lets read the stuff
             if ((isset($length)) && ($length > 0))
@@ -266,7 +275,7 @@ class EppConnection
      */
     private function readInteger($content)
     {
-        $int = unpack('N', substr($content, 0, 4));
+		$int = unpack('N', substr($content, 0, 4));		
         return $int[1];
     }
 
