@@ -90,9 +90,9 @@ class eppResponse extends DomDocument
     {
     }
 
-    public function saveXML()
+    public function saveXML(DOMNode $node = NULL, $options = NULL)
     {
-        return str_replace("\t",'  ',parent::saveXML());
+        return str_replace("\t",'  ',parent::saveXML($node, LIBXML_NOEMPTYTAG));
     }
 
     public function setParameters($language,$version,$objuri,$exturi,$xpathuri)

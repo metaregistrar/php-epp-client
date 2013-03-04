@@ -120,14 +120,23 @@ class eppInfoDomainResponse extends eppInfoResponse
      */
     public function getDomainContacts()
     {
-       $xpath = $this->xPath();
-       $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:contact');
-       $cont = null;
-       foreach ($result as $contact)
-       {
-           $cont[] = new eppContactHandle($contact->nodeValue,$contact->getAttribute('type'));
-       }
-       return $cont;
+        $xpath = $this->xPath();
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:contact');
+        $cont = null;
+        foreach ($result as $contact)
+        {
+            $contacttype = $contact->getAttribute('type');
+            if ($contacttype)
+            {
+                // DNSBE specific, but too much hassle to create an override for this
+                if ($contacttype == 'onsite')
+                {
+                    $contacttype = 'admin';
+                }
+                $cont[] = new eppContactHandle($contact->nodeValue,$contacttype);
+            }
+        }
+        return $cont;
     }
 
     /**

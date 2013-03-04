@@ -93,13 +93,6 @@ class eppUpdateRequest extends eppRequest
         $update = $this->createElement('update');
         $this->domainobject = $this->createElement('domain:update');
         $this->domainobject->appendChild($this->createElement('domain:name',$domainname));
-        if ($updateInfo instanceof eppDomain)
-        {
-            $chgcmd = $this->createElement('domain:chg');
-            $this->addDomainChanges($chgcmd,$updateInfo);
-            $this->domainobject->appendChild($chgcmd);
-
-        }
         if ($addInfo instanceof eppDomain)
         {
             $addcmd = $this->createElement('domain:add');
@@ -111,7 +104,13 @@ class eppUpdateRequest extends eppRequest
             $remcmd = $this->createElement('domain:rem');
             $this->addDomainChanges($remcmd,$removeInfo);
             $this->domainobject->appendChild($remcmd);
-        }        
+        }
+        if ($updateInfo instanceof eppDomain)
+        {
+            $chgcmd = $this->createElement('domain:chg');
+            $this->addDomainChanges($chgcmd,$updateInfo);
+            $this->domainobject->appendChild($chgcmd);
+        }
         $update->appendChild($this->domainobject);
         $this->command->appendChild($update);
         $this->epp->appendChild($this->command);

@@ -65,7 +65,7 @@ class eppContactPostalInfo
      */
     public function addStreet($street)
     {
-        if (strlen($street)>0)
+        if ((is_string($street)) && (strlen($street)>0))
         {
             if (count($this->street) < 3)
             {

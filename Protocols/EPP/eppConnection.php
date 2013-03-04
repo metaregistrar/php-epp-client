@@ -358,9 +358,9 @@ class EppConnection
         if ($this->logging)
         {
             $this->writeLog("==== SENDING XML ======");
-            $this->writeLog($content->saveXML());
+            $this->writeLog($content->saveXML(null, LIBXML_NOEMPTYTAG));
         }
-        if ($this->write($content->saveXML()))
+        if ($this->write($content->saveXML(null, LIBXML_NOEMPTYTAG)))
         {
             $xml = $this->read();
             if (strlen($xml))
@@ -370,7 +370,7 @@ class EppConnection
                     if ($this->logging)
                     {
                         $this->writeLog("==== RECEIVED XML =====");
-                        $this->writeLog($response->saveXML());
+                        $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG));
                     }
                     $clienttransid = $response->getClientTransactionId();                    
                     if (($clienttransid) && ($clienttransid != $requestsessionid))
