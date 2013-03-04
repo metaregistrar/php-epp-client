@@ -95,7 +95,6 @@ class EppConnection
     
     function __construct($logging = false)
     {
-		$logging = true;
         if ($logging)
         {
             $this->enableLogging();
@@ -232,12 +231,19 @@ class EppConnection
             {
 				$readLength = 4;
 				$readbuffer = "";
+				$read = "";
 				while ($readLength > 0)
 				{
 					if ($readbuffer = fread($this->connection, $readLength))
 					{					
 						$readLength = $readLength - strlen($readbuffer);
 						$read .= $readbuffer;
+					}
+					//Check if timeout occured
+					if (time() >= $time)
+					{
+						putenv('SURPRESS_ERROR_HANDLER=0');
+						return false;
 					}
 				}
 				$this->writeLog("Reading 4 bytes for integer. (read: ".strlen($read).")");
@@ -566,6 +572,7 @@ class EppConnection
     {
         if ($this->logging)
         {            
+			//echo "-----".date("Y-m-d H:i:s")."-----".$text."-----end-----\n";
             $this->logentries[] = "-----".date("Y-m-d H:i:s")."-----".$text."-----end-----\n";
         }
     }
