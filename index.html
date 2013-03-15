@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Php-epp-client by metaregistrar</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Php-epp-client</h1>
+        <h2>Object-oriented PHP EPP Client</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/metaregistrar/php-epp-client/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/metaregistrar/php-epp-client/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/metaregistrar/php-epp-client" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h3>Welcome to the PHP EPP Client project.</h3>
+
+<p>This project is created to give you the best possible way to connect to a domain name registry anywhere in the world (as long as they support EPP)</p>
+
+<p>Like EPP itself, the code is completely object-oriented. This means that all EPP objects (domains, hosts, contacts) are objects in the PHP code, that can be extended to match your own needs, without compromizing the base object.</p>
+
+<p>Also all commands (create, delete, info, modify) are objects in this PHP code, and can be extended when a registry decides to add or remove fields and deviate from the standard EPP implementation.</p>
+
+<p>Lastly, all errors are not returned by error message or error code, but by throwing an eppException. This exception can be caught to handle any error that occurs during object handling or communication with the registry</p>
+
+<h3>DNSSEC compliant</h3>
+
+<p>The code for DNSSEC compliance is already in the base project. Actually, our own implementation already signed and maintains over 300.000 domain names using this code, so it really works!</p>
+
+<h3>TMCH or other additions</h3>
+
+<p>In the New GTLD program from ICANN, additions to the EPP standard are forged to implement the TMCH (trademark clearinghouse) connection. As soon as this implementation is complete, code to use the implementation will be added to the project.</p>
+
+<h3>Connecting to a registry</h3>
+
+<p>Please feel free to add new registry connections in the Registries section. This will enable other users to simply be able to connect to a registry without any hassle. Connection to SIDN (registry for .NL domain names) is added as a sample connection (since this is the connection we are using most heavily)</p>
+
+<h3>Support or Contact</h3>
+
+<p>Please feel free to ask for support.</p>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
