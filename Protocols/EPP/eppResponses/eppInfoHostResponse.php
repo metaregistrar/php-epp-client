@@ -43,28 +43,30 @@ class eppInfoHostResponse extends eppInfoResponse
      */
     public function getHostAddresses()
     {
-       $xpath = $this->xPath();
-       $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:addr');
-       foreach ($result as $address)
-       {
+        $ip = null;
+        $xpath = $this->xPath();
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:addr');
+        foreach ($result as $address)
+        {
            $ip[$address->nodeValue]=$address->getAttribute('ip');
-       }
-       return $ip;
+        }
+        return $ip;
     }
 
     /**
      *
      * @return string status
      */
-    public function getHostStatus()
+    public function getHostStatuses()
     {
-       $xpath = $this->xPath();
-       $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:status/@s');
-       foreach ($result as $status)
-       {
+        $stat = null;
+        $xpath = $this->xPath();
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:status/@s');
+        foreach ($result as $status)
+        {
            $stat[] = $status->nodeValue;
-       }
-       return $stat;
+        }
+        return $stat;
     }
 
     /**
