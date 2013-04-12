@@ -142,8 +142,8 @@ class eppCreateRequest extends eppRequest
         $this->contactobject = $this->createElement('contact:create');
         $this->contactobject->appendChild($this->createElement('contact:id',$contact->generateContactId()));
         $postalinfo = $this->createElement('contact:postalInfo');
-        $postalinfo->setAttribute('type',$contact->getType());
         $postal = $contact->getPostalInfo(0);
+        $postalinfo->setAttribute('type',$postal->getType());
         $postalinfo->appendChild($this->createElement('contact:name',$postal->getName()));
         if ($postal->getOrganisationName())
         {

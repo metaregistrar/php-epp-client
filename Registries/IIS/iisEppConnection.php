@@ -6,6 +6,8 @@ include_once(dirname(__FILE__).'/../../Protocols/EPP/eppData/eppIncludes.php');
 #
 # Load the IIS.SE specific additions
 #
+include_once(dirname(__FILE__).'/iisEppCreateRequest.php');
+
 
 class iisEppConnection extends eppConnection
 {
@@ -32,6 +34,7 @@ class iisEppConnection extends eppConnection
         parent::enableCertification(dirname(__FILE__).'/cert/cacert.pem', '');
         parent::addExtension('urn:ietf:params:xml:ns:secDNS-1.1','secDNS');
         parent::addExtension('urn:se:iis:xml:epp:iis-1.2','iis');
+        parent::addCommandResponse('iisEppCreateRequest', 'eppCreateResponse');
     }
 
 }

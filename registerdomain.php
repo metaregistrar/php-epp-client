@@ -6,6 +6,7 @@ include_once('Protocols/EPP/eppResponses/eppIncludes.php');
 include_once('Protocols/EPP/eppData/eppIncludes.php');
 // Connection object to Metaregistrar EPP server - this contains your userid and passwords!
 include_once('Registries/Metaregistrar/metaregEppConnection.php');
+include_once('Registries/IIS/iisEppConnection.php');
 // Base EPP commands: hello, login and logout
 include_once('base.php');
 
@@ -28,7 +29,7 @@ if ($argc <= 1)
 $domainname = $argv[1];
 
 echo "Registering $domainname\n";
-$conn = new metaregEppConnection();
+$conn = new iisEppConnection();
 // Connect to the EPP server
 if ($conn->connect())
 {
@@ -48,7 +49,7 @@ if ($conn->connect())
             {
                 createhost($conn,'ns3.metaregistrar.com');
             }
-            $contactid = createcontact($conn,'test@test.com','061234567890','Person name','Company','Address 1','12345','City','NL');
+            $contactid = createcontact($conn,'test@test.com','061234567890','Person name',null,'Address 1','12345','City','NL');
             if ($contactid)
             {
                 createdomain($conn,$domainname,$contactid,$contactid,$contactid,$contactid,array('ns1.metaregistrar.com','ns2.metaregistrar.com','ns3.metaregistrar.com'));
@@ -85,9 +86,9 @@ function createcontact($conn,$email,$telephone,$name,$organization,$address,$pos
 {
     try
 	{
-        $postalinfo = new eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode);
+        $postalinfo = new eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, eppContactPostalInfo::POSTAL_TYPE_LOCAL);
         $contactinfo = new eppContact($postalinfo, $email, $telephone);
-        $contact = new eppCreateRequest($contactinfo);
+        $contact = new iisEppCreateRequest($contactinfo);
         if ((($response = $conn->writeandread($contact)) instanceof eppCreateResponse) && ($response->Success()))
         {
             echo "Contact created on ".$response->getContactCreateDate()." with id ".$response->getContactId()."\n";
@@ -165,7 +166,7 @@ function createdomain($conn,$domainname,$registrant,$admincontact,$techcontact,$
         $domain->addContact($tech);
         $billing = new eppContactHandle($billingcontact,eppContactHandle::CONTACT_TYPE_BILLING);
         $domain->addContact($billing);
-        $domain->setAuthorisationCode('rand0m');
+        //$domain->setAuthorisationCode('rand0m');
         if (is_array($nameservers))
         {
             foreach ($nameservers as $nameserver)

@@ -6,6 +6,7 @@ include_once('Protocols/EPP/eppResponses/eppIncludes.php');
 include_once('Protocols/EPP/eppData/eppIncludes.php');
 // Connection object to Metaregistrar EPP server - this contains your userid and passwords!
 include_once('Registries/Metaregistrar/metaregEppConnection.php');
+include_once('Registries/IIS/iisEppConnection.php');
 // Base EPP commands: hello, login and logout
 include_once('base.php');
 
@@ -20,7 +21,7 @@ include_once('base.php');
 
 
 echo "Polling for messages\n";
-$conn = new metaregEppConnection();
+$conn = new iisEppConnection();
 // Connect to the EPP server
 if ($conn->connect())
 {
