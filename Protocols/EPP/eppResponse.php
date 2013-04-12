@@ -109,7 +109,6 @@ class eppResponse extends DomDocument
      */
     public function Success()
     {
-        $xpath = $this->xPath();
         $resultcode = $this->getResultCode();
         $success = ($resultcode{0}=='1');
         if (!$success)
@@ -158,7 +157,7 @@ class eppResponse extends DomDocument
             if ($resultdomainname)
             {
                 $id = 'domainname:'.$resultdomainname;
-            }            
+            }
             $resultstatus = $this->getResultHostStatus();
             if ($resultstatus)
             {
@@ -177,7 +176,7 @@ class eppResponse extends DomDocument
             if (strlen($resultreason))
             {
                 $errorstring .= ' ('.$resultreason.')';
-            }                       
+            }
             throw new eppException($errorstring,$resultcode,null,$resultreason,$id);
         }
         else
@@ -432,15 +431,15 @@ class eppResponse extends DomDocument
         }
     }    
     
-    public function setXpath($xpathuri=null, $exturi=null)
+    public function setXpath($xpathuri)
     {
-        if (is_array($exturi))
+        if (!$this->xpathuri)
         {
-            $this->xpathuri = array_merge($xpathuri,$exturi);
+            $this->xpathuri = $xpathuri;
         }
         else
         {
-            $this->xpathuri = $xpathuri;
+            $this->xpathuri = array_merge($this->xpathuri, $xpathuri);
         }
     }
 
@@ -456,15 +455,17 @@ class eppResponse extends DomDocument
         $xpath->registerNamespace('epp', $this->publicnamespace);
         if (is_array($this->xpathuri))
         {
-            foreach($this->xpathuri as $namespace=>$uri)
+            foreach($this->xpathuri as $uri=>$namespace)
             {
+                //echo "RegisterNamespace $namespace $uri\n";
                 $xpath->registerNamespace($namespace,$uri);
             }
         }
         if (is_array($this->exturi))
         {
-            foreach($this->exturi as $namespace=>$uri)
+            foreach($this->exturi as $uri=>$namespace)
             {
+                //echo "RegisterNamespace $namespace $uri\n";
                 $xpath->registerNamespace($namespace,$uri);
             }
         }

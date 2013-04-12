@@ -99,7 +99,7 @@ class eppRequest extends DomDocument
     {
         if (is_array($namespaces))
         {
-            foreach ($namespaces as $xmlns=>$namespace)
+            foreach ($namespaces as $namespace=>$xmlns)
             {
                 $object = $xmlns.'object';
                 if ($object == 'secDNSobject')

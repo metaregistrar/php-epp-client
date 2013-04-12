@@ -34,7 +34,7 @@ class eppCheckResponse extends eppResponse
                 {
                     if ($child instanceof domElement)
                     {                        
-                        if ($child->tagName == 'domain:name')
+                        if (strpos($child->tagName,':name'))
                         {
                             $available = $child->getAttribute('avail');
                             switch ($available)
@@ -50,7 +50,7 @@ class eppCheckResponse extends eppResponse
                             }                            
                             $checkeddomain['domainname']=$child->nodeValue;
                         }
-                        if ($child->tagName == 'domain:reason')
+                        if (strpos($child->tagName,':reason'))
                         {
                             $checkeddomain['reason']=$child->nodeValue;
                         }                        

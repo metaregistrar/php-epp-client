@@ -43,7 +43,7 @@ class EppConnection
      * Base objects
      * @var array of accepted object URI's
      */
-    protected $objuri = array('domain'=>'urn:ietf:params:xml:ns:domain-1.0','contact'=>'urn:ietf:params:xml:ns:contact-1.0','host'=>'urn:ietf:params:xml:ns:host-1.0');
+    protected $objuri = array('urn:ietf:params:xml:ns:domain-1.0'=>'domain','urn:ietf:params:xml:ns:contact-1.0'=>'contact','urn:ietf:params:xml:ns:host-1.0'=>'host');
 
     /**
      * Object extensions
@@ -55,7 +55,7 @@ class EppConnection
      * Base objects
      * @var array of accepted URI's for xpath
      */
-    protected $xpathuri = array('epp'=>'urn:ietf:params:xml:ns:epp-1.0','contact'=>'urn:ietf:params:xml:ns:contact-1.0','host'=>'urn:ietf:params:xml:ns:host-1.0','ns'=>'');
+    protected $xpathuri = array('urn:ietf:params:xml:ns:epp-1.0'=>'epp','urn:ietf:params:xml:ns:domain-1.0'=>'domain','urn:ietf:params:xml:ns:contact-1.0'=>'contact','urn:ietf:params:xml:ns:host-1.0'=>'host');
 
     /**
      * These namespaces are needed in the root of the EPP object
@@ -92,6 +92,18 @@ class EppConnection
      * @var array
      */
     protected $responses;
+
+    /**
+     * Path to certificate file
+     * @var string
+     */
+    protected $local_cert_path = null;
+
+    /**
+     * Password of certificate file
+     * @var string
+     */
+    protected $local_cert_pwd = null;
     
     function __construct($logging = false)
     {
@@ -144,8 +156,20 @@ class EppConnection
         unset($this->responses['eppDnssecInfoRequest']);
         unset($this->responses['eppDnssecUpdateRequest']);
     }
+
+    public function enableCertification($certificatepath, $certificatepassword)
+    {
+        $this->local_cert_path= $certificatepath;
+        $this->local_cert_pwd = $certificatepassword;
+    }
     
-    
+    public function disableCertification()
+    {
+        $this->local_cert_path= null;
+        $this->local_cert_pwd = null;
+    }
+
+
     /**
      * Disconnects if connected
      * @return boolean
@@ -154,7 +178,7 @@ class EppConnection
     {
         if (is_resource($this->connection))
         {
-                fclose($this->connection);
+            fclose($this->connection);
         }
         return true;
     }
@@ -162,7 +186,6 @@ class EppConnection
      * Connect to the address and port
      * @param string $address
      * @param int $port
-     * @param int $timeout
      * @return boolean
      */
     public function connect($hostname = null, $port =null)
@@ -175,33 +198,58 @@ class EppConnection
         {
             $this->port = $port;
         }
-        //We don't want our error handler to kick in at this point...
-        putenv('SURPRESS_ERROR_HANDLER=1');
-        #echo "Connecting: $this->hostname:$this->port\n";
-        $this->writeLog("Connecting: $this->hostname:$this->port");
-        $this->connection = fsockopen($this->hostname, $this->port, $errno, $errstr, $this->timeout);
-        putenv('SURPRESS_ERROR_HANDLER=0');
-        if (is_resource($this->connection))
+        if ($this->local_cert_path)
         {
-            $this->writeLog("Connection made");
-            stream_set_blocking($this->connection, false);
-            stream_set_timeout($this->connection,$this->timeout);
-            if ($errno == 0)
+            $ssl = true;
+            $target = sprintf('%s://%s:%d', ($ssl === true ? 'ssl' : 'tcp'), $this->hostname, $this->port);
+            $errno='';
+            $errstr='';
+            $context = stream_context_create();
+            stream_context_set_option($context, 'ssl', 'local_cert', $this->local_cert_path);
+            stream_context_set_option($context, 'ssl', 'passphrase', $this->local_cert_pwd);
+            if ($this->connection = @stream_socket_client($target, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context))
             {
-				$this->read();
+                $this->writeLog("Connection made");
+                $this->read();
                 return true;
             }
             else
             {
-                return false;
+                throw new eppException("Error connecting to $target: $errstr (code $errno)");
             }
         }
         else
         {
-            $this->writeLog("Connection could not be opened: $errno $errstr");
-            return false;
+             //We don't want our error handler to kick in at this point...
+            putenv('SURPRESS_ERROR_HANDLER=1');
+            #echo "Connecting: $this->hostname:$this->port\n";
+            $this->writeLog("Connecting: $this->hostname:$this->port");
+            $this->connection = fsockopen($this->hostname, $this->port, $errno, $errstr, $this->timeout);
+            putenv('SURPRESS_ERROR_HANDLER=0');
+            if (is_resource($this->connection))
+            {
+                $this->writeLog("Connection made");
+                stream_set_blocking($this->connection, false);
+                stream_set_timeout($this->connection,$this->timeout);
+                if ($errno == 0)
+                {
+                    $this->read();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                $this->writeLog("Connection could not be opened: $errno $errstr");
+                return false;
+            }
         }
     }
+
+    
     /**
      * This will read 1 response from the connection
      * @return string
@@ -392,7 +440,9 @@ class EppConnection
                     {
                         throw new eppException("Client transaction id $requestsessionid does not matched returned $clienttransid");
                     }
-                    $response->setXpath($this->getServices(),$this->getExtensions());
+                    $response->setXpath($this->getServices());
+                    $response->setXpath($this->getExtensions());
+                    $response->setXpath($this->getXpathExtensions());
                     if ($response instanceof eppHelloResponse)
                     {            
                         $response->validateServices($this->getLanguage(),$this->getVersion(),$this->getServices(),$this->getExtensions());
@@ -482,7 +532,7 @@ class EppConnection
     
     public function addDefaultNamespace($xmlns,$namespace)
     {
-        $this->defaultnamespace['xmlns:'.$xmlns]=$namespace;
+        $this->defaultnamespace[$namespace]='xmlns:'.$xmlns;
     }
     
     public function getDefaultNamespaces()

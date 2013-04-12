@@ -49,8 +49,6 @@ function greet($conn)
                     }
                 }
             }
-			# Workaround: extra read to clear the buffer after a greeting response
-			$result = $conn->read();
 			return true;
 		}
 	}

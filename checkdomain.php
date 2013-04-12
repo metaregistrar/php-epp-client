@@ -6,6 +6,8 @@ include_once('Protocols/EPP/eppResponses/eppIncludes.php');
 include_once('Protocols/EPP/eppData/eppIncludes.php');
 // Connection object to Metaregistrar EPP server - this contains your userid and passwords!
 include_once('Registries/Metaregistrar/metaregEppConnection.php');
+include_once('Registries/IIS/iisEppConnection.php');
+
 // Base EPP commands: hello, login and logout
 include_once('base.php');
 
@@ -29,18 +31,26 @@ for ($i=1; $i<$argc; $i++)
 }
 
 echo "Checking ".count($domains)." domain names\n";
-$conn = new metaregEppConnection();
-// Connect to the EPP server
-if ($conn->connect())
+try
 {
-	if (greet($conn))
-	{
-		if (login($conn))
-		{
-            checkdomains($conn, $domains);
-            logout($conn);
+    $conn = new iisEppConnection();
+
+    // Connect to the EPP server
+    if ($conn->connect())
+    {
+        if (greet($conn))
+        {
+            if (login($conn))
+            {
+                checkdomains($conn, $domains);
+                logout($conn);
+            }
         }
     }
+}
+catch (eppException $e)
+{
+    echo "ERROR: ".$e->getMessage()."\n\n";
 }
 
 
@@ -50,10 +60,8 @@ function checkdomains($conn, $domains)
 	try
 	{
 		$check = new eppCheckRequest($domains);
-        //echo $check->saveXML();
 		if ((($response = $conn->writeandread($check)) instanceof eppCheckResponse) && ($response->Success()))
 		{
-            //echo $response->saveXML();
 			$checks = $response->getCheckedDomains();
 
 			foreach ($checks as $check)

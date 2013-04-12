@@ -96,14 +96,14 @@ class eppLoginRequest extends eppRequest
         if (is_array($services))
         {
             $svcs = $this->createElement('svcs');
-            foreach ($services as $service)
+            foreach ($services as $service=>$extra)
             {
                 $svcs->appendChild($this->createElement('objURI',$service));
             }
             if ((is_array($extensions)) && (count($extensions)>0))
             {
                 $svcextension=$this->createElement('svcExtension');
-                foreach ($extensions as $extension)
+                foreach ($extensions as $extension=>$extra)
                 {
                     $svcextension->appendChild($this->createElement('extURI',$extension));
                 }
