@@ -207,9 +207,9 @@ class eppDomain
         }
         if ($this->periodunit == self::DOMAIN_PERIOD_UNIT_M)
         {
-            if (($period > 12) || ($period < 0))
+            if (($period > 120) || ($period < 0))
             {
-                throw new eppException("If period unit = m, period can only be 1 - 12");
+                throw new eppException("If period unit = m, period can only be 1 - 120");
             }
         }
         $this->period = $period;

@@ -12,5 +12,5 @@ include_once(dirname(__FILE__).'/eppPollRequest.php');
 include_once(dirname(__FILE__).'/eppRenewRequest.php');
 include_once(dirname(__FILE__).'/eppTransferRequest.php');
 include_once(dirname(__FILE__).'/eppUpdateRequest.php');
-include_once(dirname(__FILE__).'/eppDnssecInfoRequest.php');
+include_once(dirname(__FILE__).'/eppDnssecInfoDomainRequest.php');
 include_once(dirname(__FILE__).'/eppDnssecUpdateRequest.php');

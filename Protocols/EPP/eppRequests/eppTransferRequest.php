@@ -42,7 +42,7 @@ class eppTransferRequest extends eppRequest
                     {
                         throw new eppException('Domain object does not contain a valid domain name on eppTransferRequest');
                     }
-                    $this->setDomainQuery($object);
+                    $this->setDomainRequest($object);
                 }
                 elseif ($object instanceof eppContactHandle)
                 {

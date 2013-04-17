@@ -7,6 +7,8 @@ include_once(dirname(__FILE__).'/../../Protocols/EPP/eppData/eppIncludes.php');
 # Load the IIS.SE specific additions
 #
 include_once(dirname(__FILE__).'/iisEppCreateRequest.php');
+include_once(dirname(__FILE__).'/iisEppInfoDomainResponse.php');
+include_once(dirname(__FILE__).'/iisEppUpdateDomainClientDeleteRequest.php');
 
 
 class iisEppConnection extends eppConnection
@@ -27,6 +29,7 @@ class iisEppConnection extends eppConnection
         parent::setPassword('');
         // Specify timeout values in seconds
         parent::setTimeout(5);
+        parent::enableDnssec();
         // Default server configuration stuff - this varies per connected registry
         // Check the greeting of the server to see which of these values you need to add
         parent::setLanguage('en');
@@ -35,6 +38,8 @@ class iisEppConnection extends eppConnection
         parent::addExtension('urn:ietf:params:xml:ns:secDNS-1.1','secDNS');
         parent::addExtension('urn:se:iis:xml:epp:iis-1.2','iis');
         parent::addCommandResponse('iisEppCreateRequest', 'eppCreateResponse');
+        parent::addCommandResponse('eppInfoDomainRequest', 'iisEppInfoDomainResponse');
+        parent::addCommandResponse('iisEppUpdateDomainClientDeleteRequest','eppUpdateResponse');
     }
 
 }

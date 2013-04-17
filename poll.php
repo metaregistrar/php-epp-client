@@ -47,11 +47,13 @@ function poll($conn)
         $poll = new eppPollRequest(eppPollRequest::POLL_REQ, $id);
 		if ((($response = $conn->writeandread($poll)) instanceof eppPollResponse) && ($response->Success()))
 		{
+            /* @var $response eppPollResponse */
      		if ($response->getResultCode() == eppResponse::RESULT_MESSAGE_ACK)
 			{
+                echo $response->saveXML();
 				echo $response->getMessageCount()." messages waiting in the queue\n";
 				$messageid = $response->getMessageId();
-				echo "Picked up message ".$response->getMessageId()."\n";
+				echo "Picked up message ".$response->getMessageId().': '.$response->getMessage()."\n";
                 return $response->getMessageId();
 			}
 			else

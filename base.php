@@ -60,7 +60,7 @@ function greet($conn)
 }
 
 
-function login($conn, $interface)
+function login($conn)
 {
 	try
 	{

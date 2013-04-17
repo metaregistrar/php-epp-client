@@ -34,7 +34,7 @@
 
  */
 
-class eppDnssecInfoResponse extends eppInfoResponse
+class eppDnssecInfoDomainResponse extends eppInfoDomainResponse
 {
     function __construct()
     {

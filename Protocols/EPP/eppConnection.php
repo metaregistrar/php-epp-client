@@ -145,15 +145,15 @@ class EppConnection
     
     public function enableDnssec()
     {
-        $this->exturi['secDNS'] = 'urn:ietf:params:xml:ns:secDNS-1.1';
-        $this->responses['eppDnssecInfoRequest'] = 'eppDnssecInfoResponse';
+        $this->exturi['urn:ietf:params:xml:ns:secDNS-1.1'] = 'secDNS';
+        $this->responses['eppDnssecInfoDomainRequest'] = 'eppDnssecInfoDomainResponse';
         $this->responses['eppDnssecUpdateRequest'] = 'eppUpdateResponse';
     }
     
     public function disableDnssec()
     {
         unset($this->exturi['secDNS']);
-        unset($this->responses['eppDnssecInfoRequest']);
+        unset($this->responses['eppDnssecInfoDomainRequest']);
         unset($this->responses['eppDnssecUpdateRequest']);
     }
 

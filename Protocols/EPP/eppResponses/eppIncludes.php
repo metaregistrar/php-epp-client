@@ -12,4 +12,4 @@ include_once(dirname(__FILE__).'/eppPollResponse.php');
 include_once(dirname(__FILE__).'/eppRenewResponse.php');
 include_once(dirname(__FILE__).'/eppTransferResponse.php');
 include_once(dirname(__FILE__).'/eppUpdateResponse.php');
-include_once(dirname(__FILE__).'/eppDnssecInfoResponse.php');
+include_once(dirname(__FILE__).'/eppDnssecInfoDomainResponse.php');

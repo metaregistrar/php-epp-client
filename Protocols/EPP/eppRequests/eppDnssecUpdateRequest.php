@@ -47,7 +47,7 @@ class eppDnssecUpdateRequest extends eppUpdateRequest
                 $dsdata = $this->createElement('secDNS:dsData');
                 $dsdata->appendChild($this->createElement('secDNS:keyTag',$reminfo->getKeytag()));
                 $dsdata->appendChild($this->createElement('secDNS:alg',$reminfo->getAlgorithm()));
-                if (strlen($addinfo->getSiglife())>0)
+                if (strlen($reminfo->getSiglife())>0)
                 {
                     $dsdata->appendChild($this->createElement('secDNS:maxSigLife',$reminfo->getSiglife()));
                 }

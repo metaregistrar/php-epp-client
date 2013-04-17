@@ -30,6 +30,7 @@ class eppContactPostalInfo
      * @param string $street
      * @param string $province
      * @param string $zipcode
+     * @param string $type POSTAL_TYPE_LOCAL or POSTAL_TYPE_INTERNATIONAL
      */
     public function __construct($name = null, $city= null, $countrycode= null, $organisationName = null, $street = null, $province = null, $zipcode = null, $type=self::POSTAL_TYPE_INTERNATIONAL)
     {
