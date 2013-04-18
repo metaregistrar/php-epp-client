@@ -163,7 +163,9 @@ class eppUpdateRequest extends eppRequest
         if (strlen($domain->getAuthorisationCode()))
         {
             $authinfo = $this->createElement('domain:authInfo');
-            $authinfo->appendChild($this->createElement('domain:pw',$domain->getAuthorisationCode()));
+            $pw = $this->createElement('domain:pw');
+            $pw->appendChild($this->createCDATASection($domain->getAuthorisationCode()));
+            $authinfo->appendChild($pw);
             $element->appendChild($authinfo);
         }
     }

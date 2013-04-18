@@ -1,12 +1,12 @@
 <?php
 // Base EPP objects
-include_once('../Protocols/EPP/eppConnection.php');
-include_once('../Protocols/EPP/eppRequests/eppIncludes.php');
-include_once('../Protocols/EPP/eppResponses/eppIncludes.php');
-include_once('../Protocols/EPP/eppData/eppIncludes.php');
-include_once('../Registries/IIS/iisEppConnection.php');
+include_once('../../Protocols/EPP/eppConnection.php');
+include_once('../../Protocols/EPP/eppRequests/eppIncludes.php');
+include_once('../../Protocols/EPP/eppResponses/eppIncludes.php');
+include_once('../../Protocols/EPP/eppData/eppIncludes.php');
+include_once('./iisEppConnection.php');
 // Base EPP commands: hello, login and logout
-include_once('../base.php');
+include_once('../../base.php');
 
 
 
@@ -18,8 +18,8 @@ if ($conn->connect())
 	{
 		if (login($conn))
 		{
-            #echo "Test 1: Create domain name with subordinate hosts\n";
-            #test1($conn,'');
+            echo "Test 1: Create domain name with subordinate hosts\n";
+            test1($conn,'fte236937-eca49a10f5cbc2fb8371e6817b9ec54e-01.nu');
             #echo "Test 2: Update contact with telephone and postal code\n";
             #test2($conn,'');
             #echo "Test 3: Add ip 217.108.99.249 , 2001:698:a:e:208:2ff:fe15:b2e8 to host\n";
@@ -41,7 +41,7 @@ if ($conn->connect())
             #echo "Test 11: Remove DS records from domain \n";
             #test11($conn,'.nu');
             #echo "Test 12: Set authInfo for domain\n";
-            #test12($conn, '.nu', '');
+            #test12($conn, 'fte236937-eca49a10f5cbc2fb8371e6817b9ec54e-09.nu', 'FTEfte--3070');
             #echo "Test 13: Empty message queue\n";
             #test13($conn);
             logout($conn);
@@ -67,6 +67,9 @@ function test1($conn, $domainname)
     }
     else
     {
+        #$hostnames[] = 'ns1.'.$domainname;
+        #$hostnames[] = 'ns2.'.$domainname;
+        #updatedomainaddhost($conn,$domainname,$hostnames);
         echo "Test 1 completed, info domain:\n";
         infodomain($conn,$domainname);
     }
@@ -228,7 +231,6 @@ function checkandcreatehosts($conn, $hosts)
 		if ((($response = $conn->writeandread($check)) instanceof eppCheckResponse) && ($response->Success()))
 		{
 			$checks = $response->getCheckedHosts();
-            $allchecksok = true;
 			foreach ($checks as $hostname => $check)
 			{
 				echo "$hostname ".($check ? 'does not exist' : 'exists')."\n";
@@ -431,7 +433,7 @@ function updatedomainchangeregistrant($conn, $domainname, $registrant)
 }
 
 
-function updatedomainsetauthcode($conn, $domainname, $autcode)
+function updatedomainsetauthcode($conn, $domainname, $authcode)
 {
     try
     {
@@ -441,8 +443,8 @@ function updatedomainsetauthcode($conn, $domainname, $autcode)
         $up = new eppUpdateRequest($domain, null, null, $chg);
         if ((($response = $conn->writeandread($up)) instanceof eppUpdateResponse) && ($response->Success()))
         {
-            echo "Domain $domainname updated, infoing\n";
-            infodomain($conn,$domainname);
+            echo "Domain $domainname updated with authcode\n";
+            //infodomain($conn,$domainname);
         }
 
     }
