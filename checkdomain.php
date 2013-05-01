@@ -33,7 +33,7 @@ for ($i=1; $i<$argc; $i++)
 echo "Checking ".count($domains)." domain names\n";
 try
 {
-    $conn = new iisEppConnection();
+    $conn = new metaregEppConnection();
 
     // Connect to the EPP server
     if ($conn->connect())
