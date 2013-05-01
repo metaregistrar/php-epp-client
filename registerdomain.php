@@ -33,29 +33,26 @@ $conn = new iisEppConnection();
 // Connect to the EPP server
 if ($conn->connect())
 {
-	if (greet($conn))
-	{
-		if (login($conn))
-		{
-            if (!checkhosts($conn, array('ns1.metaregistrar.com')))
-            {
-                createhost($conn,'ns1.metaregistrar.com');
-            }
-            if (!checkhosts($conn, array('ns2.metaregistrar.com')))
-            {
-                createhost($conn,'ns2.metaregistrar.com');
-            }
-            if (!checkhosts($conn, array('ns3.metaregistrar.com')))
-            {
-                createhost($conn,'ns3.metaregistrar.com');
-            }
-            $contactid = createcontact($conn,'test@test.com','061234567890','Person name',null,'Address 1','12345','City','NL');
-            if ($contactid)
-            {
-                createdomain($conn,$domainname,$contactid,$contactid,$contactid,$contactid,array('ns1.metaregistrar.com','ns2.metaregistrar.com','ns3.metaregistrar.com'));
-            }
-            logout($conn);
+    if (login($conn))
+    {
+        if (!checkhosts($conn, array('ns1.metaregistrar.com')))
+        {
+            createhost($conn,'ns1.metaregistrar.com');
         }
+        if (!checkhosts($conn, array('ns2.metaregistrar.com')))
+        {
+            createhost($conn,'ns2.metaregistrar.com');
+        }
+        if (!checkhosts($conn, array('ns3.metaregistrar.com')))
+        {
+            createhost($conn,'ns3.metaregistrar.com');
+        }
+        $contactid = createcontact($conn,'test@test.com','061234567890','Person name',null,'Address 1','12345','City','NL');
+        if ($contactid)
+        {
+            createdomain($conn,$domainname,$contactid,$contactid,$contactid,$contactid,array('ns1.metaregistrar.com','ns2.metaregistrar.com','ns3.metaregistrar.com'));
+        }
+        logout($conn);
     }
 }
 

@@ -25,17 +25,14 @@ $conn = new iisEppConnection();
 // Connect to the EPP server
 if ($conn->connect())
 {
-	if (greet($conn))
-	{
-		if (login($conn))
-		{
-            $messageid = poll($conn);
-            if ($messageid)
-            {
-                //pollack($conn,$messageid);
-            }
-            logout($conn);
+    if (login($conn))
+    {
+        $messageid = poll($conn);
+        if ($messageid)
+        {
+            //pollack($conn,$messageid);
         }
+        logout($conn);
     }
 }
 

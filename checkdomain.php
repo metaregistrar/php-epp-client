@@ -38,13 +38,10 @@ try
     // Connect to the EPP server
     if ($conn->connect())
     {
-        if (greet($conn))
+        if (login($conn))
         {
-            if (login($conn))
-            {
-                checkdomains($conn, $domains);
-                logout($conn);
-            }
+            checkdomains($conn, $domains);
+            logout($conn);
         }
     }
 }
