@@ -39,10 +39,8 @@ try
     // Connect to the EPP server
     if ($conn->connect())
     {
-        echo 'connected';
         if (login($conn))
         {
-            echo 'loggedin';
             checkdomains($conn, $domains);
             logout($conn);
         }

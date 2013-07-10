@@ -33,12 +33,12 @@ echo "Changing password\n";
 try
 {
     $conn = new sidnEppConnection();
-
+    $conn->setNewPassword($newpassword);
     // Connect to the EPP server
     if ($conn->connect())
     {
 
-        if (changepassword($conn, $newpassword))
+        if (login($conn))
         {
             echo "Password was changed\n";
             logout($conn);

@@ -32,6 +32,11 @@ class EppConnection
      */
     protected $password = '';
 
+    /*
+     * New password for password change procedure
+     */
+    protected $newpassword = null;
+
 
    /**
      * Default namespace
@@ -399,6 +404,11 @@ class EppConnection
             $content->addUsername($this->getUsername());
             // Set password for login request
             $content->addPassword($this->getPassword());
+            // Set 'new password' for login request
+            if ($this->getNewPassword())
+            {
+                $content->addNewPassword($this->getNewPassword());
+            }
             // Add version to this object
             $content->addVersion($this->getVersion());
             // Add language to this object
@@ -507,6 +517,16 @@ class EppConnection
     public function setPassword($password) 
     {    
         $this->password = $password;
+    }
+
+    public function getNewPassword()
+    {
+        return $this->newpassword;
+    }
+
+    public function setNewPassword($password)
+    {
+        $this->newpassword = $password;
     }
     
     public function getHostname() 

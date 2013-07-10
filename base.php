@@ -67,36 +67,13 @@ function login($conn)
 		$login = new eppLoginRequest();
 		if ((($response = $conn->writeandread($login)) instanceof eppLoginResponse) && ($response->Success()))
 		{
-            echo $response->saveXML();
 			return true;
 		}
-        else
-        {
-            echo $response->saveXML();
-        }
 	}
 	catch (eppException $e)
 	{
 		echo $e->getMessage()."\n";
 	}
-    return false;
-}
-
-function changepassword($conn, $newpassword)
-{
-    try
-    {
-        $login = new eppLoginRequest($newpassword);
-        if ((($response = $conn->writeandread($login)) instanceof eppLoginResponse) && ($response->Success()))
-        {
-            echo $response->saveXML();
-            return true;
-        }
-    }
-    catch (eppException $e)
-    {
-        echo $e->getMessage()."\n";
-    }
     return false;
 }
 
