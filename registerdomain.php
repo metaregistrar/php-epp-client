@@ -29,29 +29,29 @@ if ($argc <= 1)
 $domainname = $argv[1];
 
 echo "Registering $domainname\n";
-$conn = new iisEppConnection();
+$conn = new metaregEppConnection();
 // Connect to the EPP server
 if ($conn->connect())
 {
     if (login($conn))
     {
-        if (!checkhosts($conn, array('ns1.metaregistrar.com')))
+        if (!checkhosts($conn, array('ns1.metaregistrar.nl')))
         {
-            createhost($conn,'ns1.metaregistrar.com');
+            createhost($conn,'ns1.metaregistrar.nl');
         }
-        if (!checkhosts($conn, array('ns2.metaregistrar.com')))
+        if (!checkhosts($conn, array('ns2.metaregistrar.nl')))
         {
-            createhost($conn,'ns2.metaregistrar.com');
+            createhost($conn,'ns2.metaregistrar.nl');
         }
-        if (!checkhosts($conn, array('ns3.metaregistrar.com')))
-        {
-            createhost($conn,'ns3.metaregistrar.com');
-        }
-        $contactid = createcontact($conn,'test@test.com','061234567890','Person name',null,'Address 1','12345','City','NL');
-        if ($contactid)
-        {
-            createdomain($conn,$domainname,$contactid,$contactid,$contactid,$contactid,array('ns1.metaregistrar.com','ns2.metaregistrar.com','ns3.metaregistrar.com'));
-        }
+        #if (!checkhosts($conn, array('ns3.metaregistrar.com')))
+        #{
+        #    createhost($conn,'ns3.metaregistrar.com');
+        #}
+        #$contactid = createcontact($conn,'test@test.com','061234567890','Person name',null,'Address 1','12345','City','NL');
+        #if ($contactid)
+        #{
+        createdomain($conn,$domainname,4068,4068,103,103,array('ns1.metaregistrar.nl','ns2.metaregistrar.nl'));
+        #}
         logout($conn);
     }
 }
@@ -154,7 +154,7 @@ function createdomain($conn,$domainname,$registrant,$admincontact,$techcontact,$
 {
     try
     {
-        $domain = new eppDomain($domainname);
+        $domain = new eppDomain($domainname, $registrant);
         $reg = new eppContactHandle($registrant);
         $domain->setRegistrant($reg);
         $admin = new eppContactHandle($admincontact,eppContactHandle::CONTACT_TYPE_ADMIN);
@@ -163,7 +163,7 @@ function createdomain($conn,$domainname,$registrant,$admincontact,$techcontact,$
         $domain->addContact($tech);
         $billing = new eppContactHandle($billingcontact,eppContactHandle::CONTACT_TYPE_BILLING);
         $domain->addContact($billing);
-        //$domain->setAuthorisationCode('rand0m');
+        $domain->setAuthorisationCode('rand0m');
         if (is_array($nameservers))
         {
             foreach ($nameservers as $nameserver)

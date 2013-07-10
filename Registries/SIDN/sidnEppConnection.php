@@ -19,7 +19,6 @@ class sidnEppConnection extends eppConnection
         parent::setPassword('');
         parent::setTimeout(5);
         parent::setLanguage('en');
-        parent::setLanguage('en');
         parent::setVersion('1.0');
         parent::addExtension('sidn-epp-ext','http://rxsd.domain-registry.nl/sidn-ext-epp-1.0');
         parent::addCommandResponse('sidnEppPollRequest', 'sidnEppPollResponse');

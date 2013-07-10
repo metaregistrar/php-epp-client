@@ -9,7 +9,7 @@ class eppLoginRequest extends eppRequest
     
     protected $options = null;
     
-    function __construct()
+    function __construct($newpassword = null)
     {
         parent::__construct();
         #
@@ -21,6 +21,10 @@ class eppLoginRequest extends eppRequest
         #
         $this->login = $this->createElement('login');  
         $this->command->appendChild($this->login);
+        if ($newpassword)
+        {
+            $this->addNewPassword($newpassword);
+        }
         #
         # This is only the basic command structure. 
         # Userid, password, version and language info will be added later by the connection object
@@ -41,7 +45,16 @@ class eppLoginRequest extends eppRequest
             $this->login->appendChild($this->options);
         }        
     }
-    
+
+    public function addNewPassword($password)
+    {
+        if (!strlen($password))
+        {
+            throw new eppException('No new passwod specified for password change');
+        }
+        $this->login->appendChild($this->createElement('newPW',$password));
+    }
+
     public function addUsername($username)
     {
         if (!strlen($username))
