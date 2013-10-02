@@ -50,9 +50,22 @@ class eppContact
      */
     public function __construct($postalInfo=null, $email=null, $voice = null, $fax = null, $password=null, $status=null)
     {
-        if ($postalInfo instanceof eppContactPostalInfo)
+        if (is_array($postalInfo))
         {
-            $this->addPostalInfo($postalInfo);
+             foreach ($postalInfo as $postal)
+             {
+                 if ($postal instanceof eppContactPostalInfo)
+                 {
+                     $this->addPostalInfo($postal);
+                 }
+             }
+        }
+        else
+        {
+            if ($postalInfo instanceof eppContactPostalInfo)
+            {
+                $this->addPostalInfo($postalInfo);
+            }
         }
         $this->setEmail($email);
         $this->setPassword($password);
