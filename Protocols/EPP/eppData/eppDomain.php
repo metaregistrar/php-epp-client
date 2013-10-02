@@ -108,10 +108,6 @@ class eppDomain
                     throw new eppException('Registrant must be eppContactHandle or string on eppDomain creation');
                 }
             }
-            else
-            {
-                throw new eppException('Registrant must be eppContactHandle or string on eppDomain creation');
-            }
         }
         if ($authorisationCode)
         {
