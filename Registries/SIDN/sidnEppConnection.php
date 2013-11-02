@@ -6,6 +6,8 @@ include_once(dirname(__FILE__).'/sidnEppCreateRequest.php');
 include_once(dirname(__FILE__).'/sidnEppPollRequest.php');
 include_once(dirname(__FILE__).'/sidnEppPollResponse.php');
 include_once(dirname(__FILE__).'/sidnEppCheckResponse.php');
+include_once(dirname(__FILE__).'/sidnEppInfoDomainResponse.php');
+include_once(dirname(__FILE__).'/sidnEppRenewRequest.php');
 
 class sidnEppConnection extends eppConnection
 {
@@ -24,6 +26,8 @@ class sidnEppConnection extends eppConnection
         parent::addCommandResponse('sidnEppPollRequest', 'sidnEppPollResponse');
         parent::addCommandResponse('sidnEppCreateRequest', 'eppCreateResponse');
         parent::addCommandResponse('eppCheckRequest', 'sidnEppCheckResponse');
+        parent::addCommandResponse('eppInfoDomainRequest', 'sidnEppInfoDomainResponse');
+        parent::addCommandResponse('sidnEppRenewRequest', 'eppRenewResponse');
     }
 
 }
