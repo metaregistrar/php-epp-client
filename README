@@ -3,12 +3,22 @@ php-epp-client
 
 Object-oriented PHP EPP Client
 
-Welcome to the object-oriented EPP client in PHP project
+Welcome to the object-oriented EPP client in PHP project. 
 
-This code will provide you with a fully functional EPP client to connect to any registry world-wide.
+This project supports the following:
+- Full EPP 57xx RFC standard
+- Fully extensible PHP objects to add registry-specific extensions
+- Public/private key client certificates for connecting to EPP service
+- DNSSEC transactions
+- Rock-solid object-oriented programming and exception handling
+- Interface tested and in use with a registrar that handles 500.000+ domain names
+- Regular additions to the Registry connections directory
+
+This code will provide you with a fully functional EPP client to connect to any registry world-wide that supports EPP.
 
 All code is organized in objects, so connecting to a new registry is just a matter of object re-use and extension.
 
 Sample registry connections are provided in the Registries directory.
 
 Sample domain check an domain create scripts are provided in checkdomain.php and registerdomain.php
+
