@@ -6,7 +6,7 @@ include_once(dirname(__FILE__).'/../../Protocols/EPP/eppData/eppIncludes.php');
 #
 # Load the Metaregistrar specific additions
 #
-include_once(dirname(__FILE__).'/metaregEppInfoDomainRequest.php');
+include_once(dirname(__FILE__).'/metaregInfoDomainRequest.php');
 include_once(dirname(__FILE__).'/metaregEppPollResponse.php');
 
 class metaregEppConnection extends eppConnection

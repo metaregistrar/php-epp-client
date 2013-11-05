@@ -22,7 +22,7 @@ class euridEppConnection extends eppConnection
     {
         $config = ConfigFactory::getConfigStore();
         parent::__construct(false);
-        parent::setHostname('epp.tryout.registry.eu');
+        parent::setHostname('ssl://epp.tryout.registry.eu');
         parent::setPort(700);
         parent::setUsername('');
         parent::setPassword('');

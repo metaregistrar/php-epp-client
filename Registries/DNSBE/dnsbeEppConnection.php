@@ -21,9 +21,8 @@ class dnsbeEppConnection extends eppConnection
 
     public function __construct()
     {
-        $config = ConfigFactory::getConfigStore();
         parent::__construct(false);
-        parent::setHostname('epp.registry.tryout.dns.be');
+        parent::setHostname('ssl://epp.registry.tryout.dns.be');
         parent::setPort('33128');
         parent::setUsername('');
         parent::setPassword('');
