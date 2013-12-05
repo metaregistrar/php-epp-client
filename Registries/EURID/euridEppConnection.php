@@ -29,13 +29,14 @@ class euridEppConnection extends eppConnection
         parent::setTimeout(5);
         parent::setLanguage('en');
         parent::setVersion('1.0');
-        parent::enableDnssec();
+        //parent::enableDnssec();
         parent::setServices(array('urn:ietf:params:xml:ns:domain-1.0'=>'domain','urn:ietf:params:xml:ns:contact-1.0'=>'contact'));
         //parent::addExtension('http://www.eurid.eu/xml/epp/nsgroup-1.1','nsgroup');
         parent::addService('http://www.eurid.eu/xml/epp/registrar-1.0','registrar');
         
         parent::addExtension('http://www.eurid.eu/xml/epp/contact-ext-1.0','contact-ext');
         parent::addExtension('http://www.eurid.eu/xml/epp/domain-ext-1.0','domain-ext');
+        parent::addExtension('http://www.eurid.eu/xml/epp/authInfo-1.0','authInfo');
         #parent::addCommandResponse('euridEppCreateNsgroupRequest', 'euridEppCreateNsgroupResponse');
         #parent::addCommandResponse('euridEppCreateRequest', 'euridEppCreateResponse');
         #parent::addCommandResponse('euridEppAuthcodeRequest', 'eppResponse');

@@ -34,7 +34,7 @@ for ($i=1; $i<$argc; $i++)
 echo "Checking ".count($domains)." domain names\n";
 try
 {
-    $conn = new iisEppConnection(true);
+    $conn = new sidnEppConnection(true);
 
     // Connect to the EPP server
     if ($conn->connect())
