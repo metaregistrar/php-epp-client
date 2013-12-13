@@ -2,7 +2,7 @@
 #
 # Load the SIDN specific additions
 #
-include_once(dirname(__FILE__).'/sidnEppCreateRequest.php');
+include_once(dirname(__FILE__).'/sidnEppCreateContactRequest.php');
 include_once(dirname(__FILE__).'/sidnEppPollRequest.php');
 include_once(dirname(__FILE__).'/sidnEppPollResponse.php');
 include_once(dirname(__FILE__).'/sidnEppCheckResponse.php');
@@ -23,8 +23,9 @@ class sidnEppConnection extends eppConnection
         parent::setLanguage('en');
         parent::setVersion('1.0');
         parent::addExtension('sidn-epp-ext','http://rxsd.domain-registry.nl/sidn-ext-epp-1.0');
+        parent::enableDnssec();
         parent::addCommandResponse('sidnEppPollRequest', 'sidnEppPollResponse');
-        parent::addCommandResponse('sidnEppCreateRequest', 'eppCreateResponse');
+        parent::addCommandResponse('sidnEppCreateContactRequest', 'eppCreateResponse');
         parent::addCommandResponse('eppCheckRequest', 'sidnEppCheckResponse');
         parent::addCommandResponse('eppInfoDomainRequest', 'sidnEppInfoDomainResponse');
         parent::addCommandResponse('sidnEppRenewRequest', 'eppRenewResponse');

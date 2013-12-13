@@ -6,7 +6,7 @@ include_once(dirname(__FILE__).'/../../Protocols/EPP/eppData/eppIncludes.php');
 #
 # Load the IIS.SE specific additions
 #
-include_once(dirname(__FILE__).'/iisEppCreateRequest.php');
+include_once(dirname(__FILE__).'/iisEppCreateContactRequest.php');
 include_once(dirname(__FILE__).'/iisEppInfoDomainResponse.php');
 include_once(dirname(__FILE__).'/iisEppUpdateDomainClientDeleteRequest.php');
 
@@ -51,7 +51,7 @@ class iisEppConnection extends eppConnection
 
         // Add the commands and responses specific to this registry
         // Please make sure the corresponding PHP files are present!
-        parent::addCommandResponse('iisEppCreateRequest', 'eppCreateResponse');
+        parent::addCommandResponse('iisEppCreateContactRequest', 'eppCreateResponse');
         parent::addCommandResponse('eppInfoDomainRequest', 'iisEppInfoDomainResponse');
         parent::addCommandResponse('iisEppUpdateDomainClientDeleteRequest','eppUpdateResponse');
     }

@@ -14,27 +14,19 @@
 
 
 */
-class dnsbeEppCreateRequest extends eppCreateRequest
+class dnsbeEppCreateContactRequest extends eppCreateContactRequest
 {
     function __construct($createinfo)
     {
 
-        if ($createinfo instanceof eppDomain)
+        if ($createinfo instanceof eppContact)
         {
-            $this->setForcehostattr(true);
             parent::__construct($createinfo);
+            $this->addDnsbeExtension($createinfo);
         }
         else
         {
-            if ($createinfo instanceof eppContact)
-            {
-                parent::__construct($createinfo);
-                $this->addDnsbeExtension($createinfo);
-            }
-            else
-            {
-                throw new eppException('DNSBE does not support Host objects');
-            }
+            throw new eppException('DNSBE does not support Host objects');
         }
         $this->addSessionId();
     }
