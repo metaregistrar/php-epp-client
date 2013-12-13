@@ -1,9 +1,4 @@
 <?php
-include_once(dirname(__FILE__).'/../eppResponse.php');
-/*
- * This object contains the logic to read the response of an EPP info command
- * The actual info commands are divided into eppInfoHostResponse, eppInfoContactResponse and eppInfoDomainResponse
- */
 
 class eppInfoResponse extends eppResponse
 {

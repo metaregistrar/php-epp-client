@@ -1,8 +1,4 @@
 <?php
-include_once(dirname(__FILE__).'/../eppRequest.php');
-/*
- * This object contains all the logic to create an EPP hello command
- */
 
 class eppTransferRequest extends eppRequest
 {
@@ -109,10 +105,6 @@ class eppTransferRequest extends eppRequest
     public function setDomainQuery(eppDomain $domain)
     {
         #
-        # Create command structure
-        #
-        $this->command = $this->createElement('command');
-        #
         # Object create structure
         #
         $transfer = $this->createElement('transfer');
@@ -126,17 +118,12 @@ class eppTransferRequest extends eppRequest
             $this->domainobject->appendChild($authinfo);
         }
         $transfer->appendChild($this->domainobject);
-        $this->command->appendChild($transfer);
-        $this->epp->appendChild($this->command);
+        $this->getCommand()->appendChild($transfer);
     }
 
 
     public function setDomainApprove(eppDomain $domain)
     {
-        #
-        # Create command structure
-        #
-        $this->command = $this->createElement('command');
         #
         # Object create structure
         #
@@ -151,17 +138,12 @@ class eppTransferRequest extends eppRequest
             $this->domainobject->appendChild($authinfo);
         }
         $transfer->appendChild($this->domainobject);
-        $this->command->appendChild($transfer);
-        $this->epp->appendChild($this->command);
+        $this->getCommand()->appendChild($transfer);
     }
 
 
     public function setDomainReject(eppDomain $domain)
     {
-        #
-        # Create command structure
-        #
-        $this->command = $this->createElement('command');
         #
         # Object create structure
         #
@@ -176,17 +158,12 @@ class eppTransferRequest extends eppRequest
             $this->domainobject->appendChild($authinfo);
         }
         $transfer->appendChild($this->domainobject);
-        $this->command->appendChild($transfer);
-        $this->epp->appendChild($this->command);
+        $this->getCommand()->appendChild($transfer);
     }
 
 
     public function setDomainCancel(eppDomain $domain)
     {
-        #
-        # Create command structure
-        #
-        $this->command = $this->createElement('command');
         #
         # Object create structure
         #
@@ -201,17 +178,12 @@ class eppTransferRequest extends eppRequest
             $this->domainobject->appendChild($authinfo);
         }
         $transfer->appendChild($this->domainobject);
-        $this->command->appendChild($transfer);
-        $this->epp->appendChild($this->command);
+        $this->getCommand()->appendChild($transfer);
     }
 
 
     public function setContactQuery(eppContactHandle $contact)
     {
-        #
-        # Create command structure
-        #
-        $this->command = $this->createElement('command');
         #
         # Object create structure
         #
@@ -220,8 +192,7 @@ class eppTransferRequest extends eppRequest
         $this->contactobject = $this->createElement('contact:transfer');
         $this->contactobject->appendChild($this->createElement('contact:id',$contact->getContactHandle()));
         $transfer->appendChild($this->contactobject);
-        $this->command->appendChild($transfer);
-        $this->epp->appendChild($this->command);
+        $this->getCommand()->appendChild($transfer);
     }
 
 
@@ -232,10 +203,6 @@ class eppTransferRequest extends eppRequest
     public function setDomainRequest(eppDomain $domain)
     {
         #
-        # Create command structure
-        #
-        $this->command = $this->createElement('command');
-        #
         # Object create structure
         #
         $transfer = $this->createElement('transfer');
@@ -245,7 +212,7 @@ class eppTransferRequest extends eppRequest
         if ($domain->getPeriod())
         {
             $domainperiod = $this->createElement('domain:period',$domain->getPeriod());
-            $domainperiod->setAttribute('unit',eppDomain::DOMAIN_PERIOD_UNIT);
+            $domainperiod->setAttribute('unit',eppDomain::DOMAIN_PERIOD_UNIT_Y);
             $this->domainobject->appendChild($domainperiod);
         }
         if (strlen($domain->getAuthorisationCode()))
@@ -255,18 +222,13 @@ class eppTransferRequest extends eppRequest
             $this->domainobject->appendChild($authinfo);
         }
         $transfer->appendChild($this->domainobject);
-        $this->command->appendChild($transfer);
-        $this->epp->appendChild($this->command);
+        $this->getCommand()->appendChild($transfer);
     }
 
 
 
     public function setContactRequest(eppContactHandle $contact)
     {
-        #
-        # Create command structure
-        #
-        $this->command = $this->createElement('command');
         #
         # Object create structure
         #
@@ -275,8 +237,7 @@ class eppTransferRequest extends eppRequest
         $this->contactobject = $this->createElement('contact:transfer');
         $this->contactobject->appendChild($this->createElement('contact:id',$contact->getContactHandle()));
         $transfer->appendChild($this->contactobject);
-        $this->command->appendChild($transfer);
-        $this->epp->appendChild($this->command);
+        $this->getCommand()->appendChild($transfer);
     }
 
 

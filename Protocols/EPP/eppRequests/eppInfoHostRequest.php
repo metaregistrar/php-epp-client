@@ -1,5 +1,4 @@
 <?php
-include_once(dirname(__FILE__).'/../eppRequest.php');
 /*
  * This object contains all the logic to create an EPP host:info command
  */
@@ -30,17 +29,12 @@ class eppInfoHostRequest extends eppRequest
     public function setHost(eppHost $host)
     {
         #
-        # Create command structure
-        #
-        $this->command = $this->createElement('command');
-        #
         # Domain check structure
         #
         $info = $this->createElement('info');
         $this->hostobject = $this->createElement('host:info');        
         $this->hostobject->appendChild($this->createElement('host:name',$host->getHostname()));
         $info->appendChild($this->hostobject);
-        $this->command->appendChild($info);
-        $this->epp->appendChild($this->command);
-    }    
+        $this->getCommand()->appendChild($info);
+    }
 }

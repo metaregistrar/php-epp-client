@@ -1,5 +1,4 @@
 <?php
-include_once(dirname(__FILE__).'/../eppRequest.php');
 /*
  * This object contains all the logic to create an EPP hello command
  */
@@ -47,15 +46,9 @@ class eppPollRequest extends eppRequest
     public function setRequest($polltype,$messageid=null)
     {
         #
-        # Create command structure
-        #
-        $this->command = $this->createElement('command');
-
-        #
         # Create poll command
         #
         $poll = $this->createElement('poll');
-        $this->command->appendChild($poll);
         #
         # atrribute is req or ack
         #
@@ -64,6 +57,6 @@ class eppPollRequest extends eppRequest
         {
             $poll->setAttribute('msgID',$messageid);
         }
-        $this->epp->appendChild($this->command);
+        $this->getCommand()->appendChild($poll);
     }
 }

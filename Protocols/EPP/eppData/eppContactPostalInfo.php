@@ -159,8 +159,8 @@ class eppContactPostalInfo
      */
     public function setZipcode($zipcode)
     {
-        //Remove garbage from the zipcode
-        $zipcode = preg_replace('/[^a-z\d]/i', '', $zipcode);
+		//DONT Remove garbage from the zipcode, never modify customer input!
+		//$zipcode = preg_replace('/[^a-z\d]/i', '', $zipcode);
         $this->zipcode = $zipcode;
     }
     /**

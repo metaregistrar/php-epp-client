@@ -131,8 +131,15 @@ class EppConnection
         $this->responses['eppInfoContactRequest'] = 'eppInfoContactResponse';
         $this->responses['eppInfoDomainRequest'] = 'eppInfoDomainResponse';
         $this->responses['eppCreateRequest'] = 'eppCreateResponse';
+        $this->responses['eppCreateDomainRequest'] = 'eppCreateResponse';
+        $this->responses['eppCreateContactRequest'] = 'eppCreateResponse';
+        $this->responses['eppCreateHostRequest'] = 'eppCreateResponse';
         $this->responses['eppDeleteRequest'] = 'eppDeleteResponse';
+        $this->responses['eppUndeleteRequest'] = 'eppUndeleteResponse';
         $this->responses['eppUpdateRequest'] = 'eppUpdateResponse';
+        $this->responses['eppUpdateDomainRequest'] = 'eppUpdateResponse';
+        $this->responses['eppUpdateContactRequest'] = 'eppUpdateResponse';
+        $this->responses['eppUpdateHostRequest'] = 'eppUpdateResponse';
         $this->responses['eppRenewRequest'] = 'eppRenewResponse';
         $this->responses['eppTransferRequest'] = 'eppTransferResponse';
         
@@ -151,15 +158,13 @@ class EppConnection
     public function enableDnssec()
     {
         $this->exturi['urn:ietf:params:xml:ns:secDNS-1.1'] = 'secDNS';
-        $this->responses['eppDnssecInfoDomainRequest'] = 'eppDnssecInfoDomainResponse';
-        $this->responses['eppDnssecUpdateRequest'] = 'eppUpdateResponse';
+        $this->responses['eppDnssecUpdateDomainRequest'] = 'eppUpdateDomainResponse';
     }
     
     public function disableDnssec()
     {
         unset($this->exturi['secDNS']);
-        unset($this->responses['eppDnssecInfoDomainRequest']);
-        unset($this->responses['eppDnssecUpdateRequest']);
+        unset($this->responses['eppDnssecUpdateDomainRequest']);
     }
 
     public function enableCertification($certificatepath, $certificatepassword)
@@ -183,6 +188,8 @@ class EppConnection
     {
         if (is_resource($this->connection))
         {
+			//echo "Fclosing $this->hostname\n";
+			@ob_flush();
             fclose($this->connection);
         }
         return true;
@@ -323,6 +330,8 @@ class EppConnection
 			}
         }
         putenv('SURPRESS_ERROR_HANDLER=0');
+		#echo $content;
+		#ob_flush();
         return $content;
     }
 
@@ -354,7 +363,7 @@ class EppConnection
      * @param string $content
      * @return boolean
      */
-    private function write($content)
+    public function write($content)
     {
         $this->writeLog("Writing: ".strlen($content)." + 4 bytes");
         $content = $this->addInteger($content);
@@ -364,6 +373,8 @@ class EppConnection
         }
         $this->writeLog($content);
         putenv('SURPRESS_ERROR_HANDLER=1');
+		#echo $content;
+		#ob_flush();
         if (fwrite($this->connection, $content))
         {
             //fpassthru($this->connection);
@@ -428,6 +439,10 @@ class EppConnection
             $content->addNamespaces($this->getExtensions());
         }
         $response = $this->createResponse($content);
+        if (!$response)
+        {
+            throw new eppException("No valid response from server");
+        }
         if ($this->logging)
         {
             $this->writeLog("==== SENDING XML ======");
@@ -440,7 +455,10 @@ class EppConnection
             {                
                 if ($response->loadXML($xml))
                 {
-                    if ($this->logging)
+					/*echo $xml;
+					ob_flush();
+                    */
+					if ($this->logging)
                     {
                         $this->writeLog("==== RECEIVED XML =====");
                         $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG));
@@ -473,7 +491,8 @@ class EppConnection
     }
     
     public function createResponse($request)
-    {      
+    {
+        $response = null;
         foreach ($this->responses as $req=>$res)
         {
             if ($request instanceof $req)

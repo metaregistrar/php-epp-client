@@ -204,12 +204,8 @@ class eppSecdns
 	 */
 	public function setPubkey($pubkey)
 	{
-
         $this->pubkey = $pubkey;
-	}    
-    
-    
-    
+	}
    
 	/**
 	 * Gets the algorithm
@@ -217,7 +213,7 @@ class eppSecdns
 	 */
 	public function getAlgorithm()
 	{
-            return $this->algorithm;
+        return $this->algorithm;
 	}
 	/**
 	 * Sets the algorithm
@@ -226,11 +222,60 @@ class eppSecdns
 	 */
 	public function setAlgorithm($algorithm)
 	{
-            $this->algorithm = $algorithm;
+        $this->algorithm = $algorithm;
 	}
 
+    // Copy data from a similar object to this one, with safeguards
+    public function copy($object)
+    {
+        $this->setPubkey($object->getPubkey());
+        $this->setProtocol($object->getProtocol());
+        $this->setFlags($object->getFlags());
+        $this->setAlgorithm($object->getAlgorithm());
+        $this->setDigest($object->getDigest());
+        $this->setDigestType($object->getDigestType());
+        $this->setKeytag($object->getKeytag());
+        $this->setSiglife($object->getSiglife());        
+    }
 
+    public function equals($object)
+    {
+        $equals = true;
 
+        if ($this->getPubkey()!=$object->getPubkey())
+        {
+            $equals = false;
+        }
+        if ($this->getProtocol()!=$object->getProtocol())
+        {
+            $equals = false;
+        }
+        if ($this->getFlags()!=$object->getFlags())
+        {
+            $equals = false;
+        }
+        if ($this->getAlgorithm()!=$object->getAlgorithm())
+        {
+            $equals = false;
+        }
+        if ($this->getDigest()!=$object->getDigest())
+        {
+            $equals = false;
+        }
+        if ($this->getDigestType()!=$object->getDigestType())
+        {
+            $equals = false;
+        }
+        if ($this->getKeytag()!=$object->getKeytag())
+        {
+            $equals = false;
+        }
+        if ($this->getSiglife()!=$object->getSiglife())
+        {
+            $equals = false;
+        }
+        return $equals;
+    }
 }
 
 

@@ -1,6 +1,6 @@
 <?php
 
-class eppLoginResponse extends eppResponse
+class eppUpdateHostResponse extends eppUpdateResponse
 {
     function __construct()
     {
