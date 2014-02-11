@@ -622,7 +622,7 @@ class EppConnection
     
     public function addExtension($xmlns,$namespace)
     {
-        $this->exturi[$xmlns]=$namespace;
+        $this->exturi[$namespace]=$xmlns;
     }
     
     public function getExtensions()
