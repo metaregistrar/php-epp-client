@@ -8,6 +8,7 @@ include_once('Protocols/EPP/eppData/eppIncludes.php');
 include_once('Registries/Metaregistrar/metaregEppConnection.php');
 include_once('Registries/IIS/iisEppConnection.php');
 include_once('Registries/SIDN/sidnEppConnection.php');
+include_once('Registries/Donuts/donutsEppConnection.php');
 
 // Base EPP commands: hello, login and logout
 include_once('base.php');

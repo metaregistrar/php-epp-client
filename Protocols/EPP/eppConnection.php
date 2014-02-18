@@ -219,7 +219,7 @@ class EppConnection
             $context = stream_context_create();
             stream_context_set_option($context, 'ssl', 'local_cert', $this->local_cert_path);
             stream_context_set_option($context, 'ssl', 'passphrase', $this->local_cert_pwd);
-            if ($this->connection = @stream_socket_client($target, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context))
+            if ($this->connection = stream_socket_client($target, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context))
             {
                 $this->writeLog("Connection made");
                 $this->read();
@@ -261,7 +261,7 @@ class EppConnection
         }
     }
 
-    
+
     /**
      * This will read 1 response from the connection
      * @return string
