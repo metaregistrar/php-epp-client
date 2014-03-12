@@ -47,7 +47,7 @@ class iisEppConnection extends eppConnection
         parent::enableCertification(dirname(__FILE__).'/cert/cacert.pem', '');
 
         // They have registered their own extension
-        parent::addExtension('urn:se:iis:xml:epp:iis-1.2','iis');
+        parent::addExtension('iis','urn:se:iis:xml:epp:iis-1.2');
 
         // Add the commands and responses specific to this registry
         // Please make sure the corresponding PHP files are present!

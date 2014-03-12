@@ -30,9 +30,9 @@ class dnsbeEppConnection extends eppConnection
         parent::setTimeout(5);
         parent::setLanguage('en');
         parent::setVersion('1.0');
-        parent::addExtension('http://www.dns.be/xml/epp/nsgroup-1.0','nsgroup');
-        parent::addExtension('http://www.dns.be/xml/epp/registrar-1.0','registrar');
-        parent::addExtension('http://www.dns.be/xml/epp/dnsbe-1.0','dnsbe');
+        parent::addExtension('nsgroup','http://www.dns.be/xml/epp/nsgroup-1.0');
+        parent::addExtension('registrar','http://www.dns.be/xml/epp/registrar-1.0');
+        parent::addExtension('dnsbe','http://www.dns.be/xml/epp/dnsbe-1.0');
         parent::enableDnssec();
         #parent::addExtension('keygroup','http://www.dns.be/xml/epp/keygroup-1.0');
         parent::addCommandResponse('dnsbeEppCreateNsgroupRequest', 'dnsbeEppCreateNsgroupResponse');
