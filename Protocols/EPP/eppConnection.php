@@ -1,6 +1,6 @@
 <?php
 
-class EppConnection
+class eppConnection
 {
     /**
      * Hostname of this connection
