@@ -1,4 +1,5 @@
 <?php
+include_once(dirname(__FILE__).'/../eppRequest.php');
 /*
  * This object contains all the logic to create an EPP domain:info command
  */
@@ -38,6 +39,10 @@ class eppInfoDomainRequest extends eppRequest
             throw new eppException('Domain object does not contain a valid domain name');
         }
         #
+        # Create command structure
+        #
+        $this->command = $this->createElement('command');
+        #
         # Domain check structure
         #
         $info = $this->createElement('info');
@@ -61,6 +66,7 @@ class eppInfoDomainRequest extends eppRequest
             $dname->setAttribute('hosts',self::HOSTS_ALL);
         }
         $this->domainobject->appendChild($dname);
-        $this->getCommand()->appendChild($info);
-    }
+        $this->command->appendChild($info);
+        $this->epp->appendChild($this->command);
+    }    
 }
