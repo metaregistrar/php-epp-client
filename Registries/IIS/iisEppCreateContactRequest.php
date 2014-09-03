@@ -9,7 +9,7 @@
 
 
 */
-class iisEppCreateRequest extends eppCreateRequest
+class iisEppCreateContactRequest extends eppCreateContactRequest
 {
     function __construct($createinfo)
     {
@@ -31,7 +31,7 @@ class iisEppCreateRequest extends eppCreateRequest
         $this->addExtension('xmlns:iis','urn:se:iis:xml:epp:iis-1.2');
         $ext = $this->createElement('extension');
         $create = $this->createElement('iis:create');
-        $orgno = $this->createElement('iis:orgno','[NL]000000');
+        $orgno = $this->createElement('iis:orgno','[NL]150155');
         $create->appendChild($orgno);
         $ext->appendChild($create);
         $this->command->appendChild($ext);

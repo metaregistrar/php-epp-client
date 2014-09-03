@@ -1,8 +1,4 @@
 <?php
-include_once(dirname(__FILE__).'/../eppRequest.php');
-/*
- * This object contains all the logic to create an EPP hello command
- */
 
 class eppRenewRequest extends eppRequest
 {
@@ -29,10 +25,6 @@ class eppRenewRequest extends eppRequest
     public function setDomain(eppDomain $domain, $expdate=null)
     {
         #
-        # Create command structure
-        #
-        $this->command = $this->createElement('command');
-        #
         # Object create structure
         #
         $renew = $this->createElement('renew');
@@ -49,7 +41,6 @@ class eppRenewRequest extends eppRequest
             $this->domainobject->appendChild($domainperiod);
         }
         $renew->appendChild($this->domainobject);
-        $this->command->appendChild($renew);
-        $this->epp->appendChild($this->command);
+        $this->getCommand()->appendChild($renew);
     }
 }

@@ -1,8 +1,4 @@
 <?php
-include_once(dirname(__FILE__).'/../eppResponse.php');
-/*
- * This object contains all the logic read the response of an EPP hello command
- */
 
 class eppUpdateResponse extends eppResponse
 {
@@ -15,6 +11,4 @@ class eppUpdateResponse extends eppResponse
     {
         parent::__destruct();
     }
-
-
 }

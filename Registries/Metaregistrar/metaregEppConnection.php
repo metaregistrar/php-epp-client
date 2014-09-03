@@ -6,7 +6,7 @@ include_once(dirname(__FILE__).'/../../Protocols/EPP/eppData/eppIncludes.php');
 #
 # Load the Metaregistrar specific additions
 #
-include_once(dirname(__FILE__).'/metaregEppInfoDomainRequest.php');
+include_once(dirname(__FILE__).'/metaregInfoDomainRequest.php');
 include_once(dirname(__FILE__).'/metaregEppPollResponse.php');
 
 class metaregEppConnection extends eppConnection
@@ -31,9 +31,9 @@ class metaregEppConnection extends eppConnection
         parent::setLanguage('en');
         parent::setVersion('1.0');
         parent::addCommandResponse('eppPollRequest', 'metaregEppPollResponse');
-        parent::addExtension('http://www.metaregistrar.com/epp/polldata-1.0', 'polldata');
-        parent::addExtension('http://www.metaregistrar.com/epp/command-ext-1.0', 'command-ext');
-        parent::addExtension('http://www.metaregistrar.com/epp/ext-1.0', 'ext');
+        parent::addExtension('polldata','http://www.metaregistrar.com/epp/polldata-1.0');
+        parent::addExtension('command-ext','http://www.metaregistrar.com/epp/command-ext-1.0');
+        parent::addExtension('ext','http://www.metaregistrar.com/epp/ext-1.0');
     }
 	
 }

@@ -8,6 +8,7 @@ include_once('Protocols/EPP/eppData/eppIncludes.php');
 include_once('Registries/Metaregistrar/metaregEppConnection.php');
 include_once('Registries/IIS/iisEppConnection.php');
 include_once('Registries/SIDN/sidnEppConnection.php');
+include_once('Registries/EURID/euridEppConnection.php');
 
 // Base EPP commands: hello, login and logout
 include_once('base.php');
@@ -31,7 +32,7 @@ $domainname = $argv[1];
 echo "Retrieving info on ".$domainname."\n";
 try
 {
-    $conn = new sidnEppConnection(true);
+    $conn = new euridEppConnection(true);
 
     // Connect to the EPP server
     if ($conn->connect())
@@ -59,7 +60,7 @@ function infodomain($conn, $domainname)
 	try
 	{
         $epp = new eppDomain($domainname);
-		$info = new eppInfoDomainRequest($epp);
+		$info = new euridEppInfoDomainRequest($epp);
 		if ((($response = $conn->writeandread($info)) instanceof eppInfoDomainResponse) && ($response->Success()))
 		{
             /* @var $response eppInfoDomainResponse */

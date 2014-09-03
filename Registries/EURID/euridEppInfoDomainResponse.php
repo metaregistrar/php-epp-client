@@ -9,6 +9,7 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse
 
 
     /**
+     * Return EURid specific contact type 'onsite', which is not EPP standard
      *
      * @return array eppContactHandles
      */

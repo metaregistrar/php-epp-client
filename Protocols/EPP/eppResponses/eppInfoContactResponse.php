@@ -1,8 +1,4 @@
 <?php
-include_once(dirname(__FILE__).'/eppInfoResponse.php');
-/*
- * This object contains all the logic read the response of an EPP hello command
- */
 
 class eppInfoContactResponse extends eppInfoResponse
 {
@@ -347,7 +343,7 @@ class eppInfoContactResponse extends eppInfoResponse
    
     /**
      *
-     * @return eppContactPostalInfo
+     * @return array
      */
     public function getContactPostalInfo()
     {

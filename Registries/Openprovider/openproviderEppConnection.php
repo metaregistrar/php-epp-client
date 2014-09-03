@@ -21,10 +21,10 @@ class openproviderEppConnection extends eppHttpsConnection
         parent::setPort(443);
 
         // Set your login username
-        parent::setUsername('metaregistrar');
+        parent::setUsername('');
 
         // Set your login password
-        parent::setPassword('quYbs5dj0');
+        parent::setPassword('');
 
         // Specify timeout values in seconds
         parent::setTimeout(5);

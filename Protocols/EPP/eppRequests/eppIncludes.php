@@ -1,7 +1,12 @@
 <?php
+include_once(dirname(__FILE__).'/eppRequest.php');
 include_once(dirname(__FILE__).'/eppCheckRequest.php');
 include_once(dirname(__FILE__).'/eppCreateRequest.php');
+include_once(dirname(__FILE__).'/eppCreateDomainRequest.php');
+include_once(dirname(__FILE__).'/eppCreateContactRequest.php');
+include_once(dirname(__FILE__).'/eppCreateHostRequest.php');
 include_once(dirname(__FILE__).'/eppDeleteRequest.php');
+include_once(dirname(__FILE__).'/eppUndeleteRequest.php');
 include_once(dirname(__FILE__).'/eppHelloRequest.php');
 include_once(dirname(__FILE__).'/eppInfoHostRequest.php');
 include_once(dirname(__FILE__).'/eppInfoContactRequest.php');
@@ -12,5 +17,7 @@ include_once(dirname(__FILE__).'/eppPollRequest.php');
 include_once(dirname(__FILE__).'/eppRenewRequest.php');
 include_once(dirname(__FILE__).'/eppTransferRequest.php');
 include_once(dirname(__FILE__).'/eppUpdateRequest.php');
-include_once(dirname(__FILE__).'/eppDnssecInfoDomainRequest.php');
-include_once(dirname(__FILE__).'/eppDnssecUpdateRequest.php');
+include_once(dirname(__FILE__).'/eppUpdateDomainRequest.php');
+include_once(dirname(__FILE__).'/eppUpdateContactRequest.php');
+include_once(dirname(__FILE__).'/eppUpdateHostRequest.php');
+include_once(dirname(__FILE__).'/eppDnssecUpdateDomainRequest.php');

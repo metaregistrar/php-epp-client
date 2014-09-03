@@ -1,8 +1,4 @@
 <?php
-include_once(dirname(__FILE__).'/../eppResponse.php');
-/*
- * This object contains all the logic read the response of a standard EPP poll command
- */
 
 /*
    <?xml version="1.0" encoding="UTF-8" standalone="no"?>

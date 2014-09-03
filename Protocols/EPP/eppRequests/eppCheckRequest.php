@@ -1,8 +1,4 @@
 <?php
-include_once(dirname(__FILE__).'/../eppRequest.php');
-/*
- * This object contains all the logic to create an EPP hello command
- */
 
 class eppCheckRequest extends eppRequest
 {
@@ -72,10 +68,6 @@ class eppCheckRequest extends eppRequest
     public function setDomainNames($domains)
     {
         #
-        # Create command structure
-        #
-        $this->command = $this->createElement('command');
-        #
         # Domain check structure
         #
         $check = $this->createElement('check');
@@ -92,16 +84,11 @@ class eppCheckRequest extends eppRequest
             }
         }
         $check->appendChild($this->domainobject);
-        $this->command->appendChild($check);
-        $this->epp->appendChild($this->command);
+        $this->getCommand()->appendChild($check);
     }
 
     public function setContactHandles($contacthandles)
     {
-        #
-        # Create command structure
-        #
-        $this->command = $this->createElement('command');
         #
         # Domain check structure
         #
@@ -119,16 +106,11 @@ class eppCheckRequest extends eppRequest
             }
         }
         $check->appendChild($this->contactobject);
-        $this->command->appendChild($check);
-        $this->epp->appendChild($this->command);
+        $this->getCommand()->appendChild($check);
     }
 
     public function setHosts($hosts)
     {
-        #
-        # Create command structure
-        #
-        $this->command = $this->createElement('command');
         #
         # Domain check structure
         #
@@ -160,8 +142,7 @@ class eppCheckRequest extends eppRequest
             }
         }
         $check->appendChild($this->hostobject);
-        $this->command->appendChild($check);
-        $this->epp->appendChild($this->command);
+        $this->getCommand()->appendChild($check);
     }
     
  

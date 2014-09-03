@@ -1,5 +1,4 @@
 <?php
-include_once(dirname(__FILE__).'/../eppRequest.php');
 /*
  * This object contains all the logic to create an EPP hello command
  */
@@ -13,19 +12,14 @@ class eppLoginRequest extends eppRequest
     {
         parent::__construct();
         #
-        # Create command structure
-        #
-        $this->command = $this->createElement('command');
-        #
         # Login parameters
         #
         $this->login = $this->createElement('login');  
-        $this->command->appendChild($this->login);
+        $this->getCommand()->appendChild($this->login);
         #
         # This is only the basic command structure. 
         # Userid, password, version and language info will be added later by the connection object
         #        
-        $this->epp->appendChild($this->command);
         $this->addSessionId();
     }
 

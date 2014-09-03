@@ -1,6 +1,6 @@
 <?php
 
-class eppLoginResponse extends eppResponse
+class eppUpdateDomainResponse extends eppUpdateResponse
 {
     function __construct()
     {
@@ -11,4 +11,6 @@ class eppLoginResponse extends eppResponse
     {
         parent::__destruct();
     }
+
+
 }

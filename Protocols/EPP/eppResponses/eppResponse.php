@@ -90,19 +90,34 @@ class eppResponse extends DomDocument
     {
     }
 
+    public function findNamespace($namespace)
+    {
+        if (!is_null($this->xpathuri))
+        {
+            if (is_array($this->xpathuri))
+            {
+                if (in_array($namespace, $this->xpathuri))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public function saveXML(DOMNode $node = NULL, $options = NULL)
     {
         return str_replace("\t",'  ',parent::saveXML($node, LIBXML_NOEMPTYTAG));
     }
 
-    public function setParameters($language,$version,$objuri,$exturi,$xpathuri)
-    {
-        $this->language = $language;
-        $this->version = $version;
-        $this->objuri = $objuri;
-        $this->exturi = $exturi;
-        $this->xpathuri = $xpathuri;
-    }
+    //public function setParameters($language,$version,$objuri,$exturi,$xpathuri)
+    //{
+    //    $this->language = $language;
+    //    $this->version = $version;
+    //    $this->objuri = $objuri;
+    //    $this->exturi = $exturi;
+    //    $this->xpathuri = $xpathuri;
+    //}
 
     /**
      * @return boolean
@@ -457,18 +472,18 @@ class eppResponse extends DomDocument
         {
             foreach($this->xpathuri as $uri=>$namespace)
             {
-                //echo "RegisterNamespace $namespace $uri\n";
+                #echo "RegisterNamespace xpathuri $namespace $uri\n";
                 $xpath->registerNamespace($namespace,$uri);
             }
         }
-        if (is_array($this->exturi))
-        {
-            foreach($this->exturi as $uri=>$namespace)
-            {
-                //echo "RegisterNamespace $namespace $uri\n";
-                $xpath->registerNamespace($namespace,$uri);
-            }
-        }
+#        if (is_array($this->exturi))
+#        {
+#            foreach($this->exturi as $uri=>$namespace)
+#            {
+#                echo "RegisterNamespace exturi $namespace $uri\n";
+#                $xpath->registerNamespace($namespace,$uri);
+#            }
+#        }
         return $xpath;
     }
 }

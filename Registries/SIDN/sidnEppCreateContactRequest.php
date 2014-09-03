@@ -11,7 +11,7 @@
       </sidn-ext-epp:ext>
     </extension>
  */
-class sidnEppCreateRequest extends eppCreateRequest
+class sidnEppCreateContactRequest extends eppCreateContactRequest
 {
 
 
@@ -32,7 +32,6 @@ class sidnEppCreateRequest extends eppCreateRequest
         $postal = $contact->getPostalInfo(0);
         if (strlen($postal->getOrganisationName()))
         {
-            $ext = $this->createElement('extension');
             $sidnext = $this->createElement('sidn-ext-epp:ext');
             $create = $this->createElement('sidn-ext-epp:create');
             $contact = $this->createElement('sidn-ext-epp:contact');
@@ -40,8 +39,8 @@ class sidnEppCreateRequest extends eppCreateRequest
             #$contact->appendChild($this->createElement('sidn-ext-epp:legalFormRegNo','8764654.0'));
             $create->appendChild($contact);
             $sidnext->appendChild($create);
-            $ext->appendChild($sidnext);
-            $this->command->appendChild($ext);
+            $this->getExtension()->appendChild($sidnext);
+
         }
 
     }

@@ -1,6 +1,6 @@
 <?php
 
-class eppLoginResponse extends eppResponse
+class eppUndeleteResponse extends eppResponse
 {
     function __construct()
     {

@@ -42,22 +42,26 @@ class eppDomain
     private $registrant='';
     /**
      *
-     * @var array
+     * @var array Contact information for this domain name
      */
     private $contacts=array();
 
     /**
      *
-     * @var array
+     * @var array Host information for this domain name
      */
     private $hosts=array();
 
     /**
      *
-     * @var array
+     * @var array Status information for this domain name
      */
     private $statuses=array();
 
+    /*
+     * @var array DNSSEC information for this domain name
+     */
+    private $secdns = array();
     /**
      *
      * @var string
@@ -340,6 +344,35 @@ class eppDomain
         else
         {
             return null;
+        }
+    }
+
+    public function addSecdns($secdns)
+    {
+        $this->secdns[] = $secdns;
+    }
+
+    public function getSecdnsLength()
+    {
+        return count($this->secdns);
+    }
+
+    public function getSecdns($row = null)
+    {
+        if (is_null($row))
+        {
+            return $this->secdns;
+        }
+        else
+        {
+            if ($this->secdns[$row])
+            {
+                return $this->secdns[$row];
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 
