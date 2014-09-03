@@ -1,4 +1,6 @@
 <?php
+include_once(dirname(__FILE__).'/../../Protocols/EPP/eppConnection.php');
+
 #
 # Load the SIDN specific additions
 #

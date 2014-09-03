@@ -1,4 +1,7 @@
 <?php
+include_once(dirname(__FILE__).'/eppRequests/eppIncludes.php');
+include_once(dirname(__FILE__).'/eppResponses/eppIncludes.php');
+include_once(dirname(__FILE__).'/eppData/eppIncludes.php');
 
 class EppConnection
 {

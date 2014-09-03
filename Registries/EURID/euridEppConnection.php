@@ -1,8 +1,5 @@
 <?php
 include_once(dirname(__FILE__).'/../../Protocols/EPP/eppConnection.php');
-include_once(dirname(__FILE__).'/../../Protocols/EPP/eppRequests/eppIncludes.php');
-include_once(dirname(__FILE__).'/../../Protocols/EPP/eppResponses/eppIncludes.php');
-include_once(dirname(__FILE__).'/../../Protocols/EPP/eppData/eppIncludes.php');
 
 #
 # Load the EURID specific additions
