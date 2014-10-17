@@ -1,5 +1,5 @@
 <?php
-include_once(dirname(__FILE__).'/../eppRequest.php');
+include_once(dirname(__FILE__).'/eppRequest.php');
 /*
  * This object contains all the logic to create an EPP domain:info command
  */
