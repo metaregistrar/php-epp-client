@@ -71,6 +71,10 @@ class eppInfoDomainRequest extends eppRequest
             $this->command = $this->getCommand();
         }
         $this->command->appendChild($info);
+        if (!$this->epp)
+        {
+            $this->epp = $this->getEpp();
+        }
         $this->epp->appendChild($this->command);
     }    
 }
