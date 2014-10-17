@@ -128,7 +128,8 @@ function modifydomain($conn,$domainname,$registrant=null,$admincontact=null,$tec
         $update = new eppUpdateDomainRequest($domain, $add, $del, $mod);
         if ((($response = $conn->writeandread($update)) instanceof eppUpdateResponse) && ($response->Success()))
         {
-            echo "Domain ".$response->getDomainName()." modified on ".$response->getDomainUpdateDate().", expiration date is ".$response->getDomainExpirationDate()."\n";
+            /* @var eppUpdateResponse $response */
+            echo "Domain ".$response->getResultDomainName()." modified on ".$response->getResultMessage()."\n";
         }
     }
     catch (eppException $e)
