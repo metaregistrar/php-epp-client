@@ -58,7 +58,7 @@ function modifydomain($conn,$domainname,$registrant=null,$admincontact=null,$tec
         }
         $add = null;
         $del = null;
-        íf ($admincontact)
+        if ($admincontact)
         {
             if (!$add)
             {
@@ -97,7 +97,7 @@ function modifydomain($conn,$domainname,$registrant=null,$admincontact=null,$tec
                 $add->addHost($host);
             }
         }
-        $update = new eppUpdateDomainRequest($domain);
+        $update = new eppUpdateDomainRequest($domain, $add, $del, $mod);
         if ((($response = $conn->writeandread($update)) instanceof eppUpdateDomainResponse) && ($response->Success()))
         {
             echo "Domain ".$response->getDomainName()." modified on ".$response->getDomainUpdateDate().", expiration date is ".$response->getDomainExpirationDate()."\n";
