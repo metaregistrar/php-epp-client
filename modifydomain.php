@@ -52,10 +52,27 @@ function modifydomain($conn,$domainname,$registrant=null,$admincontact=null,$tec
     {
         $domain = new eppDomain($domainname);
         // First, retrieve the current domain info. Nameservers can be unset and then set again.
+        $del = null;
         $info = new eppInfoDomainRequest($domain);
         if ((($response = $conn->writeandread($info)) instanceof eppInfoDomainResponse) && ($response->Success()))
         {
-            var_dump($response);
+            // If new nameservers are given, get the old ones to remove them
+            if (is_array($nameservers))
+            {
+                /* @var eppInfoDomainResponse $response */
+                $oldns = $response->getDomainHosts();
+                if (is_array($oldns))
+                {
+                    if (!$del)
+                    {
+                        $del = new eppDomain($domainname);
+                    }
+                    foreach ($oldns as $ns)
+                    {
+                        $del->addHost($ns);
+                    }
+                }
+            }
         }
         // In the UpdateDomain command you can set or add parameters
         // - Registrant is always set (you can only have one registrant)
@@ -69,7 +86,6 @@ function modifydomain($conn,$domainname,$registrant=null,$admincontact=null,$tec
             $mod->setRegistrant($reg);
         }
         $add = null;
-        $del = null;
         if ($admincontact)
         {
             if (!$add)
