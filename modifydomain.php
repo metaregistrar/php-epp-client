@@ -25,18 +25,24 @@ if ($argc <= 1)
 $domainname = $argv[1];
 
 echo "Modifying $domainname\n";
-$conn = new sidnEppConnection();
-// Connect to the EPP server
-if ($conn->connect())
+try
 {
-    if (login($conn))
+    $conn = new sidnEppConnection();
+    // Connect to the EPP server
+    if ($conn->connect())
     {
-        modifydomain($conn,$domainname,4068,4068,103,103,array('ns1.metaregistrar.nl','ns2.metaregistrar.nl'));
-        logout($conn);
+        if (login($conn))
+        {
+            modifydomain($conn,$domainname,null,null,null,null,array('ns1.metaregistrar.nl','ns2.metaregistrar.nl'));
+            logout($conn);
+        }
     }
 }
-
-
+catch (eppException $e)
+{
+    echo $e->getMessage()."\n";
+    logout($conn);
+}
 
 
 
