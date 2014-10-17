@@ -60,7 +60,7 @@ function modifydomain($conn,$domainname,$registrant=null,$admincontact=null,$tec
             if (is_array($nameservers))
             {
                 /* @var eppInfoDomainResponse $response */
-                $oldns = $response->getDomainHosts();
+                $oldns = $response->getDomainNameservers();
                 if (is_array($oldns))
                 {
                     if (!$del)
