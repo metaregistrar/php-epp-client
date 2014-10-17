@@ -129,7 +129,7 @@ function modifydomain($conn,$domainname,$registrant=null,$admincontact=null,$tec
         if ((($response = $conn->writeandread($update)) instanceof eppUpdateResponse) && ($response->Success()))
         {
             /* @var eppUpdateResponse $response */
-            echo "Domain ".$response->getResultDomainName()." modified on ".$response->getResultMessage()."\n";
+            echo $response->getResultMessage()."\n";
         }
     }
     catch (eppException $e)
