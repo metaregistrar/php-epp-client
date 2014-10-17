@@ -51,6 +51,12 @@ function modifydomain($conn,$domainname,$registrant=null,$admincontact=null,$tec
     try
     {
         $domain = new eppDomain($domainname);
+        // First, retrieve the current domain info. Nameservers can be unset and then set again.
+        $info = new eppInfoDomainRequest($domain);
+        if ((($response = $conn->writeandread($info)) instanceof eppInfoDomainResponse) && ($response->Success()))
+        {
+            var_dump($response);
+        }
         // In the UpdateDomain command you can set or add parameters
         // - Registrant is always set (you can only have one registrant)
         // - Admin, Tech, Billing contacts are Added (you can have multiple contacts, don't forget to remove the old ones)
