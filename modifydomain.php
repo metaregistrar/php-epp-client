@@ -114,7 +114,7 @@ function modifydomain($conn,$domainname,$registrant=null,$admincontact=null,$tec
         echo $e->getMessage()."\n";
         if ($response instanceof eppUpdateResponse)
         {
-            echo $response->getResultReason();
+            echo $response->textContent."\n";
         }
     }
 }
