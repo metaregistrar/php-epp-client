@@ -66,6 +66,10 @@ class eppInfoDomainRequest extends eppRequest
             $dname->setAttribute('hosts',self::HOSTS_ALL);
         }
         $this->domainobject->appendChild($dname);
+        if (!$this->command)
+        {
+            $this->command = $this->getCommand();
+        }
         $this->command->appendChild($info);
         $this->epp->appendChild($this->command);
     }    
