@@ -1,0 +1,20 @@
+{
+    "name": "metaregistrar/php-epp-client",
+    "type": "library",
+    "description": "Object-oriented PHP EPP Client",
+    "keywords": ["xml","epp","domains"],
+    "homepage": "http://metaregistrar.github.io/php-epp-client/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ewout de Graaf",
+            "email": "mklehr@gmx.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.3"
+    },
+    "autoload": {
+        "classmap" : [ "Protocols/", "Registries/" ]
+    }
+}
