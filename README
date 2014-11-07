@@ -9,10 +9,10 @@ This project supports the following:
 - Full EPP 57xx RFC standard
 - Fully extensible PHP objects to add registry-specific extensions
 - Public/private key client certificates for connecting to EPP service
-- DNSSEC transactions
+- Connection to EPP via HTTP/SSL (yes, some registries/registrars do this)
+- DNSSEC transactions 
 - Rock-solid object-oriented programming and exception handling
 - Interface tested and in use with a registrar that handles 500.000+ domain names
-- Regular additions to the Registry connections directory
 
 This code will provide you with a fully functional EPP client to connect to any registry world-wide that supports EPP.
 
