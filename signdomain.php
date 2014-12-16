@@ -1,26 +1,47 @@
 <?php
 
+if ($argc <= 1)
+{
+    echo "Usage: signdomain.php <domainname>\n";
+    echo "Please enter the domain name to be modified\n\n";
+    die();
+}
+
+$domainname = $argv[1];
+
+// Base EPP objects
+include_once('Protocols/EPP/eppConnection.php');
+include_once('Registries/SIDN/sidnEppConnection.php');
+include_once('base.php');
+
+
 try
 {
     $conn = new sidnEppConnection();
-    $this->eppConnect($conn);
+    eppConnect($conn);
     $secadd = new eppSecdns();
-    $secadd->setKey('256','8','AwEAAbWM8nWQZbDZgJjyq+tLZwPLEXfZZjfvlRcmoAVZHgZJCPn/Ytu/iOsgci+yWgDT28ENzREAoAbKMflFFdhc5DNV27TZxhv8nMo9n2f+cyyRKbQ6oIAvMl7siT6WxrLxEBIMyoyFgDMbqGScn9k19Ppa8fwnpJgv0VUemfxGqHH9');
-    $domain = new eppDnssecUpdateDomainRequest('dnssectransfer.nl',$secadd);
+    $secadd->setKey('257','8','AwEAAePkXB7zXIdNr2NTYjh/jiklP327EuHS2Gi0h/k00HdiCqJvP8hqQAuM3WFiop8jNuLp9s0ywDYIreY2X/Q/zZRJi6zoIrdcnH8hiNxD2RFkiGpjDsY/F3juDQZChZuhQmYcY0XSkxb7ZSeGA9790rEE33H0zXxbzpQSwWnBWIAumPvl+eLenCFhK+2NAvBsqH2B1Oeit5owrB4Xvnta6gDoj/tjb5n21nFSReaEyhTXGBd+O8SSAxuBN7waNq9uZuVF2sWK4JSLbjVwXuVByzCB+rrnvd6QUlqExA8olzgwZgEZltMj1mWkAdi7YFtfBfGSSmHz3lblQj+k6bW6EOk=');
+    $domain = new eppDnssecUpdateDomainRequest($domainname,$secadd);
     if ((($response = $conn->writeandread($domain)) instanceof eppUpdateResponse) && ($response->Success()))
     {
+        echo $response->getResultMessage()."\n";
         echo "OKAY\n";
     }
-    $this->eppDisconnect($conn);
+    eppDisconnect($conn);
     return true;
 }
 catch (eppException $e)
 {
-    $this->eppDisconnect($conn);
+    echo $e->getMessage()."\n";
+    if ($response instanceof eppUpdateResponse)
+    {
+        echo $response->textContent."\n";
+    }
+    eppDisconnect($conn);
 }
 
 
-function eppConnect()
+function eppConnect($conn)
 {
     if ($conn->connect())
     {
