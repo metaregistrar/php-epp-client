@@ -19,8 +19,8 @@ class sidnEppConnection extends eppConnection
         parent::__construct(false);
         parent::setHostname('ssl://testdrs.domain-registry.nl');
         parent::setPort(700);
-        parent::setUsername('');
-        parent::setPassword('');
+        parent::setUsername('302225');
+        parent::setPassword('39cd7fe09b');
         parent::setTimeout(5);
         parent::setLanguage('en');
         parent::setVersion('1.0');

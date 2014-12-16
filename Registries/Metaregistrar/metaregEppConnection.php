@@ -18,9 +18,9 @@ class metaregEppConnection extends eppConnection
         // Set the port
         parent::setPort(7000);
         // Set your login username
-        parent::setUsername('');
+        parent::setUsername('mtr-frl');
         // Set your login password
-        parent::setPassword('');
+        parent::setPassword('hwSUpCtjn3a9');
         // Specify timeout values in seconds
         parent::setTimeout(5);
         // Default server configuration stuff - this varies per connected registry
