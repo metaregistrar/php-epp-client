@@ -18,9 +18,9 @@ class metaregEppConnection extends eppConnection
         // Set the port
         parent::setPort(7000);
         // Set your login username
-        parent::setUsername('mtr-frl');
+        parent::setUsername('');
         // Set your login password
-        parent::setPassword('hwSUpCtjn3a9');
+        parent::setPassword('');
         // Specify timeout values in seconds
         parent::setTimeout(5);
         // Default server configuration stuff - this varies per connected registry
@@ -32,5 +32,5 @@ class metaregEppConnection extends eppConnection
         parent::addExtension('command-ext','http://www.metaregistrar.com/epp/command-ext-1.0');
         parent::addExtension('ext','http://www.metaregistrar.com/epp/ext-1.0');
     }
-	
+
 }

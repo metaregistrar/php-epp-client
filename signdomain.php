@@ -1,12 +1,20 @@
 <?php
+// Base EPP objects
+include_once('Protocols/EPP/eppConnection.php');
+// Connection object to EPP server - this contains your userid and passwords!
+include_once('Registries/Metaregistrar/metaregEppConnection.php');
+include_once('Registries/IIS/iisEppConnection.php');
+include_once('Registries/SIDN/sidnEppConnection.php');
+include_once('Registries/Donuts/donutsEppConnection.php');
+
 
 try
 {
     $conn = new sidnEppConnection();
-    $this->eppConnect($conn);
+    eppConnect($conn);
     $secadd = new eppSecdns();
     $secadd->setKey('256','8','AwEAAbWM8nWQZbDZgJjyq+tLZwPLEXfZZjfvlRcmoAVZHgZJCPn/Ytu/iOsgci+yWgDT28ENzREAoAbKMflFFdhc5DNV27TZxhv8nMo9n2f+cyyRKbQ6oIAvMl7siT6WxrLxEBIMyoyFgDMbqGScn9k19Ppa8fwnpJgv0VUemfxGqHH9');
-    $domain = new eppDnssecUpdateDomainRequest('dnssectransfer.nl',$secadd);
+    $domain = new eppDnssecUpdateDomainRequest('dnssec.nl',$secadd);
     if ((($response = $conn->writeandread($domain)) instanceof eppUpdateResponse) && ($response->Success()))
     {
         echo "OKAY\n";
@@ -16,11 +24,12 @@ try
 }
 catch (eppException $e)
 {
-    $this->eppDisconnect($conn);
+    echo "ERROR: ".$e->getMessage()."\n";
+    eppDisconnect($conn);
 }
 
 
-function eppConnect()
+function eppConnect($conn)
 {
     if ($conn->connect())
     {
