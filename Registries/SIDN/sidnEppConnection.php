@@ -14,9 +14,9 @@ include_once(dirname(__FILE__).'/sidnEppRenewRequest.php');
 class sidnEppConnection extends eppConnection
 {
 
-    public function __construct()
+    public function __construct($logging=false)
     {
-        parent::__construct(false);
+        parent::__construct($logging);
         parent::setHostname('ssl://testdrs.domain-registry.nl');
         parent::setPort(700);
         parent::setUsername('');

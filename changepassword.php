@@ -37,7 +37,6 @@ try
         if (login($conn))
         {
             echo "Password was changed\n";
-            logout($conn);
         }
     }
 }
