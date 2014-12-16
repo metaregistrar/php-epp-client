@@ -14,7 +14,7 @@ class metaregEppConnection extends eppConnection
         // Construct the EPP connection object en specify if you want logging on or off
         parent::__construct(false);
         // Set the hostname to the EPP server
-        parent::setHostname('ssl://epp.metaregistrar.com');
+        parent::setHostname('ssl://epp.test1.metaregistrar.com');
         // Set the port
         parent::setPort(7000);
         // Set your login username
