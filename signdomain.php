@@ -10,11 +10,14 @@ include_once('Registries/Donuts/donutsEppConnection.php');
 
 try
 {
+    $domainname = 'dnssectest.nl';
     $conn = new sidnEppConnection();
     eppConnect($conn);
-    $secadd = new eppSecdns();
-    $secadd->setKey('256','8','AwEAAbWM8nWQZbDZgJjyq+tLZwPLEXfZZjfvlRcmoAVZHgZJCPn/Ytu/iOsgci+yWgDT28ENzREAoAbKMflFFdhc5DNV27TZxhv8nMo9n2f+cyyRKbQ6oIAvMl7siT6WxrLxEBIMyoyFgDMbqGScn9k19Ppa8fwnpJgv0VUemfxGqHH9');
-    $domain = new eppDnssecUpdateDomainRequest('dnssec.nl',$secadd);
+    $add = new eppDomain($domainname);
+    $sec = new eppSecdns();
+    $sec->setKey('256','8','AwEAAbWM8nWQZbDZgJjyq+tLZwPLEXfZZjfvlRcmoAVZHgZJCPn/Ytu/iOsgci+yWgDT28ENzREAoAbKMflFFdhc5DNV27TZxhv8nMo9n2f+cyyRKbQ6oIAvMl7siT6WxrLxEBIMyoyFgDMbqGScn9k19Ppa8fwnpJgv0VUemfxGqHH9');
+    $add->addSecdns($sec);
+    $domain = new eppDnssecUpdateDomainRequest($domainname,$add);
     if ((($response = $conn->writeandread($domain)) instanceof eppUpdateResponse) && ($response->Success()))
     {
         echo "OKAY\n";

@@ -77,7 +77,7 @@ class eppDnssecUpdateDomainRequest extends eppUpdateDomainRequest
         }
         if ($addinfo instanceof eppDomain)
         {
-            $dnssec = $addinfo->getSecdns();
+            $dnssecs = $addinfo->getSecdns();
             foreach ($dnssecs as $dnssec)
             {
                 $add = $this->createElement('secDNS:add');
@@ -114,5 +114,5 @@ class eppDnssecUpdateDomainRequest extends eppUpdateDomainRequest
     {
         parent::__destruct();
     }
-    
+
 }
