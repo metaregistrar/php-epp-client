@@ -6,6 +6,7 @@ include_once('Registries/Metaregistrar/metaregEppConnection.php');
 include_once('Registries/IIS/iisEppConnection.php');
 include_once('Registries/SIDN/sidnEppConnection.php');
 include_once('Registries/Donuts/donutsEppConnection.php');
+include_once('Registries/DNSBE/dnsbeEppConnection.php');
 
 // Base EPP commands: hello, login and logout
 include_once('base.php');
@@ -32,7 +33,7 @@ for ($i=1; $i<$argc; $i++)
 echo "Checking ".count($domains)." domain names\n";
 try
 {
-    $conn = new sidnEppConnection(false);
+    $conn = new dnsbeEppConnection(true);
 
     // Connect to the EPP server
     if ($conn->connect())
