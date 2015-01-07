@@ -17,10 +17,10 @@ include_once(dirname(__FILE__).'/dnsbeEppTransferRequest.php');
 class dnsbeEppConnection extends eppConnection
 {
 
-    public function __construct()
+    public function __construct($logging=false)
     {
-        parent::__construct(false);
-        parent::setHostname('ssl://epp.registry.tryout.dns.be');
+        parent::__construct($logging);
+        parent::setHostname('ssl://epp.registry.be');
         parent::setPort('33128');
         parent::setUsername('');
         parent::setPassword('');
