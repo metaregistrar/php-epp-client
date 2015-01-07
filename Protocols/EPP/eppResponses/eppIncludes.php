@@ -18,3 +18,4 @@ include_once(dirname(__FILE__).'/eppUpdateResponse.php');
 include_once(dirname(__FILE__).'/eppUpdateDomainResponse.php');
 include_once(dirname(__FILE__).'/eppUpdateContactResponse.php');
 include_once(dirname(__FILE__).'/eppUpdateHostResponse.php');
+include_once(dirname(__FILE__).'/eppLaunchCheckResponse.php');

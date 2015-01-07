@@ -13,7 +13,7 @@ include_once('Registries/FRL/frlEppConnection.php');
 include_once('base.php');
 
 /*
- * This script checks for the availability of domain names
+ * This script checks for the availability of domain names in a certain launchphase
  *
  * You can specify multiple domain names to be checked
  */
@@ -21,9 +21,9 @@ include_once('base.php');
 
 if ($argc <= 1)
 {
-    echo "Usage: checkdomain.php <domainnames>\n";
-	echo "Please enter one or more domain names to check\n\n";
-	die();
+    echo "Usage: checklaunchdomain.php <domainnames>\n";
+    echo "Please enter one or more domain names to check\n\n";
+    die();
 }
 
 for ($i=1; $i<$argc; $i++)
@@ -35,7 +35,7 @@ echo "Checking ".count($domains)." domain names\n";
 try
 {
     $conn = new frlEppConnection(true);
-
+    $conn->enableLaunchphase('landrush');
     // Connect to the EPP server
     if ($conn->connect())
     {
@@ -59,26 +59,26 @@ catch (eppException $e)
 
 function checkdomains($conn, $domains)
 {
-	try
-	{
-		$check = new eppCheckRequest($domains);
-		if ((($response = $conn->writeandread($check)) instanceof eppCheckResponse) && ($response->Success()))
-		{
-			$checks = $response->getCheckedDomains();
-
-			foreach ($checks as $check)
-			{
+    try
+    {
+        $check = new eppLaunchCheckRequest($domains,$conn->getLaunchphase());
+        if ((($response = $conn->writeandread($check)) instanceof eppLaunchCheckResponse) && ($response->Success()))
+        {
+            $phase = $response->getLaunchPhase();
+            $checks = $response->getCheckedDomains();
+            foreach ($checks as $check)
+            {
                 echo $check['domainname']." is ".($check['available'] ? 'free' : 'taken')." (".$check['reason'].")\n";
-			}
-		}
+            }
+        }
         else
         {
             echo "ERROR2\n";
         }
-	}
-	catch (eppException $e)
-	{
+    }
+    catch (eppException $e)
+    {
         echo 'ERROR1';
-		echo $e->getMessage()."\n";
-	}
+        echo $e->getMessage()."\n";
+    }
 }

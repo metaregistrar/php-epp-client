@@ -21,3 +21,4 @@ include_once(dirname(__FILE__).'/eppUpdateDomainRequest.php');
 include_once(dirname(__FILE__).'/eppUpdateContactRequest.php');
 include_once(dirname(__FILE__).'/eppUpdateHostRequest.php');
 include_once(dirname(__FILE__).'/eppDnssecUpdateDomainRequest.php');
+include_once(dirname(__FILE__).'/eppLaunchCheckRequest.php');

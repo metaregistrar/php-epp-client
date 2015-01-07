@@ -101,6 +101,8 @@ class eppConnection
      */
     protected $responses;
 
+    protected $launchphase = null;
+
     /**
      * Path to certificate file
      * @var string
@@ -156,8 +158,18 @@ class eppConnection
         }
     }
     
-    
-    
+    public function enableLaunchphase($launchphase)
+    {
+        $this->launchphase = $launchphase;
+        $this->exturi['urn:ietf:params:xml:ns:launch-1.0'] = 'launch';
+        $this->responses['eppLaunchCheckRequest'] = 'eppLaunchCheckResponse';
+    }
+
+    public function getLaunchphase()
+    {
+        return $this->launchphase;
+    }
+
     public function enableDnssec()
     {
         $this->exturi['urn:ietf:params:xml:ns:secDNS-1.1'] = 'secDNS';
