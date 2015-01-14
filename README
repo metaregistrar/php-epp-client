@@ -30,4 +30,6 @@ infodomain.php - get information on a domain name
 modifydomain.php  - update a domain name
 signdomain.php - DNSSEC sign a domain name
 poll.php - list registry poll messages
+checklaunchdomain.php - check domain name in 'claims' phase of draft-ietf-eppext-launchphase
+createlaunchdomain.php - register domain name in 'claims' phase of draft-ietf-eppext-launchphase
 
