@@ -18,4 +18,5 @@ include_once(dirname(__FILE__).'/eppUpdateResponse.php');
 include_once(dirname(__FILE__).'/eppUpdateDomainResponse.php');
 include_once(dirname(__FILE__).'/eppUpdateContactResponse.php');
 include_once(dirname(__FILE__).'/eppUpdateHostResponse.php');
-include_once(dirname(__FILE__).'/eppLaunchCheckResponse.php');
+include_once(dirname(__FILE__).'/launch-1.0/eppLaunchCheckResponse.php');
+include_once(dirname(__FILE__).'/launch-1.0/eppLaunchCreateDomainResponse.php');

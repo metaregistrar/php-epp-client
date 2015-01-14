@@ -8,9 +8,10 @@ Welcome to the object-oriented EPP client in PHP project.
 This project supports the following:
 - Full EPP 57xx RFC standard
 - Fully extensible PHP objects to add registry-specific extensions
-- Public/private key client certificates for connecting to EPP service (see Registries/IIS)
-- Connection to EPP via HTTP/SSL (see Registries/Openprovider)
-- DNSSEC transactions 
+- Public/private key client certificates for connecting to EPP service (for example see Registries/IIS)
+- Connection to EPP via HTTP/SSL (for example see Registries/Openprovider)
+- DNSSEC transactions
+- Registry sunrise and landrush periods (draft-ietf-eppext-launchphase)
 - Rock-solid object-oriented programming, object inheritance and exception handling
 - Interface tested and in use with a registrar that handles 500.000+ domain names
 

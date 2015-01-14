@@ -35,7 +35,7 @@ echo "Checking ".count($domains)." domain names\n";
 try
 {
     $conn = new frlEppConnection(true);
-    $conn->enableLaunchphase('landrush');
+    $conn->enableLaunchphase('claims');
     // Connect to the EPP server
     if ($conn->connect())
     {
@@ -61,7 +61,8 @@ function checkdomains($conn, $domains)
 {
     try
     {
-        $check = new eppLaunchCheckRequest($domains,$conn->getLaunchphase());
+        $check = new eppLaunchCheckRequest($domains);
+        $check->setLaunchPhase('claims');
         if ((($response = $conn->writeandread($check)) instanceof eppLaunchCheckResponse) && ($response->Success()))
         {
             $phase = $response->getLaunchPhase();

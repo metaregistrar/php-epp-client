@@ -163,6 +163,7 @@ class eppConnection
         $this->launchphase = $launchphase;
         $this->exturi['urn:ietf:params:xml:ns:launch-1.0'] = 'launch';
         $this->responses['eppLaunchCheckRequest'] = 'eppLaunchCheckResponse';
+        $this->responses['eppLaunchCreateDomainRequest'] = 'eppLaunchCreateDomainResponse';
     }
 
     public function getLaunchphase()

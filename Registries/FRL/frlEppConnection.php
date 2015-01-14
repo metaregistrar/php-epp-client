@@ -19,6 +19,7 @@ class frlEppConnection extends eppConnection
         parent::setLanguage('en');
         parent::setVersion('1.0');
         parent::setServices(array('urn:ietf:params:xml:ns:domain-1.0'=>'domain','urn:ietf:params:xml:ns:contact-1.0'=>'contact'));
+        parent::enableLaunchphase('claims');
         parent::enableDnssec();
     }
 

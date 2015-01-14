@@ -108,7 +108,14 @@ class eppRequest extends DomDocument
 
     public function addExtension($name,$value)
     {
-        $this->getEpp()->setAttribute($name,$value);
+        if ($epp = $this->getEpp())
+        {
+            $epp->setAttribute($name,$value);
+        }
+        else
+        {
+            throw new eppException('Cannot set attribute on an empty epp element');
+        }
     }
 
 

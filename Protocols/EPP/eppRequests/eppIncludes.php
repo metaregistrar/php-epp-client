@@ -1,9 +1,11 @@
 <?php
 include_once(dirname(__FILE__).'/eppRequest.php');
 include_once(dirname(__FILE__).'/eppCheckRequest.php');
+include_once(dirname(__FILE__).'/launch-1.0/launchCheckRequest.php');
 include_once(dirname(__FILE__).'/eppCreateRequest.php');
 include_once(dirname(__FILE__).'/eppCreateDomainRequest.php');
 include_once(dirname(__FILE__).'/eppCreateContactRequest.php');
+include_once(dirname(__FILE__).'/launch-1.0/launchCreateRequest.php');
 include_once(dirname(__FILE__).'/eppCreateHostRequest.php');
 include_once(dirname(__FILE__).'/eppDeleteRequest.php');
 include_once(dirname(__FILE__).'/eppUndeleteRequest.php');
@@ -20,5 +22,5 @@ include_once(dirname(__FILE__).'/eppUpdateRequest.php');
 include_once(dirname(__FILE__).'/eppUpdateDomainRequest.php');
 include_once(dirname(__FILE__).'/eppUpdateContactRequest.php');
 include_once(dirname(__FILE__).'/eppUpdateHostRequest.php');
-include_once(dirname(__FILE__).'/eppDnssecUpdateDomainRequest.php');
-include_once(dirname(__FILE__).'/eppLaunchCheckRequest.php');
+include_once(dirname(__FILE__).'/secDNS-1.1/eppDnssecUpdateDomainRequest.php');
+
