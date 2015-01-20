@@ -1,4 +1,5 @@
 <?php
+namespace Metaregistrar\EPP;
 /**
  * The SIDN EPP Contact Info Object
  *

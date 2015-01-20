@@ -1,4 +1,5 @@
 <?php
+namespace Metaregistrar\EPP;
 
 class eppCheckResponse extends eppResponse
 {
@@ -28,8 +29,8 @@ class eppCheckResponse extends eppResponse
                 $checkeddomain = array('domainname'=>null,'available'=>false,'reason'=>null);
                 foreach ($childs as $child)
                 {
-                    if ($child instanceof domElement)
-                    {                        
+                    if ($child instanceof \domElement)
+                    {
                         if (strpos($child->tagName,':name'))
                         {
                             $available = $child->getAttribute('avail');
@@ -43,7 +44,7 @@ class eppCheckResponse extends eppResponse
                                 case 'true':
                                     $checkeddomain['available']=true;
                                     break;
-                            }                            
+                            }
                             $checkeddomain['domainname']=$child->nodeValue;
                         }
                         if (strpos($child->tagName,':reason'))
@@ -53,7 +54,7 @@ class eppCheckResponse extends eppResponse
                     }
                 }
                 $result[] = $checkeddomain;
-            }          
+            }
         }
         return($result);
     }

@@ -1,5 +1,5 @@
 <?php
-
+namespace Metaregistrar\EPP;
 
 class eppDomain
 {
@@ -93,9 +93,9 @@ class eppDomain
         $this->setPeriod($period);
         if ($registrant instanceof eppContact)
         {
-            throw new eppException('Registrant must be eppContactHandle or string on eppDomain creation');
+            throw new eppException('Registrant must be Metaregistrar\EPP\eppContactHandle or string on eppDomain creation');
         }
-        if ($registrant instanceof eppContactHandle)
+        if ($registrant instanceof Metaregistrar\EPP\eppContactHandle)
         {
             $this->setRegistrant($registrant->getContactHandle());
         }
@@ -109,7 +109,7 @@ class eppDomain
                 }
                 else
                 {
-                    throw new eppException('Registrant must be eppContactHandle or string on eppDomain creation');
+                    throw new eppException('Registrant must be Metaregistrar\EPP\eppContactHandle or string on eppDomain creation');
                 }
             }
         }
@@ -265,7 +265,7 @@ class eppDomain
     /**
      *
      * @param int $line
-     * @return eppContactHandle
+     * @return Metaregistrar\EPP\eppContactHandle
      */
     public function getContact($type)
     {

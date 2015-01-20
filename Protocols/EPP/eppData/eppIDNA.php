@@ -1,5 +1,5 @@
 <?php
-
+namespace Metaregistrar\EPP;
 
 /**
  * Encode/decode Internationalized Domain Names.

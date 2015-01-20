@@ -1,4 +1,5 @@
 <?php
+namespace Metaregistrar\EPP;
 
 class eppHost
 {

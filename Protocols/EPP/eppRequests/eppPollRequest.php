@@ -1,4 +1,6 @@
 <?php
+namespace Metaregistrar\EPP;
+
 /*
  * This object contains all the logic to create an EPP hello command
  */

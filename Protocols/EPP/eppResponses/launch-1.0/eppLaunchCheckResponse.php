@@ -1,4 +1,5 @@
 <?php
+namespace Metaregistrar\EPP;
 /**
 S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
@@ -40,7 +41,6 @@ S:</epp>
 
 class eppLaunchCheckResponse extends eppCheckResponse
 {
-
     public function getLaunchPhase()
     {
         $xpath = $this->xPath();

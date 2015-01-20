@@ -1,4 +1,5 @@
 <?php
+namespace Metaregistrar\EPP;
 #
 # rfc5910
 #

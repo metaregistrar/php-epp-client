@@ -7,7 +7,7 @@ function greet($conn)
 	try
 	{
 		$greeting = new eppHelloRequest();
-		if ((($response = $conn->writeandread($greeting)) instanceof eppHelloResponse) && ($response->Success()))
+		if ((($response = $conn->writeandread($greeting)) instanceof Metaregistrar\EPP\eppHelloResponse) && ($response->Success()))
 		{
             if ($showgreeting)
             {
@@ -64,8 +64,8 @@ function login($conn)
 {
 	try
 	{
-		$login = new eppLoginRequest();
-		if ((($response = $conn->writeandread($login)) instanceof eppLoginResponse) && ($response->Success()))
+		$login = new Metaregistrar\EPP\eppLoginRequest;
+		if ((($response = $conn->writeandread($login)) instanceof Metaregistrar\EPP\eppLoginResponse) && ($response->Success()))
 		{
 			return true;
 		}
@@ -82,8 +82,8 @@ function logout($conn)
 {
 	try
 	{
-		$logout = new eppLogoutRequest();
-		if ((($response = $conn->writeandread($logout)) instanceof eppLogoutResponse) && ($response->Success()))
+		$logout = new Metaregistrar\EPP\eppLogoutRequest();
+		if ((($response = $conn->writeandread($logout)) instanceof Metaregistrar\EPP\eppLogoutResponse) && ($response->Success()))
 		{
 			return true;
 		}

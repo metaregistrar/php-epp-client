@@ -1,4 +1,5 @@
 <?php
+namespace Metaregistrar\EPP;
 /**
  * The EPP Contact Handle Object
  *

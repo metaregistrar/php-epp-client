@@ -1,7 +1,5 @@
 <?php
-include_once(dirname(__FILE__).'/eppRequests/eppIncludes.php');
-include_once(dirname(__FILE__).'/eppResponses/eppIncludes.php');
-include_once(dirname(__FILE__).'/eppData/eppIncludes.php');
+namespace Metaregistrar\EPP;
 
 class eppConnection
 {
@@ -127,26 +125,26 @@ class eppConnection
         
         $this->language = 'en';
         $this->version = '1.0';
-        $this->responses['eppHelloRequest'] = 'eppHelloResponse';
-        $this->responses['eppLoginRequest'] = 'eppLoginResponse';
-        $this->responses['eppLogoutRequest'] = 'eppLogoutResponse';
-        $this->responses['eppPollRequest'] = 'eppPollResponse';
-        $this->responses['eppCheckRequest'] = 'eppCheckResponse';
-        $this->responses['eppInfoHostRequest'] = 'eppInfoHostResponse';
-        $this->responses['eppInfoContactRequest'] = 'eppInfoContactResponse';
-        $this->responses['eppInfoDomainRequest'] = 'eppInfoDomainResponse';
-        $this->responses['eppCreateRequest'] = 'eppCreateResponse';
-        $this->responses['eppCreateDomainRequest'] = 'eppCreateResponse';
-        $this->responses['eppCreateContactRequest'] = 'eppCreateResponse';
-        $this->responses['eppCreateHostRequest'] = 'eppCreateResponse';
-        $this->responses['eppDeleteRequest'] = 'eppDeleteResponse';
-        $this->responses['eppUndeleteRequest'] = 'eppUndeleteResponse';
-        $this->responses['eppUpdateRequest'] = 'eppUpdateResponse';
-        $this->responses['eppUpdateDomainRequest'] = 'eppUpdateResponse';
-        $this->responses['eppUpdateContactRequest'] = 'eppUpdateResponse';
-        $this->responses['eppUpdateHostRequest'] = 'eppUpdateResponse';
-        $this->responses['eppRenewRequest'] = 'eppRenewResponse';
-        $this->responses['eppTransferRequest'] = 'eppTransferResponse';
+        $this->responses['Metaregistrar\\EPP\\eppHelloRequest'] = 'Metaregistrar\\EPP\\eppHelloResponse';
+        $this->responses['Metaregistrar\\EPP\\eppLoginRequest'] = 'Metaregistrar\\EPP\\eppLoginResponse';
+        $this->responses['Metaregistrar\\EPP\\eppLogoutRequest'] = 'Metaregistrar\\EPP\\eppLogoutResponse';
+        $this->responses['Metaregistrar\\EPP\\eppPollRequest'] = 'Metaregistrar\\EPP\\eppPollResponse';
+        $this->responses['Metaregistrar\\EPP\\eppCheckRequest'] = 'Metaregistrar\\EPP\\eppCheckResponse';
+        $this->responses['Metaregistrar\\EPP\\eppInfoHostRequest'] = 'Metaregistrar\\EPP\\eppInfoHostResponse';
+        $this->responses['Metaregistrar\\EPP\\eppInfoContactRequest'] = 'Metaregistrar\\EPP\\eppInfoContactResponse';
+        $this->responses['Metaregistrar\\EPP\\eppInfoDomainRequest'] = 'Metaregistrar\\EPP\\eppInfoDomainResponse';
+        $this->responses['Metaregistrar\\EPP\\eppCreateRequest'] = 'Metaregistrar\\EPP\\eppCreateResponse';
+        $this->responses['Metaregistrar\\EPP\\eppCreateDomainRequest'] = 'Metaregistrar\\EPP\\eppCreateResponse';
+        $this->responses['Metaregistrar\\EPP\\eppCreateContactRequest'] = 'Metaregistrar\\EPP\\eppCreateResponse';
+        $this->responses['Metaregistrar\\EPP\\eppCreateHostRequest'] = 'Metaregistrar\\EPP\\eppCreateResponse';
+        $this->responses['Metaregistrar\\EPP\\eppDeleteRequest'] = 'Metaregistrar\\EPP\\eppDeleteResponse';
+        $this->responses['Metaregistrar\\EPP\\eppUndeleteRequest'] = 'Metaregistrar\\EPP\\eppUndeleteResponse';
+        $this->responses['Metaregistrar\\EPP\\eppUpdateRequest'] = 'Metaregistrar\\EPP\\eppUpdateResponse';
+        $this->responses['Metaregistrar\\EPP\\eppUpdateDomainRequest'] = 'Metaregistrar\\EPP\\eppUpdateResponse';
+        $this->responses['Metaregistrar\\EPP\\eppUpdateContactRequest'] = 'Metaregistrar\\EPP\\eppUpdateResponse';
+        $this->responses['Metaregistrar\\EPP\\eppUpdateHostRequest'] = 'Metaregistrar\\EPP\\eppUpdateResponse';
+        $this->responses['Metaregistrar\\EPP\\eppRenewRequest'] = 'Metaregistrar\\EPP\\eppRenewResponse';
+        $this->responses['Metaregistrar\\EPP\\eppTransferRequest'] = 'Metaregistrar\\EPP\\eppTransferResponse';
         
     }
 
@@ -162,8 +160,8 @@ class eppConnection
     {
         $this->launchphase = $launchphase;
         $this->exturi['urn:ietf:params:xml:ns:launch-1.0'] = 'launch';
-        $this->responses['eppLaunchCheckRequest'] = 'eppLaunchCheckResponse';
-        $this->responses['eppLaunchCreateDomainRequest'] = 'eppLaunchCreateDomainResponse';
+        $this->responses['Metaregistrar\\EPP\\eppLaunchCheckRequest'] = 'Metaregistrar\\EPP\\eppLaunchCheckResponse';
+        $this->responses['Metaregistrar\\EPP\\eppLaunchCreateDomainRequest'] = 'Metaregistrar\\EPP\\eppLaunchCreateDomainResponse';
     }
 
     public function getLaunchphase()
@@ -174,13 +172,13 @@ class eppConnection
     public function enableDnssec()
     {
         $this->exturi['urn:ietf:params:xml:ns:secDNS-1.1'] = 'secDNS';
-        $this->responses['eppDnssecUpdateDomainRequest'] = 'eppUpdateDomainResponse';
+        $this->responses['Metaregistrar\\EPP\\eppDnssecUpdateDomainRequest'] = 'Metaregistrar\\EPP\\eppUpdateDomainResponse';
     }
     
     public function disableDnssec()
     {
         unset($this->exturi['secDNS']);
-        unset($this->responses['eppDnssecUpdateDomainRequest']);
+        unset($this->responses['Metaregistrar\\EPP\\eppDnssecUpdateDomainRequest']);
     }
 
     public function enableCertification($certificatepath, $certificatepassword)

@@ -1,5 +1,5 @@
 <?php
-include_once(dirname(__FILE__).'/eppException.php');
+include_once(dirname(__FILE__) . '/eppException.php');
 include_once(dirname(__FILE__).'/eppContact.php');
 include_once(dirname(__FILE__).'/eppContactHandle.php');
 include_once(dirname(__FILE__).'/eppContactPostalInfo.php');

@@ -1,5 +1,5 @@
 <?php
-
+namespace Metaregistrar\EPP;
 
 class eppHelloRequest extends eppRequest
 {

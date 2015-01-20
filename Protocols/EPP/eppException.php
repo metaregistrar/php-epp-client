@@ -1,6 +1,7 @@
 <?php
+namespace Metaregistrar\EPP;
 
-class eppException extends Exception
+class eppException extends \Exception
 {
     private $reason;
     private $id;

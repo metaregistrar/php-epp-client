@@ -1,10 +1,7 @@
 <?php
-// Base EPP objects
-include_once('Protocols/EPP/eppConnection.php');
-// Connection object to Metaregistrar EPP server - this contains your userid and passwords!
-include_once('Registries/FRL/frlEppConnection.php');
-// Base EPP commands: hello, login and logout
-include_once('base.php');
+
+require('./autoloader.php');
+
 
 /*
  * This sample script registers a domain name within your account
@@ -25,7 +22,7 @@ if ($argc <= 1)
 $domainname = $argv[1];
 
 echo "Registering $domainname\n";
-$conn = new frlEppConnection();
+$conn = new Metaregistrar\EPP\frlEppConnection();
 // Connect to the EPP server
 if ($conn->connect())
 {
@@ -48,9 +45,9 @@ function checkcontact($conn, $contactid)
 {
     try
     {
-        $contactinfo = new eppContactHandle($contactid);
-        $check = new eppCheckRequest($contactinfo);
-        if ((($response = $conn->writeandread($check)) instanceof eppCheckResponse) && ($response->Success()))
+        $contactinfo = new Metaregistrar\EPP\eppContactHandle($contactid);
+        $check = new Metaregistrar\EPP\eppCheckRequest($contactinfo);
+        if ((($response = $conn->writeandread($check)) instanceof Metaregistrar\EPP\eppCheckResponse) && ($response->Success()))
         {
             $checks = $response->getCheckedContacts();
             foreach ($checks as $contact => $check)
@@ -70,10 +67,10 @@ function createcontact($conn,$email,$telephone,$name,$organization,$address,$pos
 {
     try
     {
-        $postalinfo = new eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, eppContactPostalInfo::POSTAL_TYPE_INTERNATIONAL);
-        $contactinfo = new eppContact($postalinfo, $email, $telephone);
-        $contact = new eppCreateContactRequest($contactinfo);
-        if ((($response = $conn->writeandread($contact)) instanceof eppCreateResponse) && ($response->Success()))
+        $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, eppContactPostalInfo::POSTAL_TYPE_INTERNATIONAL);
+        $contactinfo = new Metaregistrar\EPP\eppContact($postalinfo, $email, $telephone);
+        $contact = new Metaregistrar\EPP\eppCreateContactRequest($contactinfo);
+        if ((($response = $conn->writeandread($contact)) instanceof Metaregistrar\EPP\eppCreateResponse) && ($response->Success()))
         {
             echo "Contact created on ".$response->getContactCreateDate()." with id ".$response->getContactId()."\n";
             return $response->getContactId();
@@ -90,29 +87,29 @@ function createdomain($conn,$domainname,$registrant,$admincontact,$techcontact,$
 {
     try
     {
-        $domain = new eppDomain($domainname, $registrant);
-        $reg = new eppContactHandle($registrant);
+        $domain = new Metaregistrar\EPP\eppDomain($domainname, $registrant);
+        $reg = new Metaregistrar\EPP\eppContactHandle($registrant);
         $domain->setRegistrant($reg);
-        $admin = new eppContactHandle($admincontact,eppContactHandle::CONTACT_TYPE_ADMIN);
+        $admin = new Metaregistrar\EPP\eppContactHandle($admincontact,Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_ADMIN);
         $domain->addContact($admin);
-        $tech = new eppContactHandle($techcontact,eppContactHandle::CONTACT_TYPE_TECH);
+        $tech = new Metaregistrar\EPP\eppContactHandle($techcontact,Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_TECH);
         $domain->addContact($tech);
-        $billing = new eppContactHandle($billingcontact,eppContactHandle::CONTACT_TYPE_BILLING);
+        $billing = new Metaregistrar\EPP\eppContactHandle($billingcontact,Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_BILLING);
         $domain->addContact($billing);
         $domain->setAuthorisationCode('rand0m');
         if (is_array($nameservers))
         {
             foreach ($nameservers as $nameserver)
             {
-                $host = new eppHost($nameserver);
+                $host = new Metaregistrar\EPP\eppHost($nameserver);
                 $domain->addHost($host);
             }
         }
-        $create = new eppLaunchCreateDomainRequest($domain);
+        $create = new Metaregistrar\EPP\eppLaunchCreateDomainRequest($domain);
         $create->setLaunchPhase('claims','application');
-        if ((($response = $conn->writeandread($create)) instanceof eppLaunchCreateDomainResponse) && ($response->Success()))
+        if ((($response = $conn->writeandread($create)) instanceof Metaregistrar\EPP\eppLaunchCreateDomainResponse) && ($response->Success()))
         {
-            /* @var eppLaunchCreateResponse $response */
+            /* @var Metaregistrar\EPP\eppLaunchCreateResponse $response */
             echo "Domain ".$response->getDomainName()." created on ".$response->getDomainCreateDate().", expiration date is ".$response->getDomainExpirationDate()."\n";
             echo "Registration phase: ".$response->getLaunchPhase()." and Application ID: ".$response->getLaunchApplicationID()."\n";
         }

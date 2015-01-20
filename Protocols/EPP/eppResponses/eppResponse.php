@@ -1,11 +1,12 @@
 <?php
+namespace Metaregistrar\EPP;
 
 /*
  * This object contains all the logic to create a standard EPP command
  */
 
 
-class eppResponse extends DomDocument
+class eppResponse extends \DomDocument
 {
     const RESULT_SUCCESS = '1000';
     const RESULT_SUCCESS_ACTION_PENDING = '1001';
@@ -465,7 +466,7 @@ class eppResponse extends DomDocument
      */
     public function xPath()
     {
-        $xpath = new DOMXpath($this);
+        $xpath = new \DOMXpath($this);
         $this->publicnamespace = $this->documentElement->lookupNamespaceURI(NULL);
         $xpath->registerNamespace('epp', $this->publicnamespace);
         if (is_array($this->xpathuri))

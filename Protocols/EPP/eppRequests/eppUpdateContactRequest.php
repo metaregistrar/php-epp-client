@@ -1,4 +1,5 @@
 <?php
+namespace Metaregistrar\EPP;
 
 class eppUpdateContactRequest extends eppRequest
 {

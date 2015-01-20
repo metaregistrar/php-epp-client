@@ -1,5 +1,6 @@
 <?php
-include_once(dirname(__FILE__).'/eppRequest.php');
+namespace Metaregistrar\EPP;
+
 /*
  * This object contains all the logic to create an EPP domain:info command
  */

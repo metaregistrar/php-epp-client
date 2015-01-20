@@ -1,20 +1,22 @@
 <?php
-include_once(dirname(__FILE__).'/../../Protocols/EPP/eppConnection.php');
-
-#
-# Load the FRL specific additions
-#
+namespace Metaregistrar\EPP;
 
 class frlEppConnection extends eppConnection
 {
 
     public function __construct($logging=false)
     {
+        $settings=file(dirname(__FILE__).'/settings.ini',FILE_IGNORE_NEW_LINES);
+        foreach($settings as $setting)
+        {
+            list($param,$value)=explode('=',$setting);
+            $$param = $value;
+        }
         parent::__construct($logging);
-        parent::setHostname('ssl://uat.nic.frl');
-        parent::setPort('700');
-        parent::setUsername('');
-        parent::setPassword('');
+        parent::setHostname($hostname);
+        parent::setPort($port);
+        parent::setUsername($userid);
+        parent::setPassword($password);
         parent::setTimeout(5);
         parent::setLanguage('en');
         parent::setVersion('1.0');
@@ -22,6 +24,5 @@ class frlEppConnection extends eppConnection
         parent::enableLaunchphase('claims');
         parent::enableDnssec();
     }
-
 
 }
