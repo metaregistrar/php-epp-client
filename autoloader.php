@@ -4,13 +4,12 @@ date_default_timezone_set('UTC');
 require_once('base.php');
 
 function autoloadData($className) {
-    var_dump($className);
     $fileName = str_replace('Metaregistrar\\EPP\\','',$className);
     $fileName = __DIR__.'\Protocols\\EPP\\eppData\\'.$fileName.'.php';
     //echo "Test autoload data $fileName\n";
     if (is_readable($fileName))
     {
-        echo "Autoload data $fileName\n";
+        //echo "Autoload data $fileName\n";
         require($fileName);
     }
 
