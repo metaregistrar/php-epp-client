@@ -663,6 +663,22 @@ class eppConnection
     {
         mail($email, $subject, implode("\n", $this->logentries));
     }
+
+    protected function loadSettings($directory)
+    {
+        if (!is_readable($directory.'/settings.ini'))
+        {
+            throw new eppException("File settings.ini not present in Registry directory.");
+        }
+        $settings=file($directory.'/settings.ini',FILE_IGNORE_NEW_LINES);
+        foreach($settings as $setting)
+        {
+            list($param,$value)=explode('=',$setting);
+            $result[$param] = $value;
+        }
+        return $result;
+    }
+
     private function showLog()
     {
         echo "==== LOG ====";

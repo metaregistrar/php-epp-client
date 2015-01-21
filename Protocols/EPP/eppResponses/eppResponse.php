@@ -455,7 +455,11 @@ class eppResponse extends \DomDocument
         }
         else
         {
-            $this->xpathuri = array_merge($this->xpathuri, $xpathuri);
+            if (is_array($xpathuri))
+            {
+                $this->xpathuri = array_merge($this->xpathuri, $xpathuri);
+            }
+
         }
     }
 

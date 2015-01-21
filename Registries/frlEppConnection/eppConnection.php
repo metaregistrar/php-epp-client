@@ -6,17 +6,12 @@ class frlEppConnection extends eppConnection
 
     public function __construct($logging=false)
     {
-        $settings=file(dirname(__FILE__).'/settings.ini',FILE_IGNORE_NEW_LINES);
-        foreach($settings as $setting)
-        {
-            list($param,$value)=explode('=',$setting);
-            $$param = $value;
-        }
         parent::__construct($logging);
-        parent::setHostname($hostname);
-        parent::setPort($port);
-        parent::setUsername($userid);
-        parent::setPassword($password);
+        $settings = $this->loadSettings(dirname(__FILE__));
+        parent::setHostname($settings['hostname']);
+        parent::setPort($settings['port']);
+        parent::setUsername($settings['userid']);
+        parent::setPassword($settings['password']);
         parent::setTimeout(5);
         parent::setLanguage('en');
         parent::setVersion('1.0');
