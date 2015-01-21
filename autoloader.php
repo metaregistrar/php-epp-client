@@ -58,7 +58,7 @@ function autoloadProtocol($className) {
         }
     }
     else {
-        $fileName = __DIR__.'/Protocols/'.$fileName.'.php';
+        $fileName = __DIR__.'/Protocols/'.str_replace('\\','/',$fileName).'.php';
         // Support for EPP Request file structure
         if (strpos($className,'Request'))
         {
