@@ -39,19 +39,57 @@ S:  </response>
 S:</epp>
 */
 
-class eppLaunchCheckResponse extends eppCheckResponse
-{
-    public function getLaunchPhase()
-    {
+class eppLaunchCheckResponse extends eppCheckResponse {
+    public function getLaunchPhase() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/launch:chkData/launch:phase');
-        if ($result->length > 0)
-        {
+        if ($result->length > 0) {
             return $result->item(0)->nodeValue;
         }
-        else
-        {
+        else {
             return null;
         }
+    }
+
+    public function getDomainClaims() {
+        $idna = new eppIDNA();
+        if ($this->getResultCode()==self::RESULT_SUCCESS) {
+            $result = array();
+            $xpath = $this->xPath();
+            $domains = $xpath->query('/epp:epp/epp:response/epp:extension/launch:chkData/launch:cd');
+            foreach ($domains as $domain) {
+                $childs = $domain->childNodes;
+                $checkeddomain = array('domainname'=>null,'available'=>false,'reason'=>null);
+                foreach ($childs as $child) {
+                    if ($child instanceof \domElement) {
+                        if (strpos($child->tagName,':name')) {
+                            $exists = $child->getAttribute('exists');
+                            switch ($exists) {
+                                case '0':
+                                case 'false':
+                                    $checkeddomain['claimed']=false;
+                                    break;
+                                case '1':
+                                case 'true':
+                                    $checkeddomain['claimed']=true;
+
+                                    break;
+                            }
+                            if (strpos($child->tagName,':claimKey')) {
+                                $checkeddomain['claim'] = new eppDomainClaim();
+                                $checkeddomain['claim']->setValidator($child->getAttribute('validatorID'));
+                                $checkeddomain['claim']->setClaimKey($child->nodeValue);
+                            }
+                            $checkeddomain['domainname']=$idna->decode($child->nodeValue);
+                        }
+                        if (strpos($child->tagName,':reason')) {
+                            $checkeddomain['reason']=$child->nodeValue;
+                        }
+                    }
+                }
+                $result[] = $checkeddomain;
+            }
+        }
+        return($result);
     }
 }

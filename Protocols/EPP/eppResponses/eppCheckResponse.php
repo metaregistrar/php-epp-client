@@ -21,6 +21,7 @@ class eppCheckResponse extends eppResponse
     {
         if ($this->getResultCode()==self::RESULT_SUCCESS)
         {
+            $result = array();
             $xpath = $this->xPath();
             $domains = $xpath->query('/epp:epp/epp:response/epp:resData/domain:chkData/domain:cd');
             foreach ($domains as $domain)

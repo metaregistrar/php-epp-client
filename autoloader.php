@@ -1,7 +1,7 @@
 <?php
 // Base EPP commands: hello, login and logout
 date_default_timezone_set('UTC');
-require_once('base.php');
+require_once('Examples/base.php');
 
 function autoloadData($className) {
     $fileName = str_replace('Metaregistrar\\EPP\\','',$className);

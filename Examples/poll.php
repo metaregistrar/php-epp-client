@@ -11,7 +11,7 @@ require('../autoloader.php');
 
 try {
     echo "Polling for messages\n";
-    $conn = new Metaregistrar\EPP\metaregEppConnection();
+    $conn = new Metaregistrar\EPP\frlEppConnection();
 // Connect to the EPP server
     if ($conn->connect()) {
         if (login($conn)) {
