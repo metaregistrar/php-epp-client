@@ -11,11 +11,13 @@ class donutsEppConnection extends eppConnection
 
         // Construct the EPP connection object en specify if you want logging on or off
         parent::__construct(false);
-        $settings = $this->loadSettings(dirname(__FILE__));
-        parent::setHostname($settings['hostname']);
-        parent::setPort($settings['port']);
-        parent::setUsername($settings['userid']);
-        parent::setPassword($settings['password']);
+        if ($settings = $this->loadSettings(dirname(__FILE__))) {
+            parent::setHostname($settings['hostname']);
+            parent::setPort($settings['port']);
+            parent::setUsername($settings['userid']);
+            parent::setPassword($settings['password']);
+        }
+
         // Specify timeout values in seconds
         parent::setTimeout(5);
 

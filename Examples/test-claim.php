@@ -6,9 +6,9 @@ try {
     $tmchdnl = new Metaregistrar\EPP\tmchDnlConnection();
     $tmch = new Metaregistrar\EPP\tmchEppConnection();
     $list = $tmchdnl->getDnl();
-    $linecounter = 0;
+    $linecounter = -1;
     foreach ($list as $line) {
-        if (($linecounter>1) && (strlen($line)>0)){
+        if (($linecounter>0) && (strlen($line)>0)){
             list($domainname,$key,$datetime)=explode(',',$line);
             if ($domainname!='1' and $domainname!='DNL') {
                 echo $linecounter.": ".$domainname."\n";
@@ -17,7 +17,7 @@ try {
         }
         $linecounter++;
     }
-    echo "Select one of the labels to display the warning notice for this label\n:";
+    echo "Select the number from one of the labels above to display the warning notice for this label\n:";
     $number = (int) fgets(STDIN);
     echo $tmch->showWarning($tmch->getCnis($k[$number]));
 

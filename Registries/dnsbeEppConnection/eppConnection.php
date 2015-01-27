@@ -19,11 +19,12 @@ class dnsbeEppConnection extends eppConnection
     public function __construct($logging=false)
     {
         parent::__construct($logging);
-        $settings = $this->loadSettings(dirname(__FILE__));
-        parent::setHostname($settings['hostname']);
-        parent::setPort($settings['port']);
-        parent::setUsername($settings['userid']);
-        parent::setPassword($settings['password']);
+        if ($settings = $this->loadSettings(dirname(__FILE__))) {
+            parent::setHostname($settings['hostname']);
+            parent::setPort($settings['port']);
+            parent::setUsername($settings['userid']);
+            parent::setPassword($settings['password']);
+        }
         parent::setTimeout(5);
         parent::setLanguage('en');
         parent::setVersion('1.0');

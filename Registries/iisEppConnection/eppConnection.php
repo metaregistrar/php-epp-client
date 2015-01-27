@@ -17,16 +17,16 @@ class iisEppConnection extends eppConnection
         parent::__construct($logging);
 
         // Load settings from settings.ini
-        $settings = $this->loadSettings(dirname(__FILE__));
-
-        // Set the hostname to the EPP server
-        parent::setHostname($settings['hostname']);
-        // Set the port
-        parent::setPort($settings['port']);
-        // Set your login username
-        parent::setUsername($settings['userid']);
-        // Set your login password
-        parent::setPassword($settings['password']);
+        if ($settings = $this->loadSettings(dirname(__FILE__))) {
+            // Set the hostname to the EPP server
+            parent::setHostname($settings['hostname']);
+            // Set the port
+            parent::setPort($settings['port']);
+            // Set your login username
+            parent::setUsername($settings['userid']);
+            // Set your login password
+            parent::setPassword($settings['password']);
+        }
         // Specify timeout values in seconds
         parent::setTimeout(5);
         // Enable DNSSEC, IIS.SE supports this

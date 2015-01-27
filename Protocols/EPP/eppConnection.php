@@ -666,17 +666,17 @@ class eppConnection
 
     protected function loadSettings($directory)
     {
-        if (!is_readable($directory.'/settings.ini'))
+        if (is_readable($directory.'/settings.ini'))
         {
-            throw new eppException("File settings.ini not present in Registry directory $directory.");
+            $settings=file($directory.'/settings.ini',FILE_IGNORE_NEW_LINES);
+            foreach($settings as $setting)
+            {
+                list($param,$value)=explode('=',$setting);
+                $result[$param] = $value;
+            }
+            return $result;
         }
-        $settings=file($directory.'/settings.ini',FILE_IGNORE_NEW_LINES);
-        foreach($settings as $setting)
-        {
-            list($param,$value)=explode('=',$setting);
-            $result[$param] = $value;
-        }
-        return $result;
+        return null;
     }
 
     private function showLog()
