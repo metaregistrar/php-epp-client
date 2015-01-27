@@ -23,6 +23,7 @@ echo "Checking ".count($domains)." domain names\n";
 try
 {
     $conn = new Metaregistrar\EPP\metaregEppConnection();
+
     // Connect to the EPP server
     if ($conn->connect()) {
         if (login($conn)) {
