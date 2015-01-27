@@ -15,7 +15,7 @@ function autoloadData($className) {
     //echo "Test autoload data $fileName\n";
     if (is_readable($fileName))
     {
-        //echo "Autoload data $fileName\n";
+        //echo "Autoloaded data $fileName\n";
         require($fileName);
     }
 
@@ -29,9 +29,10 @@ function autoloadRegistry($className) {
     else {
         $fileName = __DIR__.'/Registries/'.$fileName.'/eppConnection.php';
     }
+    //echo "Test autoload registry $fileName\n";
     if (is_readable($fileName))
     {
-        //echo "Autoload registry $fileName\n";
+        //echo "Autoloaded registry $fileName\n";
         require($fileName);
     }
 }
@@ -80,13 +81,13 @@ function autoloadProtocol($className) {
     //echo "Test autoload protocol $fileName\n";
     if (is_readable($fileName))
     {
-        //echo "Autoload protocol $fileName\n";
+        //echo "Autoloaded protocol $fileName\n";
         require($fileName);
     }
 }
 
-spl_autoload_register('autoloadRegistry');
 spl_autoload_register('autoloadProtocol');
+spl_autoload_register('autoloadRegistry');
 spl_autoload_register('autoloadData');
 
 ?>

@@ -20,7 +20,7 @@ $domainname = $argv[1];
 echo "Retrieving info on ".$domainname."\n";
 try
 {
-    $conn = new Metaregistrar\EPP\euridEppConnection(true);
+    $conn = new Metaregistrar\EPP\metaregEppConnection();
 
     // Connect to the EPP server
     if ($conn->connect())
@@ -48,14 +48,14 @@ function infodomain($conn, $domainname)
 	try
 	{
         $epp = new Metaregistrar\EPP\eppDomain($domainname);
-		$info = new Metaregistrar\EPP\euridEppInfoDomainRequest($epp);
+		$info = new Metaregistrar\EPP\eppInfoDomainRequest($epp);
 		if ((($response = $conn->writeandread($info)) instanceof Metaregistrar\EPP\eppInfoDomainResponse) && ($response->Success()))
 		{
             /* @var $response eppInfoDomainResponse */
             $d = $response->getDomain();
             echo "Info domain for ".$d->getDomainname().":\n";
             echo "Created on ".$response->getDomainCreateDate()."\n";
-            echo "Last update on ".$response->getDomainUpdateDate()."\n";
+            //echo "Last update on ".$response->getDomainUpdateDate()."\n";
             echo "Registrant ".$d->getRegistrant()."\n";
             echo "Contact info:\n";
             foreach ($d->getContacts() as $contact)

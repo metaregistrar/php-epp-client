@@ -59,7 +59,7 @@ class eppLaunchCheckResponse extends eppCheckResponse {
             $domains = $xpath->query('/epp:epp/epp:response/epp:extension/launch:chkData/launch:cd');
             foreach ($domains as $domain) {
                 $childs = $domain->childNodes;
-                $checkeddomain = array('domainname'=>null,'available'=>false,'reason'=>null);
+                $checkeddomain = array('domainname'=>null,'available'=>false,'reason'=>null,'claimed'=>false);
                 foreach ($childs as $child) {
                     if ($child instanceof \domElement) {
                         if (strpos($child->tagName,':name')) {
@@ -75,13 +75,14 @@ class eppLaunchCheckResponse extends eppCheckResponse {
 
                                     break;
                             }
-                            if (strpos($child->tagName,':claimKey')) {
-                                $checkeddomain['claim'] = new eppDomainClaim();
-                                $checkeddomain['claim']->setValidator($child->getAttribute('validatorID'));
-                                $checkeddomain['claim']->setClaimKey($child->nodeValue);
-                            }
-                            $checkeddomain['domainname']=$idna->decode($child->nodeValue);
                         }
+                        if (strpos($child->tagName,':claimKey')) {
+
+                            $checkeddomain['claim'] = new eppDomainClaim();
+                            $checkeddomain['claim']->setValidator($child->getAttribute('validatorID'));
+                            $checkeddomain['claim']->setClaimKey($child->nodeValue);
+                        }
+                        $checkeddomain['domainname']=$idna->decode($child->nodeValue);
                         if (strpos($child->tagName,':reason')) {
                             $checkeddomain['reason']=$child->nodeValue;
                         }
