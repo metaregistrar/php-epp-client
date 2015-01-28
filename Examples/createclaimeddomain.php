@@ -2,7 +2,6 @@
 
 require('../autoloader.php');
 
-
 /*
  * This sample script registers a domain name within your account
  * 
@@ -11,13 +10,14 @@ require('../autoloader.php');
  * Recommended usage is that you use a tech-contact and billing contact of your own, and set registrant and admin-contact to the domain name owner or reseller.
  */
 
+$now = $current_date = gmDate("Y-m-d\TH:i:s\Z");
 $claims=array(
-    'test-claims-1.frl'=>array('noticeid'=>'2a87fdbb9223372036854775807','notafter'=>'2019-09-04T07:47:03.123Z','lookup'=>'2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX4R2127'),
-    'test-claims-2.frl'=>array('noticeid'=>'e434f0f59223372036854775807','notafter'=>'2018-10-01T15:40:13.843Z','lookup'=>'2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX4R2609'),
-    'test-claims-3.frl'=>array('noticeid'=>'3d2f541d9223372036854775807','notafter'=>'2018-11-06T08:17:08.8Z','lookup'=>'2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX3R2333')
+    'test-claims-1.frl'=>array('noticeid'=>'2a87fdbb9223372036854775807','notafter'=>'2019-09-04T07:47:03.123Z','lookup'=>'2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX4R2127','confirmed'=>$now),
+    'test-claims-2.frl'=>array('noticeid'=>'e434f0f59223372036854775807','notafter'=>'2018-10-01T15:40:13.843Z','lookup'=>'2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX4R2609','confirmed'=>$now),
+    'test-claims-3.frl'=>array('noticeid'=>'3d2f541d9223372036854775807','notafter'=>'2018-11-06T08:17:08.8Z','lookup'=>'2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX3R2333','confirmed'=>$now)
 );
 
-$domainname = 'test-claims-2.frl';
+$domainname = 'test-claims-3.frl';
 echo "Registering $domainname\n";
 
 $conn = new Metaregistrar\EPP\frlEppConnection();
@@ -30,6 +30,7 @@ if ($conn->connect())
         $contactid = 'mrg54b6560e01ddf';
         $techcontact = $contactid;
         $billingcontact = $contactid;
+
         if ($contactid)
         {
             createclaimeddomain($conn,$domainname,$claims[$domainname],$contactid,$contactid,$techcontact,$billingcontact,array('ns1.metaregistrar.nl','ns2.metaregistrar.nl'));
@@ -64,8 +65,7 @@ function createclaimeddomain($conn,$domainname,$claim,$registrant,$admincontact,
         }
         $create = new Metaregistrar\EPP\eppLaunchCreateDomainRequest($domain);
         $create->setLaunchPhase('claims','application');
-        $create->addLaunchClaim('tmch',$claim['noticeid'],$claim['notafter'],'2015-01-27T07:47:03.123Z');
-        echo $create->saveXML();
+        $create->addLaunchClaim('tmch',$claim['noticeid'],$claim['notafter'],$claim['confirmed']);
         if ((($response = $conn->writeandread($create)) instanceof Metaregistrar\EPP\eppLaunchCreateDomainResponse) && ($response->Success()))
         {
             /* @var Metaregistrar\EPP\eppLaunchCreateDomainResponse $response */
