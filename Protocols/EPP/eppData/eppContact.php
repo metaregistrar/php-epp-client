@@ -186,7 +186,7 @@ class eppContact
      */
     public function setVoice($voice)
     {
-        $this->voice = $this->generatePhoneNumber($voice);
+        $this->voice = $this->validatePhoneNumber($voice);
     }
     /**
      * Gets the phone number
@@ -203,7 +203,7 @@ class eppContact
      */
     public function setFax($fax)
     {
-        $this->fax = $this->generatePhoneNumber($fax);
+        $this->fax = $this->validatePhoneNumber($fax);
     }
     /**
      * Gets the fax number
@@ -219,23 +219,19 @@ class eppContact
      * @param int $number
      * @return string
      */
-    private function generatePhoneNumber($number)
+    private function validatePhoneNumber($number)
     {
-        //Format the phone number according to SIDN formatting rules.
-        $number = preg_replace('/[^\d]/i', '', $number);
+        //Format the phone number according to EPP formatting rules.
         if (!strlen($number))
         {
             return null;
         }
-        if (substr($number, 0, 2) == '00')
-        {
-            $number = '+'.substr($number, 2);
+        if ($number{0}!='+') {
+            throw new eppException('Phone number '.$number.' is not valid for EPP. Valid format is +cc.nnnnnnnnnnn');
         }
-        else
-        {
-            $number = '+'.$number;
+        if (strpos($number,'.')===false) {
+            throw new eppException('Phone number '.$number.' is not valid for EPP. Valid format is +cc.nnnnnnnnnnn');
         }
-        $number = substr($number, 0, 3).'.'.substr($number, 3);
         return $number;
     }
 
