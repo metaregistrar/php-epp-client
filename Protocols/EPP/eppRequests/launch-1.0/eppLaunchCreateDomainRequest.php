@@ -62,4 +62,18 @@ class eppLaunchCreateDomainRequest extends eppCreateDomainRequest
         $this->launchCreate->appendChild($codeMark);
         $this->addSessionId();
     }
+
+    public function addLaunchClaim($validator, $noticeid, $notafter, $accepteddate) {
+        if (!$this->launchCreate) {
+            $this->launchCreate = $this->createElement("launch:create");
+        }
+        $notice = $this->createElement('launch:notice');
+        $noticeid =$this->createElement('launch:noticeID',$noticeid);
+        $noticeid->setAttribute('validatorID',$validator);
+        $notice->appendChild($noticeid);
+        $notice->appendChild($this->createElement('launch:notAfter',$notafter));
+        $notice->appendChild($this->createElement('launch:acceptedDate',$accepteddate));
+        $this->launchCreate->appendChild($notice);
+        $this->addSessionId();
+    }
 }

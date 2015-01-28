@@ -11,18 +11,17 @@ require('../autoloader.php');
  * Recommended usage is that you use a tech-contact and billing contact of your own, and set registrant and admin-contact to the domain name owner or reseller.
  */
 
+$claims=array(
+    'test-claims-1.frl'=>array('noticeid'=>'2a87fdbb9223372036854775807','notafter'=>'2019-09-04T07:47:03.123Z','lookup'=>'2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX4R2127'),
+    'test-claims-2.frl'=>array('noticeid'=>'e434f0f59223372036854775807','notafter'=>'2018-10-01T15:40:13.843Z','lookup'=>'2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX4R2609'),
+    'test-claims-3.frl'=>array('noticeid'=>'3d2f541d9223372036854775807','notafter'=>'2018-11-06T08:17:08.8Z','lookup'=>'2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX3R2333')
+);
 
-if ($argc <= 1)
-{
-    echo "Usage: createlaunchdomain.php <domainname>\n";
-    echo "Please enter the domain name to be created\n\n";
-    die();
-}
-
-$domainname = $argv[1];
-
+$domainname = 'test-claims-2.frl';
 echo "Registering $domainname\n";
-$conn = new Metaregistrar\EPP\metaregEppConnection();
+
+$conn = new Metaregistrar\EPP\frlEppConnection();
+
 // Connect to the EPP server
 if ($conn->connect())
 {
@@ -33,7 +32,7 @@ if ($conn->connect())
         $billingcontact = $contactid;
         if ($contactid)
         {
-            createdomain($conn,$domainname,$contactid,$contactid,$techcontact,$billingcontact,array('ns1.metaregistrar.nl','ns2.metaregistrar.nl'));
+            createclaimeddomain($conn,$domainname,$claims[$domainname],$contactid,$contactid,$techcontact,$billingcontact,array('ns1.metaregistrar.nl','ns2.metaregistrar.nl'));
         }
         logout($conn);
     }
@@ -41,7 +40,7 @@ if ($conn->connect())
 
 
 
-function createdomain($conn,$domainname,$registrant,$admincontact,$techcontact,$billingcontact,$nameservers)
+function createclaimeddomain($conn,$domainname,$claim,$registrant,$admincontact,$techcontact,$billingcontact,$nameservers)
 {
     try
     {
@@ -65,6 +64,8 @@ function createdomain($conn,$domainname,$registrant,$admincontact,$techcontact,$
         }
         $create = new Metaregistrar\EPP\eppLaunchCreateDomainRequest($domain);
         $create->setLaunchPhase('claims','application');
+        $create->addLaunchClaim('tmch',$claim['noticeid'],$claim['notafter'],'2015-01-27T07:47:03.123Z');
+        echo $create->saveXML();
         if ((($response = $conn->writeandread($create)) instanceof Metaregistrar\EPP\eppLaunchCreateDomainResponse) && ($response->Success()))
         {
             /* @var Metaregistrar\EPP\eppLaunchCreateDomainResponse $response */
