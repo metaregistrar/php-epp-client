@@ -21,17 +21,22 @@ All code is organized in objects, so connecting to a new registry is just a matt
 
 Sample registry connections are provided in the Registries directory.
 
-Sample scipts in the main directory:
+<b>Example scipts in the main directory</b>:
 checkdomain.php - check one domain name
-checkdomains.php - check multiple domain names with one call
+timeddomaincheck.php - check multiple domain names and check how fast the registry is
 registerdomain.php - register a domain name
 changepassword.php - change EPP password
 infodomain.php - get information on a domain name
-modifydomain.php  - update a domain name
+modifydomain.php  - update a domain name with new info
+createcontact.php - create a contact object
+registerdomain.php - register a domain name in general availability phase
 signdomain.php - DNSSEC sign a domain name
-poll.php - list registry poll messages
-checklaunchdomain.php - check domain name in 'claims' phase of draft-ietf-eppext-launchphase
+poll.php - list registry poll messages and confirm a message
+checklaunchdomain.php - check domain name in 'claims' phase of draft-ietf-eppext-launchphase and check if the domain is free
 createlaunchdomain.php - register domain name in 'claims' phase of draft-ietf-eppext-launchphase
+checktmchdomain.php - check domain name in the 'claims' phase and check if the domain has a claim and retrieve the cnis info from the TMCH
+test-claim.php - connect to the TMCH test service and retrieve the list of domain names, query cnis info and display icann std warning msg
+createclaimeddomain.php - create domain name that has a tmch claim in the claims phase of the launch
 
 How to use this repository
 - Check out the latest version from github
