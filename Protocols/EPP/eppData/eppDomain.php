@@ -82,6 +82,7 @@ class eppDomain
      */
     public function __construct($domainname, $registrant=null, $contacts=null, $hosts=null, $period=0, $authorisationCode = null)
     {
+
         if (strlen($domainname))
         {
             $this->setDomainname($domainname);

@@ -21,15 +21,17 @@ class eppLaunchCreateDomainRequest extends eppCreateDomainRequest
      * @param null $customName String when $name is custom, you should specify this one.
      * @throws RegistrarException
      */
-    public function setLaunchPhase($name, $launchType, $customName = null) {
-        if (($launchType != "application") && ($launchType != "registration")) {
-            throw new RegistrarException("launchType should be either 'application' or 'registration'");
-        }
+    public function setLaunchPhase($name, $launchType = null, $customName = null) {
+        #if (($launchType != "application") && ($launchType != "registration")) {
+        #    throw new RegistrarException("launchType should be either 'application' or 'registration'");
+        #}
         if (!$this->launchCreate) {
             $this->launchCreate = $this->createElement("launch:create");
             $this->getExtension()->appendchild($this->launchCreate);
         }
-        $this->launchCreate->setAttribute("type", $launchType);
+        if ($launchType) {
+            $this->launchCreate->setAttribute("type", $launchType);
+        }
         $launchPhase = $this->createElement("launch:phase", $name);
         if ($customName != null && $name == "custom") {
             $launchPhase->setAttribute("name", $customName);

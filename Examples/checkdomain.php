@@ -22,9 +22,8 @@ for ($i=1; $i<$argc; $i++)
 echo "Checking ".count($domains)." domain names\n";
 try
 {
-    $conn = new Metaregistrar\EPP\metaregEppConnection();
-
-    // Connect to the EPP server
+    $conn = new Metaregistrar\EPP\frlEppConnection();
+    // Connect and login to the EPP server
     if ($conn->connect()) {
         if (login($conn)) {
             checkdomains($conn, $domains);

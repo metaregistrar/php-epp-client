@@ -19,7 +19,7 @@ for ($i=1; $i<$argc; $i++) {
 }
 echo "Checking ".count($domains)." domain names\n";
 try {
-    $conn = new Metaregistrar\EPP\frlEppConnection(true);
+    $conn = new Metaregistrar\EPP\frlEppConnection(false);
     $conn->enableLaunchphase('claims');
     // Connect to the EPP server
     if ($conn->connect()) {
@@ -41,7 +41,7 @@ catch (Metaregistrar\EPP\eppException $e) {
 function checkdomains($conn, $domains) {
     try {
         $check = new Metaregistrar\EPP\eppLaunchCheckRequest($domains);
-        $check->setLaunchPhase(Metaregistrar\EPP\eppLaunchCheckRequest::PHASE_CLAIMS,'test',Metaregistrar\EPP\eppLaunchCheckRequest::TYPE_AVAIL);
+        $check->setLaunchPhase(Metaregistrar\EPP\eppLaunchCheckRequest::PHASE_CLAIMS,'test',Metaregistrar\EPP\eppLaunchCheckRequest::TYPE_CLAIMS);
         if ((($response = $conn->writeandread($check)) instanceof Metaregistrar\EPP\eppLaunchCheckResponse) && ($response->Success())) {
             //$phase = $response->getLaunchPhase();
             $checks = $response->getDomainClaims();
