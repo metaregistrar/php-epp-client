@@ -51,3 +51,10 @@ port=7443
 userid=xxxxxxxx
 password=xxxxxxxxx
 - Now, checkdomain.php should be functioning and checking domains.
+
+If you do not want to use settings.ini files in the Registries directory, you can create a connection as follows:
+$conn = Metaregistrar\EPP\metaregEppConnection();
+$conn->setHostname('ssl://epp.test2.metaregistrar.com'); // Hostname may vary depending on the registry selected
+$conn->setPort(7443); // Port may vary depending on the registry selected
+$conn->setUsername('xxxxxxxx');
+$conn->setPassword('xxxxxxxxx');
