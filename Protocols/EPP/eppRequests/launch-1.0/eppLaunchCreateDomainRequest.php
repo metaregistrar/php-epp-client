@@ -22,9 +22,6 @@ class eppLaunchCreateDomainRequest extends eppCreateDomainRequest
      * @throws RegistrarException
      */
     public function setLaunchPhase($name, $launchType = null, $customName = null) {
-        #if (($launchType != "application") && ($launchType != "registration")) {
-        #    throw new RegistrarException("launchType should be either 'application' or 'registration'");
-        #}
         if (!$this->launchCreate) {
             $this->launchCreate = $this->createElement("launch:create");
             $this->getExtension()->appendchild($this->launchCreate);

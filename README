@@ -33,3 +33,12 @@ poll.php - list registry poll messages
 checklaunchdomain.php - check domain name in 'claims' phase of draft-ietf-eppext-launchphase
 createlaunchdomain.php - register domain name in 'claims' phase of draft-ietf-eppext-launchphase
 
+How to use this repository
+- Check out the latest version from github
+- Use the Examples/checkdomain.php and create a connection to your favorite registry (for example new Metaregistrar\EPP\metaregEppConnection())
+- Create a settings.ini in Registries/metaregEppConnection with the following contents:
+hostname=ssl://epp.test2.metaregistrar.com
+port=7443
+userid=xxxxxxxx
+password=xxxxxxxxx
+- Now, checkdomain.php should be functioning and checking domains.
