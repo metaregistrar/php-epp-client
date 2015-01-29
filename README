@@ -6,14 +6,16 @@ Object-oriented PHP EPP Client
 Welcome to the object-oriented EPP client in PHP project. 
 
 This project supports the following:
+------------------------------------
 - Full EPP 57xx RFC standard
 - Fully extensible PHP objects to add registry-specific extensions
 - Rock-solid object-oriented programming, object inheritance and exception handling
-- Interface tested and in use with a registrar that handles 500.000+ domain names
+- Interface tested and in use with a registrar that handles 600.000+ domain names
 - Public/private key client certificates for connecting to EPP service (for example see Registries/IIS)
 - Connection to EPP via HTTP/SSL (for example see Registries/Openprovider)
 - DNSSEC transactions
-- Registry sunrise and landrush periods (draft-ietf-eppext-launchphase)
+- Registry sunrise, landrush and claims periods (draft-ietf-eppext-launchphase)
+- TMCH CNIS retrieval examples with standard ICANN registrar message
 
 This code will provide you with a fully functional EPP client to connect to any registry world-wide that supports EPP.
 
@@ -21,7 +23,8 @@ All code is organized in objects, so connecting to a new registry is just a matt
 
 Sample registry connections are provided in the Registries directory.
 
-<b>Example scipts in the main directory</b>:
+Example scipts in the main directory:
+-------------------------------------
 checkdomain.php - check one domain name
 timeddomaincheck.php - check multiple domain names and check how fast the registry is
 registerdomain.php - register a domain name
@@ -39,6 +42,7 @@ test-claim.php - connect to the TMCH test service and retrieve the list of domai
 createclaimeddomain.php - create domain name that has a tmch claim in the claims phase of the launch
 
 How to use this repository
+--------------------------
 - Check out the latest version from github
 - Use the Examples/checkdomain.php and create a connection to your favorite registry (for example new Metaregistrar\EPP\metaregEppConnection())
 - Create a settings.ini in Registries/metaregEppConnection with the following contents:
