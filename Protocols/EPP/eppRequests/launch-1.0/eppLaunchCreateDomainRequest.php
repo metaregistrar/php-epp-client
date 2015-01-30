@@ -34,7 +34,7 @@ class eppLaunchCreateDomainRequest extends eppCreateDomainRequest
             $launchPhase->setAttribute("name", $customName);
         }
         $this->launchCreate->appendChild($launchPhase);
-
+        $this->addSessionId();
     }
 
     /**
