@@ -7,7 +7,7 @@ $conn = new Metaregistrar\EPP\frlEppConnection();
 // Connect to the EPP server
 if ($conn->connect()) {
     if (login($conn)) {
-        createcontact($conn,'info@frlregistry.com','+31.587630650','Henri de Jong','FRLregistry BV','Willemskade 3','8911 AW','Leeuwarden','NL');
+        createcontact($conn,'info@fryslan.frl','+31.582925925','Domain Administration','Provincie Fryslân','Tweebaksmarkt 52','8911 KZ','Leeuwarden','NL');
         logout($conn);
 
     }
