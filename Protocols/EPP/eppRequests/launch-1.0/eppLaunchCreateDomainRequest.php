@@ -10,7 +10,6 @@ class eppLaunchCreateDomainRequest extends eppCreateDomainRequest
     private $launchCreate=null;
 
     function __construct(eppDomain $domain) {
-        $this->setForcehostattr(true);
         parent::__construct($domain);
     }
 
