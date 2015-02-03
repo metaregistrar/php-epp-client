@@ -39,7 +39,7 @@ class tmchEppConnection extends eppConnection {
     }
 
 
-    public function showWarning($claimData) {
+    public function showWarning($claimData,$html=false) {
         echo "TRADEMARK NOTICE\n\n";
         echo "You have received this Trademark Notice because you have applied for a domain name which matches at least one trademark record submitted to the Trademark Clearinghouse\n\n";
         echo "You may or may not be entitled to register the domain name depending on your intended use and whether it is the same or significantly overlaps with the trademarks listed below.\n";

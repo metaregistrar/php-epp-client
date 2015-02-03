@@ -112,6 +112,8 @@ class eppConnection
      * @var string
      */
     protected $local_cert_pwd = null;
+
+    public $mtrcompensation = false;
     
     function __construct($logging = false)
     {
@@ -150,6 +152,8 @@ class eppConnection
 
     function __destruct()
     {
+        //echo "\nMemory usage: ".memory_get_usage()." bytes \n";
+        //echo "Peak memory usage: ".memory_get_peak_usage()." bytes \n\n";
         if ($this->logging)
         {
             $this->showLog();
@@ -299,7 +303,7 @@ class eppConnection
                 putenv('SURPRESS_ERROR_HANDLER=0');
                 return false;
             }
-            //If we dont know how much to read we read the first few bytes first, these contain the content-lenght
+            //If we dont know how much to read we read the first few bytes first, these contain the content-length
             //of whats to come
             if ((!isset($length)) || ($length == 0))
             {
@@ -320,16 +324,27 @@ class eppConnection
 						return false;
 					}
 				}
-				$this->writeLog("Reading 4 bytes for integer. (read: ".strlen($read).")");
+				$this->writeLog("Read 4 bytes for integer. (read: ".strlen($read).")");
 				$this->writeLog($read);
-				$length = $this->readInteger($read)-4;
+                if ($this->mtrcompensation)
+                {
+                    $length = $this->readInteger($read);
+                }
+                else
+                {
+                    $length = $this->readInteger($read)-4;
+                }
 				$this->writeLog("Reading next: $length bytes");
+            }
+            if ($length > 1000000)
+            {
+                throw new eppException("Packet size is too big: $length. Closing connection");
             }
             //We know the length of what to read, so lets read the stuff
             if ((isset($length)) && ($length > 0))
             {
                 $time = time()+$this->timeout;
-                $this->writeLog("Reading $length bytes of content.");
+                $this->writeLog("Reading $length bytes of content.\n");
                 if ($read = fread($this->connection, $length))
                 {
                     $this->writeLog($read);

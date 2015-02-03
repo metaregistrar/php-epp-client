@@ -11,13 +11,13 @@ require('../autoloader.php');
  */
 
 $now = $current_date = gmDate("Y-m-d\TH:i:s\Z");
-#$claims=array(
-#    'test-claims-1.frl'=>array('noticeid'=>'2a87fdbb9223372036854775807','notafter'=>'2019-09-04T07:47:03.123Z','lookup'=>'2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX4R2127','confirmed'=>$now),
-#    'test-claims-2.frl'=>array('noticeid'=>'e434f0f59223372036854775807','notafter'=>'2018-10-01T15:40:13.843Z','lookup'=>'2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX4R2609','confirmed'=>$now),
-#    'test-claims-3.frl'=>array('noticeid'=>'3d2f541d9223372036854775807','notafter'=>'2018-11-06T08:17:08.8Z','lookup'=>'2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX3R2333','confirmed'=>$now)
-#);
+$claims=array(
+    'test-claims-1.frl'=>array('noticeid'=>'2a87fdbb9223372036854775807','notafter'=>'2019-09-04T07:47:03.123Z','lookup'=>'2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX4R2127','confirmed'=>$now),
+    'test-claims-2.frl'=>array('noticeid'=>'e434f0f59223372036854775807','notafter'=>'2018-10-01T15:40:13.843Z','lookup'=>'2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX4R2609','confirmed'=>$now),
+    'test-claims-3.frl'=>array('noticeid'=>'3d2f541d9223372036854775807','notafter'=>'2018-11-06T08:17:08.8Z','lookup'=>'2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX3R2333','confirmed'=>$now)
+);
 
-$domainname = 'abc.frl';
+$domainname = 'test-claims-3.frl';
 echo "Registering $domainname\n";
 
 $conn = new Metaregistrar\EPP\frlEppConnection();
@@ -28,10 +28,11 @@ if ($conn->connect())
     if (login($conn))
     {
         $contactid = 'mrg54ceb3e866e8f';
+        $contactid = 'mrg54d09b096fe98';
         $techcontact = null;
         $billingcontact = null;
-        $claim = checkdomainclaim($conn,$domainname);
-        createclaimeddomain($conn,$domainname,$claim,$contactid,$contactid,$techcontact,$billingcontact,array('ns1.metaregistrar.nl','ns2.metaregistrar.nl'));
+        //$claim = checkdomainclaim($conn,$domainname);
+        createclaimeddomain($conn,$domainname,$claims[$domainname],$contactid,$contactid,$techcontact,$billingcontact,array('ns1.metaregistrar.nl','ns2.metaregistrar.nl'));
         logout($conn);
     }
 }
@@ -52,11 +53,11 @@ function checkdomainclaim($conn,$domainname) {
                         if ($check['claim'] instanceof Metaregistrar\EPP\eppDomainClaim) {
                             echo "Claim validator: ".$check['claim']->getValidator().", claim key: ".$check['claim']->getClaimKey()."\n";
                             $tmch = new Metaregistrar\EPP\tmchEppConnection();
-                            $output = $tmch->getCnis($check['claim']->getClaimKey());
+                            //$output = $tmch->getCnis($check['claim']->getClaimKey());
                             /* @var $output Metaregistrar\EPP\tmchClaimData */
-                            $claim['noticeid']= $output->getNoticeId();
-                            $claim['notafter']= $output->getNotAfter();
-                            $claim['confirmed']= gmDate("Y-m-d\TH:i:s\Z");
+                            //$claim['noticeid']= $output->getNoticeId();
+                            //$claim['notafter']= $output->getNotAfter();
+                            //$claim['confirmed']= gmDate("Y-m-d\TH:i:s\Z");
                             return $claim;
                         }
                         else {
@@ -112,7 +113,7 @@ function createclaimeddomain($conn,$domainname,$claim,$registrant,$admincontact,
         }
         $create = new Metaregistrar\EPP\eppLaunchCreateDomainRequest($domain);
         $create->setLaunchPhase('claims');
-        $create->setLaunchCodeMark($domainname.';'.base64_encode(hash('sha512',$domainname.'MetaregistrarRocks!',true)),'Metaregistrar');
+        //$create->setLaunchCodeMark($domainname.';'.base64_encode(hash('sha512',$domainname.'MetaregistrarRocks!',true)),'Metaregistrar');
         $create->addLaunchClaim('tmch',$claim['noticeid'],$claim['notafter'],$claim['confirmed']);
         echo $create->saveXML();
         if ((($response = $conn->writeandread($create)) instanceof Metaregistrar\EPP\eppLaunchCreateDomainResponse) && ($response->Success()))
