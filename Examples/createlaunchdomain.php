@@ -71,9 +71,14 @@ function createdomain($conn,$domainname,$registrant,$admincontact,$techcontact,$
             echo "Domain ".$response->getDomainName()." created on ".$response->getDomainCreateDate().", expiration date is ".$response->getDomainExpirationDate()."\n";
             echo "Registration phase: ".$response->getLaunchPhase()." and Application ID: ".$response->getLaunchApplicationID()."\n";
         }
+        else
+        {
+            var_dump($response);
+        }
     }
-    catch (eppException $e)
+    catch (Metaregistrar\EPP\eppException $e)
     {
         echo $e->getMessage()."\n";
+        return false;
     }
 }
