@@ -22,7 +22,7 @@ if ($argc <= 1)
 $domainname = $argv[1];
 
 echo "Registering $domainname\n";
-$conn = new Metaregistrar\EPP\frlEppConnection(true);
+$conn = new Metaregistrar\EPP\metaregEppConnection(true);
 // Connect to the EPP server
 if ($conn->connect())
 {

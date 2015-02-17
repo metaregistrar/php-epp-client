@@ -2,7 +2,7 @@
 require('../autoloader.php');
 
 
-$conn = new Metaregistrar\EPP\frlEppConnection();
+$conn = new Metaregistrar\EPP\metaregEppConnection();
 
 // Connect to the EPP server
 if ($conn->connect()) {

@@ -22,7 +22,7 @@ require('../autoloader.php');
 
 $domainname = 'waterontharder.frl';
 echo "Registering $domainname\n";
-$conn = new Metaregistrar\EPP\frlEppConnection();
+$conn = new Metaregistrar\EPP\metaregEppConnection();
 // Connect to the EPP server
 if ($conn->connect())
 {

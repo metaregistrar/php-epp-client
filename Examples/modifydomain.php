@@ -21,7 +21,7 @@ $domainname = $argv[1];
 echo "Modifying $domainname\n";
 try
 {
-    $conn = new Metaregistrar\EPP\sidnEppConnection();
+    $conn = new Metaregistrar\EPP\metaregEppConnection();
     // Connect to the EPP server
     if ($conn->connect())
     {
