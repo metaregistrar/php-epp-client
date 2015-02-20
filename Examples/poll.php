@@ -31,11 +31,10 @@ function poll($conn) {
     try {
         $poll = new Metaregistrar\EPP\eppPollRequest(Metaregistrar\EPP\eppPollRequest::POLL_REQ, 0);
         if ((($response = $conn->writeandread($poll)) instanceof Metaregistrar\EPP\eppPollResponse) && ($response->Success())) {
-            /* @var $response eppPollResponse */
+            /* @var $response Metaregistrar\EPP\eppPollResponse */
             if ($response->getResultCode() == Metaregistrar\EPP\eppResponse::RESULT_MESSAGE_ACK) {
                 echo $response->saveXML();
                 echo $response->getMessageCount() . " messages waiting in the queue\n";
-                $messageid = $response->getMessageId();
                 echo "Picked up message " . $response->getMessageId() . ': ' . $response->getMessage() . "\n";
                 return $response->getMessageId();
             } else {

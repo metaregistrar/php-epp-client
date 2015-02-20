@@ -56,7 +56,7 @@ function checkcontact($conn, $contactid) {
                 echo "Contact $contact " . ($check ? 'does not exist' : 'exists') . "\n";
             }
         }
-    } catch (eppException $e) {
+    } catch (Metaregistrar\EPP\eppException $e) {
         echo $e->getMessage() . "\n";
     }
 }
@@ -64,9 +64,9 @@ function checkcontact($conn, $contactid) {
 
 function createcontact($conn, $email, $telephone, $name, $organization, $address, $postcode, $city, $country) {
     try {
-        $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, eppContactPostalInfo::POSTAL_TYPE_LOCAL);
+        $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, Metaregistrar\EPP\eppContactPostalInfo::POSTAL_TYPE_LOCAL);
         $contactinfo = new Metaregistrar\EPP\eppContact($postalinfo, $email, $telephone);
-        $contact = new Metaregistrar\EPP\iisEppCreateRequest($contactinfo);
+        $contact = new Metaregistrar\EPP\iisEppCreateContactRequest($contactinfo);
         if ((($response = $conn->writeandread($contact)) instanceof Metaregistrar\EPP\eppCreateResponse) && ($response->Success())) {
             echo "Contact created on " . $response->getContactCreateDate() . " with id " . $response->getContactId() . "\n";
             return $response->getContactId();
@@ -95,7 +95,7 @@ function checkhosts($conn, $hosts) {
             }
             return $allchecksok;
         }
-    } catch (eppException $e) {
+    } catch (Metaregistrar\EPP\eppException $e) {
         echo $e->getMessage() . "\n";
     }
 }
@@ -108,7 +108,7 @@ function createhost($conn, $hostname) {
         if ((($response = $conn->writeandread($host)) instanceof Metaregistrar\EPP\eppCreateResponse) && ($response->Success())) {
             echo "Host created on " . $response->getHostCreateDate() . " with name " . $response->getHostName() . "\n";
         }
-    } catch (eppException $e) {
+    } catch (Metaregistrar\EPP\eppException $e) {
         echo $e->getMessage() . "\n";
     }
 }
@@ -136,7 +136,7 @@ function createdomain($conn, $domainname, $registrant, $admincontact, $techconta
         #}
         $create = new Metaregistrar\EPP\eppCreateDomainRequest($domain);
         $create->setForcehostattr(true);
-        if ((($response = $conn->writeandread($create)) instanceof Metaregistrar\EPP\eppCreateDomainResponse) && ($response->Success())) {
+        if ((($response = $conn->writeandread($create)) instanceof Metaregistrar\EPP\eppCreateResponse) && ($response->Success())) {
             echo "Domain " . $response->getDomainName() . " created on " . $response->getDomainCreateDate() . ", expiration date is " . $response->getDomainExpirationDate() . "\n";
         }
     } catch (Metaregistrar\EPP\eppException $e) {

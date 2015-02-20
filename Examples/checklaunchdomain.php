@@ -41,7 +41,6 @@ function checkdomains($conn, $domains) {
         $check = new Metaregistrar\EPP\eppLaunchCheckRequest($domains);
         $check->setLaunchPhase('claims');
         if ((($response = $conn->writeandread($check)) instanceof Metaregistrar\EPP\eppLaunchCheckResponse) && ($response->Success())) {
-            $phase = $response->getLaunchPhase();
             $checks = $response->getCheckedDomains();
             foreach ($checks as $check) {
                 echo $check['domainname'] . " is " . ($check['available'] ? 'free' : 'taken') . " (" . $check['reason'] . ")\n";

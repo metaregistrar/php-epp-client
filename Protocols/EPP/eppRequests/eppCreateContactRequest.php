@@ -22,7 +22,7 @@ class eppCreateContactRequest extends eppCreateRequest {
     /**
      *
      * @param eppContact $contact
-     * @return domElement
+     * @return \domElement
      */
     public function setContact(eppContact $contact) {
         #

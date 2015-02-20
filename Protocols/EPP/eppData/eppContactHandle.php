@@ -27,7 +27,6 @@ class eppContactHandle {
     /**
      *
      * @param string $contactHandle
-     * @param SidnContactInfo $contactInfo
      * @param string $contactType
      * @return void
      */

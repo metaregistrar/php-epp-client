@@ -69,7 +69,7 @@ class eppContact {
 
     /**
      * Add postal info to this contact
-     * @param SidnContactPostalInfo $postalInfo
+     * @param eppContactPostalInfo $postalInfo
      * @return void
      */
     public function addPostalInfo(eppContactPostalInfo $postalInfo) {
@@ -92,7 +92,7 @@ class eppContact {
      * Retrieve a postalInfo object by number
      *
      * @param int $line
-     * @return SidnContactPostalInfo
+     * @return eppContactPostalInfo
      */
     public function getPostalInfo($line) {
         if ($this->postalInfo[$line]) {

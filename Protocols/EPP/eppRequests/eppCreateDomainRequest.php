@@ -82,7 +82,7 @@ class eppCreateDomainRequest extends eppCreateRequest {
     /**
      *
      * @param eppDomain $domain
-     * @return domElement
+     * @return \domElement
      */
     public function setDomain(eppDomain $domain) {
         if (!strlen($domain->getDomainname())) {
@@ -132,7 +132,7 @@ class eppCreateDomainRequest extends eppCreateRequest {
         if ($domain->getSecdnsLength() > 0) {
             for ($i = 0; $i < $domain->getSecdnsLength(); $i++) {
                 $sd = $domain->getSecdns($i);
-                /* @var $sd riSecdns */
+                /* @var $sd eppSecdns */
                 if ($sd) {
                     $ext = new eppSecdns();
                     $ext->copy($sd);
@@ -158,7 +158,7 @@ class eppCreateDomainRequest extends eppCreateRequest {
     /**
      *
      * @param eppHost $host
-     * @return domElement
+     * @return \domElement
      */
     private function addDomainHostAttr(eppHost $host) {
 
@@ -178,7 +178,7 @@ class eppCreateDomainRequest extends eppCreateRequest {
     /**
      *
      * @param eppHost $host
-     * @return domElement
+     * @return \domElement
      */
     private function addDomainHostObj(eppHost $host) {
         $ns = $this->createElement('domain:hostObj', $host->getHostname());

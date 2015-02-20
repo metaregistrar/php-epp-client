@@ -81,7 +81,6 @@ class eppCreateResponse extends eppResponse {
 
     public function getDomainName() {
         $xpath = $this->xPath();
-        $idna = new eppIDNA();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:creData/domain:name');
         if (is_object($result) && ($result->length > 0)) {
             return trim($result->item(0)->nodeValue);
@@ -102,7 +101,6 @@ class eppCreateResponse extends eppResponse {
 
     public function getHostName() {
         $xpath = $this->xPath();
-        $idna = new eppIDNA();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:creData/host:name');
         if (is_object($result) && ($result->length > 0)) {
             return trim($result->item(0)->nodeValue);

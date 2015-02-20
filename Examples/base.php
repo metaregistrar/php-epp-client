@@ -39,7 +39,7 @@ function greet($conn) {
             }
             return true;
         }
-    } catch (eppException $e) {
+    } catch (Metaregistrar\EPP\eppException $e) {
         echo $e->getMessage() . "\n";
     }
     return false;
@@ -52,7 +52,7 @@ function login($conn) {
         if ((($response = $conn->writeandread($login)) instanceof Metaregistrar\EPP\eppLoginResponse) && ($response->Success())) {
             return true;
         }
-    } catch (eppException $e) {
+    } catch (Metaregistrar\EPP\eppException $e) {
         echo $e->getMessage() . "\n";
     }
     return false;
@@ -68,7 +68,7 @@ function logout($conn) {
             echo "Logout failed with message " . $response->getResultMessage() . "\n";
             return false;
         }
-    } catch (eppException $e) {
+    } catch (Metaregistrar\EPP\eppException $e) {
         echo $e->getMessage() . "\n";
     }
     return false;

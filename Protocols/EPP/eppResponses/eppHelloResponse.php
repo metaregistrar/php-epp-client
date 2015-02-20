@@ -84,7 +84,7 @@ class eppHelloResponse extends eppResponse {
 
     /**
      * Server name is returned by EPP greeting (hello)
-     * @return type string
+     * @return string
      */
     public function getServerName() {
         $xpath = $this->xPath();
@@ -94,7 +94,7 @@ class eppHelloResponse extends eppResponse {
 
     /**
      * Server date is returned by EPP greeting (hello)
-     * @return type string
+     * @return string
      */
     public function getServerDate() {
         $xpath = $this->xPath();
@@ -104,7 +104,7 @@ class eppHelloResponse extends eppResponse {
 
     /**
      * Languages are returned by EPP greeting (hello)
-     * @return type array of strings
+     * @return array of strings
      */
     public function getLanguages() {
         $xpath = $this->xPath();
@@ -117,7 +117,7 @@ class eppHelloResponse extends eppResponse {
 
     /**
      * Services are returned by EPP greeting (hello)
-     * @return type array of strings
+     * @return array of strings
      */
     public function getServices() {
         $xpath = $this->xPath();
@@ -130,7 +130,7 @@ class eppHelloResponse extends eppResponse {
 
     /**
      * Extensions are returned by EPP greeting (hello)
-     * @return type array of strings
+     * @return array of strings
      */
     public function getExtensions() {
         $xpath = $this->xPath();

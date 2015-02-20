@@ -22,7 +22,7 @@ function GeneratePassword($crypt = false, $pass = null, $len = 8, $regexp = '/^[
     }
     $array[] = $pass;
     if ($crypt) {
-        list($salt) = Tools::GeneratePassword();
+        list($salt) = GeneratePassword();
         $array[] = crypt($pass, '$1$' . $salt);
     }
     return $array;
@@ -51,7 +51,7 @@ for ($i = 0; $i < 1500; $i++) {
 
 echo "Checking " . count($domains) . " domain names\n";
 try {
-    $conn = new sidnEppConnection(true);
+    $conn = new Metaregistrar\EPP\sidnEppConnection(true);
 
     // Connect to the EPP server
     $mtime = microtime();
@@ -97,11 +97,9 @@ function checkdomains($conn, $domains) {
         $check = new Metaregistrar\EPP\eppCheckRequest($domains);
         if ((($response = $conn->writeandread($check)) instanceof Metaregistrar\EPP\eppCheckResponse) && ($response->Success())) {
             $checks = $response->getCheckedDomains();
-
-#            foreach ($checks as $check)
-#            {
-#                echo $check['domainname']." is ".($check['available'] ? 'free' : 'taken')." (".$check['reason'].")\n";
-#            }
+            foreach ($checks as $check) {
+                echo $check['domainname']." is ".($check['available'] ? 'free' : 'taken')." (".$check['reason'].")\n";
+            }
         } else {
             echo "ERROR2\n";
         }

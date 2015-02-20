@@ -76,7 +76,7 @@ class eppDomain {
 
     /**
      *
-     * @param SidnContact $registrant
+     * @param eppContact $registrant
      * @param string $authorisationCode
      */
     public function __construct($domainname, $registrant = null, $contacts = null, $hosts = null, $period = 0, $authorisationCode = null) {

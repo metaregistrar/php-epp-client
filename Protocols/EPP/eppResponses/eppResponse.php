@@ -99,7 +99,7 @@ class eppResponse extends \DomDocument {
         return false;
     }
 
-    public function saveXML(DOMNode $node = NULL, $options = NULL) {
+    public function saveXML(\DOMNode $node = NULL, $options = NULL) {
         return str_replace("\t", '  ', parent::saveXML($node, LIBXML_NOEMPTYTAG));
     }
 
@@ -375,8 +375,8 @@ class eppResponse extends \DomDocument {
 
     /**
      *
-     * @param domDocument $document
-     * @return DOMXpath
+     * @param \domDocument $document
+     * @return \DOMXpath
      */
     public function xPath() {
         $xpath = new \DOMXpath($this);

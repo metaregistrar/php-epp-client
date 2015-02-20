@@ -39,7 +39,7 @@ function infodomain($conn, $domainname) {
         $epp = new Metaregistrar\EPP\eppDomain($domainname);
         $info = new Metaregistrar\EPP\eppInfoDomainRequest($epp);
         if ((($response = $conn->writeandread($info)) instanceof Metaregistrar\EPP\eppInfoDomainResponse) && ($response->Success())) {
-            /* @var $response eppInfoDomainResponse */
+            /* @var $response Metaregistrar\EPP\eppInfoDomainResponse */
             $d = $response->getDomain();
             echo "Info domain for " . $d->getDomainname() . ":\n";
             echo "Created on " . $response->getDomainCreateDate() . "\n";

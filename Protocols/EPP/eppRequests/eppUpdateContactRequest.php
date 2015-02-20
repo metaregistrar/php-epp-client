@@ -30,10 +30,10 @@ class eppUpdateContactRequest extends eppRequest {
     /**
      *
      * @param string $contactid
-     * @param eppContact $addinfo
-     * @param eppContact $removeinfo
-     * @param eppContact $updateinfo
-     * @return domElement
+     * @param eppContact $addInfo
+     * @param eppContact $removeInfo
+     * @param eppContact $updateInfo
+     * @return \domElement
      */
     public function updateContact($contactid, $addInfo, $removeInfo, $updateInfo) {
         #
@@ -63,7 +63,7 @@ class eppUpdateContactRequest extends eppRequest {
 
     /**
      *
-     * @param type $element
+     * @param string $element
      * @param eppContact $contact
      */
     private function addContactStatus($element, eppContact $contact) {
@@ -80,7 +80,7 @@ class eppUpdateContactRequest extends eppRequest {
 
     /**
      *
-     * @param domElement $element
+     * @param \domElement $element
      * @param eppContact $contact
      */
     private function addContactChanges($element, eppContact $contact) {

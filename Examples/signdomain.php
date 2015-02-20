@@ -30,10 +30,10 @@ function eppConnect($conn) {
         $login = new Metaregistrar\EPP\eppLoginRequest();
         if ((($response = $conn->writeandread($login)) instanceof Metaregistrar\EPP\eppLoginResponse) && ($response->Success())) {
         } else {
-            throw new eppException('Unable to login to EPP');
+            throw new Metaregistrar\EPP\eppException('Unable to login to EPP');
         }
     } else {
-        throw new eppException('Unable to connect to EPP');
+        throw new Metaregistrar\EPP\eppException('Unable to connect to EPP');
     }
 }
 

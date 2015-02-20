@@ -17,7 +17,6 @@ class eppLaunchCreateDomainRequest extends eppCreateDomainRequest {
      * @param $name String name of phase to use
      * @param $launchType String type of create to use, application or registration
      * @param null $customName String when $name is custom, you should specify this one.
-     * @throws RegistrarException
      */
     public function setLaunchPhase($name, $launchType = null, $customName = null) {
         if (!$this->launchCreate) {

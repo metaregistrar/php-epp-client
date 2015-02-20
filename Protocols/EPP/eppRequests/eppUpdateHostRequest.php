@@ -29,8 +29,11 @@ class eppUpdateHostRequest extends eppRequest {
 
     /**
      *
-     * @param eppHost $hostInfo
-     * @return domElement
+     * @param string $hostname
+     * @param eppHost $addInfo
+     * @param eppHost $removeInfo
+     * @param eppHost $updateInfo
+     * @return \domElement
      */
     public function updateHost($hostname, $addInfo, $removeInfo, $updateInfo) {
         #
@@ -67,7 +70,7 @@ class eppUpdateHostRequest extends eppRequest {
 
     /**
      *
-     * @param domElement $element
+     * @param \domElement $element
      * @param eppHost $host
      */
     private function addHostChanges($element, eppHost $host) {

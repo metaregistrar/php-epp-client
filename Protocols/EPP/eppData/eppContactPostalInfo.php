@@ -197,7 +197,7 @@ class eppContactPostalInfo {
 
     /**
      *
-     * @return type int or loc
+     * @return string int or loc
      */
     public function getType() {
         return $this->type;
@@ -205,7 +205,7 @@ class eppContactPostalInfo {
 
     /**
      *
-     * @param type $type int or loc
+     * @param string $type int or loc
      */
     public function setType($type) {
         $type = strtolower($type);

@@ -20,7 +20,7 @@ class eppCreateHostRequest extends eppCreateRequest {
     /**
      *
      * @param eppHost $host
-     * @return domElement
+     * @return \domElement
      */
     public function setHost(eppHost $host) {
         if (!strlen($host->getHostname())) {

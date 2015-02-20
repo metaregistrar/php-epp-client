@@ -33,7 +33,7 @@ class eppUpdateDomainRequest extends eppRequest {
      * @param eppDomain $addInfo
      * @param eppDomain $removeInfo
      * @param eppDomain $updateInfo
-     * @return domElement
+     * @return \domElement
      */
     public function updateDomain($domainname, $addInfo, $removeInfo, $updateInfo) {
         #
@@ -63,7 +63,7 @@ class eppUpdateDomainRequest extends eppRequest {
 
     /**
      *
-     * @param domElement $element
+     * @param \domElement $element
      * @param eppDomain $domain
      */
     private function addDomainChanges($element, eppDomain $domain) {
@@ -106,7 +106,7 @@ class eppUpdateDomainRequest extends eppRequest {
 
     /**
      *
-     * @param domElement $element
+     * @param \domElement $element
      * @param string $status
      */
     private function addDomainStatus($element, $status) {
@@ -132,7 +132,7 @@ class eppUpdateDomainRequest extends eppRequest {
     /**
      *
      * @param eppHost $host
-     * @return domElement
+     * @return \domElement
      */
     private function addDomainHostAttr(eppHost $host) {
 
@@ -152,7 +152,7 @@ class eppUpdateDomainRequest extends eppRequest {
     /**
      *
      * @param eppHost $host
-     * @return domElement
+     * @return \domElement
      */
     private function addDomainHostObj(eppHost $host) {
         $ns = $this->createElement('domain:hostObj', $host->getHostname());

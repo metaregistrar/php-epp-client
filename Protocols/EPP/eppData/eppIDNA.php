@@ -94,8 +94,8 @@ class eppIDNA {
      *           on failures; false: loose mode, ideal for "wildlife" applications
      *           by silently ignoring errors and returning the original input instead
      *
-     * @param    mixed     Parameter to set (string: single parameter; array of Parameter => Value pairs)
-     * @param    string    Value to use (if parameter 1 is a string)
+     * @param    mixed     $option Parameter to set (string: single parameter; array of Parameter => Value pairs)
+     * @param    string    $value Value to use (if parameter 1 is a string)
      * @return   boolean   true on success, false otherwise
      */
     public function set_parameter($option, $value = false) {
@@ -146,8 +146,8 @@ class eppIDNA {
 
     /**
      * Decode a given ACE domain name
-     * @param    string   Domain name (ACE string)
-     * [@param    string   Desired output encoding, see {@link set_parameter}]
+     * @param    string   $input Domain name (ACE string)
+     * [@param    string   $one_time_encoding Desired output encoding, see {@link set_parameter}]
      * @return   string   Decoded Domain name (UTF-8 or UCS-4)
      */
     public function decode($input, $one_time_encoding = false) {
@@ -248,8 +248,8 @@ class eppIDNA {
 
     /**
      * Encode a given UTF-8 domain name
-     * @param    string   Domain name (UTF-8 or UCS-4)
-     * [@param    string   Desired input encoding, see {@link set_parameter}]
+     * @param    string   $decoded Domain name (UTF-8 or UCS-4)
+     * [@param    string  $one_time_encoding Desired input encoding, see {@link set_parameter}]
      * @return   string   Encoded Domain name (ACE string)
      */
     public function encode($decoded, $one_time_encoding = false) {
@@ -261,6 +261,7 @@ class eppIDNA {
                 break;
             case 'ucs4_string':
                 $decoded = $this->_ucs4_string_to_ucs4($decoded);
+                break;
             case 'ucs4_array':
                 break;
             default:
@@ -296,7 +297,6 @@ class eppIDNA {
                     } else {
                         // Skip first char
                         if ($k) {
-                            $encoded = '';
                             $encoded = $this->_encode(array_slice($decoded, $last_begin, (($k) - $last_begin)));
                             if ($encoded) {
                                 $output .= $encoded;
@@ -312,7 +312,6 @@ class eppIDNA {
         // Catch the rest of the string
         if ($last_begin) {
             $inp_len = sizeof($decoded);
-            $encoded = '';
             $encoded = $this->_encode(array_slice($decoded, $last_begin, (($inp_len) - $last_begin)));
             if ($encoded) {
                 $output .= $encoded;
@@ -561,7 +560,7 @@ class eppIDNA {
 
     /**
      * Do Nameprep according to RFC3491 and RFC3454
-     * @param    array    Unicode Characters
+     * @param    array    $input Unicode Characters
      * @return   string   Unicode Characters, Nameprep'd
      */
     protected function _nameprep($input) {
@@ -658,7 +657,7 @@ class eppIDNA {
     /**
      * Ccomposes a Hangul syllable
      * (see http://www.unicode.org/unicode/reports/tr15/#Hangul
-     * @param    array    Decomposed UCS4 sequence
+     * @param    array    $input Decomposed UCS4 sequence
      * @return   array    UCS4 sequence with syllables composed
      */
     protected function _hangul_compose($input) {
@@ -699,7 +698,7 @@ class eppIDNA {
 
     /**
      * Returns the combining class of a certain wide char
-     * @param    integer    Wide char to check (32bit integer)
+     * @param    integer    $char Wide char to check (32bit integer)
      * @return   integer    Combining class if found, else 0
      */
     protected function _get_combining_class($char) {
@@ -708,7 +707,7 @@ class eppIDNA {
 
     /**
      * Applies the cannonical ordering of a decomposed UCS4 sequence
-     * @param    array      Decomposed UCS4 sequence
+     * @param    array      $input Decomposed UCS4 sequence
      * @return   array      Ordered USC4 sequence
      */
     protected function _apply_cannonical_ordering($input) {
@@ -739,7 +738,7 @@ class eppIDNA {
 
     /**
      * Do composition of a sequence of starter and non-starter
-     * @param    array      UCS4 Decomposed sequence
+     * @param    array      $input UCS4 Decomposed sequence
      * @return   array      Ordered USC4 sequence
      */
     protected function _combine($input) {
@@ -937,11 +936,11 @@ class eppIDNA {
      * Attempts to return a concrete IDNA instance.
      *
      * @param array $params Set of paramaters
-     * @return idna_convert
+     * @return eppIDNA
      * @access public
      */
     public function getInstance($params = array()) {
-        return new idna_convert($params);
+        return new eppIDNA($params);
     }
 
     /**
@@ -961,7 +960,7 @@ class eppIDNA {
         }
         $signature = serialize($params);
         if (!isset($instances[$signature])) {
-            $instances[$signature] = idna_convert::getInstance($params);
+            $instances[$signature] = eppIDNA::getInstance($params);
         }
         return $instances[$signature];
     }

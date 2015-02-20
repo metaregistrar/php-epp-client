@@ -8,7 +8,7 @@ class dnsbeEppInfoDomainResponse extends eppInfoDomainResponse {
 
     /**
      *
-     * @return true or false
+     * @return boolean
      */
     public function getQuarantined() {
         $xpath = $this->xPath();
@@ -27,7 +27,7 @@ class dnsbeEppInfoDomainResponse extends eppInfoDomainResponse {
 
     /**
      *
-     * @return true or false
+     * @return boolean
      */
     public function getOnHold() {
         $xpath = $this->xPath();

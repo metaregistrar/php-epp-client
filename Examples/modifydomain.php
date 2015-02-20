@@ -42,11 +42,11 @@ function modifydomain($conn, $domainname, $registrant = null, $admincontact = nu
         if ((($response = $conn->writeandread($info)) instanceof Metaregistrar\EPP\eppInfoDomainResponse) && ($response->Success())) {
             // If new nameservers are given, get the old ones to remove them
             if (is_array($nameservers)) {
-                /* @var eppInfoDomainResponse $response */
+                /* @var Metaregistrar\EPP\eppInfoDomainResponse $response */
                 $oldns = $response->getDomainNameservers();
                 if (is_array($oldns)) {
                     if (!$del) {
-                        $del = new eppDomain($domainname);
+                        $del = new Metaregistrar\EPP\eppDomain($domainname);
                     }
                     foreach ($oldns as $ns) {
                         $del->addHost($ns);
@@ -67,23 +67,23 @@ function modifydomain($conn, $domainname, $registrant = null, $admincontact = nu
         $add = null;
         if ($admincontact) {
             if (!$add) {
-                $add = new eppDomain($domainname);
+                $add = new Metaregistrar\EPP\eppDomain($domainname);
             }
-            $admin = new Metaregistrar\EPP\eppContactHandle($admincontact, eppContactHandle::CONTACT_TYPE_ADMIN);
+            $admin = new Metaregistrar\EPP\eppContactHandle($admincontact, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_ADMIN);
             $add->addContact($admin);
         }
         if ($techcontact) {
             if (!$add) {
                 $add = new Metaregistrar\EPP\eppDomain($domainname);
             }
-            $tech = new Metaregistrar\EPP\eppContactHandle($techcontact, eppContactHandle::CONTACT_TYPE_TECH);
+            $tech = new Metaregistrar\EPP\eppContactHandle($techcontact, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_TECH);
             $add->addContact($tech);
         }
         if ($billingcontact) {
             if (!$add) {
                 $add = new Metaregistrar\EPP\eppDomain($domainname);
             }
-            $billing = new Metaregistrar\EPP\eppContactHandle($billingcontact, eppContactHandle::CONTACT_TYPE_BILLING);
+            $billing = new Metaregistrar\EPP\eppContactHandle($billingcontact, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_BILLING);
             $add->addContact($billing);
         }
         if (is_array($nameservers)) {
@@ -97,7 +97,7 @@ function modifydomain($conn, $domainname, $registrant = null, $admincontact = nu
         }
         $update = new Metaregistrar\EPP\eppUpdateDomainRequest($domain, $add, $del, $mod);
         if ((($response = $conn->writeandread($update)) instanceof Metaregistrar\EPP\eppUpdateResponse) && ($response->Success())) {
-            /* @var eppUpdateResponse $response */
+            /* @var Metaregistrar\EPP\eppUpdateResponse $response */
             echo $response->getResultMessage() . "\n";
         }
     } catch (Metaregistrar\EPP\eppException $e) {

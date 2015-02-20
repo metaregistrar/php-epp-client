@@ -39,7 +39,7 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
 
     /**
      *
-     * @return true or false
+     * @return boolean
      */
     public function getQuarantined() {
         $xpath = $this->xPath();
@@ -58,7 +58,7 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
 
     /**
      *
-     * @return true or false
+     * @return boolean
      */
     public function getOnHold() {
         $xpath = $this->xPath();

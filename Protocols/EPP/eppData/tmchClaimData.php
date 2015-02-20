@@ -158,7 +158,7 @@ class tmchClaimData extends \DomDocument {
     public function __destruct() {
     }
 
-    public function saveXML(DOMNode $node = NULL, $options = NULL) {
+    public function saveXML(\DOMNode $node = NULL, $options = NULL) {
         return str_replace("\t", '  ', parent::saveXML($node, LIBXML_NOEMPTYTAG));
     }
 

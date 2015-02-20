@@ -42,7 +42,7 @@ class eppCheckRequest extends eppRequest {
 
     /**
      *
-     * @param array $domainnames
+     * @param array $domains
      */
     public function setDomainNames($domains) {
         #

@@ -117,7 +117,7 @@ function test10($conn, $domainname, $authcode) {
 
 function test11($conn, $domainname) {
     $info = dnssecinfodomain($conn, $domainname);
-    /* @var $info eppDnssecInfoDomainResponse */
+    /* @var $info Metaregistrar\EPP\eppInfoDomainResponse */
     $keydata = $info->getKeydata();
     if (count($keydata) > 0) {
         updatedomainremoveds($conn, $domainname);
@@ -132,7 +132,7 @@ function test12($conn, $domainname, $authcode) {
 
 function test13($conn) {
     $polldata = poll($conn);
-    /* @var $polldata eppPollResponse */
+    /* @var $polldata Metaregistrar\EPP\eppPollResponse */
     while ($polldata->getMessageCount() > 0) {
         pollack($conn, $polldata->getMessageId());
         $polldata = poll($conn);
@@ -143,11 +143,10 @@ function poll($conn) {
     try {
         $poll = new Metaregistrar\EPP\eppPollRequest(Metaregistrar\EPP\eppPollRequest::POLL_REQ);
         if ((($response = $conn->writeandread($poll)) instanceof Metaregistrar\EPP\eppPollResponse) && ($response->Success())) {
-            /* @var $response eppPollResponse */
+            /* @var $response Metaregistrar\EPP\eppPollResponse */
             if ($response->getResultCode() == Metaregistrar\EPP\eppResponse::RESULT_MESSAGE_ACK) {
                 echo $response->saveXML();
                 echo $response->getMessageCount() . " messages waiting in the queue\n";
-                $messageid = $response->getMessageId();
                 echo "Picked up message " . $response->getMessageId() . ': ' . $response->getMessage() . "\n";
                 return $response;
             } else {
@@ -195,7 +194,7 @@ function checkandcreatehosts($conn, $hosts) {
                 }
             }
         }
-    } catch (Metaregistrar\EPP\ppException $e) {
+    } catch (Metaregistrar\EPP\eppException $e) {
         echo $e->getMessage() . "\n";
     }
 }
@@ -215,9 +214,9 @@ function createhost($conn, $hostname, $ipaddress) {
 
 function createcontact($conn, $email, $telephone, $name, $organization, $address, $postcode, $city, $country) {
     try {
-        $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, eppContactPostalInfo::POSTAL_TYPE_LOCAL);
+        $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, Metaregistrar\EPP\eppContactPostalInfo::POSTAL_TYPE_LOCAL);
         $contactinfo = new Metaregistrar\EPP\eppContact($postalinfo, $email, $telephone);
-        $contact = new Metaregistrar\EPP\iisEppCreateRequest($contactinfo);
+        $contact = new Metaregistrar\EPP\iisEppCreateContactRequest($contactinfo);
         if ((($response = $conn->writeandread($contact)) instanceof Metaregistrar\EPP\eppCreateResponse) && ($response->Success())) {
             echo "Contact created on " . $response->getContactCreateDate() . " with id " . $response->getContactId() . "\n";
             return $response->getContactId();
@@ -235,15 +234,15 @@ function createdomain($conn, $domainname, $registrant, $admincontact, $techconta
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $domain->setRegistrant($reg);
         if ($admincontact) {
-            $admin = new Metaregistrar\EPP\eppContactHandle($admincontact, eppContactHandle::CONTACT_TYPE_ADMIN);
+            $admin = new Metaregistrar\EPP\eppContactHandle($admincontact, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_ADMIN);
             $domain->addContact($admin);
         }
         if ($techcontact) {
-            $tech = new Metaregistrar\EPP\eppContactHandle($techcontact, eppContactHandle::CONTACT_TYPE_TECH);
+            $tech = new Metaregistrar\EPP\eppContactHandle($techcontact, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_TECH);
             $domain->addContact($tech);
         }
         if ($billingcontact) {
-            $billing = new Metaregistrar\EPP\eppContactHandle($billingcontact, eppContactHandle::CONTACT_TYPE_BILLING);
+            $billing = new Metaregistrar\EPP\eppContactHandle($billingcontact, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_BILLING);
             $domain->addContact($billing);
         }
         if (is_array($nameservers)) {
@@ -273,7 +272,7 @@ function renewdomain($conn, $domainname, $expdate) {
             infodomain($conn, $domainname);
         }
 
-    } catch (eppException $e) {
+    } catch (Metaregistrar\EPP\eppException $e) {
         echo $e->getMessage() . "\n";
     }
 }
@@ -367,7 +366,7 @@ function updatedomainremoveds($conn, $domainname) {
         $secdns = new Metaregistrar\EPP\eppSecdns();
         $secdns->setData(45678, 2, 'B5C422428DEA4137FBF15E1049A48D27FA5EADE64D2EC9F3B58A994A6ABDE543');
         $secdns->setAlgorithm(5);
-        $domain = new Metaregistrar\EPP\eppDnssecUpdateRequest($domainname, null, $secdns);
+        $domain = new Metaregistrar\EPP\eppDnssecUpdateDomainRequest($domainname, null, $secdns);
         echo $domain->saveXML();
         if ((($response = $conn->writeandread($domain)) instanceof Metaregistrar\EPP\eppUpdateResponse) && ($response->Success())) {
             echo $response->saveXML();
@@ -383,7 +382,7 @@ function updatecontact($conn, $contactid) {
         $contact = new Metaregistrar\EPP\eppContactHandle($contactid);
         $update = new Metaregistrar\EPP\eppContact();
         $update->setVoice('+46.799999999');
-        $pi = new Metaregistrar\EPP\eppContactPostalInfo(null, 'Kiruna', 'SE', null, null, null, '18752', eppContactPostalInfo::POSTAL_TYPE_LOCAL);
+        $pi = new Metaregistrar\EPP\eppContactPostalInfo(null, 'Kiruna', 'SE', null, null, null, '18752', Metaregistrar\EPP\eppContactPostalInfo::POSTAL_TYPE_LOCAL);
         $update->addPostalInfo($pi);
         $up = new Metaregistrar\EPP\eppUpdateRequest($contact, null, null, $update);
         if ((($response = $conn->writeandread($up)) instanceof Metaregistrar\EPP\eppUpdateResponse) && ($response->Success())) {
@@ -433,9 +432,9 @@ function infodomain($conn, $domainname) {
 function dnssecinfodomain($conn, $domainname) {
     try {
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
-        $info = new Metaregistrar\EPP\eppDnssecInfoDomainRequest($domain);
-        if ((($response = $conn->writeandread($info)) instanceof Metaregistrar\EPP\eppDnssecInfoDomainResponse) && ($response->Success())) {
-            /* @var $response eppDnssecInfoResponse */
+        $info = new Metaregistrar\EPP\eppInfoDomainRequest($domain);
+        if ((($response = $conn->writeandread($info)) instanceof Metaregistrar\EPP\eppInfoDomainResponse) && ($response->Success())) {
+            /* @var $response Metaregistrar\EPP\eppInfoDomainResponse */
             return $response;
         }
 
@@ -478,7 +477,7 @@ function infohost($conn, $hostname) {
 function checkdomain($conn, $domain) {
     $check = new Metaregistrar\EPP\eppCheckRequest($domain);
     if ((($response = $conn->writeandread($check)) instanceof Metaregistrar\EPP\eppCheckResponse) && ($response->Success())) {
-        /* @var $response eppCheckResponse */
+        /* @var $response Metaregistrar\EPP\eppCheckResponse */
         $result = $response->getCheckedDomains();
         foreach ($result as $checkeddomain) {
             if ($checkeddomain['domainname'] == $domain->getDomainName()) {
@@ -493,7 +492,7 @@ function transferdomain($conn, $domainname, $authcode) {
     try {
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $domain->setAuthorisationCode($authcode);
-        $transfer = new Metaregistrar\EPP\eppTransferRequest(eppTransferRequest::OPERATION_REQUEST, $domain);
+        $transfer = new Metaregistrar\EPP\eppTransferRequest(Metaregistrar\EPP\eppTransferRequest::OPERATION_REQUEST, $domain);
         echo $transfer->saveXML();
         if ((($response = $conn->writeandread($transfer)) instanceof Metaregistrar\EPP\eppTransferResponse) && ($response->Success())) {
             echo $response->saveXML();

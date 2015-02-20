@@ -36,7 +36,6 @@ function get_cnis($id) {
     curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
     $output = curl_exec($ch);
-    $info = curl_getinfo($ch);
     curl_close($ch);
     var_dump($output);
 }

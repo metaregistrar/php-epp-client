@@ -64,7 +64,7 @@ class eppConnection {
 
     /**
      * These namespaces are needed in the root of the EPP object
-     * @var type array of accepted URI's for xpath
+     * @var array of accepted URI's for xpath
      */
     protected $rootspace = array();
 
@@ -373,8 +373,8 @@ class eppConnection {
      * Load the answer in a response domDocument
      * return the reponse
      *
-     * @param domDocument $content
-     * @return domDocument
+     * @param \domDocument $content
+     * @return \domDocument
      * @throws eppException
      */
     public function writeandread($content) {

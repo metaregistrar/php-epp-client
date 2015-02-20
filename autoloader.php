@@ -77,5 +77,3 @@ function autoloadProtocol($className) {
 spl_autoload_register('autoloadProtocol');
 spl_autoload_register('autoloadRegistry');
 spl_autoload_register('autoloadData');
-
-?>

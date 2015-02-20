@@ -52,11 +52,11 @@ function checkdomainclaim($conn, $domainname) {
                             echo "Claim validator: " . $check['claim']->getValidator() . ", claim key: " . $check['claim']->getClaimKey() . "\n";
                             $tmch = new Metaregistrar\EPP\tmchEppConnection();
                             $claim = array();
-                            //$output = $tmch->getCnis($check['claim']->getClaimKey());
+                            $output = $tmch->getCnis($check['claim']->getClaimKey());
                             /* @var $output Metaregistrar\EPP\tmchClaimData */
-                            //$claim['noticeid']= $output->getNoticeId();
-                            //$claim['notafter']= $output->getNotAfter();
-                            //$claim['confirmed']= gmDate("Y-m-d\TH:i:s\Z");
+                            $claim['noticeid']= $output->getNoticeId();
+                            $claim['notafter']= $output->getNotAfter();
+                            $claim['confirmed']= gmDate("Y-m-d\TH:i:s\Z");
                             return $claim;
                         } else {
                             throw new Metaregistrar\EPP\eppException("Domain name " . $check['domainname'] . " is claimed, but no valid claim key is present");
@@ -112,7 +112,7 @@ function createclaimeddomain($conn, $domainname, $claim, $registrant, $admincont
             echo "Domain " . $response->getDomainName() . " created on " . $response->getDomainCreateDate() . ", expiration date is " . $response->getDomainExpirationDate() . "\n";
             //echo "Registration phase: ".$response->getLaunchPhase()." and Application ID: ".$response->getLaunchApplicationID()."\n";
         }
-    } catch (eppException $e) {
+    } catch (Metaregistrar\EPP\eppException $e) {
         echo $e->getMessage() . "\n";
     }
 }
