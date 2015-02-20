@@ -30,8 +30,6 @@ class metaregEppConnection extends eppConnection
         parent::addExtension('polldata','http://www.metaregistrar.com/epp/polldata-1.0');
         parent::addExtension('command-ext','http://www.metaregistrar.com/epp/command-ext-1.0');
         parent::addExtension('ext','http://www.metaregistrar.com/epp/ext-1.0');
-        // Temporary workaround for a strange problem
-        //$this->mtrcompensation = true;
     }
 
 }

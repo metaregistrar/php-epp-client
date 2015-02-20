@@ -324,16 +324,8 @@ class eppConnection
 						return false;
 					}
 				}
-				$this->writeLog("Read 4 bytes for integer. (read: ".strlen($read).")");
-				$this->writeLog($read);
-                if ($this->mtrcompensation)
-                {
-                    $length = $this->readInteger($read);
-                }
-                else
-                {
-                    $length = $this->readInteger($read)-4;
-                }
+				$this->writeLog("Read 4 bytes for integer. (read: ".strlen($read)."):$read");
+                $length = $this->readInteger($read)-4;
 				$this->writeLog("Reading next: $length bytes");
             }
             if ($length > 1000000)
@@ -344,13 +336,18 @@ class eppConnection
             if ((isset($length)) && ($length > 0))
             {
                 $time = time()+$this->timeout;
-                $this->writeLog("Reading $length bytes of content.\n");
+                //$this->writeLog("Reading $length bytes of content.");
                 if ($read = fread($this->connection, $length))
                 {
                     $this->writeLog($read);
-                    $this->writeLog(print_R(socket_get_status($this->connection), true));
+                    //$this->writeLog(print_R(socket_get_status($this->connection), true));
                     $length = $length-strlen($read);
                     $content .= $read;
+                }
+                if (strpos($content,'Session limit exceeded')>0)
+                {
+                    $read = fread($this->connection,4);
+                    $content.=$read;
                 }
             }
 			if (!strlen($read))
@@ -472,11 +469,11 @@ class eppConnection
         {
             throw new eppException("No valid response from server");
         }
-        if ($this->logging)
-        {
-            $this->writeLog("==== SENDING XML ======");
-            $this->writeLog($content->saveXML(null, LIBXML_NOEMPTYTAG));
-        }
+        //if ($this->logging)
+        //{
+        //    $this->writeLog("==== SENDING XML ======");
+        //    $this->writeLog($content->saveXML(null, LIBXML_NOEMPTYTAG));
+        //}
         if ($this->write($content->saveXML(null, LIBXML_NOEMPTYTAG)))
         {
             $xml = $this->read();
@@ -487,11 +484,11 @@ class eppConnection
 					/*echo $xml;
 					ob_flush();
                     */
-					if ($this->logging)
-                    {
-                        $this->writeLog("==== RECEIVED XML =====");
-                        $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG));
-                    }
+					#if ($this->logging)
+                    #{
+                    #    $this->writeLog("==== RECEIVED XML =====");
+                    #    $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG));
+                    #}
                     $clienttransid = $response->getClientTransactionId();                    
                     if (($clienttransid) && ($clienttransid != $requestsessionid))
                     {
@@ -699,7 +696,10 @@ class eppConnection
         echo "==== LOG ====";
         if (property_exists($this,'logentries'))
         {
-            print_r($this->logentries);
+            foreach($this->logentries as $logentry)
+            {
+                echo $logentry."\n";
+            }
         }
     }
     private function writeLog($text)
@@ -707,7 +707,7 @@ class eppConnection
         if ($this->logging)
         {            
 			//echo "-----".date("Y-m-d H:i:s")."-----".$text."-----end-----\n";
-            $this->logentries[] = "-----".date("Y-m-d H:i:s")."-----".$text."-----end-----\n";
+            $this->logentries[] = "-----".date("Y-m-d H:i:s")."-----\n".$text."\n-----end-----\n";
         }
     }
 }
