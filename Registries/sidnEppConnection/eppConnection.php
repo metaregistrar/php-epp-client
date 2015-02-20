@@ -10,11 +10,9 @@ include_once(dirname(__FILE__) . '/sidnEppCheckResponse.php');
 include_once(dirname(__FILE__) . '/sidnEppInfoDomainResponse.php');
 include_once(dirname(__FILE__) . '/sidnEppRenewRequest.php');
 
-class sidnEppConnection extends eppConnection
-{
+class sidnEppConnection extends eppConnection {
 
-    public function __construct($logging=false)
-    {
+    public function __construct($logging = false) {
         parent::__construct($logging);
         if ($settings = $this->loadSettings(dirname(__FILE__))) {
             parent::setHostname($settings['hostname']);
@@ -25,7 +23,7 @@ class sidnEppConnection extends eppConnection
         parent::setTimeout(5);
         parent::setLanguage('en');
         parent::setVersion('1.0');
-        parent::addExtension('sidn-epp-ext','http://rxsd.domain-registry.nl/sidn-ext-epp-1.0');
+        parent::addExtension('sidn-epp-ext', 'http://rxsd.domain-registry.nl/sidn-ext-epp-1.0');
         parent::enableDnssec();
         parent::addCommandResponse('Metaregistrar\EPP\sidnEppPollRequest', 'Metaregistrar\EPP\sidnEppPollResponse');
         parent::addCommandResponse('Metaregistrar\EPP\sidnEppCreateContactRequest', 'Metaregistrar\EPP\eppCreateResponse');

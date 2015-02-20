@@ -11,19 +11,16 @@ namespace Metaregistrar\EPP;
 
 
 */
-class dnsbeEppInfoDomainRequest extends eppInfoDomainRequest
-{
-    function __construct($infodomain, $hosts = null)
-    {
+class dnsbeEppInfoDomainRequest extends eppInfoDomainRequest {
+    function __construct($infodomain, $hosts = null) {
         parent::__construct($infodomain, $hosts);
         $this->addDnsbeExtension();
         $this->addSessionId();
     }
 
 
-    public function addDnsbeExtension()
-    {
-        $this->addExtension('xmlns:dnsbe','http://www.dns.be/xml/epp/dnsbe-1.0');
+    public function addDnsbeExtension() {
+        $this->addExtension('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
         $ext = $this->createElement('extension');
         $sidnext = $this->createElement('dnsbe:ext');
         $info = $this->createElement('dnsbe:info');

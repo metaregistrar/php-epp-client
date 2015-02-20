@@ -1,7 +1,7 @@
 <?php
 require("../autoloader.php");
 
-$domain = strtolower($_GET('domainname'));
+$domain = strtolower($_GET['domainname']);
 $domainkey = null;
 
 try {
@@ -9,27 +9,23 @@ try {
     $tmch = new Metaregistrar\EPP\tmchEppConnection();
     $list = $tmchdnl->getDnl();
     foreach ($list as $line) {
-            list($domainname,$key,$datetime)=explode(',',$line);
-            if ($domainname==$domain) {
-                $domainkey = $key;
-            }
+        list($domainname, $key, $datetime) = explode(',', $line);
+        if ($domainname == $domain) {
+            $domainkey = $key;
+        }
     }
     if ($domainkey) {
-        echo $tmch->showWarning($tmch->getCnis($domainkey),true);
-    }
-    else {
+        echo $tmch->showWarning($tmch->getCnis($domainkey), true);
+    } else {
         echo "Domain name not found in CNIS list\n";
     }
 
 
-}
-catch (Metaregistrar\EPP\eppException $e)
-{
-    echo "ERROR: ".$e->getMessage()."\n";
+} catch (Metaregistrar\EPP\eppException $e) {
+    echo "ERROR: " . $e->getMessage() . "\n";
 }
 
-function get_cnis($id)
-{
+function get_cnis($id) {
     $username = 'cnis143';
     $password = 'NcL$6#0MmCMIa2O3';
     $url = "https://test.tmcnis.org/cnis/$id.xml";

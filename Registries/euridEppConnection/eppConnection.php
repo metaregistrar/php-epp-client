@@ -6,11 +6,9 @@ namespace Metaregistrar\EPP;
 include_once(dirname(__FILE__) . '/euridEppInfoDomainRequest.php');
 include_once(dirname(__FILE__) . '/euridEppInfoDomainResponse.php');
 
-class euridEppConnection extends eppConnection
-{
+class euridEppConnection extends eppConnection {
 
-    public function __construct($logging=false)
-    {
+    public function __construct($logging = false) {
         parent::__construct($logging);
         if ($settings = $this->loadSettings(dirname(__FILE__))) {
             parent::setHostname($settings['hostname']);
@@ -22,9 +20,9 @@ class euridEppConnection extends eppConnection
         parent::setLanguage('en');
         parent::setVersion('1.0');
         //parent::enableDnssec();
-        parent::setServices(array('urn:ietf:params:xml:ns:domain-1.0'=>'domain','urn:ietf:params:xml:ns:contact-1.0'=>'contact'));
+        parent::setServices(array('urn:ietf:params:xml:ns:domain-1.0' => 'domain', 'urn:ietf:params:xml:ns:contact-1.0' => 'contact'));
         //parent::addExtension('nsgroup','http://www.eurid.eu/xml/epp/nsgroup-1.1');
-        parent::addService('http://www.eurid.eu/xml/epp/registrar-1.0','registrar');
+        parent::addService('http://www.eurid.eu/xml/epp/registrar-1.0', 'registrar');
         //parent::addExtension('authInfo','http://www.eurid.eu/xml/epp/authInfo-1.0');
         #parent::addCommandResponse('euridEppCreateNsgroupRequest', 'euridEppCreateNsgroupResponse');
         #parent::addCommandResponse('euridEppCreateRequest', 'euridEppCreateResponse');

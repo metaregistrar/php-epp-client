@@ -14,11 +14,11 @@ if ($argc <= 1) {
     die();
 }
 
-for ($i=1; $i<$argc; $i++) {
+for ($i = 1; $i < $argc; $i++) {
     $domains[] = $argv[$i];
 }
 
-echo "Checking ".count($domains)." domain names\n";
+echo "Checking " . count($domains) . " domain names\n";
 try {
     $conn = new Metaregistrar\EPP\metaregEppConnection(false);
     $conn->enableLaunchphase('claims');
@@ -28,15 +28,12 @@ try {
             checkdomains($conn, $domains);
             logout($conn);
         }
-    }
-    else {
+    } else {
         echo "ERROR CONNECTING\n";
     }
+} catch (Metaregistrar\EPP\eppException $e) {
+    echo "ERROR: " . $e->getMessage() . "\n\n";
 }
-catch (Metaregistrar\EPP\eppException $e) {
-    echo "ERROR: ".$e->getMessage()."\n\n";
-}
-
 
 
 function checkdomains($conn, $domains) {
@@ -47,15 +44,12 @@ function checkdomains($conn, $domains) {
             $phase = $response->getLaunchPhase();
             $checks = $response->getCheckedDomains();
             foreach ($checks as $check) {
-                echo $check['domainname']." is ".($check['available'] ? 'free' : 'taken')." (".$check['reason'].")\n";
+                echo $check['domainname'] . " is " . ($check['available'] ? 'free' : 'taken') . " (" . $check['reason'] . ")\n";
             }
+        } else {
+            echo "ERROR\n";
         }
-        else {
-            echo "ERROR2\n";
-        }
-    }
-    catch (Metaregistrar\EPP\eppException $e) {
-        echo 'ERROR1';
-        echo $e->getMessage()."\n";
+    } catch (Metaregistrar\EPP\eppException $e) {
+        echo $e->getMessage() . "\n";
     }
 }

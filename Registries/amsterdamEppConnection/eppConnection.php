@@ -10,11 +10,9 @@ include_once(dirname(__FILE__) . '/amsterdamEppCheckResponse.php');
 include_once(dirname(__FILE__) . '/amsterdamEppInfoDomainResponse.php');
 include_once(dirname(__FILE__) . '/amsterdamEppRenewRequest.php');
 
-class amsterdamEppConnection extends eppConnection
-{
+class amsterdamEppConnection extends eppConnection {
 
-    public function __construct($logging=false)
-    {
+    public function __construct($logging = false) {
         parent::__construct($logging);
         if ($settings = $this->loadSettings(dirname(__FILE__))) {
             parent::setHostname($settings['hostname']);
@@ -25,8 +23,8 @@ class amsterdamEppConnection extends eppConnection
         parent::setTimeout(5);
         parent::setLanguage('en');
         parent::setVersion('1.0');
-        parent::addExtension('sidn-epp-ext','http://rxsd.domain-registry.nl/sidn-ext-epp-1.0');
-        parent::addExtension('rgp','urn:ietf:params:xml:ns:rgp-1.0');
+        parent::addExtension('sidn-epp-ext', 'http://rxsd.domain-registry.nl/sidn-ext-epp-1.0');
+        parent::addExtension('rgp', 'urn:ietf:params:xml:ns:rgp-1.0');
         parent::enableDnssec();
         parent::addCommandResponse('Metaregistrar\EPP\amsterdamEppPollRequest', 'Metaregistrar\EPP\amsterdamEppPollResponse');
         parent::addCommandResponse('Metaregistrar\EPP\amsterdamEppCreateContactRequest', 'Metaregistrar\EPP\eppCreateResponse');

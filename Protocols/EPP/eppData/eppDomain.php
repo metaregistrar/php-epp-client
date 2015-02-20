@@ -1,62 +1,61 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppDomain
-{
+class eppDomain {
     const DOMAIN_PERIOD_UNIT_Y = 'y';
     const DOMAIN_PERIOD_UNIT_M = 'm';
     #
     # These status values cannot be set, only viewed
     #
-    const STATUS_OK                         = 'ok';
-    const STATUS_SERVER_DELETE_PROHIBITED   = 'serverDeleteProhibited';
-    const STATUS_SERVER_UPDATE_PROHIBITED   = 'serverUpdateProhibited';
-    const STATUS_SERVER_RENEW_PROHIBITED    = 'serverRenewProhibited';
+    const STATUS_OK = 'ok';
+    const STATUS_SERVER_DELETE_PROHIBITED = 'serverDeleteProhibited';
+    const STATUS_SERVER_UPDATE_PROHIBITED = 'serverUpdateProhibited';
+    const STATUS_SERVER_RENEW_PROHIBITED = 'serverRenewProhibited';
     const STATUS_SERVER_TRANSFER_PROHIBITED = 'serverTransferProhibited';
-    const STATUS_SERVER_HOLD                = 'serverHold';
-    const STATUS_INACTIVE                   = 'inactive';
-    const STATUS_PENDING_CREATE             = 'pendingCreate';
-    const STATUS_PENDING_DELETE             = 'pendingDelete';
-    const STATUS_PENDING_TRANSFER           = 'pendingTransfer';
-    const STATUS_PENDING_UPDATE             = 'pendingUpdate';
-    const STATUS_PENDING_RENEW              = 'pendingRenew';
+    const STATUS_SERVER_HOLD = 'serverHold';
+    const STATUS_INACTIVE = 'inactive';
+    const STATUS_PENDING_CREATE = 'pendingCreate';
+    const STATUS_PENDING_DELETE = 'pendingDelete';
+    const STATUS_PENDING_TRANSFER = 'pendingTransfer';
+    const STATUS_PENDING_UPDATE = 'pendingUpdate';
+    const STATUS_PENDING_RENEW = 'pendingRenew';
 
     #
     # These status values can be set
     #
-    const STATUS_CLIENT_DELETE_PROHIBITED   = 'clientDeleteProhibited';
-    const STATUS_CLIENT_UPDATE_PROHIBITED   = 'clientUpdateProhibited';
-    const STATUS_CLIENT_RENEW_PROHIBITED    = 'clientRenewProhibited';
+    const STATUS_CLIENT_DELETE_PROHIBITED = 'clientDeleteProhibited';
+    const STATUS_CLIENT_UPDATE_PROHIBITED = 'clientUpdateProhibited';
+    const STATUS_CLIENT_RENEW_PROHIBITED = 'clientRenewProhibited';
     const STATUS_CLIENT_TRANSFER_PROHIBITED = 'clientTransferProhibited';
-    const STATUS_CLIENT_HOLD                = 'clientHold';
+    const STATUS_CLIENT_HOLD = 'clientHold';
 
     /**
      *
      * @var string
      */
-    private $domainname='';
+    private $domainname = '';
     /**
      *
-     * @var string 
+     * @var string
      */
-    private $registrant='';
+    private $registrant = '';
     /**
      *
      * @var array Contact information for this domain name
      */
-    private $contacts=array();
+    private $contacts = array();
 
     /**
      *
      * @var array Host information for this domain name
      */
-    private $hosts=array();
+    private $hosts = array();
 
     /**
      *
      * @var array Status information for this domain name
      */
-    private $statuses=array();
+    private $statuses = array();
 
     /*
      * @var array DNSSEC information for this domain name
@@ -66,7 +65,7 @@ class eppDomain
      *
      * @var string
      */
-    private $authorisationCode='';
+    private $authorisationCode = '';
     /**
      *
      * @var integer
@@ -80,71 +79,47 @@ class eppDomain
      * @param SidnContact $registrant
      * @param string $authorisationCode
      */
-    public function __construct($domainname, $registrant=null, $contacts=null, $hosts=null, $period=0, $authorisationCode = null)
-    {
+    public function __construct($domainname, $registrant = null, $contacts = null, $hosts = null, $period = 0, $authorisationCode = null) {
 
-        if (strlen($domainname))
-        {
+        if (strlen($domainname)) {
             $this->setDomainname($domainname);
-        }
-        else
-        {
+        } else {
             throw new eppException('Domain name not set');
         }
         $this->setPeriod($period);
-        if ($registrant instanceof eppContact)
-        {
+        if ($registrant instanceof eppContact) {
             throw new eppException('Registrant must be Metaregistrar\EPP\eppContactHandle or string on eppDomain creation');
         }
-        if ($registrant instanceof Metaregistrar\EPP\eppContactHandle)
-        {
+        if ($registrant instanceof eppContactHandle) {
             $this->setRegistrant($registrant->getContactHandle());
-        }
-        else
-        {
-            if ($registrant)
-            {
-                if (strlen($registrant))
-                {
+        } else {
+            if ($registrant) {
+                if (strlen($registrant)) {
                     $this->setRegistrant($registrant);
-                }
-                else
-                {
+                } else {
                     throw new eppException('Registrant must be Metaregistrar\EPP\eppContactHandle or string on eppDomain creation');
                 }
             }
         }
-        if ($authorisationCode)
-        {
+        if ($authorisationCode) {
             $this->setAuthorisationCode($authorisationCode);
         }
-        if ($hosts)
-        {
-            if (is_array($hosts))
-            {
-                foreach ($hosts as $host)
-                {
+        if ($hosts) {
+            if (is_array($hosts)) {
+                foreach ($hosts as $host) {
                     $this->addHost($host);
                 }
-            }
-            else
-            {
+            } else {
                 $this->addHost($hosts);
             }
         }
-        if ($contacts)
-        {
-            if (is_array($contacts))
-            {
-                foreach ($contacts as $contact)
-                {
+        if ($contacts) {
+            if (is_array($contacts)) {
+                foreach ($contacts as $contact) {
                     $this->addContact($contact);
                 }
-            }
-            else
-            {
-                if (strlen($contacts))
-                {
+            } else {
+                if (strlen($contacts)) {
                     $this->addContact($contacts);
                 }
             }
@@ -153,10 +128,9 @@ class eppDomain
 
     /**
      *
-     * @param string $domainname 
+     * @param string $domainname
      */
-    public function setDomainname($domainname)
-    {
+    public function setDomainname($domainname) {
         $this->domainname = $domainname;
     }
 
@@ -164,8 +138,7 @@ class eppDomain
      *
      * @return string domain_name
      */
-    public function getDomainname()
-    {
+    public function getDomainname() {
         return $this->domainname;
     }
 
@@ -173,15 +146,11 @@ class eppDomain
      *
      * @param integer $period
      */
-    public function setPeriodUnit($periodunit)
-    {
-        if (($periodunit == eppDomain::DOMAIN_PERIOD_UNIT_Y) || ($periodunit == eppDomain::DOMAIN_PERIOD_UNIT_M))
-        {
+    public function setPeriodUnit($periodunit) {
+        if (($periodunit == eppDomain::DOMAIN_PERIOD_UNIT_Y) || ($periodunit == eppDomain::DOMAIN_PERIOD_UNIT_M)) {
             $this->periodunit = $periodunit;
-        }
-        else
-        {
-            throw new eppException("Domain period unit ".$periodunit." is invalid, only d or m allowed");
+        } else {
+            throw new eppException("Domain period unit " . $periodunit . " is invalid, only d or m allowed");
         }
     }
 
@@ -189,31 +158,23 @@ class eppDomain
      *
      * @return integer
      */
-    public function getPeriodUnit()
-    {
+    public function getPeriodUnit() {
         return $this->periodunit;
     }
 
 
-
-    public function getPeriod()
-    {
+    public function getPeriod() {
         return $this->period;
     }
 
-    public function setPeriod($period)
-    {
-        if ($this->periodunit == self::DOMAIN_PERIOD_UNIT_Y)
-        {
-            if (($period > 10) || ($period < 0))
-            {
+    public function setPeriod($period) {
+        if ($this->periodunit == self::DOMAIN_PERIOD_UNIT_Y) {
+            if (($period > 10) || ($period < 0)) {
                 throw new eppException("If period unit = y, period can only be 1 - 10");
             }
         }
-        if ($this->periodunit == self::DOMAIN_PERIOD_UNIT_M)
-        {
-            if (($period > 120) || ($period < 0))
-            {
+        if ($this->periodunit == self::DOMAIN_PERIOD_UNIT_M) {
+            if (($period > 120) || ($period < 0)) {
                 throw new eppException("If period unit = m, period can only be 1 - 120");
             }
         }
@@ -221,19 +182,14 @@ class eppDomain
     }
 
 
-
     /**
      *
-     * @param string $registrant 
+     * @param string $registrant
      */
-    public function setRegistrant($registrant)
-    {
-        if ($registrant instanceof eppContactHandle)
-        {
+    public function setRegistrant($registrant) {
+        if ($registrant instanceof eppContactHandle) {
             $this->registrant = $registrant->getContactHandle();
-        }
-        else
-        {
+        } else {
             $this->registrant = $registrant;
         }
     }
@@ -243,8 +199,7 @@ class eppDomain
      *
      * @return string registrant
      */
-    public function getRegistrant()
-    {
+    public function getRegistrant() {
         return $this->registrant;
     }
 
@@ -254,11 +209,9 @@ class eppDomain
      * @param eppContact $contact
      * @return void
      */
-    public function addContact(eppContactHandle $contact)
-    {
-        if (!strlen($contact->getContactType()))
-        {
-            throw new eppException('No contact type set for: '.$contact->getContactHandle().', please set one!');
+    public function addContact(eppContactHandle $contact) {
+        if (!strlen($contact->getContactType())) {
+            throw new eppException('No contact type set for: ' . $contact->getContactHandle() . ', please set one!');
         }
         $this->contacts[] = $contact;
     }
@@ -266,25 +219,22 @@ class eppDomain
     /**
      *
      * @param int $line
-     * @return Metaregistrar\EPP\eppContactHandle
+     * @return eppContactHandle
      */
-    public function getContact($type)
-    {
-        foreach ($this->contacts as $contact)
-        {
-            if ($contact->getContactType() == $type)
-            {
+    public function getContact($type) {
+        foreach ($this->contacts as $contact) {
+            if ($contact->getContactType() == $type) {
                 return $contact;
             }
         }
         return null;
     }
+
     /**
      *
      * @return array contactHandles
      */
-    public function getContacts()
-    {
+    public function getContacts() {
         return $this->contacts;
     }
 
@@ -292,8 +242,7 @@ class eppDomain
      *
      * @return int
      */
-    public function getContactLength()
-    {
+    public function getContactLength() {
         return count($this->contacts);
     }
 
@@ -302,14 +251,10 @@ class eppDomain
      * @param eppHost $host
      * @return void
      */
-    public function addHost(eppHost $host)
-    {
-        if (count($this->hosts) < 13)
-        {
+    public function addHost(eppHost $host) {
+        if (count($this->hosts) < 13) {
             $this->hosts[] = $host;
-        }
-        else
-        {
+        } else {
             throw new eppException('Cannot set more then 13 hosts on object');
         }
     }
@@ -318,16 +263,15 @@ class eppDomain
      *
      * @return array of eppHosts
      */
-    public function getHosts()
-    {
+    public function getHosts() {
         return $this->hosts;
     }
+
     /**
      *
      * @return int
      */
-    public function getHostLength()
-    {
+    public function getHostLength() {
         return count($this->hosts);
     }
 
@@ -336,42 +280,29 @@ class eppDomain
      * @param int $line
      * @return eppHost
      */
-    public function getHost($line)
-    {
-        if ($this->hosts[$line])
-        {
+    public function getHost($line) {
+        if ($this->hosts[$line]) {
             return $this->hosts[$line];
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
-    public function addSecdns($secdns)
-    {
+    public function addSecdns($secdns) {
         $this->secdns[] = $secdns;
     }
 
-    public function getSecdnsLength()
-    {
+    public function getSecdnsLength() {
         return count($this->secdns);
     }
 
-    public function getSecdns($row = null)
-    {
-        if (is_null($row))
-        {
+    public function getSecdns($row = null) {
+        if (is_null($row)) {
             return $this->secdns;
-        }
-        else
-        {
-            if ($this->secdns[$row])
-            {
+        } else {
+            if ($this->secdns[$row]) {
                 return $this->secdns[$row];
-            }
-            else
-            {
+            } else {
                 return null;
             }
         }
@@ -382,8 +313,7 @@ class eppDomain
      * @param string $authorisationCode
      * @return void
      */
-    public function setAuthorisationCode($authorisationCode)
-    {
+    public function setAuthorisationCode($authorisationCode) {
         $this->authorisationCode = htmlspecialchars($authorisationCode, ENT_COMPAT, "UTF-8");
     }
 
@@ -391,24 +321,23 @@ class eppDomain
      *
      * @return string
      */
-    public function getAuthorisationCode()
-    {
+    public function getAuthorisationCode() {
         return $this->authorisationCode;
     }
+
     /**
      *
      * @param string $status
      */
-    public function addStatus($status)
-    {
+    public function addStatus($status) {
         $this->statuses[] = $status;
     }
+
     /**
      *
      * @return string
      */
-    public function getStatuses()
-    {
+    public function getStatuses() {
         return $this->statuses;
     }
 

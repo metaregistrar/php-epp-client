@@ -10,10 +10,8 @@ namespace Metaregistrar\EPP;
 </extension>
  */
 
-class iisEppInfoDomainResponse extends eppInfoDomainResponse
-{
-    function __construct()
-    {
+class iisEppInfoDomainResponse extends eppInfoDomainResponse {
+    function __construct() {
         parent::__construct();
     }
 
@@ -22,36 +20,27 @@ class iisEppInfoDomainResponse extends eppInfoDomainResponse
      *
      * @return string State
      */
-    public function getDomainState()
-    {
+    public function getDomainState() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/iis:infData/iis:state');
-        if ($result->length > 0)
-        {
+        if ($result->length > 0) {
             return $result->item(0)->nodeValue;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
-
 
 
     /**
      *
      * @return 0 or 1
      */
-    public function getDomainClientDelete()
-    {
+    public function getDomainClientDelete() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/iis:infData/iis:clientDelete');
-        if ($result->length > 0)
-        {
+        if ($result->length > 0) {
             return $result->item(0)->nodeValue;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
@@ -60,16 +49,12 @@ class iisEppInfoDomainResponse extends eppInfoDomainResponse
      *
      * @return String
      */
-    public function getDomainDeactDate()
-    {
+    public function getDomainDeactDate() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/iis:infData/iis:deactDate');
-        if ($result->length > 0)
-        {
+        if ($result->length > 0) {
             return $result->item(0)->nodeValue;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
@@ -79,16 +64,12 @@ class iisEppInfoDomainResponse extends eppInfoDomainResponse
      *
      * @return String
      */
-    public function getDomainDelDate()
-    {
+    public function getDomainDelDate() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/iis:infData/iis:delDate');
-        if ($result->length > 0)
-        {
+        if ($result->length > 0) {
             return $result->item(0)->nodeValue;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }

@@ -2,55 +2,43 @@
 require('../autoloader.php');
 
 
-try
-{
+try {
     $domainname = 'dnssectest.nl';
     $conn = new Metaregistrar\EPP\sidnEppConnection();
     eppConnect($conn);
-    $add = new eppDomain($domainname);
-    $sec = new eppSecdns();
-    $sec->setKey('256','8','AwEAAbWM8nWQZbDZgJjyq+tLZwPLEXfZZjfvlRcmoAVZHgZJCPn/Ytu/iOsgci+yWgDT28ENzREAoAbKMflFFdhc5DNV27TZxhv8nMo9n2f+cyyRKbQ6oIAvMl7siT6WxrLxEBIMyoyFgDMbqGScn9k19Ppa8fwnpJgv0VUemfxGqHH9');
+    $add = new Metaregistrar\EPP\eppDomain($domainname);
+    $sec = new Metaregistrar\EPP\eppSecdns();
+    $sec->setKey('256', '8', 'AwEAAbWM8nWQZbDZgJjyq+tLZwPLEXfZZjfvlRcmoAVZHgZJCPn/Ytu/iOsgci+yWgDT28ENzREAoAbKMflFFdhc5DNV27TZxhv8nMo9n2f+cyyRKbQ6oIAvMl7siT6WxrLxEBIMyoyFgDMbqGScn9k19Ppa8fwnpJgv0VUemfxGqHH9');
     $add->addSecdns($sec);
-    $domain = new Metaregistrar\EPP\eppDnssecUpdateDomainRequest($domainname,$add);
-    if ((($response = $conn->writeandread($domain)) instanceof Metaregistrar\EPP\eppUpdateResponse) && ($response->Success()))
-    {
+    $domain = new Metaregistrar\EPP\eppDnssecUpdateDomainRequest($domainname, $add);
+    if ((($response = $conn->writeandread($domain)) instanceof Metaregistrar\EPP\eppUpdateResponse) && ($response->Success())) {
         echo "OKAY\n";
     }
     $this->eppDisconnect($conn);
     return true;
-}
-catch (Metaregistrar\EPP\eppException $e)
-{
-    echo "ERROR: ".$e->getMessage()."\n";
+} catch (Metaregistrar\EPP\eppException $e) {
+    echo "ERROR: " . $e->getMessage() . "\n";
     eppDisconnect($conn);
 }
 
 
-function eppConnect($conn)
-{
-    if ($conn->connect())
-    {
+function eppConnect($conn) {
+    if ($conn->connect()) {
         #
         # Send greeting to EPP server
         #
         $login = new Metaregistrar\EPP\eppLoginRequest();
-        if ((($response = $conn->writeandread($login)) instanceof Metaregistrar\EPP\eppLoginResponse) && ($response->Success()))
-        {
-        }
-        else
-        {
+        if ((($response = $conn->writeandread($login)) instanceof Metaregistrar\EPP\eppLoginResponse) && ($response->Success())) {
+        } else {
             throw new eppException('Unable to login to EPP');
         }
-    }
-    else
-    {
+    } else {
         throw new eppException('Unable to connect to EPP');
     }
 }
 
 
-function eppDisconnect($conn)
-{
+function eppDisconnect($conn) {
     $logout = new Metaregistrar\EPP\eppLogoutRequest();
     $conn->writeandread($logout);
     $conn->disconnect();

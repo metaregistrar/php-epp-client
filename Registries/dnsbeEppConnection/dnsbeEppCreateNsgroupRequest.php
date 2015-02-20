@@ -14,26 +14,21 @@ namespace Metaregistrar\EPP;
   </command>
 </epp>
  */
-class dnsbeEppCreateNsgroupRequest extends eppRequest
-{
+class dnsbeEppCreateNsgroupRequest extends eppRequest {
 
 
-    function __construct($createinfo)
-    {
+    function __construct($createinfo) {
         parent::__construct($createinfo);
 
-        if ($createinfo instanceof eppHost)
-        {
-            $this->addExtension('xmlns:nsgroup','http://www.dns.be/xml/epp/nsgroup-1.0');
+        if ($createinfo instanceof eppHost) {
+            $this->addExtension('xmlns:nsgroup', 'http://www.dns.be/xml/epp/nsgroup-1.0');
             $this->addNsgroup($createinfo);
         }
         $this->addSessionId();
     }
 
-    private function addNsGroup(eppHost $host)
-    {
-        if (!strlen($host->getHostname()))
-        {
+    private function addNsGroup(eppHost $host) {
+        if (!strlen($host->getHostname())) {
             throw new eppException('No valid hostname in create host request');
         }
         #
@@ -45,8 +40,8 @@ class dnsbeEppCreateNsgroupRequest extends eppRequest
         #
         $create = $this->createElement('create');
         $this->hostobject = $this->createElement('nsgroup:create');
-        $this->hostobject->appendChild($this->createElement('nsgroup:name',$host->getHostname()));
-        $this->hostobject->appendChild($this->createElement('nsgroup:ns',$host->getHostname()));
+        $this->hostobject->appendChild($this->createElement('nsgroup:name', $host->getHostname()));
+        $this->hostobject->appendChild($this->createElement('nsgroup:ns', $host->getHostname()));
         $create->appendChild($this->hostobject);
         $this->command->appendChild($create);
         $this->epp->appendChild($this->command);

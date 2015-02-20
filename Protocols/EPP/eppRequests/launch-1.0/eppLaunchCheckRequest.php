@@ -1,8 +1,8 @@
 <?php
 namespace Metaregistrar\EPP;
-/*
- * This object contains all the logic to create an EPP check command for a launch phase
- */
+    /*
+     * This object contains all the logic to create an EPP check command for a launch phase
+     */
 
 /**
 C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -43,7 +43,7 @@ class eppLaunchCheckRequest extends eppCheckRequest {
     CONST STATUS_REJECTED = 'rejected';
     CONST STATUS_CUSTOM = 'custom';
 
-    function __construct($checkrequest){
+    function __construct($checkrequest) {
         parent::__construct($checkrequest);
         $this->addExtension('xmlns:launch', 'urn:ietf:params:xml:ns:launch-1.0');
     }
@@ -62,8 +62,7 @@ class eppLaunchCheckRequest extends eppCheckRequest {
         if ($name == self::PHASE_CUSTOM) {
             if ($customName != null) {
                 $launchPhase->setAttribute("name", $customName);
-            }
-            else {
+            } else {
                 throw new eppException ("customName must be filled when LaunchPhase is Custom");
             }
         }

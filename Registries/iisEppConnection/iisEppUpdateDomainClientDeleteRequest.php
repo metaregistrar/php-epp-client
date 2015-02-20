@@ -13,20 +13,17 @@ namespace Metaregistrar\EPP;
  */
 
 
-class iisEppUpdateDomainClientDeleteRequest extends eppUpdateRequest
-{
-    function __construct($domain, $clientdelete)
-    {
+class iisEppUpdateDomainClientDeleteRequest extends eppUpdateRequest {
+    function __construct($domain, $clientdelete) {
         $upd = new eppDomain($domain->getDomainName());
-        parent::__construct($domain,null,null,$upd);
+        parent::__construct($domain, null, null, $upd);
         $this->setClientDelete($clientdelete);
         parent::addSessionId();
-        
+
     }
 
-    private function setClientDelete($clientdelete)
-    {
-        $this->addExtension('xmlns:iis','urn:se:iis:xml:epp:iis-1.2');
+    private function setClientDelete($clientdelete) {
+        $this->addExtension('xmlns:iis', 'urn:se:iis:xml:epp:iis-1.2');
         $ext = $this->createElement('extension');
         $infdata = $this->createElement('iis:update');
         $cd = $this->createElement('iis:clientDelete', $clientdelete);

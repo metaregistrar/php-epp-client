@@ -1,16 +1,13 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppHelloRequest extends eppRequest
-{
-    function __construct()
-    {
+class eppHelloRequest extends eppRequest {
+    function __construct() {
         parent::__construct();
         $this->getEpp()->appendChild($this->createElement('hello'));
     }
 
-    function __destruct()
-    {
+    function __destruct() {
         parent::__destruct();
     }
 

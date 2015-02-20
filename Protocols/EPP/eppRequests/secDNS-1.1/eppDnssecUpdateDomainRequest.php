@@ -22,85 +22,69 @@ C:           </secDNS:dsData>
 C:         </secDNS:add>
  */
 
-class eppDnssecUpdateDomainRequest extends eppUpdateDomainRequest
-{
-    function __construct($objectname, $addinfo=null, $removeinfo=null, $updateinfo=null)
-    {
+class eppDnssecUpdateDomainRequest extends eppUpdateDomainRequest {
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null) {
         /* @var $addinfo eppDomain */
         /* @var $removeinfo eppDomain */
         /* @var $updateinfo eppDomain */
-	if ($objectname instanceof eppDomain)
-	{
-		$domainname = $objectname->getDomainName();
-	}
-	else
-	{
-		$domainname = $objectname;
-	}
-        if ($updateinfo == null)
-        {
+        if ($objectname instanceof eppDomain) {
+            $domainname = $objectname->getDomainName();
+        } else {
+            $domainname = $objectname;
+        }
+        if ($updateinfo == null) {
             $updateinfo = new eppDomain($domainname);
         }
         parent::__construct($domainname, $addinfo, $removeinfo, $updateinfo);
         $secdns = $this->createElement('secDNS:update');
-        $secdns->setAttribute('xmlns:secDNS','urn:ietf:params:xml:ns:secDNS-1.1');
-        if ($removeinfo instanceof eppDomain)
-        {
+        $secdns->setAttribute('xmlns:secDNS', 'urn:ietf:params:xml:ns:secDNS-1.1');
+        if ($removeinfo instanceof eppDomain) {
             $dnssecs = $removeinfo->getSecdns();
-            foreach ($dnssecs as $dnssec)
-            {
+            foreach ($dnssecs as $dnssec) {
                 $rem = $this->createElement('secDNS:rem');
-                if (strlen($dnssec->getPubkey())>0)
-                {
+                if (strlen($dnssec->getPubkey()) > 0) {
                     $keydata = $this->createElement('secDNS:keyData');
-                    $keydata->appendChild($this->createElement('secDNS:flags',$dnssec->getFlags()));
-                    $keydata->appendChild($this->createElement('secDNS:protocol',$dnssec->getProtocol()));
-                    $keydata->appendChild($this->createElement('secDNS:alg',$dnssec->getAlgorithm()));
-                    $keydata->appendChild($this->createElement('secDNS:pubKey',$dnssec->getPubkey()));
+                    $keydata->appendChild($this->createElement('secDNS:flags', $dnssec->getFlags()));
+                    $keydata->appendChild($this->createElement('secDNS:protocol', $dnssec->getProtocol()));
+                    $keydata->appendChild($this->createElement('secDNS:alg', $dnssec->getAlgorithm()));
+                    $keydata->appendChild($this->createElement('secDNS:pubKey', $dnssec->getPubkey()));
                     $rem->appendChild($keydata);
                 }
-                if (strlen($dnssec->getKeytag())>0)
-                {
+                if (strlen($dnssec->getKeytag()) > 0) {
                     $dsdata = $this->createElement('secDNS:dsData');
-                    $dsdata->appendChild($this->createElement('secDNS:keyTag',$dnssec->getKeytag()));
-                    $dsdata->appendChild($this->createElement('secDNS:alg',$dnssec->getAlgorithm()));
-                    if (strlen($dnssec->getSiglife())>0)
-                    {
-                        $dsdata->appendChild($this->createElement('secDNS:maxSigLife',$dnssec->getSiglife()));
+                    $dsdata->appendChild($this->createElement('secDNS:keyTag', $dnssec->getKeytag()));
+                    $dsdata->appendChild($this->createElement('secDNS:alg', $dnssec->getAlgorithm()));
+                    if (strlen($dnssec->getSiglife()) > 0) {
+                        $dsdata->appendChild($this->createElement('secDNS:maxSigLife', $dnssec->getSiglife()));
                     }
-                    $dsdata->appendChild($this->createElement('secDNS:digestType',$dnssec->getDigestType()));
-                    $dsdata->appendChild($this->createElement('secDNS:digest',$dnssec->getDigest()));
+                    $dsdata->appendChild($this->createElement('secDNS:digestType', $dnssec->getDigestType()));
+                    $dsdata->appendChild($this->createElement('secDNS:digest', $dnssec->getDigest()));
                     $rem->appendChild($dsdata);
                 }
                 $secdns->appendChild($rem);
             }
         }
-        if ($addinfo instanceof eppDomain)
-        {
+        if ($addinfo instanceof eppDomain) {
             $dnssecs = $addinfo->getSecdns();
-            foreach ($dnssecs as $dnssec)
-            {
+            foreach ($dnssecs as $dnssec) {
                 $add = $this->createElement('secDNS:add');
-                if (strlen($dnssec->getPubkey())>0)
-                {
+                if (strlen($dnssec->getPubkey()) > 0) {
                     $keydata = $this->createElement('secDNS:keyData');
-                    $keydata->appendChild($this->createElement('secDNS:flags',$dnssec->getFlags()));
-                    $keydata->appendChild($this->createElement('secDNS:protocol',$dnssec->getProtocol()));
-                    $keydata->appendChild($this->createElement('secDNS:alg',$dnssec->getAlgorithm()));
-                    $keydata->appendChild($this->createElement('secDNS:pubKey',$dnssec->getPubkey()));
+                    $keydata->appendChild($this->createElement('secDNS:flags', $dnssec->getFlags()));
+                    $keydata->appendChild($this->createElement('secDNS:protocol', $dnssec->getProtocol()));
+                    $keydata->appendChild($this->createElement('secDNS:alg', $dnssec->getAlgorithm()));
+                    $keydata->appendChild($this->createElement('secDNS:pubKey', $dnssec->getPubkey()));
                     $add->appendChild($keydata);
                 }
-                if (strlen($dnssec->getKeytag())>0)
-                {
+                if (strlen($dnssec->getKeytag()) > 0) {
                     $dsdata = $this->createElement('secDNS:dsData');
-                    $dsdata->appendChild($this->createElement('secDNS:keyTag',$dnssec->getKeytag()));
-                    $dsdata->appendChild($this->createElement('secDNS:alg',$dnssec->getAlgorithm()));
-                    if (strlen($dnssec->getSiglife())>0)
-                    {
-                        $dsdata->appendChild($this->createElement('secDNS:maxSigLife',$dnssec->getSiglife()));
+                    $dsdata->appendChild($this->createElement('secDNS:keyTag', $dnssec->getKeytag()));
+                    $dsdata->appendChild($this->createElement('secDNS:alg', $dnssec->getAlgorithm()));
+                    if (strlen($dnssec->getSiglife()) > 0) {
+                        $dsdata->appendChild($this->createElement('secDNS:maxSigLife', $dnssec->getSiglife()));
                     }
-                    $dsdata->appendChild($this->createElement('secDNS:digestType',$dnssec->getDigestType()));
-                    $dsdata->appendChild($this->createElement('secDNS:digest',$dnssec->getDigest()));
+                    $dsdata->appendChild($this->createElement('secDNS:digestType', $dnssec->getDigestType()));
+                    $dsdata->appendChild($this->createElement('secDNS:digest', $dnssec->getDigest()));
                     $add->appendChild($dsdata);
                 }
                 $secdns->appendChild($add);
@@ -110,8 +94,7 @@ class eppDnssecUpdateDomainRequest extends eppUpdateDomainRequest
         $this->addSessionId();
     }
 
-    function __destruct()
-    {
+    function __destruct() {
         parent::__destruct();
     }
 

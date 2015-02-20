@@ -12,31 +12,26 @@ namespace Metaregistrar\EPP;
       </sidn-ext-epp:ext>
     </extension>
  */
-class sidnEppCreateContactRequest extends eppCreateContactRequest
-{
+class sidnEppCreateContactRequest extends eppCreateContactRequest {
 
 
-    function __construct($createinfo)
-    {
+    function __construct($createinfo) {
         parent::__construct($createinfo);
-        
-        if ($createinfo instanceof eppContact)
-        {
-            $this->addExtension('xmlns:sidn-ext-epp','http://rxsd.domain-registry.nl/sidn-ext-epp-1.0');
+
+        if ($createinfo instanceof eppContact) {
+            $this->addExtension('xmlns:sidn-ext-epp', 'http://rxsd.domain-registry.nl/sidn-ext-epp-1.0');
             $this->addSidnExtension($createinfo);
         }
         $this->addSessionId();
     }
 
-    private function addSidnExtension(eppContact $contact)
-    {
+    private function addSidnExtension(eppContact $contact) {
         $postal = $contact->getPostalInfo(0);
-        if (strlen($postal->getOrganisationName()))
-        {
+        if (strlen($postal->getOrganisationName())) {
             $sidnext = $this->createElement('sidn-ext-epp:ext');
             $create = $this->createElement('sidn-ext-epp:create');
             $contact = $this->createElement('sidn-ext-epp:contact');
-            $contact->appendChild($this->createElement('sidn-ext-epp:legalForm','ANDERS'));
+            $contact->appendChild($this->createElement('sidn-ext-epp:legalForm', 'ANDERS'));
             #$contact->appendChild($this->createElement('sidn-ext-epp:legalFormRegNo','8764654.0'));
             $create->appendChild($contact);
             $sidnext->appendChild($create);

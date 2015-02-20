@@ -2,12 +2,9 @@
 namespace Metaregistrar\EPP;
 
 
+class donutsEppConnection extends eppConnection {
 
-class donutsEppConnection extends eppConnection
-{
-
-    public function __construct()
-    {
+    public function __construct() {
 
         // Construct the EPP connection object en specify if you want logging on or off
         parent::__construct(false);

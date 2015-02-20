@@ -30,33 +30,24 @@ S:  </response>
 S:</epp>
  */
 
-class eppLaunchCreateDomainResponse extends eppCreateResponse
-{
+class eppLaunchCreateDomainResponse extends eppCreateResponse {
 
-    public function getLaunchApplicationID()
-    {
+    public function getLaunchApplicationID() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/launch:creData/launch:applicationID');
-        if ($result->length > 0)
-        {
+        if ($result->length > 0) {
             return $result->item(0)->nodeValue;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
-    public function getLaunchPhase()
-    {
+    public function getLaunchPhase() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/launch:creData/launch:phase');
-        if ($result->length > 0)
-        {
+        if ($result->length > 0) {
             return $result->item(0)->nodeValue;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }

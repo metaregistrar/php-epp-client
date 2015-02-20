@@ -3,16 +3,14 @@ namespace Metaregistrar\EPP;
 #
 # Load the IIS.SE specific additions
 #
-include_once(dirname(__FILE__).'/iisEppCreateContactRequest.php');
-include_once(dirname(__FILE__).'/iisEppInfoDomainResponse.php');
-include_once(dirname(__FILE__).'/iisEppUpdateDomainClientDeleteRequest.php');
+include_once(dirname(__FILE__) . '/iisEppCreateContactRequest.php');
+include_once(dirname(__FILE__) . '/iisEppInfoDomainResponse.php');
+include_once(dirname(__FILE__) . '/iisEppUpdateDomainClientDeleteRequest.php');
 
 
-class iisEppConnection extends eppConnection
-{
+class iisEppConnection extends eppConnection {
 
-    public function __construct($logging=false)
-    {
+    public function __construct($logging = false) {
         // Construct the EPP connection object en specify if you want logging on or off
         parent::__construct($logging);
 
@@ -38,16 +36,16 @@ class iisEppConnection extends eppConnection
         parent::setVersion('1.0');
 
         // Enter the path to your certificate and the password here
-        parent::enableCertification(dirname(__FILE__).'/'.$settings['certificatefile'], $settings['certificatepassword']);
+        parent::enableCertification(dirname(__FILE__) . '/' . $settings['certificatefile'], $settings['certificatepassword']);
 
         // They have registered their own extension
-        parent::addExtension('iis','urn:se:iis:xml:epp:iis-1.2');
+        parent::addExtension('iis', 'urn:se:iis:xml:epp:iis-1.2');
 
         // Add the commands and responses specific to this registry
         // Please make sure the corresponding PHP files are present!
         parent::addCommandResponse('Metaregistrar\EPP\iisEppCreateContactRequest', 'Metaregistrar\EPP\eppCreateResponse');
         parent::addCommandResponse('Metaregistrar\EPP\eppInfoDomainRequest', 'Metaregistrar\EPP\iisEppInfoDomainResponse');
-        parent::addCommandResponse('Metaregistrar\EPP\iisEppUpdateDomainClientDeleteRequest','Metaregistrar\EPP\eppUpdateResponse');
+        parent::addCommandResponse('Metaregistrar\EPP\iisEppUpdateDomainClientDeleteRequest', 'Metaregistrar\EPP\eppUpdateResponse');
     }
 
 }

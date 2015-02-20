@@ -6,42 +6,38 @@ class eppDomainClaim {
      *
      * @var string
      */
-    private $validator='';
+    private $validator = '';
     /**
      *
      * @var string
      */
-    private $claimKey='';
+    private $claimKey = '';
 
     /**
      * @param string $claimKey
      */
-    public function setClaimKey($claimKey)
-    {
+    public function setClaimKey($claimKey) {
         $this->claimKey = $claimKey;
     }
 
     /**
      * @return string
      */
-    public function getClaimKey()
-    {
+    public function getClaimKey() {
         return $this->claimKey;
     }
 
     /**
      * @param string $validator
      */
-    public function setValidator($validator)
-    {
+    public function setValidator($validator) {
         $this->validator = $validator;
     }
 
     /**
      * @return string
      */
-    public function getValidator()
-    {
+    public function getValidator() {
         return $this->validator;
     }
 

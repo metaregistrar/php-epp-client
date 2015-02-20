@@ -10,29 +10,23 @@ namespace Metaregistrar\EPP;
 
 
 */
-class iisEppCreateContactRequest extends eppCreateContactRequest
-{
-    function __construct($createinfo)
-    {
-        if ($createinfo instanceof eppContact)
-        {
+class iisEppCreateContactRequest extends eppCreateContactRequest {
+    function __construct($createinfo) {
+        if ($createinfo instanceof eppContact) {
             parent::__construct($createinfo);
             $this->addIISExtension($createinfo);
-        }
-        else
-        {
+        } else {
             parent::__construct($createinfo);
         }
         $this->addSessionId();
     }
 
 
-    public function addIISExtension(eppContact $contact)
-    {
-        $this->addExtension('xmlns:iis','urn:se:iis:xml:epp:iis-1.2');
+    public function addIISExtension(eppContact $contact) {
+        $this->addExtension('xmlns:iis', 'urn:se:iis:xml:epp:iis-1.2');
         $ext = $this->createElement('extension');
         $create = $this->createElement('iis:create');
-        $orgno = $this->createElement('iis:orgno','[NL]150155');
+        $orgno = $this->createElement('iis:orgno', '[NL]150155');
         $create->appendChild($orgno);
         $ext->appendChild($create);
         $this->command->appendChild($ext);

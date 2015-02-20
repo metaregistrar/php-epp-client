@@ -11,20 +11,16 @@ namespace Metaregistrar\EPP;
     </extension>
 
  */
-class amsterdamEppCheckResponse extends eppCheckResponse
-{
-    function __construct()
-    {
+class amsterdamEppCheckResponse extends eppCheckResponse {
+    function __construct() {
         parent::__construct();
     }
 
-    public function getCheckResults()
-    {
+    public function getCheckResults() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/sidn-ext-epp:ext/sidn-ext-epp:response/sidn-ext-epp:msg');
-        foreach ($result as $code)
-        {
-            $error[$code->getAttribute('code')]=array('field'=>$code->getAttribute('field'),'message'=>$code->nodeValue);
+        foreach ($result as $code) {
+            $error[$code->getAttribute('code')] = array('field' => $code->getAttribute('field'), 'message' => $code->nodeValue);
         }
         return $error;
     }

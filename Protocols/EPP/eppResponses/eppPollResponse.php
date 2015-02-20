@@ -31,123 +31,97 @@ namespace Metaregistrar\EPP;
    </epp>
  */
 
-class eppPollResponse extends eppResponse
-{
-    function __construct()
-    {
+class eppPollResponse extends eppResponse {
+    function __construct() {
         parent::__construct();
     }
 
-    function __destruct()
-    {
+    function __destruct() {
         parent::__destruct();
     }
 
 
-    public function getMessageId()
-    {
+    public function getMessageId() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:msgQ/@id');
-        if (is_object($result) && ($result->length > 0))
-        {
+        if (is_object($result) && ($result->length > 0)) {
             return $result->item(0)->nodeValue;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
-    public function getMessageDate()
-    {
+    public function getMessageDate() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:msgQ/epp:qDate');
-        if (is_object($result) && ($result->length > 0))
-        {
-          return trim($result->item(0)->nodeValue);
-        }
-        else
-        {
-          return null;
-        }
-    }
-    
-    public function getMessage()
-    {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:msgQ/epp:msg');
-        if (is_object($result) && ($result->length > 0))
-        {
-            return $result->item(0)->nodeValue;
-        }
-        else
-        {
+        if (is_object($result) && ($result->length > 0)) {
+            return trim($result->item(0)->nodeValue);
+        } else {
             return null;
         }
     }
 
-    public function getMessageCount()
-    {
-        if ($this->getResultCode() == eppResponse::RESULT_NO_MESSAGES)
-        {
-            return 0;
+    public function getMessage() {
+        $xpath = $this->xPath();
+        $result = $xpath->query('/epp:epp/epp:response/epp:msgQ/epp:msg');
+        if (is_object($result) && ($result->length > 0)) {
+            return $result->item(0)->nodeValue;
+        } else {
+            return null;
         }
-        else
-        {
+    }
+
+    public function getMessageCount() {
+        if ($this->getResultCode() == eppResponse::RESULT_NO_MESSAGES) {
+            return 0;
+        } else {
             $xpath = $this->xPath();
-            $result = $xpath->query('/epp:epp/epp:response/epp:msgQ/@count' );
+            $result = $xpath->query('/epp:epp/epp:response/epp:msgQ/@count');
             return $result->item(0)->nodeValue;
         }
     }
 
 
-    public function getDomainName()
-    {
-       $xpath = $this->xPath();
-       $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:name');
-       return $result->item(0)->nodeValue;
+    public function getDomainName() {
+        $xpath = $this->xPath();
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:name');
+        return $result->item(0)->nodeValue;
     }
 
-    public function getDomainTrStatus()
-    {
-       $xpath = $this->xPath();
-       $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:trStatus');
-       return $result->item(0)->nodeValue;
+    public function getDomainTrStatus() {
+        $xpath = $this->xPath();
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:trStatus');
+        return $result->item(0)->nodeValue;
     }
 
-    public function getDomainRequestClientId()
-    {
-       $xpath = $this->xPath($this);
-       $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:reID');
-       return $result->item(0)->nodeValue;
+    public function getDomainRequestClientId() {
+        $xpath = $this->xPath($this);
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:reID');
+        return $result->item(0)->nodeValue;
     }
 
-    public function getDomainRequestDate()
-    {
-       $xpath = $this->xPath();
-       $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:reDate');
-       return $result->item(0)->nodeValue;
+    public function getDomainRequestDate() {
+        $xpath = $this->xPath();
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:reDate');
+        return $result->item(0)->nodeValue;
     }
 
-    public function getDomainExpirationDate()
-    {
-       $xpath = $this->xPath();
-       $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:exDate');
-       return $result->item(0)->nodeValue;
+    public function getDomainExpirationDate() {
+        $xpath = $this->xPath();
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:exDate');
+        return $result->item(0)->nodeValue;
     }
 
-    public function getDomainActionDate()
-    {
-       $xpath = $this->xPath();
-       $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:acDate');
-       return $result->item(0)->nodeValue;
+    public function getDomainActionDate() {
+        $xpath = $this->xPath();
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:acDate');
+        return $result->item(0)->nodeValue;
     }
 
-    public function getDomainActionClientId()
-    {
-       $xpath = $this->xPath();
-       $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:acID');
-       return $result->item(0)->nodeValue;
+    public function getDomainActionClientId() {
+        $xpath = $this->xPath();
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:acID');
+        return $result->item(0)->nodeValue;
     }
-    
+
 }

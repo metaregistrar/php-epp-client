@@ -1,34 +1,29 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppInfoHostResponse extends eppInfoResponse
-{
+class eppInfoHostResponse extends eppInfoResponse {
 
     /**
      *
-     * @return eppHost 
+     * @return eppHost
      */
-    public function getHost()
-    {
+    public function getHost() {
         $hostname = $this->getHostname();
         $address = $this->getHostAddresses();
-        $host = new eppHost($hostname,$address);
+        $host = new eppHost($hostname, $address);
         return $host;
     }
+
     /**
      *
      * @return string hostname
      */
-    public function getHostName()
-    {
+    public function getHostName() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:name');
-        if ($result->length > 0)
-        {
+        if ($result->length > 0) {
             return $result->item(0)->nodeValue;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
@@ -37,14 +32,12 @@ class eppInfoHostResponse extends eppInfoResponse
      *
      * @return array of host addresses
      */
-    public function getHostAddresses()
-    {
+    public function getHostAddresses() {
         $ip = null;
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:addr');
-        foreach ($result as $address)
-        {
-           $ip[$address->nodeValue]=$address->getAttribute('ip');
+        foreach ($result as $address) {
+            $ip[$address->nodeValue] = $address->getAttribute('ip');
         }
         return $ip;
     }
@@ -53,14 +46,12 @@ class eppInfoHostResponse extends eppInfoResponse
      *
      * @return string status
      */
-    public function getHostStatuses()
-    {
+    public function getHostStatuses() {
         $stat = null;
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:status/@s');
-        foreach ($result as $status)
-        {
-           $stat[] = $status->nodeValue;
+        foreach ($result as $status) {
+            $stat[] = $status->nodeValue;
         }
         return $stat;
     }
@@ -69,8 +60,7 @@ class eppInfoHostResponse extends eppInfoResponse
      *
      * @return string statuses
      */
-    public function getHostStatusCSV()
-    {
+    public function getHostStatusCSV() {
         return parent::arrayToCSV($this->getHostStatus());
     }
 
@@ -78,16 +68,12 @@ class eppInfoHostResponse extends eppInfoResponse
      *
      * @return string roid
      */
-    public function getHostRoid()
-    {
+    public function getHostRoid() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:roid');
-        if ($result->length > 0)
-        {
+        if ($result->length > 0) {
             return $result->item(0)->nodeValue;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
@@ -96,33 +82,26 @@ class eppInfoHostResponse extends eppInfoResponse
      *
      * @return string create_date
      */
-    public function getHostCreateDate()
-    {
+    public function getHostCreateDate() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:crDate');
-        if ($result->length > 0)
-        {
+        if ($result->length > 0) {
             return $result->item(0)->nodeValue;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
+
     /**
      *
      * @return string update_date
      */
-    public function getHostUpdateDate()
-    {
+    public function getHostUpdateDate() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:upDate');
-        if ($result->length > 0)
-        {
+        if ($result->length > 0) {
             return $result->item(0)->nodeValue;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
@@ -131,16 +110,12 @@ class eppInfoHostResponse extends eppInfoResponse
      *
      * @return string client id
      */
-    public function getHostClientId()
-    {
+    public function getHostClientId() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:clID');
-        if ($result->length > 0)
-        {
+        if ($result->length > 0) {
             return $result->item(0)->nodeValue;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
@@ -149,16 +124,12 @@ class eppInfoHostResponse extends eppInfoResponse
      *
      * @return string client id
      */
-    public function getHostCreateClientId()
-    {
+    public function getHostCreateClientId() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:crID');
-        if ($result->length > 0)
-        {
+        if ($result->length > 0) {
             return $result->item(0)->nodeValue;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
@@ -167,16 +138,12 @@ class eppInfoHostResponse extends eppInfoResponse
      *
      * @return string client id
      */
-    public function getHostUpdateClientId()
-    {
+    public function getHostUpdateClientId() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:upID');
-        if ($result->length > 0)
-        {
+        if ($result->length > 0) {
             return $result->item(0)->nodeValue;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }

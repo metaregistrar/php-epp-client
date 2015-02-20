@@ -5,9 +5,8 @@ namespace Metaregistrar\EPP;
  */
 
 
-class eppLaunchCreateDomainRequest extends eppCreateDomainRequest
-{
-    private $launchCreate=null;
+class eppLaunchCreateDomainRequest extends eppCreateDomainRequest {
+    private $launchCreate = null;
 
     function __construct(eppDomain $domain) {
         parent::__construct($domain);
@@ -49,13 +48,13 @@ class eppLaunchCreateDomainRequest extends eppCreateDomainRequest
      *  C:     </launch:create>
      *  C:    </extension>
      */
-    public function setLaunchCodeMark($mark,$validatorid) {
+    public function setLaunchCodeMark($mark, $validatorid) {
         if (!$this->launchCreate) {
             $this->launchCreate = $this->createElement("launch:create");
         }
         $codeMark = $this->createElement('launch:codeMark');
-        $launchCode = $this->createElement('launch:code',$mark);
-        $launchCode->setAttribute('validatorID',$validatorid);
+        $launchCode = $this->createElement('launch:code', $mark);
+        $launchCode->setAttribute('validatorID', $validatorid);
         $codeMark->appendChild($launchCode);
         $this->launchCreate->appendChild($codeMark);
         $this->addSessionId();
@@ -66,11 +65,11 @@ class eppLaunchCreateDomainRequest extends eppCreateDomainRequest
             $this->launchCreate = $this->createElement("launch:create");
         }
         $notice = $this->createElement('launch:notice');
-        $noticeid =$this->createElement('launch:noticeID',$noticeid);
-        $noticeid->setAttribute('validatorID',$validator);
+        $noticeid = $this->createElement('launch:noticeID', $noticeid);
+        $noticeid->setAttribute('validatorID', $validator);
         $notice->appendChild($noticeid);
-        $notice->appendChild($this->createElement('launch:notAfter',$notafter));
-        $notice->appendChild($this->createElement('launch:acceptedDate',$accepteddate));
+        $notice->appendChild($this->createElement('launch:notAfter', $notafter));
+        $notice->appendChild($this->createElement('launch:acceptedDate', $accepteddate));
         $this->launchCreate->appendChild($notice);
         $this->addSessionId();
     }

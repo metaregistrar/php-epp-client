@@ -8,27 +8,24 @@ try {
     $list = $tmchdnl->getDnl();
     $linecounter = -1;
     foreach ($list as $line) {
-        if (($linecounter>0) && (strlen($line)>0)){
-            list($domainname,$key,$datetime)=explode(',',$line);
-            if ($domainname!='1' and $domainname!='DNL') {
-                echo $linecounter.": ".$domainname."\n";
-                $k[$linecounter]=$key;
+        if (($linecounter > 0) && (strlen($line) > 0)) {
+            list($domainname, $key, $datetime) = explode(',', $line);
+            if ($domainname != '1' and $domainname != 'DNL') {
+                echo $linecounter . ": " . $domainname . "\n";
+                $k[$linecounter] = $key;
             }
         }
         $linecounter++;
     }
     echo "Select the number from one of the labels above to display the warning notice for this label\n:";
-    $number = (int) fgets(STDIN);
+    $number = (int)fgets(STDIN);
     echo $tmch->showWarning($tmch->getCnis($k[$number]));
 
-}
-catch (Metaregistrar\EPP\eppException $e)
-{
-    echo "ERROR: ".$e->getMessage()."\n";
+} catch (Metaregistrar\EPP\eppException $e) {
+    echo "ERROR: " . $e->getMessage() . "\n";
 }
 
-function get_cnis($id)
-{
+function get_cnis($id) {
     $username = 'cnis143';
     $password = 'NcL$6#0MmCMIa2O3';
     $url = "https://test.tmcnis.org/cnis/$id.xml";

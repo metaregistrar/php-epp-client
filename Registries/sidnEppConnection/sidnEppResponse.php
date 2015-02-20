@@ -1,23 +1,18 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class sidnEppResponse extends eppResponse
-{
-    function __construct()
-    {
+class sidnEppResponse extends eppResponse {
+    function __construct() {
         parent::__construct();
-    } 
-    
-    public function Success()
-    {
+    }
+
+    public function Success() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:result/@code');
         $resultcode = $result->item(0)->nodeValue;
-        $success = ($resultcode{0}=='1');
-        if (!$success)
-        {
-            switch($resultcode{1})
-            {
+        $success = ($resultcode{0} == '1');
+        if (!$success) {
+            switch ($resultcode{1}) {
                 case '0':
                     $this->setProblemtype('syntax');
                     break;
@@ -41,19 +36,15 @@ class sidnEppResponse extends eppResponse
 
             $errorstring = "Error $resultcode: $resultmessage ";
             $value = $xpath->query('/epp:epp/epp:response/epp:result/epp:value');
-            foreach ($value as $missing)
-            {
-                $errorstring .= ": ".$missing->nodeValue;
+            foreach ($value as $missing) {
+                $errorstring .= ": " . $missing->nodeValue;
             }
             $resultreason = $this->getResultReason();
-            if (strlen($resultreason))
-            {
-                $errorstring .= '('.$resultreason.')';
+            if (strlen($resultreason)) {
+                $errorstring .= '(' . $resultreason . ')';
             }
-            throw new eppException($errorstring,$resultcode);
-        }
-        else
-        {
+            throw new eppException($errorstring, $resultcode);
+        } else {
             return true;
         }
     }

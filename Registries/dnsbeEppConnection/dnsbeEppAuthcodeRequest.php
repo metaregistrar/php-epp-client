@@ -19,38 +19,29 @@ namespace Metaregistrar\EPP;
 
 
 */
-class dnsbeEppAuthcodeRequest extends eppRequest
-{
-    function __construct($domainname)
-    {
+class dnsbeEppAuthcodeRequest extends eppRequest {
+    function __construct($domainname) {
         parent::__construct();
-        if (is_string($domainname))
-        {
-            if (strlen($domainname)>0)
-            {
+        if (is_string($domainname)) {
+            if (strlen($domainname) > 0) {
                 $this->addDnsbeExtension($domainname);
-            }
-            else
-            {
+            } else {
                 throw new eppException("Domain name length may not be 0 on eppAuthcodeRequest");
             }
-        }
-        else
-        {
+        } else {
             throw new eppException("Domain name must be string on eppAuthcodeRequest");
         }
 
     }
 
-    private function addDnsbeExtension($domainname)
-    {
-        $this->addExtension('xmlns:dnsbe','http://www.dns.be/xml/epp/dnsbe-1.0');
+    private function addDnsbeExtension($domainname) {
+        $this->addExtension('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
         $ext = $this->createElement('extension');
         $dnsext = $this->createElement('dnsbe:ext');
         $command = $this->createElement('dnsbe:command');
         $authcode = $this->createElement('dnsbe:requestAuthCode');
-        $authcode->appendChild($this->createElement('dnsbe:domainName',$domainname));
-        $authcode->appendChild($this->createElement('dnsbe:url','http://www.metaregistrar.com/tranfer?domainname='.$domainname));
+        $authcode->appendChild($this->createElement('dnsbe:domainName', $domainname));
+        $authcode->appendChild($this->createElement('dnsbe:url', 'http://www.metaregistrar.com/tranfer?domainname=' . $domainname));
         $command->appendChild($authcode);
         $dnsext->appendChild($command);
         $ext->appendChild($dnsext);

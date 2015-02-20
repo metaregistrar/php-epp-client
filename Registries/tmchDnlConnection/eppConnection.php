@@ -5,7 +5,7 @@ class tmchDnlConnection extends eppConnection {
 
     private $lastinfo = null;
 
-    public function __construct($logging=false) {
+    public function __construct($logging = false) {
         parent::__construct($logging);
         if ($settings = $this->loadSettings(dirname(__FILE__))) {
             parent::setHostname($settings['hostname']);
@@ -20,15 +20,15 @@ class tmchDnlConnection extends eppConnection {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, parent::getHostname());
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_USERPWD, parent::getUsername().":".parent::getPassword());
+        curl_setopt($ch, CURLOPT_USERPWD, parent::getUsername() . ":" . parent::getPassword());
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $output = curl_exec($ch);
-        if(curl_errno($ch)) {
+        if (curl_errno($ch)) {
             throw new eppException(curl_error($ch));
         }
         $this->lastinfo = curl_getinfo($ch);
         curl_close($ch);
-        return explode("\n",$output);
+        return explode("\n", $output);
     }
 }

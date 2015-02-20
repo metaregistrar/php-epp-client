@@ -26,80 +26,68 @@ namespace Metaregistrar\EPP;
     </resData>
 */
 
-class amsterdamEppPollResponse extends eppPollResponse
-{
-    function __construct()
-    {
+class amsterdamEppPollResponse extends eppPollResponse {
+    function __construct() {
         parent::__construct();
     }
 
-    public function getPolledCommand()
-    {
+    public function getPolledCommand() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/sidn-ext-epp:pollData/sidn-ext-epp:command');
         return $result->item(0)->nodeValue;
     }
 
-    public function getPolledResultCode()
-    {
+    public function getPolledResultCode() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/sidn-ext-epp:pollData/sidn-ext-epp:data/epp:result/@code');
-        foreach ($result as $code)
-        {
+        foreach ($result as $code) {
             return $code->nodeValue;
         }
     }
 
-    public function getPolledResultMessage()
-    {
+    public function getPolledResultMessage() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/sidn-ext-epp:pollData/sidn-ext-epp:data/epp:result/epp:msg');
         return $result->item(0)->nodeValue;
     }
 
-    public function getPolledDomainname()
-    {
+    public function getPolledDomainname() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/sidn-ext-epp:pollData/sidn-ext-epp:data/epp:resData/domain:trnData/domain:name');
         return $result->item(0)->nodeValue;
     }
 
-    public function getPolledTransferStatus()
-    {
+    public function getPolledTransferStatus() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/sidn-ext-epp:pollData/sidn-ext-epp:data/epp:resData/domain:trnData/domain:trStatus');
         return $result->item(0)->nodeValue;
     }
 
-    public function getPolledRequestClientId()
-    {
+    public function getPolledRequestClientId() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/sidn-ext-epp:pollData/sidn-ext-epp:data/epp:resData/domain:trnData/domain:reID');
         return $result->item(0)->nodeValue;
     }
 
-    public function getPolledRequestDate()
-    {
+    public function getPolledRequestDate() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/sidn-ext-epp:pollData/sidn-ext-epp:data/epp:resData/domain:trnData/domain:reDate');
         return $result->item(0)->nodeValue;
     }
 
-    public function getPolledActionClientId()
-    {
+    public function getPolledActionClientId() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/sidn-ext-epp:pollData/sidn-ext-epp:data/epp:resData/domain:trnData/domain:acID');
         return $result->item(0)->nodeValue;
     }
 
-    public function getPolledActionDate()
-    {
+    public function getPolledActionDate() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/sidn-ext-epp:pollData/sidn-ext-epp:data/epp:resData/domain:trnData/domain:acDate');
         return $result->item(0)->nodeValue;
     }
-    public function getPolledTransactionId()
-    {
+
+    public function getPolledTransactionId() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/sidn-ext-epp:pollData/sidn-ext-epp:data/epp:trID/epp:svTRID');
         return $result->item(0)->nodeValue;

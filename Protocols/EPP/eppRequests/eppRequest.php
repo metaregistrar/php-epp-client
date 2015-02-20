@@ -4,23 +4,22 @@ namespace Metaregistrar\EPP;
  * This object contains all the logic to create an EPP command
  */
 
-class eppRequest extends \DomDocument
-{
+class eppRequest extends \DomDocument {
 
 
     /**
      * Element object to add command structures
-     * @var DomElement
+     * @var \DomElement
      */
     public $epp = null;
     /**
      * Created to be able to add new stuff to the command structure
-     * @var DomElement
+     * @var \DomElement
      */
     public $command = null;
     /**
      * Created to be able to group multiple extensions together
-     * @var DomElement
+     * @var \DomElement
      */
     public $extension = null;
     /**
@@ -30,32 +29,31 @@ class eppRequest extends \DomDocument
     public $sessionid = null;
     /**
      * DomainObject object to add namespaces to
-     * @var DomElement
+     * @var \DomElement
      */
     public $domainobject = null;
     /**
      * ContactObject object to add namespaces to
-     * @var DomElement
+     * @var \DomElement
      */
     public $contactobject = null;
     /**
      * HostObject object to add namespaces to
-     * @var DomElement
+     * @var \DomElement
      */
     public $hostobject = null;
     /*
      * Login element
-     * @var DomElement
+     * @var \DomElement
      */
     public $login = null;
     /*
      * Hello element
-     * @var DomElement
+     * @var \DomElement
      */
     public $hello = null;
 
-    function __construct()
-    {
+    function __construct() {
         $this->sessionid = uniqid();
         parent::__construct('1.0', 'UTF-8');
         $this->formatOutput = true;
@@ -63,14 +61,11 @@ class eppRequest extends \DomDocument
         #$this->validateOnParse = true;
     }
 
-    function __destruct()
-    {
+    function __destruct() {
     }
 
-    protected function getEpp()
-    {
-        if (!$this->epp)
-        {
+    protected function getEpp() {
+        if (!$this->epp) {
             #
             # Create base epp structure
             #
@@ -80,10 +75,8 @@ class eppRequest extends \DomDocument
         return $this->epp;
     }
 
-    protected function getCommand()
-    {
-        if (!$this->command)
-        {
+    protected function getCommand() {
+        if (!$this->command) {
             #
             # Create command structure
             #
@@ -93,10 +86,8 @@ class eppRequest extends \DomDocument
         return $this->command;
     }
 
-    protected function getExtension()
-    {
-        if (!$this->extension)
-        {
+    protected function getExtension() {
+        if (!$this->extension) {
             #
             # Create extension structure
             #
@@ -106,47 +97,37 @@ class eppRequest extends \DomDocument
         return $this->extension;
     }
 
-    public function addExtension($name,$value)
-    {
-        if ($epp = $this->getEpp())
-        {
-            $epp->setAttribute($name,$value);
-        }
-        else
-        {
+    public function addExtension($name, $value) {
+        if ($epp = $this->getEpp()) {
+            $epp->setAttribute($name, $value);
+        } else {
             throw new eppException('Cannot set attribute on an empty epp element');
         }
     }
 
 
-    public function addSessionId()
-    {
+    public function addSessionId() {
         #
         # Remove earlier session id's to make sure session id is at the end
         #
         $remove = $this->getElementsByTagName('clTRID');
-        foreach ($remove as $child)
-        {
+        foreach ($remove as $child) {
             $this->getCommand()->removeChild($child);
         }
         #
         # Add session id to the end of the command structure
         #
-        $this->getCommand()->appendChild($this->createElement('clTRID',$this->sessionid));
+        $this->getCommand()->appendChild($this->createElement('clTRID', $this->sessionid));
     }
-    
-    public function getSessionId()
-    {
+
+    public function getSessionId() {
         return $this->sessionid;
     }
-    
-    public function addNamespaces($namespaces)
-    {
-        if (is_array($namespaces))
-        {
-            foreach ($namespaces as $namespace=>$xmlns)
-            {
-				$this->getEpp()->setAttribute('xmlns:'.$xmlns,$namespace);
+
+    public function addNamespaces($namespaces) {
+        if (is_array($namespaces)) {
+            foreach ($namespaces as $namespace => $xmlns) {
+                $this->getEpp()->setAttribute('xmlns:' . $xmlns, $namespace);
                 /*$object = $xmlns.'object';
                 if ($object == 'secDNSobject')
                 {

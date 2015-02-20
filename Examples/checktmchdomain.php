@@ -14,10 +14,10 @@ if ($argc <= 1) {
     die();
 }
 
-for ($i=1; $i<$argc; $i++) {
-    $domains[] = iconv('ISO-8859-1','UTF-8',$argv[$i]);
+for ($i = 1; $i < $argc; $i++) {
+    $domains[] = iconv('ISO-8859-1', 'UTF-8', $argv[$i]);
 }
-echo "Checking ".count($domains)." domain names\n";
+echo "Checking " . count($domains) . " domain names\n";
 try {
     $conn = new Metaregistrar\EPP\metaregEppConnection(false);
     $conn->enableLaunchphase('claims');
@@ -27,52 +27,45 @@ try {
             checkdomains($conn, $domains);
             logout($conn);
         }
-    }
-    else {
+    } else {
         echo "ERROR CONNECTING\n";
     }
+} catch (Metaregistrar\EPP\eppException $e) {
+    echo "ERROR: " . $e->getMessage() . "\n\n";
 }
-catch (Metaregistrar\EPP\eppException $e) {
-    echo "ERROR: ".$e->getMessage()."\n\n";
-}
-
 
 
 function checkdomains($conn, $domains) {
     try {
         $check = new Metaregistrar\EPP\eppLaunchCheckRequest($domains);
-        $check->setLaunchPhase(Metaregistrar\EPP\eppLaunchCheckRequest::PHASE_CLAIMS,'test',Metaregistrar\EPP\eppLaunchCheckRequest::TYPE_CLAIMS);
+        $check->setLaunchPhase(Metaregistrar\EPP\eppLaunchCheckRequest::PHASE_CLAIMS, 'test', Metaregistrar\EPP\eppLaunchCheckRequest::TYPE_CLAIMS);
         if ((($response = $conn->writeandread($check)) instanceof Metaregistrar\EPP\eppLaunchCheckResponse) && ($response->Success())) {
             //$phase = $response->getLaunchPhase();
             $checks = $response->getDomainClaims();
 
             foreach ($checks as $check) {
-                echo $check['domainname']." has ".($check['claimed'] ? 'a claim' : 'no claim')."\n";
+                echo $check['domainname'] . " has " . ($check['claimed'] ? 'a claim' : 'no claim') . "\n";
                 if ($check['claimed']) {
                     if ($check['claim']) {
                         if ($check['claim'] instanceof Metaregistrar\EPP\eppDomainClaim) {
-                            echo "Claim validator: ".$check['claim']->getValidator().", claim key: ".$check['claim']->getClaimKey()."\n";
+                            echo "Claim validator: " . $check['claim']->getValidator() . ", claim key: " . $check['claim']->getClaimKey() . "\n";
                             $tmch = new Metaregistrar\EPP\tmchEppConnection();
                             $output = $tmch->getCnis($check['claim']->getClaimKey());
                             var_dump($output);
-                        }
-                        else {
-                            throw new Metaregistrar\EPP\eppException("Domain name ".$check['domainname']." is claimed, but no valid claim key is present");
+                        } else {
+                            throw new Metaregistrar\EPP\eppException("Domain name " . $check['domainname'] . " is claimed, but no valid claim key is present");
                         }
 
-                    }
-                    else {
-                        throw new Metaregistrar\EPP\eppException("Domain name ".$check['domainname']." is claimed, but no claim key is present");
+                    } else {
+                        throw new Metaregistrar\EPP\eppException("Domain name " . $check['domainname'] . " is claimed, but no claim key is present");
                     }
 
                 }
             }
-        }
-        else {
+        } else {
             echo "ERROR2\n";
         }
-    }
-    catch (Metaregistrar\EPP\eppException $e) {
-        echo 'ERROR1: '.$e->getMessage()."\n";
+    } catch (Metaregistrar\EPP\eppException $e) {
+        echo 'ERROR1: ' . $e->getMessage() . "\n";
     }
 }

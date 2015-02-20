@@ -8,8 +8,7 @@ require('../autoloader.php');
  */
 
 
-if ($argc <= 1)
-{
+if ($argc <= 1) {
     echo "Usage: changepassword <password>\n";
     echo "Please enter new password you want to use\n\n";
     die();
@@ -18,20 +17,15 @@ if ($argc <= 1)
 $newpassword = $argv[1];
 
 echo "Changing password\n";
-try
-{
+try {
     $conn = new Metaregistrar\EPP\metaregEppConnection();
     $conn->setNewPassword($newpassword);
     // Connect to the EPP server
-    if ($conn->connect())
-    {
-        if (login($conn))
-        {
+    if ($conn->connect()) {
+        if (login($conn)) {
             echo "Password was changed, you are logged-out automatically\n";
         }
     }
-}
-catch (Metaregistrar\EPP\eppException $e)
-{
-    echo "ERROR: ".$e->getMessage()."\n\n";
+} catch (Metaregistrar\EPP\eppException $e) {
+    echo "ERROR: " . $e->getMessage() . "\n\n";
 }
