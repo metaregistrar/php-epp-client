@@ -19,7 +19,6 @@ class amsterdamEppCreateContactRequest extends eppCreateContactRequest {
         parent::__construct($createinfo);
 
         if ($createinfo instanceof eppContact) {
-            echo "ADDING EXTENSION!!!!";
             $this->addSidnExtension($createinfo);
         }
         else
