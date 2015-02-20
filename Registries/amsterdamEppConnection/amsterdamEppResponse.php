@@ -43,6 +43,7 @@ class amsterdamEppResponse extends eppResponse {
             if (strlen($resultreason)) {
                 $errorstring .= '(' . $resultreason . ')';
             }
+            echo "AMSTERDAMEPPRESPONSE!";
             throw new eppException($errorstring, $resultcode);
         } else {
             return true;

@@ -24,7 +24,7 @@ class amsterdamEppConnection extends eppConnection {
         parent::setLanguage('en');
         parent::setVersion('1.0');
         parent::addExtension('sidn-epp-ext', 'http://rxsd.domain-registry.nl/sidn-ext-epp-1.0');
-        parent::addExtension('rgp', 'urn:ietf:params:xml:ns:rgp-1.0');
+        parent::enableRgp();
         parent::enableDnssec();
         parent::addCommandResponse('Metaregistrar\EPP\amsterdamEppPollRequest', 'Metaregistrar\EPP\amsterdamEppPollResponse');
         parent::addCommandResponse('Metaregistrar\EPP\amsterdamEppCreateContactRequest', 'Metaregistrar\EPP\eppCreateResponse');

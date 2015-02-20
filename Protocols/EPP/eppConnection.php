@@ -171,8 +171,16 @@ class eppConnection {
         $this->responses['Metaregistrar\\EPP\\eppDnssecUpdateDomainRequest'] = 'Metaregistrar\\EPP\\eppUpdateDomainResponse';
     }
 
+    public function enableRgp() {
+        $this->exturi['urn:ietf:params:xml:ns:rgp-1.0']='rgp';
+    }
+
+    public function disableRgp() {
+        unset($this->exturi['urn:ietf:params:xml:ns:rgp-1.0']);
+    }
+
     public function disableDnssec() {
-        unset($this->exturi['secDNS']);
+        unset($this->exturi['urn:ietf:params:xml:ns:secDNS-1.1']);
         unset($this->responses['Metaregistrar\\EPP\\eppDnssecUpdateDomainRequest']);
     }
 
