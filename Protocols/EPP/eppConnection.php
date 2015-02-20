@@ -447,7 +447,7 @@ class eppConnection {
                     #}
                     $clienttransid = $response->getClientTransactionId();
                     if (($clienttransid) && ($clienttransid != $requestsessionid)) {
-                        throw new eppException("Client transaction id $requestsessionid does not matched returned $clienttransid");
+                        throw new eppException("Client transaction id $requestsessionid does not matched returned $clienttransid\nMessage: ".$xml);
                     }
                     $response->setXpath($this->getServices());
                     $response->setXpath($this->getExtensions());

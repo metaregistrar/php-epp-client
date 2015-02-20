@@ -33,7 +33,6 @@ class amsterdamEppResponse extends eppResponse {
                     break;
             }
             $resultmessage = $this->getResultMessage();
-
             $errorstring = "Error $resultcode: $resultmessage ";
             $value = $xpath->query('/epp:epp/epp:response/epp:result/epp:value');
             foreach ($value as $missing) {
@@ -43,10 +42,25 @@ class amsterdamEppResponse extends eppResponse {
             if (strlen($resultreason)) {
                 $errorstring .= '(' . $resultreason . ')';
             }
-            echo "AMSTERDAMEPPRESPONSE!";
+            if ($resultreason = $this->getSIDNErrorString())
+            {
+                $errorstring .= '(' . $resultreason . ')';
+            }
             throw new eppException($errorstring, $resultcode);
         } else {
             return true;
         }
     }
+
+    public function getSIDNErrorString() {
+        $xpath = $this->xPath();
+        $message = $xpath->query('/epp:epp/epp:response/epp:extension/sidn-ext-epp:ext/sidn-ext-epp:response/sidn-ext-epp:msg');
+        if (is_object($message) && ($message->length > 0)) {
+            $code = $xpath->query('/epp:epp/epp:response/epp:extension/sidn-ext-epp:ext/sidn-ext-epp:response/sidn-ext-epp:msg/@code');
+            $field = $xpath->query('/epp:epp/epp:response/epp:extension/sidn-ext-epp:ext/sidn-ext-epp:response/sidn-ext-epp:msg/@field');
+            return 'Error '.$code->item(0)->nodeValue.', field '.$field->item(0)->nodeValue.': '.$message->item(0)->nodeValue;
+        }
+        return null;
+    }
+
 }
