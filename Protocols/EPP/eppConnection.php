@@ -112,7 +112,7 @@ class eppConnection {
      */
     protected $local_cert_pwd = null;
 
-    public $mtrcompensation = false;
+    protected $logentries = array();
 
     function __construct($logging = false) {
         if ($logging) {
@@ -269,7 +269,7 @@ class eppConnection {
         putenv('SURPRESS_ERROR_HANDLER=1');
         $content = '';
         $time = time() + $this->timeout;
-
+        $read = "";
         while ((!isset ($length)) || ($length > 0)) {
             if (feof($this->connection)) {
                 putenv('SURPRESS_ERROR_HANDLER=0');
@@ -381,8 +381,8 @@ class eppConnection {
      * Load the answer in a response domDocument
      * return the reponse
      *
-     * @param \domDocument $content
-     * @return \domDocument
+     * @param eppRequest $content
+     * @return eppResponse
      * @throws eppException
      */
     public function writeandread($content) {
@@ -397,6 +397,7 @@ class eppConnection {
          * $content->login is only set if this is an instance or a sub-instance of an eppLoginRequest
          */
         if ($content->login) {
+            /* @var $content eppLoginRequest */
             // Set username for login request
             $content->addUsername($this->getUsername());
             // Set password for login request
@@ -423,6 +424,7 @@ class eppConnection {
             $content->addNamespaces($this->getExtensions());
         }
         $response = $this->createResponse($content);
+        /* @var $response /domDocument */
         if (!$response) {
             throw new eppException("No valid response from server");
         }
@@ -465,7 +467,7 @@ class eppConnection {
     }
 
     public function createResponse($request) {
-        $response = null;
+        $response = new eppResponse();
         foreach ($this->responses as $req => $res) {
             if ($request instanceof $req) {
                 $response = new $res();
@@ -594,6 +596,7 @@ class eppConnection {
     }
 
     protected function loadSettings($directory) {
+        $result = array();
         if (is_readable($directory . '/settings.ini')) {
             $settings = file($directory . '/settings.ini', FILE_IGNORE_NEW_LINES);
             foreach ($settings as $setting) {
