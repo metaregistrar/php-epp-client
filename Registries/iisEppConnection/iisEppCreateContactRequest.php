@@ -1,5 +1,6 @@
 <?php
 namespace Metaregistrar\EPP;
+
 /*
 <extension>
   <iis:create xmlns:iis="urn:se:iis:xml:epp:iis-1.2" xsi:schemaLocation="urn:se:iis:xml:epp:iis-1.2 iis-1.2.xsd">
@@ -11,25 +12,41 @@ namespace Metaregistrar\EPP;
 
 */
 class iisEppCreateContactRequest extends eppCreateContactRequest {
-    function __construct($createinfo) {
-        if ($createinfo instanceof eppContact) {
-            parent::__construct($createinfo);
-            $this->addIISExtension($createinfo);
-        } else {
-            parent::__construct($createinfo);
+
+    private $create;
+
+    function __construct($createinfo, $orgno = null, $vatno = null) {
+        parent::__construct($createinfo);
+        $this->addExtension('xmlns:iis', 'urn:se:iis:xml:epp:iis-1.2');
+        if ($orgno) {
+            $this->addIISOrganization($orgno);
+        }
+        if ($vatno) {
+            $this->addIISVat($vatno);
         }
         $this->addSessionId();
     }
 
 
-    public function addIISExtension(eppContact $contact) {
-        $this->addExtension('xmlns:iis', 'urn:se:iis:xml:epp:iis-1.2');
-        $ext = $this->createElement('extension');
-        $create = $this->createElement('iis:create');
-        $orgno = $this->createElement('iis:orgno', '[NL]150155');
-        $create->appendChild($orgno);
-        $ext->appendChild($create);
-        $this->command->appendChild($ext);
+    public function addIISOrganization($organizationnumber) {
+        if (!$this->extension) {
+            $this->extension = $this->createElement('extension');
+            $this->create = $this->createElement('iis:create');
+            $this->extension->appendChild($this->create);
+            $this->command->appendChild($this->extension);
+        }
+        $this->create->appendChild($this->createElement('iis:orgno', $organizationnumber));
+
+    }
+
+    public function addIISVat($vatnumber) {
+        if (!$this->extension) {
+            $this->extension = $this->createElement('extension');
+            $this->create = $this->createElement('iis:create');
+            $this->extension->appendChild($this->create);
+            $this->command->appendChild($this->extension);
+        }
+        $this->create->appendChild($this->createElement('iis:vatno', $vatnumber));
     }
 
 }
