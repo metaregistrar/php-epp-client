@@ -36,6 +36,7 @@ class eppContact {
     private $password;
     private $status;
     private $type = 'loc';
+    private $disclose = null;
 
 
     /**
@@ -58,6 +59,15 @@ class eppContact {
         $this->setFax($fax);
         $this->setStatus($status);
     }
+
+    public function setDisclose($disclose) {
+        $this->disclose = $disclose;
+    }
+
+    public function getDisclose() {
+        return $this->disclose;
+    }
+
 
     public function setType($type) {
         $this->type = $type;

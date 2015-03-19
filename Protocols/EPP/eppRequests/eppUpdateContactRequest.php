@@ -69,10 +69,12 @@ class eppUpdateContactRequest extends eppRequest {
     private function addContactStatus($element, eppContact $contact) {
         if ((is_array($contact->getStatus())) && (count($contact->getStatus()) > 0)) {
             $statuses = $contact->getStatus();
-            foreach ($statuses as $status) {
-                $stat = $this->createElement('contact:status');
-                $stat->setAttribute('s', $status);
-                $element->appendChild($stat);
+            if (is_array($statuses)) {
+                foreach ($statuses as $status) {
+                    $stat = $this->createElement('contact:status');
+                    $stat->setAttribute('s', $status);
+                    $element->appendChild($stat);
+                }
             }
         }
     }
@@ -131,6 +133,9 @@ class eppUpdateContactRequest extends eppRequest {
             $authinfo = $this->createElement('contact:authInfo');
             $authinfo->appendChild($this->createElement('contact:pw', $contact->getPassword()));
             $element->appendChild($authinfo);
+        }
+        if ($contact->getDisclose()) {
+            $this->appendChild($this->createElement('contact:disclose', $contact->getDisclose()));
         }
     }
 
