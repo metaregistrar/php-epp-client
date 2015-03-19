@@ -36,7 +36,8 @@ class eppLoginRequest extends eppRequest {
         if (!strlen($password)) {
             throw new eppException('No new password specified for password change');
         }
-        $this->login->appendChild($this->createElement('newPW', $password));
+        $pw = $this->login->appendChild($this->createElement('newPW'));
+        $pw->appendChild($this->createCDATAsection($password));
     }
 
     public function addUsername($username) {
@@ -50,7 +51,8 @@ class eppLoginRequest extends eppRequest {
         if (!strlen($password)) {
             throw new eppException('No password specified for login attempt');
         }
-        $this->login->appendChild($this->createElement('pw', $password));
+        $pw = $this->login->appendChild($this->createElement('pw'));
+        $pw->appendChild($this->createCDATAsection($password));
     }
 
     public function addVersion($version) {
@@ -58,7 +60,10 @@ class eppLoginRequest extends eppRequest {
         if (!strlen($version)) {
             throw new eppException('No version number specified for login attempt');
         }
-        $this->options->appendChild($this->createElement('version', $version));
+        if ($this->options) {
+            $this->options->appendChild($this->createElement('version', $version));
+        }
+
     }
 
     public function addLanguage($language) {
@@ -66,7 +71,10 @@ class eppLoginRequest extends eppRequest {
         if (!strlen($language)) {
             throw new eppException('No language specified for login attempt');
         }
-        $this->options->appendChild($this->createElement('lang', $language));
+        if ($this->options) {
+            $this->options->appendChild($this->createElement('lang', $language));
+        }
+
     }
 
     /**
