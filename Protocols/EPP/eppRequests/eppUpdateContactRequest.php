@@ -63,10 +63,10 @@ class eppUpdateContactRequest extends eppRequest {
 
     /**
      *
-     * @param string $element
+     * @param \domElement $element
      * @param eppContact $contact
      */
-    private function addContactStatus($element, eppContact $contact) {
+    private function addContactStatus(\domElement $element, eppContact $contact) {
         if ((is_array($contact->getStatus())) && (count($contact->getStatus()) > 0)) {
             $statuses = $contact->getStatus();
             if (is_array($statuses)) {
@@ -134,8 +134,27 @@ class eppUpdateContactRequest extends eppRequest {
             $authinfo->appendChild($this->createElement('contact:pw', $contact->getPassword()));
             $element->appendChild($authinfo);
         }
-        if ($contact->getDisclose()) {
-            $this->appendChild($this->createElement('contact:disclose', $contact->getDisclose()));
+        if (!is_null($contact->getDisclose())) {
+            $disclose = $this->createElement('contact:disclose');
+            $disclose->setAttribute('flag',$contact->getDisclose());
+            $name = $this->createElement('contact:name');
+            if ($contact->getDisclose()==1) {
+                $name->setAttribute('type','loc');
+            }
+            $disclose->appendChild($name);
+            $org = $this->createElement('contact:org');
+            if ($contact->getDisclose()==1) {
+                $org->setAttribute('type','loc');
+            }
+            $disclose->appendChild($org);
+            $addr = $this->createElement('contact:addr');
+            if ($contact->getDisclose()==1) {
+                $addr->setAttribute('type','loc');
+            }
+            $disclose->appendChild($addr);
+            $disclose->appendChild($this->createElement('contact:voice'));
+            $disclose->appendChild($this->createElement('contact:email'));
+            $element->appendChild($disclose);
         }
     }
 
