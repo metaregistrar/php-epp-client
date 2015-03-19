@@ -261,8 +261,11 @@ class eppInfoContactResponse extends eppInfoResponse {
     public function getContactDisclose() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:disclose/@flag');
-        var_dump($result);
-
+        if ($result->length > 0) {
+            return $result->item(0)->nodeValue;
+        } else {
+            return null;
+        }
     }
 
     /**
