@@ -60,9 +60,27 @@ class eppCreateContactRequest extends eppCreateRequest {
         $authinfo = $this->createElement('contact:authInfo');
         $authinfo->appendChild($this->createElement('contact:pw', 'foo2bar'));
         $this->contactobject->appendChild($authinfo);
-        if ($contact->getDisclose())
-        {
-            $this->appendChild($this->createElement('contact:disclose',$contact->getDisclose()));
+        if (!is_null($contact->getDisclose())) {
+            $disclose = $this->createElement('contact:disclose');
+            $disclose->setAttribute('flag',$contact->getDisclose());
+            $name = $this->createElement('contact:name');
+            if ($contact->getDisclose()==1) {
+                $name->setAttribute('type','loc');
+            }
+            $disclose->appendChild($name);
+            $org = $this->createElement('contact:org');
+            if ($contact->getDisclose()==1) {
+                $org->setAttribute('type','loc');
+            }
+            $disclose->appendChild($org);
+            $addr = $this->createElement('contact:addr');
+            if ($contact->getDisclose()==1) {
+                $addr->setAttribute('type','loc');
+            }
+            $disclose->appendChild($addr);
+            $disclose->appendChild($this->createElement('contact:voice'));
+            $disclose->appendChild($this->createElement('contact:email'));
+            $this->contactobject->appendChild($disclose);
         }
         $create->appendChild($this->contactobject);
         $this->getCommand()->appendChild($create);
