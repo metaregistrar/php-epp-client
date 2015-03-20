@@ -1,12 +1,10 @@
 <?php
-namespace Metaregistrar\EPP;
+namespace Metaregistrar\TMCH;
 
-class tmchDnlConnection extends eppConnection {
+class dnlTmchConnection extends tmchConnection {
 
-    private $lastinfo = null;
-
-    public function __construct($logging = false) {
-        parent::__construct($logging);
+    public function __construct() {
+        //parent::__construct($logging);
         if ($settings = $this->loadSettings(dirname(__FILE__))) {
             parent::setHostname($settings['hostname']);
             parent::setPort($settings['port']);
@@ -25,9 +23,9 @@ class tmchDnlConnection extends eppConnection {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $output = curl_exec($ch);
         if (curl_errno($ch)) {
-            throw new eppException(curl_error($ch));
+            throw new tmchException(curl_error($ch));
         }
-        $this->lastinfo = curl_getinfo($ch);
+        $this->setLastinfo(curl_getinfo($ch));
         curl_close($ch);
         return explode("\n", $output);
     }

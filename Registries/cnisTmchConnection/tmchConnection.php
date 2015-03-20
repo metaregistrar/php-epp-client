@@ -1,12 +1,9 @@
 <?php
-namespace Metaregistrar\EPP;
+namespace Metaregistrar\TMCH;
 
-class tmchEppConnection extends eppConnection {
+class cnisTmchConnection extends tmchConnection {
 
-    private $lastinfo = null;
-
-    public function __construct($logging = false) {
-        parent::__construct($logging);
+    public function __construct() {
         if ($settings = $this->loadSettings(dirname(__FILE__))) {
             parent::setHostname($settings['hostname']);
             parent::setPort($settings['port']);
@@ -17,7 +14,7 @@ class tmchEppConnection extends eppConnection {
 
     public function getCnis($key) {
         if (!is_string($key)) {
-            throw new eppException("Key must be filled when requesting CNIS information");
+            throw new tmchException("Key must be filled when requesting CNIS information");
         }
         $url = "https://" . parent::getHostname() . "/" . $key . ".xml";
         $ch = curl_init();
@@ -27,11 +24,15 @@ class tmchEppConnection extends eppConnection {
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         if (curl_errno($ch)) {
-            throw new eppException(curl_error($ch));
+            throw new tmchException(curl_error($ch));
         }
         $output = curl_exec($ch);
         $this->setLastInfo(curl_getinfo($ch));
         curl_close($ch);
+        if (strpos($output,'404 Not Found')!==false)
+        {
+            throw new tmchException("Requested URL was not found on this server");
+        }
         $result = new tmchClaimData();
         $result->loadXML($output);
         $result->setClaims();
@@ -39,7 +40,7 @@ class tmchEppConnection extends eppConnection {
     }
 
 
-    public function showWarning($claimData, $html = false) {
+    public function showWarning(tmchClaimData $claimData, $html = false) {
         $result = "TRADEMARK NOTICE\n\n";
         $result .=  "You have received this Trademark Notice because you have applied for a domain name which matches at least one trademark record submitted to the Trademark Clearinghouse\n\n";
         $result .= "You may or may not be entitled to register the domain name depending on your intended use and whether it is the same or significantly overlaps with the trademarks listed below.\n";
@@ -47,6 +48,7 @@ class tmchEppConnection extends eppConnection {
         $result .= "Please read the trademark information below carefully, including the trademarks, jurisdictions and goods and services for which the trademarks are registered. Please be aware that not all jurisdictions review trademark applications closely, so some of the trademark information below may exist in a national or regional registry which does not conduct a thorough or substantive review of trademark rights prior to registration. If you have questions, you may want to consult an attorney or legal expert on trademarks and intellectual property for guidance.\n\n";
         $result .= "If you continue with this registration, you represent that, you have received and you understand this notice and to the best of your knowledge, your registration and use of the requested domain name will not infringe on the trademark rights listed below. The following " . $claimData->getClaimCount() . " marks are listed in the Trademark Clearinghouse:\n\n";
         foreach ($claimData->getClaims() as $claim) {
+            /* @var $claim tmchClaim */
             $result .= "Mark:           " . $claim->getMarkName() . "\n";
             $result .= "Jurisdiction:   " . $claim->getJurisdiction() . "\n";
             $result .= "Goods and services:\n                " . $claim->getGoodsAndServices() . "\n";
@@ -81,18 +83,6 @@ class tmchEppConnection extends eppConnection {
         return $result;
     }
 
-    /**
-     * @param null $lastinfo
-     */
-    public function setLastinfo($lastinfo) {
-        $this->lastinfo = $lastinfo;
-    }
 
-    /**
-     * @return null
-     */
-    public function getLastinfo() {
-        return $this->lastinfo;
-    }
 
 }

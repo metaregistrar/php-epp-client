@@ -1,5 +1,5 @@
 <?php
-namespace Metaregistrar\EPP;
+namespace Metaregistrar\TMCH;
 /**
  * The TMCH claim data Object
  *
