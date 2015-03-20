@@ -8,7 +8,7 @@ namespace Metaregistrar\EPP;
  * @author Andrey
  */
 
-include_once(dirname(__FILE__) . 'eppConnection.php');
+include_once(dirname(__FILE__) . '/eppConnection.php');
 
 class eppHttpConnection extends EppConnection {
 
