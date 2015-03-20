@@ -42,6 +42,7 @@ class eppDnssecUpdateDomainRequest extends eppUpdateDomainRequest {
         if ($removeinfo instanceof eppDomain) {
             $dnssecs = $removeinfo->getSecdns();
             foreach ($dnssecs as $dnssec) {
+                /* @var $dnssec eppSecdns */
                 $rem = $this->createElement('secDNS:rem');
                 if (strlen($dnssec->getPubkey()) > 0) {
                     $keydata = $this->createElement('secDNS:keyData');
@@ -68,6 +69,7 @@ class eppDnssecUpdateDomainRequest extends eppUpdateDomainRequest {
         if ($addinfo instanceof eppDomain) {
             $dnssecs = $addinfo->getSecdns();
             foreach ($dnssecs as $dnssec) {
+                /* @var $dnssec eppSecdns */
                 $add = $this->createElement('secDNS:add');
                 if (strlen($dnssec->getPubkey()) > 0) {
                     $keydata = $this->createElement('secDNS:keyData');
