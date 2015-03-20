@@ -230,7 +230,7 @@ class eppConnection {
             stream_context_set_option($context, 'ssl', 'local_cert', $this->local_cert_path);
             stream_context_set_option($context, 'ssl', 'passphrase', $this->local_cert_pwd);
             if ($this->connection = stream_socket_client($target, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context)) {
-                $this->writeLog("Connection made");
+                $this->writeLog("Connection made","CONNECT");
                 $this->read();
                 return true;
             } else {
@@ -240,11 +240,11 @@ class eppConnection {
             //We don't want our error handler to kick in at this point...
             putenv('SURPRESS_ERROR_HANDLER=1');
             #echo "Connecting: $this->hostname:$this->port\n";
-            $this->writeLog("Connecting: $this->hostname:$this->port");
+            #$this->writeLog("Connecting: $this->hostname:$this->port");
             $this->connection = fsockopen($this->hostname, $this->port, $errno, $errstr, $this->timeout);
             putenv('SURPRESS_ERROR_HANDLER=0');
             if (is_resource($this->connection)) {
-                $this->writeLog("Connection made");
+                $this->writeLog("Connection made","CONNECT");
                 stream_set_blocking($this->connection, false);
                 stream_set_timeout($this->connection, $this->timeout);
                 if ($errno == 0) {
@@ -254,7 +254,7 @@ class eppConnection {
                     return false;
                 }
             } else {
-                $this->writeLog("Connection could not be opened: $errno $errstr");
+                $this->writeLog("Connection could not be opened: $errno $errstr","ERROR");
                 return false;
             }
         }
@@ -297,9 +297,9 @@ class eppConnection {
                         return false;
                     }
                 }
-                $this->writeLog("Read 4 bytes for integer. (read: " . strlen($read) . "):$read");
+                $this->writeLog("Read 4 bytes for integer. (read: " . strlen($read) . "):$read","READ");
                 $length = $this->readInteger($read) - 4;
-                $this->writeLog("Reading next: $length bytes");
+                $this->writeLog("Reading next: $length bytes","READ");
             }
             if ($length > 1000000) {
                 throw new eppException("Packet size is too big: $length. Closing connection");
@@ -307,9 +307,7 @@ class eppConnection {
             //We know the length of what to read, so lets read the stuff
             if ((isset($length)) && ($length > 0)) {
                 $time = time() + $this->timeout;
-                //$this->writeLog("Reading $length bytes of content.");
                 if ($read = fread($this->connection, $length)) {
-                    $this->writeLog($read);
                     //$this->writeLog(print_R(socket_get_status($this->connection), true));
                     $length = $length - strlen($read);
                     $content .= $read;
@@ -324,7 +322,6 @@ class eppConnection {
             }
         }
         putenv('SURPRESS_ERROR_HANDLER=0');
-        #echo $content;
         #ob_flush();
         return $content;
     }
@@ -357,14 +354,13 @@ class eppConnection {
      * @return boolean
      */
     public function write($content) {
-        $this->writeLog("Writing: " . strlen($content) . " + 4 bytes");
+        $this->writeLog("Writing: " . strlen($content) . " + 4 bytes","WRITE");
         $content = $this->addInteger($content);
         if (!is_resource($this->connection)) {
             throw new eppException ('Writing while no connection is made is not supported.');
         }
-        $this->writeLog($content);
+
         putenv('SURPRESS_ERROR_HANDLER=1');
-        #echo $content;
         #ob_flush();
         if (fwrite($this->connection, $content)) {
             //fpassthru($this->connection);
@@ -428,23 +424,17 @@ class eppConnection {
         if (!$response) {
             throw new eppException("No valid response from server");
         }
-        //if ($this->logging)
-        //{
-        //    $this->writeLog("==== SENDING XML ======");
-        //    $this->writeLog($content->saveXML(null, LIBXML_NOEMPTYTAG));
-        //}
+        $content->formatOutput = true;
+        $this->writeLog($content->saveXML(null, LIBXML_NOEMPTYTAG),"WRITE");
+        $content->formatOutput = false;
         if ($this->write($content->saveXML(null, LIBXML_NOEMPTYTAG))) {
             $xml = $this->read();
             if (strlen($xml)) {
                 if ($response->loadXML($xml)) {
-                    /*echo $xml;
+                    $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG),"READ");
+                    /*
                     ob_flush();
                     */
-                    #if ($this->logging)
-                    #{
-                    #    $this->writeLog("==== RECEIVED XML =====");
-                    #    $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG));
-                    #}
                     $clienttransid = $response->getClientTransactionId();
                     if (($clienttransid) && ($clienttransid != $requestsessionid)) {
                         throw new eppException("Client transaction id $requestsessionid does not match returned $clienttransid\nMessage: ".$xml);
@@ -617,10 +607,10 @@ class eppConnection {
         }
     }
 
-    protected function writeLog($text) {
+    protected function writeLog($text,$action) {
         if ($this->logging) {
             //echo "-----".date("Y-m-d H:i:s")."-----".$text."-----end-----\n";
-            $this->logentries[] = "-----" . date("Y-m-d H:i:s") . "-----\n" . $text . "\n-----end-----\n";
+            $this->logentries[] = "-----" . $action . "-----" . date("Y-m-d H:i:s") . "-----\n" . $text . "\n-----END-----" . date("Y-m-d H:i:s") . "-----\n";
         }
     }
 }
