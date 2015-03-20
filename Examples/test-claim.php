@@ -3,9 +3,9 @@ require("../autoloader.php");
 /* This test file retrieves the latest test-domain-name-list (DNL) and gets the claim notice from the first item of this list. */
 
 try {
-    $tmchdnl = new Metaregistrar\TMCH\dnlTmchConnection();
-    $tmch = new Metaregistrar\TMCH\cnisTmchConnection();
-    $list = $tmchdnl->getDnl();
+    $dnl = new Metaregistrar\TMCH\dnlTmchConnection();
+    $cnis = new Metaregistrar\TMCH\cnisTmchConnection();
+    $list = $dnl->getDnl();
     $linecounter = -1;
     $k = array();
     foreach ($list as $line) {
@@ -20,7 +20,7 @@ try {
     }
     echo "Select the number from one of the labels above to display the warning notice for this label\n:";
     $number = (int)fgets(STDIN);
-    echo $tmch->showWarning($tmch->getCnis($k[$number]));
+    echo $cnis->showWarning($cnis->getCnis($k[$number]));
 
 } catch (Metaregistrar\TMCH\tmchException $e) {
     echo "ERROR: " . $e->getMessage() . "\n";

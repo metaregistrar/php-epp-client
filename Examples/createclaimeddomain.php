@@ -50,7 +50,7 @@ function checkdomainclaim($conn, $domainname) {
                     if ($check['claim']) {
                         if ($check['claim'] instanceof Metaregistrar\EPP\eppDomainClaim) {
                             echo "Claim validator: " . $check['claim']->getValidator() . ", claim key: " . $check['claim']->getClaimKey() . "\n";
-                            $tmch = new Metaregistrar\EPP\tmchEppConnection();
+                            $tmch = new Metaregistrar\TMCH\cnisTmchConnection();
                             $claim = array();
                             $output = $tmch->getCnis($check['claim']->getClaimKey());
                             /* @var $output Metaregistrar\EPP\tmchClaimData */

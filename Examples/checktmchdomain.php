@@ -49,7 +49,7 @@ function checkdomains($conn, $domains) {
                     if ($check['claim']) {
                         if ($check['claim'] instanceof Metaregistrar\EPP\eppDomainClaim) {
                             echo "Claim validator: " . $check['claim']->getValidator() . ", claim key: " . $check['claim']->getClaimKey() . "\n";
-                            $tmch = new Metaregistrar\EPP\tmchEppConnection();
+                            $tmch = new Metaregistrar\TMCH\cnisTmchEppConnection();
                             $output = $tmch->getCnis($check['claim']->getClaimKey());
                             var_dump($output);
                         } else {
