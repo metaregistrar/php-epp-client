@@ -6,7 +6,6 @@ class cnisTmchConnection extends tmchConnection {
     public function __construct() {
         if ($settings = $this->loadSettings(dirname(__FILE__))) {
             parent::setHostname($settings['hostname']);
-            parent::setPort($settings['port']);
             parent::setUsername($settings['userid']);
             parent::setPassword($settings['password']);
         }

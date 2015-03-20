@@ -4,10 +4,8 @@ namespace Metaregistrar\TMCH;
 class dnlTmchConnection extends tmchConnection {
 
     public function __construct() {
-        //parent::__construct($logging);
         if ($settings = $this->loadSettings(dirname(__FILE__))) {
             parent::setHostname($settings['hostname']);
-            parent::setPort($settings['port']);
             parent::setUsername($settings['userid']);
             parent::setPassword($settings['password']);
 
