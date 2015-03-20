@@ -157,7 +157,7 @@ class eppConnection {
 
     public function enableLaunchphase($launchphase) {
         $this->launchphase = $launchphase;
-        $this->exturi['urn:ietf:params:xml:ns:launch-1.0'] = 'launch';
+        $this->addExtension('launch','urn:ietf:params:xml:ns:launch-1.0');
         $this->responses['Metaregistrar\\EPP\\eppLaunchCheckRequest'] = 'Metaregistrar\\EPP\\eppLaunchCheckResponse';
         $this->responses['Metaregistrar\\EPP\\eppLaunchCreateDomainRequest'] = 'Metaregistrar\\EPP\\eppLaunchCreateDomainResponse';
     }
@@ -167,20 +167,20 @@ class eppConnection {
     }
 
     public function enableDnssec() {
-        $this->exturi['urn:ietf:params:xml:ns:secDNS-1.1'] = 'secDNS';
+        $this->addExtension('secDNS','urn:ietf:params:xml:ns:secDNS-1.1');
         $this->responses['Metaregistrar\\EPP\\eppDnssecUpdateDomainRequest'] = 'Metaregistrar\\EPP\\eppUpdateDomainResponse';
     }
 
     public function enableRgp() {
-        $this->exturi['urn:ietf:params:xml:ns:rgp-1.0']='rgp';
+        $this->addExtension('rgp','urn:ietf:params:xml:ns:rgp-1.0');
     }
 
     public function disableRgp() {
-        unset($this->exturi['urn:ietf:params:xml:ns:rgp-1.0']);
+        $this->removeExtension('urn:ietf:params:xml:ns:rgp-1.0');
     }
 
     public function disableDnssec() {
-        unset($this->exturi['urn:ietf:params:xml:ns:secDNS-1.1']);
+        $this->removeExtension('urn:ietf:params:xml:ns:secDNS-1.1');
         unset($this->responses['Metaregistrar\\EPP\\eppDnssecUpdateDomainRequest']);
     }
 
@@ -562,6 +562,42 @@ class eppConnection {
 
     public function addExtension($xmlns, $namespace) {
         $this->exturi[$namespace] = $xmlns;
+        // Include the extension data, request and response files
+        $pos = strrpos($namespace,'/');
+        if ($pos!==false) {
+            $path = substr($namespace,$pos+1,999);
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                $includepath = dirname(__FILE__).'\\eppExtensions\\'.$path.'\\includes.php';
+            } else {
+                $includepath = dirname(__FILE__).'/eppExtensions/'.$path.'/includes.php';
+            }
+
+        } else {
+            $pos = strrpos($namespace,':');
+            if ($pos!==false) {
+                $path = substr($namespace,$pos+1,999);
+                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                    $includepath = dirname(__FILE__).'\\eppExtensions\\'.$path.'\\includes.php';
+                } else {
+                    $includepath = dirname(__FILE__).'/eppExtensions/'.$path.'/includes.php';
+                }
+
+            } else {
+                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                    $includepath = dirname(__FILE__).'\\eppExtensions\\'.$namespace.'\\includes.php';
+                } else {
+                    $includepath = dirname(__FILE__).'/eppExtensions/'.$namespace.'/includes.php';
+                }
+
+            }
+        }
+        if (is_file($includepath)) {
+            include_once($includepath);
+        }
+    }
+
+    public function removeExtension($namespace) {
+        unset($this->exturi[$namespace]);
     }
 
     public function getExtensions() {

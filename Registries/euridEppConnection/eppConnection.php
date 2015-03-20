@@ -1,10 +1,5 @@
 <?php
 namespace Metaregistrar\EPP;
-#
-# Load the EURID specific additions
-#
-include_once(dirname(__FILE__) . '/euridEppInfoDomainRequest.php');
-include_once(dirname(__FILE__) . '/euridEppInfoDomainResponse.php');
 
 class euridEppConnection extends eppConnection {
 

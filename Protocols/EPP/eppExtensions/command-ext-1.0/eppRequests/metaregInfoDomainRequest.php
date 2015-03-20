@@ -1,7 +1,6 @@
 <?php
 namespace Metaregistrar\EPP;
 
-include_once(dirname(__FILE__) . '/metaregInfoDomainOptions.php');
 class metaregInfoDomainRequest extends eppInfoDomainRequest {
     private $domaininfoext;
 

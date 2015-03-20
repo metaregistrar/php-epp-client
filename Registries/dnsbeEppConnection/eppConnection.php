@@ -1,17 +1,6 @@
 <?php
 namespace Metaregistrar\EPP;
-#
-# Load the DNSBE specific additions
-#
-include_once(dirname(__FILE__) . '/dnsbeEppCreateDomainRequest.php');
-include_once(dirname(__FILE__) . '/dnsbeEppCreateContactRequest.php');
-include_once(dirname(__FILE__) . '/dnsbeEppCreateResponse.php');
-include_once(dirname(__FILE__) . '/dnsbeEppCreateNsgroupRequest.php');
-include_once(dirname(__FILE__) . '/dnsbeEppCreateNsgroupResponse.php');
-include_once(dirname(__FILE__) . '/dnsbeEppAuthcodeRequest.php');
-include_once(dirname(__FILE__) . '/dnsbeEppInfoDomainRequest.php');
-include_once(dirname(__FILE__) . '/dnsbeEppInfoDomainResponse.php');
-include_once(dirname(__FILE__) . '/dnsbeEppTransferRequest.php');
+
 
 class dnsbeEppConnection extends eppConnection {
 

@@ -1,12 +1,5 @@
 <?php
 namespace Metaregistrar\EPP;
-#
-# Load the IIS.SE specific additions
-#
-include_once(dirname(__FILE__) . '/iisEppCreateContactRequest.php');
-include_once(dirname(__FILE__) . '/iisEppInfoDomainResponse.php');
-include_once(dirname(__FILE__) . '/iisEppUpdateDomainClientDeleteRequest.php');
-
 
 class iisEppConnection extends eppConnection {
 

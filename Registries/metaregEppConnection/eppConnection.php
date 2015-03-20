@@ -1,10 +1,5 @@
 <?php
 namespace Metaregistrar\EPP;
-#
-# Load the Metaregistrar specific additions
-#
-include_once(dirname(__FILE__) . '/metaregInfoDomainRequest.php');
-include_once(dirname(__FILE__) . '/metaregEppPollResponse.php');
 
 class metaregEppConnection extends eppConnection {
 

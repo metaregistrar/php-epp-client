@@ -43,6 +43,7 @@ class sidnEppPollResponse extends eppPollResponse {
         foreach ($result as $code) {
             return $code->nodeValue;
         }
+        return null;
     }
 
     public function getPolledResultMessage() {

@@ -1,14 +1,5 @@
 <?php
 namespace Metaregistrar\EPP;
-#
-# Load the SIDN specific additions
-#
-include_once(dirname(__FILE__) . '/sidnEppCreateContactRequest.php');
-include_once(dirname(__FILE__) . '/sidnEppPollRequest.php');
-include_once(dirname(__FILE__) . '/sidnEppPollResponse.php');
-include_once(dirname(__FILE__) . '/sidnEppCheckResponse.php');
-include_once(dirname(__FILE__) . '/sidnEppInfoDomainResponse.php');
-include_once(dirname(__FILE__) . '/sidnEppRenewRequest.php');
 
 class sidnEppConnection extends eppConnection {
 
