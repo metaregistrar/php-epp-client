@@ -30,11 +30,11 @@ class eppContact {
     const STATUS_CLIENT_TRANSFER_PROHIBITED = 'clientTransferProhibited';
 
     private $postalInfo = array();
-    private $voice;
-    private $fax;
-    private $email;
-    private $password;
-    private $status;
+    private $voice=null;
+    private $fax=null;
+    private $email=null;
+    private $password=null;
+    private $status=null;
     private $type = 'loc';
     private $disclose = null;
 

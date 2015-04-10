@@ -17,8 +17,9 @@ if ($conn->connect()) {
 
 function createcontact($conn, $email, $telephone, $name, $organization, $address, $postcode, $city, $country) {
     try {
-        $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, Metaregistrar\EPP\eppContactPostalInfo::POSTAL_TYPE_INTERNATIONAL);
+        $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, Metaregistrar\EPP\eppContactPostalInfo::POSTAL_TYPE_LOCAL);
         $contactinfo = new Metaregistrar\EPP\eppContact($postalinfo, $email, $telephone);
+        $contactinfo->setPassword('');
         $contact = new Metaregistrar\EPP\eppCreateContactRequest($contactinfo);
         if ((($response = $conn->writeandread($contact)) instanceof Metaregistrar\EPP\eppCreateResponse) && ($response->Success())) {
             echo "Contact created on " . $response->getContactCreateDate() . " with id " . $response->getContactId() . "\n";
