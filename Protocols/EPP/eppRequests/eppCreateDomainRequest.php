@@ -5,10 +5,11 @@ class eppCreateDomainRequest extends eppCreateRequest {
 
     private $forcehostattr = false;
 
-    function __construct($createinfo) {
+    function __construct($createinfo, $forcehostattr = false) {
         parent::__construct($createinfo);
 
         if ($createinfo instanceof eppDomain) {
+            $this->setForcehostattr($forcehostattr);
             $this->setDomain($createinfo);
         } else {
             throw new eppException('createinfo must be of type eppDomain on eppCreateDomainRequest');

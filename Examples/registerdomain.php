@@ -10,17 +10,15 @@ require('../autoloader.php');
  */
 
 
-//if ($argc <= 1)
-//{
-//    echo "Usage: registerdomain.php <domainname>\n";
-///	echo "Please enter the domain name to be created\n\n";
-//	die();
-//}
+if ($argc <= 1)
+{
+    echo "Usage: registerdomain.php <domainname>\n";
+	echo "Please enter the domain name to be created\n\n";
+	die();
+}
 
-//$domainname = $argv[1];
+$domainname = $argv[1];
 
-
-$domainname = 'waterontharder.frl';
 echo "Registering $domainname\n";
 $conn = new Metaregistrar\EPP\metaregEppConnection();
 // Connect to the EPP server
@@ -30,17 +28,13 @@ if ($conn->connect()) {
             createhost($conn, 'ns1.metaregistrar.nl');
         }
         if (!checkhosts($conn, array('ns5.metaregistrar.nl'))) {
-            createhost($conn, 'ns5.metaregistrar.nl');
+            createhost($conn, 'ns2.metaregistrar.nl');
         }
-        #if (!checkhosts($conn, array('ns3.metaregistrar.com')))
-        #{
-        #    createhost($conn,'ns3.metaregistrar.com');
-        #}
-        #$contactid = createcontact($conn,'test@test.com','061234567890','Person name',null,'Address 1','12345','City','NL');
-        #if ($contactid)
-        #{
-        #createdomain($conn, $domainname, 'xwr-npgal4', 'xwr-npgal4', 'xwr-npgal4', 'xwr-npgal4', null);
-        #}
+        $nameservers = array('ns1.metaregistrar.nl','ns2.metaregistrar.nl');
+        $contactid = createcontact($conn,'test@test.com','+31.61234567890','Person name',null,'Address 1','12345','City','NL');
+        if ($contactid) {
+            createdomain($conn, $domainname, $contactid, $contactid, $contactid, $contactid, $nameservers);
+        }
         logout($conn);
     }
 }
@@ -69,7 +63,8 @@ function createcontact($conn, $email, $telephone, $name, $organization, $address
     try {
         $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, Metaregistrar\EPP\eppContactPostalInfo::POSTAL_TYPE_LOCAL);
         $contactinfo = new Metaregistrar\EPP\eppContact($postalinfo, $email, $telephone);
-        $contact = new Metaregistrar\EPP\iisEppCreateContactRequest($contactinfo);
+        $contactinfo->setPassword('fubar');
+        $contact = new Metaregistrar\EPP\eppCreateContactRequest($contactinfo);
         if ((($response = $conn->writeandread($contact)) instanceof Metaregistrar\EPP\eppCreateResponse) && ($response->Success())) {
             /* @var $response Metaregistrar\EPP\eppCreateResponse */
             echo "Contact created on " . $response->getContactCreateDate() . " with id " . $response->getContactId() . "\n";
@@ -137,16 +132,15 @@ function createdomain($conn, $domainname, $registrant, $admincontact, $techconta
         $billing = new Metaregistrar\EPP\eppContactHandle($billingcontact, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_BILLING);
         $domain->addContact($billing);
         $domain->setAuthorisationCode('rand0m');
-        #if (is_array($nameservers))
-        #{
-        #    foreach ($nameservers as $nameserver)
-        #    {
-        #        $host = new eppHost($nameserver);
-        #        $domain->addHost($host);
-        #    }
-        #}
-        $create = new Metaregistrar\EPP\eppCreateDomainRequest($domain);
-        $create->setForcehostattr(true);
+        if (is_array($nameservers))
+        {
+            foreach ($nameservers as $nameserver)
+            {
+                $host = new Metaregistrar\EPP\eppHost($nameserver);
+                $domain->addHost($host);
+            }
+        }
+        $create = new Metaregistrar\EPP\eppCreateDomainRequest($domain, true);
         if ((($response = $conn->writeandread($create)) instanceof Metaregistrar\EPP\eppCreateResponse) && ($response->Success())) {
             /* @var $response Metaregistrar\EPP\eppCreateResponse */
             echo "Domain " . $response->getDomainName() . " created on " . $response->getDomainCreateDate() . ", expiration date is " . $response->getDomainExpirationDate() . "\n";
