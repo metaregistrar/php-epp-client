@@ -112,6 +112,12 @@ class eppConnection {
      */
     protected $local_cert_pwd = null;
 
+    /**
+     * Allow/Deny self signed certificates
+     * @var boolean
+     */
+    protected $allow_self_signed = null;
+
     protected $logentries = array();
 
     function __construct($logging = false) {
@@ -184,14 +190,16 @@ class eppConnection {
         unset($this->responses['Metaregistrar\\EPP\\eppDnssecUpdateDomainRequest']);
     }
 
-    public function enableCertification($certificatepath, $certificatepassword) {
+    public function enableCertification($certificatepath, $certificatepassword, $selfsigned = false) {
         $this->local_cert_path = $certificatepath;
         $this->local_cert_pwd = $certificatepassword;
+        $this->allow_self_signed = $selfsigned;
     }
 
     public function disableCertification() {
         $this->local_cert_path = null;
         $this->local_cert_pwd = null;
+        $this->allow_self_signed = null;
     }
 
 
@@ -229,6 +237,7 @@ class eppConnection {
             $context = stream_context_create();
             stream_context_set_option($context, 'ssl', 'local_cert', $this->local_cert_path);
             stream_context_set_option($context, 'ssl', 'passphrase', $this->local_cert_pwd);
+            stream_context_set_option($context, 'ssl', 'allow_self_signed', $this->allow_self_signed);
             if ($this->connection = stream_socket_client($target, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context)) {
                 $this->writeLog("Connection made","CONNECT");
                 $this->read();
