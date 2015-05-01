@@ -3,11 +3,6 @@
 date_default_timezone_set('UTC');
 require_once('Examples/base.php');
 
-function autoloadData($className) {
-
-
-}
-
 function autoloadRegistry($className) {
     $fileName = str_replace('Metaregistrar\\EPP\\', '', $className);
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
