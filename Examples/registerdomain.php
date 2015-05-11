@@ -61,7 +61,7 @@ function checkcontact($conn, $contactid) {
 function createcontact($conn, $email, $telephone, $name, $organization, $address, $postcode, $city, $country) {
     /* @var $conn Metaregistrar\EPP\eppConnection */
     try {
-        $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, Metaregistrar\EPP\eppContactPostalInfo::POSTAL_TYPE_LOCAL);
+        $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, Metaregistrar\EPP\eppContact::TYPE_LOC);
         $contactinfo = new Metaregistrar\EPP\eppContact($postalinfo, $email, $telephone);
         $contactinfo->setPassword('fubar');
         $contact = new Metaregistrar\EPP\eppCreateContactRequest($contactinfo);

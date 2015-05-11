@@ -27,7 +27,7 @@ function updatecontact($conn, $contactid, $email, $telephone, $name, $organizati
         $update = new Metaregistrar\EPP\eppContact();
         $update->setVoice($telephone);
         $update->setEmail($email);
-        $pi = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, Metaregistrar\EPP\eppContactPostalInfo::POSTAL_TYPE_LOCAL);
+        $pi = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, Metaregistrar\EPP\eppContact::TYPE_LOC);
         $update->addPostalInfo($pi);
         $up = new Metaregistrar\EPP\eppUpdateContactRequest($contact, null, null, $update);
         if ((($response = $conn->writeandread($up)) instanceof Metaregistrar\EPP\eppUpdateResponse) && ($response->Success())) {
@@ -48,7 +48,7 @@ function updatecontact($conn, $contactid, $email, $telephone, $name, $organizati
 function createcontact($conn, $email, $telephone, $name, $organization, $address, $postcode, $city, $country) {
     /* @var $conn Metaregistrar\EPP\eppConnection.php */
     try {
-        $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, Metaregistrar\EPP\eppContactPostalInfo::POSTAL_TYPE_LOCAL);
+        $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, Metaregistrar\EPP\eppContact::TYPE_LOC);
         $contactinfo = new Metaregistrar\EPP\eppContact($postalinfo, $email, $telephone);
         $contact = new Metaregistrar\EPP\EppCreateContactRequest($contactinfo);
         if ((($response = $conn->writeandread($contact)) instanceof Metaregistrar\EPP\eppCreateResponse) && ($response->Success())) {

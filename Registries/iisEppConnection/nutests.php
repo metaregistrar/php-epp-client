@@ -214,7 +214,7 @@ function createhost($conn, $hostname, $ipaddress) {
 
 function createcontact($conn, $email, $telephone, $name, $organization, $address, $postcode, $city, $country) {
     try {
-        $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, Metaregistrar\EPP\eppContactPostalInfo::POSTAL_TYPE_LOCAL);
+        $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, Metaregistrar\EPP\eppContact::TYPE_LOC);
         $contactinfo = new Metaregistrar\EPP\eppContact($postalinfo, $email, $telephone);
         $contact = new Metaregistrar\EPP\iisEppCreateContactRequest($contactinfo);
         if ((($response = $conn->writeandread($contact)) instanceof Metaregistrar\EPP\eppCreateResponse) && ($response->Success())) {
@@ -382,7 +382,7 @@ function updatecontact($conn, $contactid) {
         $contact = new Metaregistrar\EPP\eppContactHandle($contactid);
         $update = new Metaregistrar\EPP\eppContact();
         $update->setVoice('+46.799999999');
-        $pi = new Metaregistrar\EPP\eppContactPostalInfo(null, 'Kiruna', 'SE', null, null, null, '18752', Metaregistrar\EPP\eppContactPostalInfo::POSTAL_TYPE_LOCAL);
+        $pi = new Metaregistrar\EPP\eppContactPostalInfo(null, 'Kiruna', 'SE', null, null, null, '18752', Metaregistrar\EPP\eppContact::TYPE_LOC);
         $update->addPostalInfo($pi);
         $up = new Metaregistrar\EPP\eppUpdateRequest($contact, null, null, $update);
         if ((($response = $conn->writeandread($up)) instanceof Metaregistrar\EPP\eppUpdateResponse) && ($response->Success())) {

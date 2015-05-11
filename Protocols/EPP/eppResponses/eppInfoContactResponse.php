@@ -292,7 +292,7 @@ class eppInfoContactResponse extends eppInfoResponse {
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:postalInfo');
         foreach ($result as $postalresult) {
             $testtype = $postalresult->getAttributeNode('type');
-            $type = eppContactPostalInfo::POSTAL_TYPE_LOCAL;
+            $type = eppContact::TYPE_LOC;
             if ($testtype) {
                 $type = $testtype->value;
             }
