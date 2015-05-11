@@ -7,7 +7,7 @@ $conn = new Metaregistrar\EPP\metaregEppConnection();
 // Connect to the EPP server
 if ($conn->connect()) {
     if (login($conn)) {
-        createcontact($conn, 'info@fryslan.frl', '+31.582925925', 'Domain Administration', 'Provincie Fryslân', 'Tweebaksmarkt 52', '8911 KZ', 'Leeuwarden', 'NL');
+        createcontact($conn, 'info@fryslan.frl', '+31.582925925', 'Domain Administration', 'Provincie Fryslan', 'Tweebaksmarkt 52', '8911 KZ', 'Leeuwarden', 'NL');
         logout($conn);
 
     }
@@ -17,7 +17,7 @@ if ($conn->connect()) {
 
 function createcontact($conn, $email, $telephone, $name, $organization, $address, $postcode, $city, $country) {
     try {
-        $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, Metaregistrar\EPP\eppContactPostalInfo::POSTAL_TYPE_LOCAL);
+        $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode);
         $contactinfo = new Metaregistrar\EPP\eppContact($postalinfo, $email, $telephone);
         $contactinfo->setPassword('');
         $contact = new Metaregistrar\EPP\eppCreateContactRequest($contactinfo);

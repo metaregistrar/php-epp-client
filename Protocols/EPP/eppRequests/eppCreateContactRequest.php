@@ -29,11 +29,21 @@ class eppCreateContactRequest extends eppCreateRequest {
         # Object create structure
         #
         $create = $this->createElement('create');
-
         $this->contactobject = $this->createElement('contact:create');
         $this->contactobject->appendChild($this->createElement('contact:id', $contact->generateContactId()));
         $postalinfo = $this->createElement('contact:postalInfo');
         $postal = $contact->getPostalInfo(0);
+        if (!$postal instanceof eppContactPostalInfo) {
+            throw new eppException('PostalInfo must be filled on eppCreateContact request');
+        }
+        if ($postal->getType()==eppContact::TYPE_AUTO) {
+            // If all fields are ascii, type = int (international) else type = loc (localization)
+            if (($this->isAscii($postal->getName())) && ($this->isAscii($postal->getOrganisationName())) && ($this->isAscii($postal->getStreet(0)))) {
+                $postal->setType(eppContact::TYPE_INT);
+            } else {
+                $postal->setType(eppContact::TYPE_LOC);
+            }
+        }
         $postalinfo->setAttribute('type', $postal->getType());
         $postalinfo->appendChild($this->createElement('contact:name', $postal->getName()));
         if ($postal->getOrganisationName()) {
@@ -68,17 +78,17 @@ class eppCreateContactRequest extends eppCreateRequest {
             $disclose->setAttribute('flag',$contact->getDisclose());
             $name = $this->createElement('contact:name');
             if ($contact->getDisclose()==1) {
-                $name->setAttribute('type','loc');
+                $name->setAttribute('type',eppContact::TYPE_LOC);
             }
             $disclose->appendChild($name);
             $org = $this->createElement('contact:org');
             if ($contact->getDisclose()==1) {
-                $org->setAttribute('type','loc');
+                $org->setAttribute('type',eppContact::TYPE_LOC);
             }
             $disclose->appendChild($org);
             $addr = $this->createElement('contact:addr');
             if ($contact->getDisclose()==1) {
-                $addr->setAttribute('type','loc');
+                $addr->setAttribute('type',eppContact::TYPE_LOC);
             }
             $disclose->appendChild($addr);
             $disclose->appendChild($this->createElement('contact:voice'));
@@ -87,6 +97,10 @@ class eppCreateContactRequest extends eppCreateRequest {
         }
         $create->appendChild($this->contactobject);
         $this->getCommand()->appendChild($create);
+    }
+
+    private static function isAscii($str) {
+        return mb_check_encoding($str, 'ASCII');
     }
 }
 

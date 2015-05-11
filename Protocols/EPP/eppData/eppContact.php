@@ -1,9 +1,9 @@
 <?php
 namespace Metaregistrar\EPP;
 /**
- * The SIDN EPP Contact Info Object
+ * The Contact Info Object
  *
- * This will hold the complete contact info SIDN can receive and give you
+ * This will hold the complete contact info a registry can receive and give you
  *
  */
 
@@ -29,13 +29,22 @@ class eppContact {
     const STATUS_CLIENT_UPDATE_PROHIBITED = 'clientUpdateProhibited';
     const STATUS_CLIENT_TRANSFER_PROHIBITED = 'clientTransferProhibited';
 
+    #
+    # These values can be set into the type field
+    # Only LOC and INT are allowed, AUTO will automatically determine LOC or INT
+    #
+    const TYPE_LOC = 'loc';
+    const TYPE_INT = 'int';
+    const TYPE_AUTO = 'auto';
+
+
     private $postalInfo = array();
     private $voice=null;
     private $fax=null;
     private $email=null;
     private $password=null;
     private $status=null;
-    private $type = 'loc';
+    private $type = self::TYPE_AUTO;
     private $disclose = null;
 
 
@@ -50,9 +59,15 @@ class eppContact {
      * @return void
      */
     public function __construct($postalInfo = null, $email = null, $voice = null, $fax = null, $password = null, $status = null) {
-        foreach ($postalInfo as $pi) {
-            if ($pi instanceof eppContactPostalInfo) {
-                $this->addPostalInfo($pi);
+        if ($postalInfo instanceof eppContactPostalInfo) {
+            $this->addPostalInfo($postalInfo);
+        } else {
+            if (is_array($postalInfo)) {
+                foreach ($postalInfo as $pi) {
+                    if ($pi instanceof eppContactPostalInfo) {
+                        $this->addPostalInfo($pi);
+                    }
+                }
             }
         }
         $this->setEmail($email);
@@ -163,7 +178,6 @@ class eppContact {
 
     public function setPassword($password) {
         $this->password = $password;
-
     }
 
     /**
@@ -232,8 +246,6 @@ class eppContact {
      * @return string ContactId
      */
     public function generateContactId() {
-#        $contactid = 3001;
-        #       return sprintf("MRG%05d",$contactid);
         return uniqid('MRG');
     }
 }

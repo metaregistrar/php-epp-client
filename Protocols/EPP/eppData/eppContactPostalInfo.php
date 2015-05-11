@@ -8,9 +8,6 @@ namespace Metaregistrar\EPP;
  */
 
 class eppContactPostalInfo {
-    const POSTAL_TYPE_INTERNATIONAL = 'int';
-    const POSTAL_TYPE_LOCAL = 'loc';
-
     private $name;
     private $organisationName;
     private $street;
@@ -30,9 +27,9 @@ class eppContactPostalInfo {
      * @param string $street
      * @param string $province
      * @param string $zipcode
-     * @param string $type POSTAL_TYPE_LOCAL or POSTAL_TYPE_INTERNATIONAL
+     * @param string $type POSTAL_TYPE_LOC or POSTAL_TYPE_INT
      */
-    public function __construct($name = null, $city = null, $countrycode = null, $organisationName = null, $street = null, $province = null, $zipcode = null, $type = self::POSTAL_TYPE_INTERNATIONAL) {
+    public function __construct($name = null, $city = null, $countrycode = null, $organisationName = null, $street = null, $province = null, $zipcode = null, $type = eppContact::TYPE_AUTO) {
         $this->setName($name);
         #
         # Street can be an array of max 3 streets, or a string with an address
@@ -209,7 +206,7 @@ class eppContactPostalInfo {
      */
     public function setType($type) {
         $type = strtolower($type);
-        if (($type != 'int') && ($type != 'loc')) {
+        if (($type != eppContact::TYPE_AUTO) && ($type != eppContact::TYPE_LOC)&& ($type != eppContact::TYPE_INT)) {
             throw new eppException('PostalInfo type can only be INT or LOC');
         }
         $this->type = $type;

@@ -90,6 +90,14 @@ class eppUpdateContactRequest extends eppRequest {
         if ($contact->getPostalInfoLength() > 0) {
             $postal = $contact->getPostalInfo(0);
             $postalinfo = $this->createElement('contact:postalInfo');
+            if ($postal->getType()==eppContact::TYPE_AUTO) {
+                // If all fields are ascii, type = int (international) else type = loc (localization)
+                if (($this->isAscii($postal->getName())) && ($this->isAscii($postal->getOrganisationName())) && ($this->isAscii($postal->getStreet(0)))) {
+                    $postal->setType(eppContact::TYPE_INT);
+                } else {
+                    $postal->setType(eppContact::TYPE_LOC);
+                }
+            }
             $postalinfo->setAttribute('type', $postal->getType());
             if (strlen($postal->getName())) {
                 $postalinfo->appendChild($this->createElement('contact:name', $postal->getName()));
