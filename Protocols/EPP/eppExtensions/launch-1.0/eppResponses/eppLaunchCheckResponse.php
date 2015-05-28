@@ -76,12 +76,13 @@ class eppLaunchCheckResponse extends eppCheckResponse {
                             }
                         }
                         if (strpos($child->tagName, ':claimKey')) {
-
                             $checkeddomain['claim'] = new eppDomainClaim();
                             $checkeddomain['claim']->setValidator($child->getAttribute('validatorID'));
                             $checkeddomain['claim']->setClaimKey($child->nodeValue);
                         }
-                        $checkeddomain['domainname'] = $idna->decode($child->nodeValue);
+                        if (strpos($child->tagName, ':name')) {
+                            $checkeddomain['domainname'] = $idna->decode($child->nodeValue);
+                        }
                         if (strpos($child->tagName, ':reason')) {
                             $checkeddomain['reason'] = $child->nodeValue;
                         }

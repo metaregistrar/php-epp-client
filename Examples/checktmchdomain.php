@@ -49,7 +49,7 @@ function checkdomains($conn, $domains) {
                     if ($check['claim']) {
                         if ($check['claim'] instanceof Metaregistrar\EPP\eppDomainClaim) {
                             echo "Claim validator: " . $check['claim']->getValidator() . ", claim key: " . $check['claim']->getClaimKey() . "\n";
-                            $tmch = new Metaregistrar\TMCH\cnisTmchEppConnection();
+                            $tmch = new Metaregistrar\TMCH\cnisTmchConnection();
                             $output = $tmch->getCnis($check['claim']->getClaimKey());
                             var_dump($output);
                         } else {
@@ -67,5 +67,8 @@ function checkdomains($conn, $domains) {
         }
     } catch (Metaregistrar\EPP\eppException $e) {
         echo 'ERROR1: ' . $e->getMessage() . "\n";
+    } catch (Metaregistrar\TMCH\tmchException $t) {
+        echo 'ERROR TMCH: ' . $t->getMessage() . "\n";
     }
+
 }
