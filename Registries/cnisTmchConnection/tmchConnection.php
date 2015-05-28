@@ -26,6 +26,9 @@ class cnisTmchConnection extends tmchConnection {
             throw new tmchException(curl_error($ch));
         }
         $output = curl_exec($ch);
+        if (strlen($output)==0) {
+            throw new tmchException("Empty output receuced from CNIS service");
+        }
         $this->setLastInfo(curl_getinfo($ch));
         curl_close($ch);
         if (strpos($output,'404 Not Found')!==false)
