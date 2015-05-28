@@ -49,10 +49,10 @@ function checkdomains($conn, $domains) {
                     if ($check['claim']) {
                         if ($check['claim'] instanceof Metaregistrar\EPP\eppDomainClaim) {
                             echo "Claim validator: " . $check['claim']->getValidator() . ", claim key: " . $check['claim']->getClaimKey() . "\n";
-                            echo "Not before: ".$check['claim']->get
+
                             $tmch = new Metaregistrar\TMCH\cnisTmchConnection();
                             $output = $tmch->getCnis($check['claim']->getClaimKey());
-                            var_dump($output);
+                            echo "Notice ID: ".$output->getNoticeId()." Not after: ".$output->getNotAfter()."\n";
                         } else {
                             throw new Metaregistrar\EPP\eppException("Domain name " . $check['domainname'] . " is claimed, but no valid claim key is present");
                         }
