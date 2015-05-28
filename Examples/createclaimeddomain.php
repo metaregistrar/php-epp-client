@@ -14,10 +14,11 @@ $now = $current_date = gmDate("Y-m-d\TH:i:s\Z");
 $claims = array(
     'test-claims-1.frl' => array('noticeid' => '2a87fdbb9223372036854775807', 'notafter' => '2019-09-04T07:47:03.123Z', 'lookup' => '2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX4R2127', 'confirmed' => $now),
     'test-claims-2.frl' => array('noticeid' => 'e434f0f59223372036854775807', 'notafter' => '2018-10-01T15:40:13.843Z', 'lookup' => '2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX4R2609', 'confirmed' => $now),
-    'test-claims-3.frl' => array('noticeid' => '3d2f541d9223372036854775807', 'notafter' => '2018-11-06T08:17:08.8Z', 'lookup' => '2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX3R2333', 'confirmed' => $now)
+    'test-claims-3.frl' => array('noticeid' => '3d2f541d9223372036854775807', 'notafter' => '2018-11-06T08:17:08.8Z', 'lookup' => '2013041500/2/6/9/rJ1NrDO92vDsAzf7EQzgjX3R2333', 'confirmed' => $now),
+    'a-b-c-d-e-fg.amsterdam' => array('noticeid' => '27d5501a0000000000000407286', 'notafter' => '2015-05-30T00:00:00.0Z', 'lookup' => '2015052800/9/6/9/lpexfNxa2c0WNTKtzWXsizak0000000408', 'confirmed' => $now)
 );
 
-$domainname = 'test-claims-3.frl';
+$domainname = 'a-b-c-d-e-fg.amsterdam';
 echo "Registering $domainname\n";
 
 $conn = new Metaregistrar\EPP\metaregEppConnection();
@@ -25,8 +26,8 @@ $conn = new Metaregistrar\EPP\metaregEppConnection();
 // Connect to the EPP server
 if ($conn->connect()) {
     if (login($conn)) {
-        $contactid = 'mrg54ceb3e866e8f';
-        $contactid = 'mrg54d09b096fe98';
+        $contactid = '101';
+        $contactid = '101';
         $techcontact = null;
         $billingcontact = null;
         //$claim = checkdomainclaim($conn,$domainname);

@@ -49,7 +49,6 @@ function checkdomains($conn, $domains) {
                     if ($check['claim']) {
                         if ($check['claim'] instanceof Metaregistrar\EPP\eppDomainClaim) {
                             echo "Claim validator: " . $check['claim']->getValidator() . ", claim key: " . $check['claim']->getClaimKey() . "\n";
-
                             $tmch = new Metaregistrar\TMCH\cnisTmchConnection();
                             $output = $tmch->getCnis($check['claim']->getClaimKey());
                             echo "Notice ID: ".$output->getNoticeId()." Not after: ".$output->getNotAfter()."\n";
