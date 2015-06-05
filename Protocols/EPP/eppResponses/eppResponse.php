@@ -45,6 +45,50 @@ class eppResponse extends \DomDocument {
     const RESULT_AUTHENTICATION_ERROR_CONNECTION_CLOSE = '2501';
     const RESULT_SESSION_LIMIT_EXCEEDED_CONNECTION_CLOSE = '2502';
 
+
+    /**
+     * A list of all the checks to identify the proper response object
+     * The objects that have no specific objects to identify them have been left out
+     *
+     * @var array
+     */
+    private $matcher = [
+        'Metaregistrar\\EPP\\eppCheckResponse' => [
+            '/epp:epp/epp:response/epp:resData/domain:chkData',
+            '/epp:epp/epp:response/epp:resData/host:chkData',
+            '/epp:epp/epp:response/epp:resData/contact:chkData/contact:cd'
+        ],
+        'Metaregistrar\\EPP\\eppLaunchCheckResponse' => [
+            '/epp:epp/epp:response/epp:extension/launch:chkData'
+        ],
+        'Metaregistrar\\EPP\\eppHelloResponse' => [
+            '/epp:epp/epp:greeting/epp:svID'
+        ],
+        'Metaregistrar\\EPP\\eppPollResponse' => [
+            '/epp:epp/epp:response/epp:msgQ'
+        ],
+        'Metaregistrar\\EPP\\eppInfoContactResponse' => [
+            '/epp:epp/epp:response/epp:resData/contact:infData'
+        ],
+        'Metaregistrar\\EPP\\eppInfoDomainResponse' => [
+            '/epp:epp/epp:response/epp:resData/domain:infData'
+        ],
+        'Metaregistrar\\EPP\\eppCreateResponse' => [
+            '/epp:epp/epp:response/epp:resData/host:creData',
+            '/epp:epp/epp:response/epp:resData/domain:creData',
+            '/epp:epp/epp:response/epp:resData/contact:creData'
+        ],
+        'Metaregistrar\\EPP\\eppRenewResponse' => [
+            '/epp:epp/epp:response/epp:resData/domain:renData'
+        ],
+        'Metaregistrar\\EPP\\eppTransferResponse' => [
+            '/epp:epp/epp:response/epp:resData/domain:trnData'
+        ],
+        'Metaregistrar\\EPP\\eppLaunchCreateDomainResponse' => [
+            '/epp:epp/epp:response/epp:extension/launch:creData'
+        ]
+    ];
+
     /**
      *
      * @var string Category of problem
@@ -372,6 +416,49 @@ class eppResponse extends \DomDocument {
 
         }
     }
+
+    /**
+     * Makes the proper response object based on the input xml
+     *
+     * @return eppResponse
+     */
+    public function instantiateProperResponse()
+    {
+        foreach ($this->matcher as $type=>$matches)
+        {
+            if($this->hasElement($matches))
+            {
+                $response = new $type();
+                $response->loadXML($this->saveXML(null, LIBXML_NOEMPTYTAG));
+                return $response;
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Checks and sees if an element is present using xpath
+     * @param array $matches
+     * @return boolean
+     */
+    public function hasElement($matches)
+    {
+        libxml_use_internal_errors(true);
+        $xpath = $this->xPath();
+        foreach($matches as $match)
+        {
+            $results = $xpath->query($match);
+
+            if($results->length>0)
+            {
+                libxml_clear_errors();
+                return true;
+            }
+        }
+        libxml_clear_errors();
+        return false;
+    }
+
 
     /**
      *
