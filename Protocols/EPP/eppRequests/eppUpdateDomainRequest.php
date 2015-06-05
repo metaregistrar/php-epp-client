@@ -2,9 +2,12 @@
 namespace Metaregistrar\EPP;
 
 class eppUpdateDomainRequest extends eppRequest {
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null) {
+    private $forcehostattr = false;
+
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false) {
         parent::__construct();
 
+        $this->setForcehostattr($forcehostattr);
         if ($objectname instanceof eppDomain) {
             $domainname = $objectname->getDomainName();
         } else {
@@ -26,8 +29,15 @@ class eppUpdateDomainRequest extends eppRequest {
         parent::__destruct();
     }
 
+    public function getForcehostattr() {
+        return $this->forcehostattr;
+    }
 
-    /**
+    public function setForcehostattr($forcehostattr) {
+        $this->forcehostattr = $forcehostattr;
+    }
+
+        /**
      *
      * @param string $domainname
      * @param eppDomain $addInfo
@@ -74,7 +84,8 @@ class eppUpdateDomainRequest extends eppRequest {
         if (is_array($hosts) && (count($hosts))) {
             $nameservers = $this->createElement('domain:ns');
             foreach ($hosts as $host) {
-                if (is_array($host->getIpAddresses())) {
+                /* @var eppHost $host */
+                if (($this->forcehostattr) ||  (is_array($host->getIpAddresses()))) {
                     $nameservers->appendChild($this->addDomainHostAttr($host));
                 } else {
                     $nameservers->appendChild($this->addDomainHostObj($host));
@@ -85,6 +96,7 @@ class eppUpdateDomainRequest extends eppRequest {
         $contacts = $domain->getContacts();
         if (is_array($contacts)) {
             foreach ($contacts as $contact) {
+                /* @var eppContactHandle $contact */
                 $this->addDomainContact($element, $contact->getContactHandle(), $contact->getContactType());
             }
         }
@@ -118,7 +130,7 @@ class eppUpdateDomainRequest extends eppRequest {
 
     /**
      *
-     * @param string $domain
+     * @param \domElement $domain
      * @param string $contactid
      * @param string $contacttype
      */
