@@ -1,7 +1,7 @@
 <?php
 require("../autoloader.php");
 
-$domain = strtolower($_GET['domainname']);
+$domain = 'nike';
 $domainkey = null;
 
 try {
