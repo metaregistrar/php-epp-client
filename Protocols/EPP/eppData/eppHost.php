@@ -46,7 +46,6 @@ class eppHost {
      * @param <string> $hostname
      * @param <string> $ipaddress
      * @param <string> $hoststatus
-     * @todo support multiple IP addresses
      */
     public function  __construct($hostname, $ipaddress = null, $hoststatus = null) {
         $this->setHostname($hostname);

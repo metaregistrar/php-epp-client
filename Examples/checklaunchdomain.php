@@ -20,7 +20,7 @@ for ($i = 1; $i < $argc; $i++) {
 
 echo "Checking " . count($domains) . " domain names\n";
 try {
-    $conn = new Metaregistrar\EPP\metaregEppConnection(false);
+    $conn = new Metaregistrar\EPP\metaregEppConnection(true);
     $conn->enableLaunchphase('claims');
     // Connect to the EPP server
     if ($conn->connect()) {
@@ -36,11 +36,16 @@ try {
 }
 
 
+/**
+ * @param $conn Metaregistrar\EPP\eppConnection
+ * @param $domains array
+ */
 function checkdomains($conn, $domains) {
     try {
         $check = new Metaregistrar\EPP\eppLaunchCheckRequest($domains);
         $check->setLaunchPhase('claims');
         if ((($response = $conn->writeandread($check)) instanceof Metaregistrar\EPP\eppLaunchCheckResponse) && ($response->Success())) {
+            /* @var $response Metaregistrar\EPP\eppLaunchCheckResponse */
             $checks = $response->getCheckedDomains();
             foreach ($checks as $check) {
                 echo $check['domainname'] . " is " . ($check['available'] ? 'free' : 'taken') . " (" . $check['reason'] . ")\n";
