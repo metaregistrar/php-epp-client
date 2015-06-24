@@ -3,7 +3,6 @@ require("../autoloader.php");
 
 $domain = 'nike';
 $domainkey = null;
-
 try {
     $dnl = new Metaregistrar\TMCH\dnlTmchConnection();
     $cnis = new Metaregistrar\TMCH\cnisTmchConnection();

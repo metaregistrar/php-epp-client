@@ -42,5 +42,19 @@ class dnsbeEppInfoDomainResponse extends eppInfoDomainResponse {
             return null;
         }
     }
+
+    /**
+     *
+     * @return string
+     */
+    public function getDomainDeletionDate() {
+        $xpath = $this->xPath();
+        $result = $xpath->query('/epp:epp/epp:response/epp:extension/dnsbe:ext/dnsbe:infData/dnsbe:domain/dnsbe:deletionDate');
+        if ($result->length > 0) {
+            return $result->item(0)->nodeValue;
+        } else {
+            return null;
+        }
+    }
 }
 

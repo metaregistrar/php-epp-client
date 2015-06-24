@@ -300,10 +300,11 @@ class eppConnection {
 
 
     /**
-     * This will read 1 response from the connection
+     * This will read 1 response from the connection if there is one
+     * @param boolean $nonBlocking to prevent the blocking of the thread in case there is nothing to read and not wait for the timeout
      * @return string
      */
-    public function read() {
+    public function read($nonBlocking=false) {
         putenv('SURPRESS_ERROR_HANDLER=1');
         $content = '';
         $time = time() + $this->timeout;
@@ -328,6 +329,7 @@ class eppConnection {
                     if ($readbuffer = fread($this->connection, $readLength)) {
                         $readLength = $readLength - strlen($readbuffer);
                         $read .= $readbuffer;
+                        $time = time() + $this->timeout;
                     }
                     //Check if timeout occured
                     if (time() >= $time) {
@@ -349,15 +351,23 @@ class eppConnection {
                     //$this->writeLog(print_R(socket_get_status($this->connection), true));
                     $length = $length - strlen($read);
                     $content .= $read;
+                    $time = time() + $this->timeout;
                 }
                 if (strpos($content, 'Session limit exceeded') > 0) {
                     $read = fread($this->connection, 4);
                     $content .= $read;
                 }
             }
+            if($nonBlocking && strlen($content)<1)
+            {
+                //there is no content don't keep waiting
+                break;
+            }
+
             if (!strlen($read)) {
                 usleep(100);
             }
+
         }
         putenv('SURPRESS_ERROR_HANDLER=0');
         #ob_flush();
@@ -407,6 +417,99 @@ class eppConnection {
         }
         putenv('SURPRESS_ERROR_HANDLER=0');
         return false;
+    }
+
+    /**
+     * Writes a request object to the stream
+     *
+     * @param eppRequest $content
+     * @return boolean
+     * @throws eppException
+     */
+    public function writeRequest(eppRequest $content)
+    {
+        $requestsessionid = $content->getSessionId();
+        $namespaces = $this->getDefaultNamespaces();
+        if (is_array($namespaces)) {
+            foreach ($namespaces as $id => $namespace) {
+                $content->addExtension($id, $namespace);
+            }
+        }
+        /*
+         * $content->login is only set if this is an instance or a sub-instance of an eppLoginRequest
+         */
+        if ($content->login) {
+            /* @var $content eppLoginRequest */
+            // Set username for login request
+            $content->addUsername($this->getUsername());
+            // Set password for login request
+            $content->addPassword($this->getPassword());
+            // Set 'new password' for login request
+            if ($this->getNewPassword()) {
+                $content->addNewPassword($this->getNewPassword());
+            }
+            // Add version to this object
+            $content->addVersion($this->getVersion());
+            // Add language to this object
+            $content->addLanguage($this->getLanguage());
+            // Add services and extensions to this content
+            $content->addServices($this->getServices(), $this->getExtensions());
+        }
+        /*
+         * $content->hello is only set if this is an instance or a sub-instance of an eppHelloRequest
+         */
+        if (!($content->hello)) {
+            /**
+             * Add used namespaces to the correct places in the XML
+             */
+            $content->addNamespaces($this->getServices());
+            $content->addNamespaces($this->getExtensions());
+        }
+        $content->formatOutput = false;
+        if ($this->write($content->saveXML(null, LIBXML_NOEMPTYTAG))) {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Reads a response asynchronously.
+     * Warning if you don't retrieve the read this before you disconnect your response may be lost
+     * please check if your object you are awaiting is supported in the eppResponse object by looking at the eppResponse
+     * object's array property named "matcher"
+     *
+     * @return eppResponse
+     * @throws eppException
+     */
+    public function readResponse()
+    {
+        $response = new eppResponse();
+        $xml = $this->read(true);
+
+        if (strlen($xml)) {
+
+            if ($response->loadXML($xml)) {
+
+
+                $response = $response->instantiateProperResponse();
+                $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG), "READ");
+
+
+                $clienttransid = $response->getClientTransactionId();
+                $response->setXpath($this->getServices());
+                $response->setXpath($this->getExtensions());
+                $response->setXpath($this->getXpathExtensions());
+                if ($response instanceof eppHelloResponse) {
+                    $response->validateServices($this->getLanguage(), $this->getVersion(), $this->getServices(), $this->getExtensions());
+                }
+                return $response;
+            }
+
+        }
+        return null;
     }
 
     /**
