@@ -120,16 +120,20 @@ class eppConnection {
 
     protected $logentries = array();
 
-    function __construct($logging = false) {
+    function __construct($logging = false, $settingsfile = null) {
         if ($logging) {
             $this->enableLogging();
         }
         #
         # Initialize default values for config parameters
         #
-
         $this->language = 'en';
         $this->version = '1.0';
+        // Default server configuration stuff - this varies per connected registry
+        // Check the greeting of the server to see which of these values you need to add
+        $this->setTimeout(5);
+        $this->setLanguage($this->language);
+        $this->setVersion($this->version);
         $this->responses['Metaregistrar\\EPP\\eppHelloRequest'] = 'Metaregistrar\\EPP\\eppHelloResponse';
         $this->responses['Metaregistrar\\EPP\\eppLoginRequest'] = 'Metaregistrar\\EPP\\eppLoginResponse';
         $this->responses['Metaregistrar\\EPP\\eppLogoutRequest'] = 'Metaregistrar\\EPP\\eppLogoutResponse';
@@ -151,6 +155,31 @@ class eppConnection {
         $this->responses['Metaregistrar\\EPP\\eppRenewRequest'] = 'Metaregistrar\\EPP\\eppRenewResponse';
         $this->responses['Metaregistrar\\EPP\\eppTransferRequest'] = 'Metaregistrar\\EPP\\eppTransferResponse';
 
+        #
+        # Read settings.ini or specified settings file
+        #
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $path = str_replace('Metaregistrar\EPP\\',dirname(__FILE__).'\..\..\Registries\\',get_called_class());
+        } else {
+            $path = str_replace('Metaregistrar\EPP\\',dirname(__FILE__).'/../../Registries/',get_called_class());
+        }
+        if (!$settingsfile) {
+            $settingsfile = 'settings.ini';
+        }
+        if ($settings = $this->loadSettings($path,$settingsfile)) {
+            $this->setHostname($settings['hostname']);
+            $this->setUsername($settings['userid']);
+            $this->setPassword($settings['password']);
+            if (array_key_exists('port',$settings)) {
+                $this->setPort($settings['port']);
+            } else {
+                $this->setPort(700);
+            }
+            if (array_key_exists('certificatefile',$settings) && array_key_exists('certificatepassword',$settings)) {
+                // Enter the path to your certificate and the password here
+                $this->enableCertification($path . '/' . $settings['certificatefile'], $settings['certificatepassword']);
+            }
+        }
     }
 
     function __destruct() {
@@ -630,10 +659,10 @@ class eppConnection {
         mail($email, $subject, implode("\n", $this->logentries));
     }
 
-    protected function loadSettings($directory) {
+    protected function loadSettings($directory, $settingsfile) {
         $result = array();
-        if (is_readable($directory . '/settings.ini')) {
-            $settings = file($directory . '/settings.ini', FILE_IGNORE_NEW_LINES);
+        if (is_readable($directory . '/'.$settingsfile)) {
+            $settings = file($directory . '/'.$settingsfile, FILE_IGNORE_NEW_LINES);
             foreach ($settings as $setting) {
                 list($param, $value) = explode('=', $setting);
                 $result[$param] = $value;

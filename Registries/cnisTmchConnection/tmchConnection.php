@@ -3,17 +3,12 @@ namespace Metaregistrar\TMCH;
 
 class cnisTmchConnection extends tmchConnection {
 
-    public function __construct() {
-        if ($settings = $this->loadSettings(dirname(__FILE__))) {
-            parent::setHostname($settings['hostname']);
-            parent::setUsername($settings['userid']);
-            parent::setPassword($settings['password']);
-        }
-    }
-
     public function getCnis($key) {
         if (!is_string($key)) {
             throw new tmchException("Key must be filled when requesting CNIS information");
+        }
+        if (is_null(parent::getHostname()) || (parent::getHostname()=='')) {
+            throw new tmchException("Hostname must be set when requesting CNIS information");
         }
         $url = "https://" . parent::getHostname() . "/" . $key . ".xml";
         $ch = curl_init();

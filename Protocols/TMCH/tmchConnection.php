@@ -88,11 +88,22 @@ class tmchConnection {
         return $this->lastinfo;
     }
 
+    public function __construct($logging = false, $settingsfile = null) {
+        $path = str_replace('Metaregistrar\TMCH\\',dirname(__FILE__).'\..\..\Registries\\',get_called_class());
+        if (!$settingsfile) {
+            $settingsfile = 'settings.ini';
+        }
+        if ($settings = $this->loadSettings($path,$settingsfile)) {
+            $this->setHostname($settings['hostname']);
+            $this->setUsername($settings['userid']);
+            $this->setPassword($settings['password']);
+        }
+    }
 
-    protected function loadSettings($directory) {
+    protected function loadSettings($directory, $file) {
         $result = array();
-        if (is_readable($directory . '/settings.ini')) {
-            $settings = file($directory . '/settings.ini', FILE_IGNORE_NEW_LINES);
+        if (is_readable($directory . '/' . $file)) {
+            $settings = file($directory . '/' . $file, FILE_IGNORE_NEW_LINES);
             foreach ($settings as $setting) {
                 list($param, $value) = explode('=', $setting);
                 $result[$param] = $value;

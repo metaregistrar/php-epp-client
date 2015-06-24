@@ -3,17 +3,8 @@ namespace Metaregistrar\EPP;
 
 class amsterdamEppConnection extends eppConnection {
 
-    public function __construct($logging = false) {
-        parent::__construct($logging);
-        if ($settings = $this->loadSettings(dirname(__FILE__))) {
-            parent::setHostname($settings['hostname']);
-            parent::setPort($settings['port']);
-            parent::setUsername($settings['userid']);
-            parent::setPassword($settings['password']);
-        }
-        parent::setTimeout(5);
-        parent::setLanguage('en');
-        parent::setVersion('1.0');
+    public function __construct($logging = false, $settingsfile = null) {
+        parent::__construct($logging, $settingsfile);
         parent::addExtension('sidn-ext-epp', 'http://rxsd.domain-registry.nl/sidn-ext-epp-1.0');
         parent::enableRgp();
         parent::enableDnssec();
