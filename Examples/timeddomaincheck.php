@@ -51,7 +51,7 @@ for ($i = 0; $i < 1500; $i++) {
 
 echo "Checking " . count($domains) . " domain names\n";
 try {
-    $conn = new Metaregistrar\EPP\sidnEppConnection(true);
+    $conn = new Metaregistrar\EPP\metaregEppConnection();
 
     // Connect to the EPP server
     $mtime = microtime();

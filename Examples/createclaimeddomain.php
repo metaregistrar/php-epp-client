@@ -20,21 +20,30 @@ $claims = array(
 
 );
 
-$domainname = 'a-b-c-d-ef-g.amsterdam';
-echo "Registering $domainname\n";
-
 $conn = new Metaregistrar\EPP\metaregEppConnection();
 $conn->enableLaunchphase('claims');
 
 // Connect to the EPP server
 if ($conn->connect()) {
     if (login($conn)) {
-        $contactid = '267';
-        $contactid = '267';
-        $techcontact = '267';
+        #$contactid = '267';
+        #$contactid = '267';
+        #$techcontact = '267';
         //$billingcontact = '477';
-        //$claim = checkdomainclaim($conn,$domainname);
-        createclaimeddomain($conn, $domainname, $claims[$domainname], $contactid, $contactid, $techcontact, $billingcontact, array('ns1.metaregistrar.nl','ns2.metaregistrar.nl'));
+        $contactid = 'HOS000006-MIJND';
+        $techcontact = $contactid;
+        $billingcontact = $contactid;
+        $nameservers = array('ns1.metaregistrar.nl','ns2.metaregistrar.nl');
+        foreach ($domains as $domainname) {
+            echo "Registering $domainname\n";
+            $claim = checkdomainclaim($conn,$domainname);
+            if ($claim) {
+                createclaimeddomain($conn, $domainname, $claim, $contactid, $contactid, $techcontact, $billingcontact, $nameservers);
+            } else {
+                createdomain($conn, $domainname, $contactid, $contactid, $techcontact, $billingcontact, $nameservers);
+
+            }
+        }
         logout($conn);
     }
 }
@@ -59,7 +68,7 @@ function checkdomainclaim($conn, $domainname) {
                     if ($check['claim']) {
                         if ($check['claim'] instanceof Metaregistrar\EPP\eppDomainClaim) {
                             echo "Claim validator: " . $check['claim']->getValidator() . ", claim key: " . $check['claim']->getClaimKey() . "\n";
-                            $tmch = new Metaregistrar\TMCH\cnisTmchConnection();
+                            $tmch = new Metaregistrar\TMCH\cnisTmchConnection(true,'settingslive.ini');
                             $claim = array();
                             $output = $tmch->getCnis($check['claim']->getClaimKey());
                             /* @var $output Metaregistrar\TMCH\tmchClaimData */
@@ -125,12 +134,44 @@ function createclaimeddomain($conn, $domainname, $claim, $registrant, $admincont
         $create->setLaunchPhase('claims');
         //$create->setLaunchCodeMark($domainname.';'.base64_encode(hash('sha512',$domainname.'MetaregistrarRocks!',true)),'Metaregistrar');
         $create->addLaunchClaim('tmch', $claim['noticeid'], $claim['notafter'], $claim['confirmed']);
-        echo $create->saveXML();
+        //echo $create->saveXML();
         if ((($response = $conn->writeandread($create)) instanceof Metaregistrar\EPP\eppLaunchCreateDomainResponse) && ($response->Success())) {
             /* @var Metaregistrar\EPP\eppLaunchCreateDomainResponse $response */
-            echo $response->saveXML();
+            //echo $response->saveXML();
             echo "Domain " . $response->getDomainName() . " created on " . $response->getDomainCreateDate() . ", expiration date is " . $response->getDomainExpirationDate() . "\n";
             //echo "Registration phase: ".$response->getLaunchPhase()." and Application ID: ".$response->getLaunchApplicationID()."\n";
+        }
+    } catch (Metaregistrar\EPP\eppException $e) {
+        echo $e->getMessage() . "\n";
+    }
+}
+
+function createdomain($conn, $domainname, $registrant, $admincontact, $techcontact, $billingcontact, $nameservers) {
+    /* @var $conn Metaregistrar\EPP\eppConnection */
+    try {
+        $domain = new Metaregistrar\EPP\eppDomain($domainname, $registrant);
+        $reg = new Metaregistrar\EPP\eppContactHandle($registrant);
+        $domain->setRegistrant($reg);
+        $admin = new Metaregistrar\EPP\eppContactHandle($admincontact, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_ADMIN);
+        $domain->addContact($admin);
+        $tech = new Metaregistrar\EPP\eppContactHandle($techcontact, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_TECH);
+        $domain->addContact($tech);
+        $billing = new Metaregistrar\EPP\eppContactHandle($billingcontact, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_BILLING);
+        $domain->addContact($billing);
+        $domain->setAuthorisationCode($domain->generateRandomString(8));
+        if (is_array($nameservers))
+        {
+            foreach ($nameservers as $nameserver)
+            {
+                $host = new Metaregistrar\EPP\eppHost($nameserver);
+                $domain->addHost($host);
+            }
+        }
+        $create = new Metaregistrar\EPP\eppLaunchCreateDomainRequest($domain, true);
+        $create->setLaunchPhase('claims');
+        if ((($response = $conn->writeandread($create)) instanceof Metaregistrar\EPP\eppLaunchCreateDomainResponse) && ($response->Success())) {
+            /* @var $response Metaregistrar\EPP\eppCreateResponse */
+            echo "Domain " . $response->getDomainName() . " created on " . $response->getDomainCreateDate() . ", expiration date is " . $response->getDomainExpirationDate() . "\n";
         }
     } catch (Metaregistrar\EPP\eppException $e) {
         echo $e->getMessage() . "\n";

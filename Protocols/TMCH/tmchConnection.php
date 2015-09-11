@@ -89,7 +89,11 @@ class tmchConnection {
     }
 
     public function __construct($logging = false, $settingsfile = null) {
-        $path = str_replace('Metaregistrar\TMCH\\',dirname(__FILE__).'\..\..\Registries\\',get_called_class());
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $path = str_replace('Metaregistrar\TMCH\\',dirname(__FILE__).'\..\..\Registries\\',get_called_class());
+        } else {
+            $path = str_replace('Metaregistrar\TMCH\\',dirname(__FILE__).'/../../Registries/',get_called_class());
+        }
         if (!$settingsfile) {
             $settingsfile = 'settings.ini';
         }
@@ -97,7 +101,16 @@ class tmchConnection {
             $this->setHostname($settings['hostname']);
             $this->setUsername($settings['userid']);
             $this->setPassword($settings['password']);
+            $this->setPort($settings['port']);
+        } else {
+            var_dump($path);
+            var_dump($settingsfile);
+            $this->setHostname('tmcnis.org/cnis');
+            $this->setPort(143);
+            $this->setUsername('cnis143');
+            $this->setPassword('kf96kjFdoajij!y');
         }
+
     }
 
     protected function loadSettings($directory, $file) {

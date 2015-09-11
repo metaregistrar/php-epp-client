@@ -20,6 +20,12 @@ class eppConnection {
      */
     protected $timeout = 5;
 
+    /*
+    * Number of times read operations will be retried
+    * @var integer
+    */
+    protected $retry = 5;
+
     /**
      * Username to be used in the connection
      * @var string
@@ -131,7 +137,7 @@ class eppConnection {
         $this->version = '1.0';
         // Default server configuration stuff - this varies per connected registry
         // Check the greeting of the server to see which of these values you need to add
-        $this->setTimeout(5);
+        $this->setTimeout(10);
         $this->setLanguage($this->language);
         $this->setVersion($this->version);
         $this->responses['Metaregistrar\\EPP\\eppHelloRequest'] = 'Metaregistrar\\EPP\\eppHelloResponse';
@@ -569,7 +575,14 @@ class eppConnection {
         $this->writeLog($content->saveXML(null, LIBXML_NOEMPTYTAG),"WRITE");
         $content->formatOutput = false;
         if ($this->write($content->saveXML(null, LIBXML_NOEMPTYTAG))) {
+            $readcounter = 0;
             $xml = $this->read();
+            // When no data is present on the stream, retry reading several times
+            while ((strlen($xml)==0) && ($readcounter < $this->retry)) {
+                $xml = $this->read();
+                $readcounter++;
+            }
+
             if (strlen($xml)) {
                 if ($response->loadXML($xml)) {
                     $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG),"READ");
@@ -659,6 +672,15 @@ class eppConnection {
         $this->port = $port;
     }
 
+    public function getRetry()
+    {
+        return $this->retry;
+    }
+
+    public function setRetry($retry)
+    {
+        $this->retry = $retry;
+    }
 
     public function addDefaultNamespace($xmlns, $namespace) {
         $this->defaultnamespace[$namespace] = 'xmlns:' . $xmlns;

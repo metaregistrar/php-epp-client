@@ -49,8 +49,6 @@ class eppInfoDomainRequest extends eppRequest {
             } else {
                 throw new eppException('Hosts parameter of inforequest can only be to be all, none, del or sub');
             }
-        } else {
-            $dname->setAttribute('hosts', self::HOSTS_ALL);
         }
         $this->domainobject->appendChild($dname);
         if (!$this->command) {

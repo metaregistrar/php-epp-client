@@ -7,7 +7,7 @@ require('../autoloader.php');
  * Please use the pollack function to acknowledge a message and remove it from the queue
  */
 
-
+$domainname = 'test.org';
 try {
     echo "Polling for messages\n";
     $conn = new Metaregistrar\EPP\metaregEppConnection();
@@ -16,7 +16,7 @@ try {
         if (login($conn)) {
             $messageid = poll($conn);
             if ($messageid) {
-                transferconfirm($conn,'containerhuren.amsterdam');
+                transferconfirm($conn,$domainname);
                 pollack($conn, $messageid);
             }
             logout($conn);

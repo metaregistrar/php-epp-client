@@ -24,14 +24,16 @@ $conn = new Metaregistrar\EPP\metaregEppConnection();
 // Connect to the EPP server
 if ($conn->connect()) {
     if (login($conn)) {
-        if (!checkhosts($conn, array('ns1.metaregistrar.nl'))) {
-            createhost($conn, 'ns1.metaregistrar.nl');
-        }
-        if (!checkhosts($conn, array('ns5.metaregistrar.nl'))) {
-            createhost($conn, 'ns2.metaregistrar.nl');
-        }
-        $nameservers = array('ns1.metaregistrar.nl','ns2.metaregistrar.nl');
-        $contactid = createcontact($conn,'test@test.com','+31.61234567890','Person name',null,'Address 1','12345','City','NL');
+        //if (!checkhosts($conn, array('ns1.metaregistrar.nl'))) {
+        //    createhost($conn, 'ns1.metaregistrar.nl');
+        //}
+        //if (!checkhosts($conn, array('ns5.metaregistrar.nl'))) {
+        //    createhost($conn, 'ns2.metaregistrar.nl');
+        //}
+        //$nameservers = array('ns1.metaregistrar.nl','ns2.metaregistrar.nl');
+        //$contactid = createcontact($conn,'test@test.com','+31.61234567890','Person name',null,'Address 1','12345','City','NL');
+        $nameservers = null;
+        $contactid = 'PAU000001-MIJND';
         if ($contactid) {
             createdomain($conn, $domainname, $contactid, $contactid, $contactid, $contactid, $nameservers);
         }

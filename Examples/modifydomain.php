@@ -53,6 +53,14 @@ function modifydomain($conn, $domainname, $registrant = null, $admincontact = nu
                     }
                 }
             }
+            if ($admincontact) {
+                $oldadmin = $response->getDomainContact(Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_ADMIN);
+                if (!$del) {
+                    $del = new Metaregistrar\EPP\eppDomain($domainname);
+                }
+                $admin = new Metaregistrar\EPP\eppContactHandle($oldadmin, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_ADMIN);
+                $del>addContact($admin);
+            }
         }
         // In the UpdateDomain command you can set or add parameters
         // - Registrant is always set (you can only have one registrant)

@@ -14,16 +14,17 @@ if ($argc <= 1) {
     die();
 }
 
-$domainname = $argv[1];
-
 echo "Retrieving info on " . $domainname . "\n";
 try {
     $conn = new Metaregistrar\EPP\metaregEppConnection();
-
     // Connect to the EPP server
     if ($conn->connect()) {
         if (login($conn)) {
-            infodomain($conn, $domainname);
+            foreach ($domains as $line) {
+                list($domainname,$email,$name,$paymentid,$date)=explode(';',$line);
+                $result = infodomain($conn, $domainname);
+                echo $line.';'.$result."\n";
+            }
             logout($conn);
         }
     } else {
@@ -43,7 +44,7 @@ function infodomain($conn, $domainname) {
             $d = $response->getDomain();
             echo "Info domain for " . $d->getDomainname() . ":\n";
             echo "Created on " . $response->getDomainCreateDate() . "\n";
-            //echo "Last update on ".$response->getDomainUpdateDate()."\n";
+            echo "Last update on ".$response->getDomainUpdateDate()."\n";
             echo "Registrant " . $d->getRegistrant() . "\n";
             echo "Contact info:\n";
             foreach ($d->getContacts() as $contact) {
@@ -53,12 +54,10 @@ function infodomain($conn, $domainname) {
             foreach ($d->getHosts() as $nameserver) {
                 echo "  " . $nameserver->getHostName() . "\n";
             }
-
         } else {
             echo "ERROR2\n";
         }
     } catch (Metaregistrar\EPP\eppException $e) {
-        echo 'ERROR1';
-        echo $e->getMessage() . "\n";
+        return $e->getMessage();
     }
 }

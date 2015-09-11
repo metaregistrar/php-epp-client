@@ -7,13 +7,11 @@ $conn = new Metaregistrar\EPP\metaregEppConnection();
 // Connect to the EPP server
 if ($conn->connect()) {
     if (login($conn)) {
-        createcontact($conn, 'info@fryslan.frl', '+31.582925925', 'Domain Administration', 'Provincie Fryslan', 'Tweebaksmarkt 52', '8911 KZ', 'Leeuwarden', 'NL');
+        createcontact($conn, 'info@test.com', '+31.201234567', 'Domain Administration', 'Metaregistrar', 'Address 1', 'Zipcode', 'City', 'NL');
         logout($conn);
 
     }
-
 }
-
 
 function createcontact($conn, $email, $telephone, $name, $organization, $address, $postcode, $city, $country) {
     try {
