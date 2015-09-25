@@ -43,14 +43,31 @@ function modifydomain($conn, $domainname, $registrant = null, $admincontact = nu
             // If new nameservers are given, get the old ones to remove them
             if (is_array($nameservers)) {
                 /* @var Metaregistrar\EPP\eppInfoDomainResponse $response */
+                // Check if nameservers are not already set for this domain name
                 $oldns = $response->getDomainNameservers();
                 if (is_array($oldns)) {
+                    foreach($oldns as $index=>$ns) {
+                        if (in_array($ns->getHostname(),$nameservers)) {
+                            unset($nameservers[array_search($ns->getHostname(),$nameservers)]);
+                            unset($oldns[$index]);
+                        }
+                    }
+                    if (count($oldns)>0) {
+                        if (!$del) {
+                            $del = new Metaregistrar\EPP\eppDomain($domainname);
+                        }
+                        foreach ($oldns as $ns) {
+                            $del->addHost($ns);
+                        }
+                    }
+                }
+                // Remove DNSSEC keydata that is present on this domain name
+                $keydata = $response->getKeydata();
+                if ((is_array($keydata)) && (count($keydata)>0)) {
                     if (!$del) {
                         $del = new Metaregistrar\EPP\eppDomain($domainname);
                     }
-                    foreach ($oldns as $ns) {
-                        $del->addHost($ns);
-                    }
+                    $del->addSecdns($keydata[0]);
                 }
             }
             if ($admincontact) {
@@ -103,7 +120,11 @@ function modifydomain($conn, $domainname, $registrant = null, $admincontact = nu
                 $add->addHost($host);
             }
         }
-        $update = new Metaregistrar\EPP\eppUpdateDomainRequest($domain, $add, $del, $mod);
+        if ((!$add) && (!$del) && (!$mod)) {
+            echo "Nothing to update";
+            return;
+        }
+        $update = new Metaregistrar\EPP\eppDnssecUpdateDomainRequest($domain, $add, $del, $mod);
         if ((($response = $conn->writeandread($update)) instanceof Metaregistrar\EPP\eppUpdateResponse) && ($response->Success())) {
             /* @var Metaregistrar\EPP\eppUpdateResponse $response */
             echo $response->getResultMessage() . "\n";

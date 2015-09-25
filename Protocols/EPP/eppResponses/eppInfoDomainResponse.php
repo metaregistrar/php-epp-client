@@ -315,14 +315,14 @@ class eppInfoDomainResponse extends eppInfoResponse {
             $result = $xpath->query('/epp:epp/epp:response/epp:extension/secDNS:infData/*');
             $keys = array();
             if (count($result) > 0) {
-                //foreach ($result as $keydata) {
+                foreach ($result as $keydata) {
                     $secdns = new eppSecdns();
                     $secdns->setFlags($result->item(0)->getElementsByTagName('flags')->item(0)->nodeValue);
                     $secdns->setAlgorithm($result->item(0)->getElementsByTagName('alg')->item(0)->nodeValue);
                     $secdns->setProtocol($result->item(0)->getElementsByTagName('protocol')->item(0)->nodeValue);
                     $secdns->setPubkey($result->item(0)->getElementsByTagName('pubKey')->item(0)->nodeValue);
                     $keys[] = $secdns;
-                //}
+                }
             }
             return $keys;
         }
