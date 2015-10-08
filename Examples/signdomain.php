@@ -5,6 +5,7 @@ require('../autoloader.php');
 try {
     $domainname = 'dnssectest.nl';
     $conn = new Metaregistrar\EPP\sidnEppConnection();
+    $conn->enableDnssec();
     eppConnect($conn);
     $add = new Metaregistrar\EPP\eppDomain($domainname);
     $sec = new Metaregistrar\EPP\eppSecdns();
@@ -14,7 +15,7 @@ try {
     if ((($response = $conn->writeandread($domain)) instanceof Metaregistrar\EPP\eppUpdateResponse) && ($response->Success())) {
         echo "OKAY\n";
     }
-    $this->eppDisconnect($conn);
+    eppDisconnect($conn);
     return true;
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n";
