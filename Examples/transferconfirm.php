@@ -13,13 +13,13 @@ try {
     $conn = new Metaregistrar\EPP\metaregEppConnection();
 // Connect to the EPP server
     if ($conn->connect()) {
-        if (login($conn)) {
+        if ($conn->login()) {
             $messageid = poll($conn);
             if ($messageid) {
                 transferconfirm($conn,$domainname);
                 pollack($conn, $messageid);
             }
-            logout($conn);
+            $conn->logout();
         }
     }
 } catch (Metaregistrar\EPP\eppException $e) {

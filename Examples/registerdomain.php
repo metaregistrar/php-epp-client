@@ -23,7 +23,7 @@ echo "Registering $domainname\n";
 $conn = new Metaregistrar\EPP\metaregEppConnection();
 // Connect to the EPP server
 if ($conn->connect()) {
-    if (login($conn)) {
+    if ($conn->login()) {
         //if (!checkhosts($conn, array('ns1.metaregistrar.nl'))) {
         //    createhost($conn, 'ns1.metaregistrar.nl');
         //}
@@ -37,7 +37,7 @@ if ($conn->connect()) {
         if ($contactid) {
             createdomain($conn, $domainname, $contactid, $contactid, $contactid, $contactid, $nameservers);
         }
-        logout($conn);
+        $conn->logout();
     }
 }
 

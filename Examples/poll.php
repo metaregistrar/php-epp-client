@@ -14,19 +14,22 @@ try {
     $conn = new Metaregistrar\EPP\metaregEppConnection();
 // Connect to the EPP server
     if ($conn->connect()) {
-        if (login($conn)) {
+        if ($conn->login()) {
             $messageid = poll($conn);
             if ($messageid) {
                 pollack($conn, $messageid);
             }
-            logout($conn);
+            $conn->logout();
         }
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";
 }
 
-
+/**
+ * @param $conn Metaregistrar\EPP\eppConnection
+ * @return null|string
+ */
 function poll($conn) {
     try {
         $poll = new Metaregistrar\EPP\eppPollRequest(Metaregistrar\EPP\eppPollRequest::POLL_REQ, 0);
@@ -47,10 +50,15 @@ function poll($conn) {
     return null;
 }
 
+/**
+ * @param $conn Metaregistrar\EPP\eppConnection
+ * @param $messageid string
+ */
 function pollack($conn, $messageid) {
     try {
         $poll = new Metaregistrar\EPP\eppPollRequest(Metaregistrar\EPP\eppPollRequest::POLL_ACK, $messageid);
         if ((($response = $conn->writeandread($poll)) instanceof Metaregistrar\EPP\eppPollResponse) && ($response->Success())) {
+            /* @var $response Metaregistrar\EPP\eppPollResponse */
             echo "Message $messageid is acknowledged\n";
         }
     } catch (Metaregistrar\EPP\eppException $e) {

@@ -6,7 +6,7 @@ try {
     $conn = new Metaregistrar\EPP\metaregEppConnection();
     // Connect to the EPP server
     if ($conn->connect()) {
-        if (login($conn)) {
+        if ($conn->login()) {
             echo "Creating contact\n";
             $contactid = createcontact($conn,'test@test.com','+31.61234567890','Person name',null,'Address 1','12345','City','NL');
             echo "Updating $contactid\n";
@@ -16,7 +16,7 @@ try {
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo $e->getMessage() . "\n";
-    logout($conn);
+    $conn->logout();
 }
 
 

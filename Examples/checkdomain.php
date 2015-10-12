@@ -22,9 +22,9 @@ try {
     $conn = new Metaregistrar\EPP\metaregEppConnection(true);
     // Connect and login to the EPP server
     if ($conn->connect()) {
-        if (login($conn)) {
+        if ($conn->login()) {
             checkdomains($conn, $domains);
-            logout($conn);
+            $conn->logout();
         }
     } else {
         echo "ERROR CONNECTING\n";
@@ -33,11 +33,15 @@ try {
     echo "ERROR: " . $e->getMessage() . "\n\n";
 }
 
-
+/**
+ * @param $conn Metaregistrar\EPP\eppConnection
+ * @param $domains array
+ */
 function checkdomains($conn, $domains) {
     try {
         $check = new Metaregistrar\EPP\eppCheckRequest($domains);
         if ((($response = $conn->writeandread($check)) instanceof Metaregistrar\EPP\eppCheckResponse) && ($response->Success())) {
+            /* @var $response Metaregistrar\EPP\eppCheckResponse */
             $checks = $response->getCheckedDomains();
 
             foreach ($checks as $check) {

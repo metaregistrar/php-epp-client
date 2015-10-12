@@ -24,18 +24,27 @@ echo "Registering $domainname\n";
 $conn = new Metaregistrar\EPP\metaregEppConnection(true);
 // Connect to the EPP server
 if ($conn->connect()) {
-    if (login($conn)) {
+    if ($conn->login()) {
         $contactid = 'mrg54b6560e01ddf';
         $techcontact = $contactid;
         $billingcontact = $contactid;
         if ($contactid) {
             createdomain($conn, $domainname, $contactid, $contactid, $techcontact, $billingcontact, array('ns1.metaregistrar.nl', 'ns2.metaregistrar.nl'));
         }
-        logout($conn);
+        $conn->logout();
     }
 }
 
-
+/**
+ * @param $conn Metaregistrar\EPP\eppConnection
+ * @param $domainname string
+ * @param $registrant string
+ * @param $admincontact string
+ * @param $techcontact string
+ * @param $billingcontact string
+ * @param $nameservers array
+ * @return bool
+ */
 function createdomain($conn, $domainname, $registrant, $admincontact, $techcontact, $billingcontact, $nameservers) {
     try {
         $domain = new Metaregistrar\EPP\eppDomain($domainname, $registrant);
@@ -67,4 +76,5 @@ function createdomain($conn, $domainname, $registrant, $admincontact, $techconta
         echo $e->getMessage() . "\n";
         return false;
     }
+    return null;
 }

@@ -23,9 +23,9 @@ try {
     $conn->enableLaunchphase('claims');
     // Connect to the EPP server
     if ($conn->connect()) {
-        if (login($conn)) {
+        if ($conn->login()) {
             checkdomains($conn, $domains);
-            logout($conn);
+            $conn->logout();
         }
     } else {
         echo "ERROR CONNECTING\n";
@@ -34,12 +34,16 @@ try {
     echo "ERROR: " . $e->getMessage() . "\n\n";
 }
 
-
+/**
+ * @param $conn Metaregistrar\EPP\eppConnection
+ * @param $domains array
+ */
 function checkdomains($conn, $domains) {
     try {
         $check = new Metaregistrar\EPP\eppLaunchCheckRequest($domains);
         $check->setLaunchPhase(Metaregistrar\EPP\eppLaunchCheckRequest::PHASE_CLAIMS, 'test', Metaregistrar\EPP\eppLaunchCheckRequest::TYPE_CLAIMS);
         if ((($response = $conn->writeandread($check)) instanceof Metaregistrar\EPP\eppLaunchCheckResponse) && ($response->Success())) {
+            /* @var $response Metaregistrar\EPP\eppLaunchCheckResponse */
             //$phase = $response->getLaunchPhase();
             $checks = $response->getDomainClaims();
 

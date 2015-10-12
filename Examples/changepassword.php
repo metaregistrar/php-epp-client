@@ -22,7 +22,7 @@ try {
     $conn->setNewPassword($newpassword);
     // Connect to the EPP server
     if ($conn->connect()) {
-        if (login($conn)) {
+        if ($conn->login()) {
             echo "Password was changed, you are logged-out automatically\n";
         }
     }

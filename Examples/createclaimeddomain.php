@@ -25,7 +25,7 @@ $conn->enableLaunchphase('claims');
 
 // Connect to the EPP server
 if ($conn->connect()) {
-    if (login($conn)) {
+    if ($conn->login()) {
         #$contactid = '267';
         #$contactid = '267';
         #$techcontact = '267';
@@ -44,7 +44,7 @@ if ($conn->connect()) {
 
             }
         }
-        logout($conn);
+        $conn->logout();
     }
 }
 
@@ -98,7 +98,7 @@ function checkdomainclaim($conn, $domainname) {
 /**
  * @param Metaregistrar\EPP\eppConnection $conn
  * @param string $domainname
- * @param Metaregistrar\TMCH\tmchClaimData $claim
+ * @param array $claim
  * @param string $registrant
  * @param string $admincontact
  * @param string $techcontact

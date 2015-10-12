@@ -22,9 +22,9 @@ try {
     $conn = new Metaregistrar\EPP\metaregEppConnection();
     // Connect to the EPP server
     if ($conn->connect()) {
-        if (login($conn)) {
+        if ($conn->login()) {
             modifydomain($conn, $domainname, null, null, null, null, array('ns1.metaregistrar.nl', 'ns2.metaregistrar.nl'));
-            logout($conn);
+            $conn->logout();
         }
     }
 } catch (Metaregistrar\EPP\eppException $e) {
@@ -32,7 +32,15 @@ try {
     logout($conn);
 }
 
-
+/**
+ * @param $conn Metaregistrar\EPP\eppConnection
+ * @param $domainname string
+ * @param null $registrant string
+ * @param null $admincontact string
+ * @param null $techcontact string
+ * @param null $billingcontact string
+ * @param null $nameservers string
+ */
 function modifydomain($conn, $domainname, $registrant = null, $admincontact = null, $techcontact = null, $billingcontact = null, $nameservers = null) {
     try {
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
@@ -40,6 +48,7 @@ function modifydomain($conn, $domainname, $registrant = null, $admincontact = nu
         $del = null;
         $info = new Metaregistrar\EPP\eppInfoDomainRequest($domain);
         if ((($response = $conn->writeandread($info)) instanceof Metaregistrar\EPP\eppInfoDomainResponse) && ($response->Success())) {
+            /* @var $response Metaregistrar\EPP\eppInfoDomainResponse */
             // If new nameservers are given, get the old ones to remove them
             if (is_array($nameservers)) {
                 /* @var Metaregistrar\EPP\eppInfoDomainResponse $response */
@@ -47,6 +56,7 @@ function modifydomain($conn, $domainname, $registrant = null, $admincontact = nu
                 $oldns = $response->getDomainNameservers();
                 if (is_array($oldns)) {
                     foreach($oldns as $index=>$ns) {
+                        /* @var $ns Metaregistrar\EPP\eppHost */
                         if (in_array($ns->getHostname(),$nameservers)) {
                             unset($nameservers[array_search($ns->getHostname(),$nameservers)]);
                             unset($oldns[$index]);
@@ -76,7 +86,7 @@ function modifydomain($conn, $domainname, $registrant = null, $admincontact = nu
                     $del = new Metaregistrar\EPP\eppDomain($domainname);
                 }
                 $admin = new Metaregistrar\EPP\eppContactHandle($oldadmin, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_ADMIN);
-                $del>addContact($admin);
+                $del->addContact($admin);
             }
         }
         // In the UpdateDomain command you can set or add parameters
@@ -126,12 +136,12 @@ function modifydomain($conn, $domainname, $registrant = null, $admincontact = nu
         }
         $update = new Metaregistrar\EPP\eppDnssecUpdateDomainRequest($domain, $add, $del, $mod);
         if ((($response = $conn->writeandread($update)) instanceof Metaregistrar\EPP\eppUpdateResponse) && ($response->Success())) {
-            /* @var Metaregistrar\EPP\eppUpdateResponse $response */
+            /* @var $response Metaregistrar\EPP\eppUpdateResponse */
             echo $response->getResultMessage() . "\n";
         }
     } catch (Metaregistrar\EPP\eppException $e) {
         echo $e->getMessage() . "\n";
-        if ($response instanceof Metaregistrar\EPP\eppUpdateResponse) {
+        if ((isset($response)) && ($response instanceof Metaregistrar\EPP\eppUpdateResponse)) {
             echo $response->textContent . "\n";
         }
     }

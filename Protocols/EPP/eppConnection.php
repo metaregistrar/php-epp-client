@@ -304,6 +304,31 @@ class eppConnection {
         }
     }
 
+    /**
+     * Performs an EPP login request and checks the result
+     * @return bool
+     */
+    function login() {
+        $login = new eppLoginRequest;
+        if ((($response = $this->writeandread($login)) instanceof eppLoginResponse) && ($response->Success())) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Performs an EPP logout and checks the result
+     * @return bool
+     * @throws eppException
+     */
+    function logout() {
+            $logout = new eppLogoutRequest();
+            if ((($response = $this->writeandread($logout)) instanceof eppLogoutResponse) && ($response->Success())) {
+                return true;
+            } else {
+                throw new eppException("Logout failed: ".$response->getResultMessage());
+            }
+    }
 
     /**
      * This will read 1 response from the connection if there is one
@@ -329,7 +354,7 @@ class eppConnection {
             //of whats to come
             if ((!isset($length)) || ($length == 0)) {
                 $readLength = 4;
-                $readbuffer = "";
+                //$readbuffer = "";
                 $read = "";
                 while ($readLength > 0) {
                     if ($readbuffer = fread($this->connection, $readLength)) {
@@ -343,7 +368,7 @@ class eppConnection {
                         return false;
                     }
                 }
-                $this->writeLog("Read 4 bytes for integer. (read: " . strlen($read) . "):$read","READ");
+                //$this->writeLog("Read 4 bytes for integer. (read: " . strlen($read) . "):$read","READ");
                 $length = $this->readInteger($read) - 4;
                 $this->writeLog("Reading next: $length bytes","READ");
             }
@@ -434,7 +459,7 @@ class eppConnection {
      */
     public function writeRequest(eppRequest $content)
     {
-        $requestsessionid = $content->getSessionId();
+        //$requestsessionid = $content->getSessionId();
         $namespaces = $this->getDefaultNamespaces();
         if (is_array($namespaces)) {
             foreach ($namespaces as $id => $namespace) {
@@ -504,7 +529,7 @@ class eppConnection {
                 $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG), "READ");
 
 
-                $clienttransid = $response->getClientTransactionId();
+                //$clienttransid = $response->getClientTransactionId();
                 $response->setXpath($this->getServices());
                 $response->setXpath($this->getExtensions());
                 $response->setXpath($this->getXpathExtensions());
@@ -778,10 +803,6 @@ class eppConnection {
     private function enableLogging() {
         date_default_timezone_set("Europe/Amsterdam");
         $this->logging = true;
-    }
-
-    private function sendLog($email, $subject) {
-        mail($email, $subject, implode("\n", $this->logentries));
     }
 
     protected function loadSettings($directory, $settingsfile) {

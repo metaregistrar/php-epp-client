@@ -8,7 +8,7 @@ require('../autoloader.php');
  */
 
 
-function GeneratePassword($crypt = false, $pass = null, $len = 8, $regexp = '/^[a-z]{1}[a-z0-9]*$/i') {
+function GeneratePassword($crypt = false, $len = 8, $regexp = '/^[a-z]{1}[a-z0-9]*$/i') {
     $testpass = null;
     $pass = null;
     while (strlen($pass) < $len) {
@@ -37,7 +37,7 @@ function randomstring($length) {
         $rand .= $c[rand()%strlen($c)];
     }
     return $rand;*/
-    $random = GeneratePassword(false, null, $length, "/^[a-z]{1}[a-z0-9]*$/");
+    $random = GeneratePassword(false, $length, "/^[a-z]{1}[a-z0-9]*$/");
 
 
     $return = implode('', $random);
@@ -58,7 +58,7 @@ try {
     $mtime = explode(" ", $mtime);
     $starttime = $mtime[1] + $mtime[0];
     if ($conn->connect()) {
-        if (login($conn)) {
+        if ($conn->login()) {
             $counter = 0;
             while ($counter < count($domains)) {
                 $list[] = $domains[$counter];
@@ -77,7 +77,7 @@ try {
                     unset($list);
                 }
             }
-            logout($conn);
+            $conn->logout();
         }
     } else {
         echo "ERROR CONNECTING\n";
@@ -91,11 +91,15 @@ try {
     echo "ERROR: " . $e->getMessage() . "\n\n";
 }
 
-
+/**
+ * @param $conn Metaregistrar\EPP\eppConnection
+ * @param $domains array
+ */
 function checkdomains($conn, $domains) {
     try {
         $check = new Metaregistrar\EPP\eppCheckRequest($domains);
         if ((($response = $conn->writeandread($check)) instanceof Metaregistrar\EPP\eppCheckResponse) && ($response->Success())) {
+            /* @var $response Metaregistrar\EPP\eppCheckResponse */
             $checks = $response->getCheckedDomains();
             foreach ($checks as $check) {
                 echo $check['domainname']." is ".($check['available'] ? 'free' : 'taken')." (".$check['reason'].")\n";
