@@ -104,14 +104,14 @@ class eppHttpConnection extends EppConnection {
      */
 
     public function write($content) {
-        $this->writeLog("Writing: " . strlen($content));
+        $this->writeLog("Writing: " . strlen($content),'WRITE');
 
         $ch = $this->initCurl();
         if (!is_resource($ch)) {
             throw new eppException('Failed to init CURL resource.');
         }
 
-        $this->writeLog($content);
+        $this->writeLog($content,'WRITE');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
         $response = curl_exec($ch);
 
@@ -133,7 +133,7 @@ class eppHttpConnection extends EppConnection {
      */
 
     public function read() {
-        $this->writeLog("Reading getting response.");
+        $this->writeLog("Reading response.",'READ');
 
         if ($this->response === null) {
             throw new eppException('Response is empty. Could be reading without writing.');
