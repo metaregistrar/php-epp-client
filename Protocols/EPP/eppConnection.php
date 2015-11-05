@@ -126,6 +126,8 @@ class eppConnection {
 
     protected $logentries = array();
 
+    protected $checktransactionids = true;
+
     function __construct($logging = false, $settingsfile = null) {
         if ($logging) {
             $this->enableLogging();
@@ -615,7 +617,7 @@ class eppConnection {
                     ob_flush();
                     */
                     $clienttransid = $response->getClientTransactionId();
-                    if (($clienttransid) && ($clienttransid != $requestsessionid)) {
+                    if (($this->checktransactionids) && ($clienttransid) && ($clienttransid != $requestsessionid)) {
                         throw new eppException("Client transaction id $requestsessionid does not match returned $clienttransid\nMessage: ".$xml);
                     }
                     $response->setXpath($this->getServices());
@@ -647,6 +649,14 @@ class eppConnection {
 
     public function addCommandResponse($command, $response) {
         $this->responses[$command] = $response;
+    }
+
+    public function getCheckTransactionIds() {
+        return $this->checktransactionids;
+    }
+
+    public function setCheckTransactionIds($value) {
+        $this->checktransactionids = $value;
     }
 
     public function getTimeout() {
