@@ -815,12 +815,41 @@ class eppConnection {
         $this->logging = true;
     }
 
+    public function setConnectionDetails($settingsfile) {
+        $result = array();
+        if (is_readable($settingsfile)) {
+            $settings = file($settingsfile, FILE_IGNORE_NEW_LINES);
+            foreach ($settings as $setting) {
+                list($param, $value) = explode('=', $setting);
+                $param = trim($param);
+                $value = trim($value);
+                $result[$param] = $value;
+            }
+            $this->setHostname($result['hostname']);
+            $this->setUsername($result['userid']);
+            $this->setPassword($result['password']);
+            if (array_key_exists('port',$result)) {
+                $this->setPort($result['port']);
+            } else {
+                $this->setPort(700);
+            }
+            if (array_key_exists('certificatefile',$result) && array_key_exists('certificatepassword',$result)) {
+                // Enter the path to your certificate and the password here
+                $this->enableCertification($result['certificatefile'], $result['certificatepassword']);
+            }
+            return true;
+        }
+        return false;
+    }
+
     protected function loadSettings($directory, $settingsfile) {
         $result = array();
         if (is_readable($directory . '/'.$settingsfile)) {
             $settings = file($directory . '/'.$settingsfile, FILE_IGNORE_NEW_LINES);
             foreach ($settings as $setting) {
                 list($param, $value) = explode('=', $setting);
+                $param = trim($param);
+                $value = trim($value);
                 $result[$param] = $value;
             }
             return $result;
