@@ -42,51 +42,49 @@ try {
  * @param null $nameservers string
  */
 function modifydomain($conn, $domainname, $registrant = null, $admincontact = null, $techcontact = null, $billingcontact = null, $nameservers = null) {
+    $response = null;
     try {
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         // First, retrieve the current domain info. Nameservers can be unset and then set again.
         $del = null;
         $info = new Metaregistrar\EPP\eppInfoDomainRequest($domain);
         if ((($response = $conn->writeandread($info)) instanceof Metaregistrar\EPP\eppInfoDomainResponse) && ($response->Success())) {
-            /* @var $response Metaregistrar\EPP\eppInfoDomainResponse */
             // If new nameservers are given, get the old ones to remove them
             if (is_array($nameservers)) {
                 /* @var Metaregistrar\EPP\eppInfoDomainResponse $response */
-                // Check if nameservers are not already set for this domain name
                 $oldns = $response->getDomainNameservers();
                 if (is_array($oldns)) {
-                    foreach($oldns as $index=>$ns) {
-                        /* @var $ns Metaregistrar\EPP\eppHost */
-                        if (in_array($ns->getHostname(),$nameservers)) {
-                            unset($nameservers[array_search($ns->getHostname(),$nameservers)]);
-                            unset($oldns[$index]);
-                        }
-                    }
-                    if (count($oldns)>0) {
-                        if (!$del) {
-                            $del = new Metaregistrar\EPP\eppDomain($domainname);
-                        }
-                        foreach ($oldns as $ns) {
-                            $del->addHost($ns);
-                        }
-                    }
-                }
-                // Remove DNSSEC keydata that is present on this domain name
-                $keydata = $response->getKeydata();
-                if ((is_array($keydata)) && (count($keydata)>0)) {
                     if (!$del) {
                         $del = new Metaregistrar\EPP\eppDomain($domainname);
                     }
-                    $del->addSecdns($keydata[0]);
+                    foreach ($oldns as $ns) {
+                        $del->addHost($ns);
+                    }
                 }
             }
             if ($admincontact) {
                 $oldadmin = $response->getDomainContact(Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_ADMIN);
-                if (!$del) {
-                    $del = new Metaregistrar\EPP\eppDomain($domainname);
+                if ($oldadmin == $admincontact) {
+                    $admincontact = null;
+                } else {
+                    if (!$del) {
+                        $del = new Metaregistrar\EPP\eppDomain($domainname);
+                    }
+                    $admin = new Metaregistrar\EPP\eppContactHandle($oldadmin, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_ADMIN);
+                    $del->addContact($admin);
                 }
-                $admin = new Metaregistrar\EPP\eppContactHandle($oldadmin, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_ADMIN);
-                $del->addContact($admin);
+            }
+            if ($techcontact) {
+                $oldtech = $response->getDomainContact(Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_TECH);
+                if ($oldtech == $techcontact) {
+                    $techcontact = null;
+                } else {
+                    if (!$del) {
+                        $del = new Metaregistrar\EPP\eppDomain($domainname);
+                    }
+                    $tech = new Metaregistrar\EPP\eppContactHandle($oldtech, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_TECH);
+                    $del->addContact($tech);
+                }
             }
         }
         // In the UpdateDomain command you can set or add parameters
@@ -130,18 +128,15 @@ function modifydomain($conn, $domainname, $registrant = null, $admincontact = nu
                 $add->addHost($host);
             }
         }
-        if ((!$add) && (!$del) && (!$mod)) {
-            echo "Nothing to update";
-            return;
-        }
-        $update = new Metaregistrar\EPP\eppDnssecUpdateDomainRequest($domain, $add, $del, $mod);
+        $update = new Metaregistrar\EPP\rrpproxyEppUpdateDomainRequest($domain, $add, $del, $mod);
+        //echo $update->saveXML();
         if ((($response = $conn->writeandread($update)) instanceof Metaregistrar\EPP\eppUpdateResponse) && ($response->Success())) {
-            /* @var $response Metaregistrar\EPP\eppUpdateResponse */
+            /* @var Metaregistrar\EPP\eppUpdateResponse $response */
             echo $response->getResultMessage() . "\n";
         }
     } catch (Metaregistrar\EPP\eppException $e) {
         echo $e->getMessage() . "\n";
-        if ((isset($response)) && ($response instanceof Metaregistrar\EPP\eppUpdateResponse)) {
+        if ($response instanceof Metaregistrar\EPP\eppUpdateResponse) {
             echo $response->textContent . "\n";
         }
     }
