@@ -1,0 +1,37 @@
+<?php
+namespace Metaregistrar\EPP;
+
+class eppDeleteContactRequest extends eppRequest {
+
+    function __construct(eppContactHandle $deleteinfo) {
+        parent::__construct();
+
+        if ($deleteinfo instanceof eppContactHandle) {
+            $this->setContactHandle($deleteinfo);
+        } else {
+            throw new eppException('parameter of eppDeleteRequest must be valid eppContactHandle object');
+        }
+        $this->addSessionId();
+    }
+
+    function __destruct() {
+        parent::__destruct();
+    }
+
+    public function setContactHandle(eppContactHandle $contacthandle) {
+        if (!strlen($contacthandle->getContactHandle())) {
+            throw new eppException('eppDeleteRequest contacthandle object does not contain a valid contacthandle');
+        }
+        #
+        # Object delete structure
+        #
+        $this->contactobject = $this->createElement('delete');
+        $contactdelete = $this->createElement('contact:delete');
+        $contactdelete->appendChild($this->createElement('contact:id', $contacthandle->getContactHandle()));
+        $this->contactobject->appendChild($contactdelete);
+        $this->getCommand()->appendChild($this->contactobject);
+    }
+
+
+
+}
