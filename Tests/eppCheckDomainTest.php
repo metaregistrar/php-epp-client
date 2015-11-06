@@ -1,9 +1,10 @@
 <?php
 include_once(dirname(__FILE__).'/testsetup.php');
 
-class eppCheckRequestTest extends PHPUnit_Framework_TestCase {
+class eppCheckDomainTest extends PHPUnit_Framework_TestCase {
     /**
      * @var Metaregistrar\EPP\eppConnection
+     *
      */
     protected $conn;
 
@@ -152,74 +153,6 @@ class eppCheckRequestTest extends PHPUnit_Framework_TestCase {
                 $this->assertArrayHasKey('reason',$check);
                 $this->assertSame('Domainname is invalid.',$check['reason']);
             }
-        }
-    }
-
-
-    /**
-     * Test if random contact handle is available
-     * Expects a standard result for a free contact handle
-     */
-    public function testCheckContactAvailable() {
-        $handleid = 999999999;
-        $contact = new Metaregistrar\EPP\eppContactHandle($handleid);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppContactHandle',$contact);
-        $check = new Metaregistrar\EPP\eppCheckRequest($contact);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckRequest',$check);
-        $response = $this->conn->writeandread($check);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckResponse',$response);
-        if ($response instanceof Metaregistrar\EPP\eppCheckResponse) {
-            $this->assertTrue($response->Success());
-            if ($response->Success()) {
-                $checks = $response->getCheckedContacts();
-                $this->assertCount(1,$checks);
-                $this->assertArrayHasKey($handleid,$checks);
-                $this->assertTrue($checks[$handleid]);
-            }
-        }
-    }
-
-
-    /**
-     * Test if random contact handle is available
-     * Expects a standard result for a free contact handle
-     */
-    public function testCheckHostAvailable() {
-        $hostname = 'ns1.'.testSetup::randomString(30).'.frl';
-        $host = new Metaregistrar\EPP\eppHost($hostname);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppHost',$host);
-        $check = new Metaregistrar\EPP\eppCheckRequest($host);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckRequest',$check);
-        $response = $this->conn->writeandread($check);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckResponse',$response);
-        if ($response instanceof Metaregistrar\EPP\eppCheckResponse) {
-            $this->assertTrue($response->Success());
-            if ($response->Success()) {
-                $checks = $response->getCheckedHosts();
-                $this->assertCount(1,$checks);
-                $this->assertArrayHasKey($hostname,$checks);
-                $this->assertTrue($checks[$hostname]);
-            }
-        }
-    }
-
-
-    /**
-     * Test if random contact handle is available
-     * Expects a standard result for a free contact handle
-     */
-    public function testCheckHostIllegarChars() {
-        $hostname = 'ns1.test%test.frl';
-        $host = new Metaregistrar\EPP\eppHost($hostname);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppHost',$host);
-        $check = new Metaregistrar\EPP\eppCheckRequest($host);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckRequest',$check);
-        $response = $this->conn->writeandread($check);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckResponse',$response);
-        if ($response instanceof Metaregistrar\EPP\eppCheckResponse) {
-            $this->setExpectedException('Metaregistrar\EPP\eppException');
-            $this->assertTrue($response->Success());
-
         }
     }
 }
