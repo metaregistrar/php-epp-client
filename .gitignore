@@ -1,6 +1,4 @@
-/nbproject/private/
-/Registries/IIS/cert/
-/vendor/*
-!/vendor/composer/
+Registries/IIS/cert/
+vendor/*
+!vendor/composer/
 .idea
-.ini
