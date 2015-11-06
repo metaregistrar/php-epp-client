@@ -1,4 +1,3 @@
-Registries/IIS/cert/
 vendor/*
 !vendor/composer/
 .idea
