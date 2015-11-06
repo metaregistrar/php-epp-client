@@ -20,29 +20,26 @@ $claims = array(
 
 );
 
+$domainname = '';
+
 $conn = new Metaregistrar\EPP\metaregEppConnection();
+$conn->setConnectionDetails('');
 $conn->enableLaunchphase('claims');
 
 // Connect to the EPP server
 if ($conn->connect()) {
     if ($conn->login()) {
-        #$contactid = '267';
-        #$contactid = '267';
-        #$techcontact = '267';
-        //$billingcontact = '477';
-        $contactid = 'HOS000006-MIJND';
+        $contactid = '';
         $techcontact = $contactid;
         $billingcontact = $contactid;
         $nameservers = array('ns1.metaregistrar.nl','ns2.metaregistrar.nl');
-        foreach ($domains as $domainname) {
-            echo "Registering $domainname\n";
-            $claim = checkdomainclaim($conn,$domainname);
-            if ($claim) {
-                createclaimeddomain($conn, $domainname, $claim, $contactid, $contactid, $techcontact, $billingcontact, $nameservers);
-            } else {
-                createdomain($conn, $domainname, $contactid, $contactid, $techcontact, $billingcontact, $nameservers);
+        echo "Registering $domainname\n";
+        $claim = checkdomainclaim($conn,$domainname);
+        if ($claim) {
+            createclaimeddomain($conn, $domainname, $claim, $contactid, $contactid, $techcontact, $billingcontact, $nameservers);
+        } else {
+            createdomain($conn, $domainname, $contactid, $contactid, $techcontact, $billingcontact, $nameservers);
 
-            }
         }
         $conn->logout();
     }

@@ -17,14 +17,11 @@ if ($argc <= 1) {
 echo "Retrieving info on " . $domainname . "\n";
 try {
     $conn = new Metaregistrar\EPP\metaregEppConnection();
+    $conn->setConnectionDetails('');
     // Connect to the EPP server
     if ($conn->connect()) {
         if ($conn->login()) {
-            foreach ($domains as $line) {
-                list($domainname,$email,$name,$paymentid,$date)=explode(';',$line);
-                $result = infodomain($conn, $domainname);
-                echo $line.';'.$result."\n";
-            }
+            $result = infodomain($conn, $domainname);
             $conn->logout();
         }
     } else {

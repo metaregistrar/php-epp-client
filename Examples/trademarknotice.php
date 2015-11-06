@@ -5,7 +5,9 @@ $domain = 'nike';
 $domainkey = null;
 try {
     $dnl = new Metaregistrar\TMCH\dnlTmchConnection();
+    $dnl->setConnectionDetails('');
     $cnis = new Metaregistrar\TMCH\cnisTmchConnection();
+    $cnis->setConnectionDetails('');
     $list = $dnl->getDnl();
     foreach ($list as $line) {
         list($domainname, $key, $datetime) = explode(',', $line);

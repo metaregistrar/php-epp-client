@@ -11,7 +11,8 @@ $domainname = 'test.org';
 try {
     echo "Polling for messages\n";
     $conn = new Metaregistrar\EPP\metaregEppConnection();
-// Connect to the EPP server
+    $conn->setConnectionDetails('');
+    // Connect to the EPP server
     if ($conn->connect()) {
         if ($conn->login()) {
             $messageid = poll($conn);

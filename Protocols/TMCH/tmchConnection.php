@@ -103,8 +103,6 @@ class tmchConnection {
             $this->setPassword($settings['password']);
             $this->setPort($settings['port']);
         } else {
-            var_dump($path);
-            var_dump($settingsfile);
             $this->setHostname('tmcnis.org/cnis');
             $this->setPort(143);
             $this->setUsername('cnis143');
@@ -112,6 +110,32 @@ class tmchConnection {
         }
 
     }
+
+
+    public function setConnectionDetails($settingsfile) {
+        $result = array();
+        if (is_readable($settingsfile)) {
+            $settings = file($settingsfile, FILE_IGNORE_NEW_LINES);
+            foreach ($settings as $setting) {
+                list($param, $value) = explode('=', $setting);
+                $param = trim($param);
+                $value = trim($value);
+                $result[$param] = $value;
+            }
+            $this->setHostname($result['hostname']);
+            $this->setUsername($result['userid']);
+            $this->setPassword($result['password']);
+            if (array_key_exists('port',$result)) {
+                $this->setPort($result['port']);
+            } else {
+                $this->setPort(700);
+            }
+            return true;
+        }else {
+            throw new tmchException("Settings file $settingsfile could not be opened");
+        }
+    }
+
 
     protected function loadSettings($directory, $file) {
         $result = array();

@@ -20,7 +20,8 @@ for ($i = 1; $i < $argc; $i++) {
 
 echo "Checking " . count($domains) . " domain names\n";
 try {
-    $conn = new Metaregistrar\EPP\metaregEppConnection(true);
+    $conn = new Metaregistrar\EPP\metaregEppConnection();
+    $conn->setConnectionDetails('');
     $conn->enableLaunchphase('claims');
     // Connect to the EPP server
     if ($conn->connect()) {

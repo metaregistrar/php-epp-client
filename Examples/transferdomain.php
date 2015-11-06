@@ -17,6 +17,7 @@ $authcode = $argv[2];
 echo "Transferring $domainname\n";
 try {
     $conn = new Metaregistrar\EPP\metaregEppConnection();
+    $conn->setConnectionDetails('');
     // Connect and login to the EPP server
     if ($conn->connect()) {
         if ($conn->login()) {

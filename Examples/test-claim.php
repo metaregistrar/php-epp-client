@@ -4,7 +4,9 @@ require("../autoloader.php");
 
 try {
     $dnl = new Metaregistrar\TMCH\dnlTmchConnection();
+    $dnl->setConnectionDetails('');
     $cnis = new Metaregistrar\TMCH\cnisTmchConnection();
+    $cnis->setConnectionDetails('');
     $list = $dnl->getDnl();
     $linecounter = -1;
     $k = array();
@@ -18,7 +20,7 @@ try {
         }
         $linecounter++;
     }
-    echo "Select the number from one of the labels above to display the warning notice for this label\n:";
+    echo "Enter the number from one of the labels above to display the warning notice for this label\n:";
     $number = (int)fgets(STDIN);
     echo $cnis->showWarning($cnis->getCnis($k[$number]));
 

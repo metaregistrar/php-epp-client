@@ -19,6 +19,7 @@ $newpassword = $argv[1];
 echo "Changing password\n";
 try {
     $conn = new Metaregistrar\EPP\metaregEppConnection();
+    $conn->setConnectionDetails('');
     $conn->setNewPassword($newpassword);
     // Connect to the EPP server
     if ($conn->connect()) {

@@ -838,8 +838,9 @@ class eppConnection {
                 $this->enableCertification($result['certificatefile'], $result['certificatepassword']);
             }
             return true;
+        } else {
+            throw new eppException("Settings file $settingsfile could not be opened");
         }
-        return false;
     }
 
     protected function loadSettings($directory, $settingsfile) {
