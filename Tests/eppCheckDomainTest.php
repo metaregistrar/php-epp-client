@@ -1,27 +1,14 @@
 <?php
-include_once(dirname(__FILE__).'/testsetup.php');
+include_once(dirname(__FILE__).'/eppTestCase.php');
 
-class eppCheckDomainTest extends PHPUnit_Framework_TestCase {
-    /**
-     * @var Metaregistrar\EPP\eppConnection
-     *
-     */
-    protected $conn;
-
-    protected function setUp() {
-        $this->conn = testSetup::setupConnection();
-    }
-
-    protected function tearDown() {
-        testSetup::teardownConncection($this->conn);
-    }
+class eppCheckDomainTest extends eppTestCase {
 
     /**
      * Test if random domain name is available
      * Expects a standard result for a free domainname
      */
     public function testCheckDomainAvailable() {
-        $domainname = testSetup::randomString(30).'.frl';
+        $domainname = self::randomString(30).'.frl';
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppDomain',$domain);
         $check = new Metaregistrar\EPP\eppCheckDomainRequest($domain);
@@ -133,7 +120,7 @@ class eppCheckDomainTest extends PHPUnit_Framework_TestCase {
      * Expects an error result domainname is invalid
      */
     public function testCheckDomainUnknownExtension() {
-        $domainname = testSetup::randomString(30).'.abracadabra';
+        $domainname = self::randomString(30).'.abracadabra';
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppDomain',$domain);
         $check = new Metaregistrar\EPP\eppCheckRequest($domain);

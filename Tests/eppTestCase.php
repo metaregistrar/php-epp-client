@@ -1,12 +1,25 @@
 <?php
 require(dirname(__FILE__).'/../autoloader.php');
 
-class testSetup {
+class eppTestCase extends PHPUnit_Framework_TestCase {
+    /**
+     * @var Metaregistrar\EPP\eppConnection
+     *
+     */
+    protected $conn;
 
-    public static function setupConnection() {
+    protected function setUp() {
+        $this->conn = self::setupConnection();
+    }
+
+    protected function tearDown() {
+        self::teardownConncection($this->conn);
+    }
+
+    private static function setupConnection() {
         try {
             $conn = new Metaregistrar\EPP\metaregEppConnection();
-            if ($conn->setConnectionDetails('/Users/Ewout/Documents/GitProjects/php-epp-client/Tests/testsetup.ini')){
+            if ($conn->setConnectionDetails(dirname(__FILE__).'/testsetup.ini')){
                 if ($conn->connect()) {
                     if ($conn->login()) {
                         return $conn;
@@ -23,13 +36,13 @@ class testSetup {
     /**
      * @param Metaregistrar\EPP\eppConnection $conn
      */
-    public static function teardownConncection($conn) {
+    private static function teardownConncection($conn) {
         if ($conn) {
             $conn->logout();
         }
     }
 
-    public static function randomstring($length) {
+    protected static function randomstring($length) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
         $charactersLength = strlen($characters);
         $randomString = '';

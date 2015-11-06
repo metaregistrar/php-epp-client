@@ -1,21 +1,7 @@
 <?php
-include_once(dirname(__FILE__).'/testsetup.php');
+include_once(dirname(__FILE__).'/eppTestCase.php');
 
-class eppCheckContactTest extends PHPUnit_Framework_TestCase {
-    /**
-     * @var Metaregistrar\EPP\eppConnection
-     *
-     */
-    protected $conn;
-
-    protected function setUp() {
-        $this->conn = testSetup::setupConnection();
-    }
-
-    protected function tearDown() {
-        testSetup::teardownConncection($this->conn);
-    }
-
+class eppCheckContactTest extends eppTestCase {
 
     /**
      * Test if random contact handle is available

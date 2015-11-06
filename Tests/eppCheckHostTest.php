@@ -1,27 +1,14 @@
 <?php
-include_once(dirname(__FILE__).'/testsetup.php');
+include_once(dirname(__FILE__).'/eppTestCase.php');
 
-class eppCheckHostTest extends PHPUnit_Framework_TestCase {
-    /**
-     * @var Metaregistrar\EPP\eppConnection
-     *
-     */
-    protected $conn;
-
-    protected function setUp() {
-        $this->conn = testSetup::setupConnection();
-    }
-
-    protected function tearDown() {
-        testSetup::teardownConncection($this->conn);
-    }
+class eppCheckHostTest extends eppTestCase {
 
     /**
      * Test if random contact handle is available
      * Expects a standard result for a free contact handle
      */
     public function testCheckHostAvailable() {
-        $hostname = 'ns1.'.testSetup::randomString(30).'.frl';
+        $hostname = 'ns1.'.self::randomString(30).'.frl';
         $host = new Metaregistrar\EPP\eppHost($hostname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppHost',$host);
         $check = new Metaregistrar\EPP\eppCheckRequest($host);
