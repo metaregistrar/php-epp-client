@@ -13,8 +13,7 @@
     ],
     "require": {
         "php": ">=5.3",
-        "phpunit/phpunit": "^4.8",
-        "behat/behat": "^3.0"
+        "phpunit/phpunit": "^4.8"
     },
     "autoload": {
         "classmap" : [ "Protocols/", "Registries/" ]

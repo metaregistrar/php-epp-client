@@ -533,7 +533,7 @@ class eppConnection {
             if ($response->loadXML($xml)) {
 
 
-                $response = $response->instantiateProperResponse();
+                //$response = $response->instantiateProperResponse();
                 $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG), "READ");
 
 

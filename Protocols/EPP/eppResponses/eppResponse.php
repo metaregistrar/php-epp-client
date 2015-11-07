@@ -52,7 +52,7 @@ class eppResponse extends \DomDocument {
      *
      * @var array
      */
-    private $matcher = [
+    /*private $matcher = [
         'Metaregistrar\\EPP\\eppCheckResponse' => [
             '/epp:epp/epp:response/epp:resData/domain:chkData',
             '/epp:epp/epp:response/epp:resData/host:chkData',
@@ -87,7 +87,7 @@ class eppResponse extends \DomDocument {
         'Metaregistrar\\EPP\\eppLaunchCreateDomainResponse' => [
             '/epp:epp/epp:response/epp:extension/launch:creData'
         ]
-    ];
+    ];*/
 
     /**
      *
@@ -119,7 +119,7 @@ class eppResponse extends \DomDocument {
 
     /**
      *
-     * @var string $publicnamespace
+     * @var string $defaultnamespace
      */
     public $defaultnamespace;
 
@@ -422,7 +422,7 @@ class eppResponse extends \DomDocument {
      *
      * @return eppResponse
      */
-    public function instantiateProperResponse()
+    /*public function instantiateProperResponse()
     {
         foreach ($this->matcher as $type=>$matches)
         {
@@ -434,7 +434,7 @@ class eppResponse extends \DomDocument {
             }
         }
         return $this;
-    }
+    }*/
 
     /**
      * Checks and sees if an element is present using xpath
@@ -468,7 +468,7 @@ class eppResponse extends \DomDocument {
     public function xPath() {
         $xpath = new \DOMXpath($this);
         $this->publicnamespace = $this->documentElement->lookupNamespaceURI(NULL);
-        $xpath->registerNamespace('epp', $this->publicnamespace);
+        $xpath->registerNamespace('epp', $this->defaultnamespace);
         if (is_array($this->xpathuri)) {
             foreach ($this->xpathuri as $uri => $namespace) {
                 #echo "RegisterNamespace xpathuri $namespace $uri\n";
