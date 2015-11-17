@@ -67,6 +67,24 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
      * @return string
      * @throws \Metaregistrar\EPP\eppException
      */
+    protected function createHost() {
+        $hostname = 'ns1.test.frl';
+        $host = new Metaregistrar\EPP\eppHost($hostname);
+        $create = new Metaregistrar\EPP\eppCreateHostRequest($host);
+        if ((($response = $this->conn->writeandread($create)) instanceof Metaregistrar\EPP\eppCreateHostResponse) && ($response->Success())) {
+            /* @var $response Metaregistrar\EPP\eppCreateHostResponse */
+            return $hostname;
+        }
+        return null;
+    }
+
+
+
+    /**
+     * Create a contact to be used in create contact or create domain testing
+     * @return string
+     * @throws \Metaregistrar\EPP\eppException
+     */
     protected function createContact() {
         $name = 'Test name';
         $city = 'Test city';
@@ -79,9 +97,7 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
         $telephone = '+1.55500000';
         $password = self::randomstring(8);
         $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, $province, $postcode, Metaregistrar\EPP\eppContact::TYPE_LOC);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppContactPostalInfo',$postalinfo);
         $contactinfo = new Metaregistrar\EPP\eppContact($postalinfo, $email, $telephone);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppContact',$contactinfo);
         $contactinfo->setPassword($password);
         $create = new Metaregistrar\EPP\eppCreateContactRequest($contactinfo);
         if ((($response = $this->conn->writeandread($create)) instanceof Metaregistrar\EPP\eppCreateContactResponse) && ($response->Success())) {

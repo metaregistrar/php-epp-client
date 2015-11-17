@@ -184,7 +184,7 @@ class eppDomain {
 
     /**
      *
-     * @param string $registrant
+     * @param string|eppContactHandle $registrant
      */
     public function setRegistrant($registrant) {
         if ($registrant instanceof eppContactHandle) {
@@ -218,13 +218,16 @@ class eppDomain {
 
     /**
      *
-     * @param int $line
+     * @param string $type
      * @return eppContactHandle
      */
     public function getContact($type) {
-        foreach ($this->contacts as $contact) {
-            if ($contact->getContactType() == $type) {
-                return $contact;
+        if (is_array($this->contacts)) {
+            foreach ($this->contacts as $contact) {
+                /* @var $contact eppContactHandle */
+                if ($contact->getContactType() == $type) {
+                    return $contact;
+                }
             }
         }
         return null;
@@ -280,15 +283,19 @@ class eppDomain {
      * @param int $line
      * @return eppHost
      */
-    public function getHost($line) {
-        if ($this->hosts[$line]) {
-            return $this->hosts[$line];
-        } else {
-            return null;
+    public function getHost($line=null) {
+        if (!is_null($line)) {
+            if (isset($this->hosts[$line])) {
+                return $this->hosts[$line];
+            }
         }
+        return null;
     }
 
-    public function addSecdns($secdns) {
+    /**
+     * @param eppSecdns $secdns
+     */
+    public function addSecdns(eppSecdns $secdns) {
         $this->secdns[] = $secdns;
     }
 
@@ -296,16 +303,17 @@ class eppDomain {
         return count($this->secdns);
     }
 
+    /**
+     * @param integer $row
+     * @return eppSecdns|null
+     */
     public function getSecdns($row = null) {
-        if (is_null($row)) {
-            return $this->secdns;
-        } else {
-            if ($this->secdns[$row]) {
+        if (!is_null($row)) {
+           if (isset($this->secdns[$row])) {
                 return $this->secdns[$row];
-            } else {
-                return null;
             }
         }
+        return null;
     }
 
     /**
