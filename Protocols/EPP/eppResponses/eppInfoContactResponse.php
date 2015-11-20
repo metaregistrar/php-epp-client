@@ -105,6 +105,7 @@ class eppInfoContactResponse extends eppInfoResponse {
      * @return string contact_status
      */
     public function getContactStatus() {
+        $stat = null;
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:status/@s');
         foreach ($result as $status) {
@@ -250,6 +251,7 @@ class eppInfoContactResponse extends eppInfoResponse {
      * @return string postal type
      */
     public function getContactPostalType() {
+        $returntype = null;
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:postalInfo/@type');
         foreach ($result as $type) {
@@ -282,6 +284,15 @@ class eppInfoContactResponse extends eppInfoResponse {
         }
     }
 
+    public function getContactAuthInfo() {
+        $xpath = $this->xPath();
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:authInfo/contact:pw');
+        if ($result->length > 0) {
+            return $result->item(0)->nodeValue;
+        } else {
+            return null;
+        }
+    }
 
     /**
      *
@@ -291,6 +302,7 @@ class eppInfoContactResponse extends eppInfoResponse {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:postalInfo');
         foreach ($result as $postalresult) {
+            /* @var $postalresult \DOMNode */
             $testtype = $postalresult->getAttributeNode('type');
             $type = eppContact::TYPE_LOC;
             if ($testtype) {
@@ -310,6 +322,7 @@ class eppInfoContactResponse extends eppInfoResponse {
             if ($testaddr->length > 0) {
                 $addr = $testaddr->item(0);
                 $testcity = $addr->getElementsByTagName('city');
+                /* @var $postalresult \DOMElement */
                 $city = null;
                 if ($testcity->length > 0) {
                     $city = $testcity->item(0)->nodeValue;
