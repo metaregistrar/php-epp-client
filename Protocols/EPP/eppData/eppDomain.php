@@ -311,9 +311,13 @@ class eppDomain {
         if (!is_null($row)) {
            if (isset($this->secdns[$row])) {
                 return $this->secdns[$row];
-            }
+            } else {
+               throw new eppException("DNSSEC info number $row could not be retrieved");
+           }
+        } else {
+            // return the whole array
+            return $this->secdns;
         }
-        return null;
     }
 
     /**
