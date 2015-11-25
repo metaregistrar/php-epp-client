@@ -128,6 +128,33 @@ class eppConnection {
 
     protected $checktransactionids = true;
 
+    /**
+     * @param string $configfile
+     * @param bool|false $debug
+     * @return mixed
+     */
+    static function create($configfile,$debug=false) {
+        if (is_readable($configfile)) {
+            $settings = file($configfile, FILE_IGNORE_NEW_LINES);
+            foreach ($settings as $setting) {
+                list($param, $value) = explode('=', $setting);
+                $param = trim($param);
+                $value = trim($value);
+                $result[$param] = $value;
+            }
+
+        }
+        if (isset($result['interface'])) {
+            $classname = 'Metaregistrar\\EPP\\'.$result['interface'];
+            $c = new $classname($debug);
+            /* @var $c eppConnection */
+            $c->setConnectionDetails($configfile);
+            return $c;
+        }
+        return null;
+
+    }
+
     function __construct($logging = false, $settingsfile = null) {
         if ($logging) {
             $this->enableLogging();

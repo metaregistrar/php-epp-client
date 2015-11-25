@@ -27,7 +27,7 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
                 }
             }
         } catch (Metaregistrar\EPP\eppException $e) {
-            echo "ERROR: " . $e->getMessage() . "\n\n";
+            echo "Test setup error in ".$e->getClass().": " . $e->getMessage() . "\n\n";
             die();
         }
         return null;
