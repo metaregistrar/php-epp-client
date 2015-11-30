@@ -12,8 +12,6 @@ namespace Metaregistrar\EPP;
         </dnsbe:create>
     </dnsbe:ext>
 </extension>
-
-
 */
 class dnsbeEppTransferRequest extends eppTransferRequest {
     function __construct($operation, $object, $tech, $billing) {
@@ -22,17 +20,25 @@ class dnsbeEppTransferRequest extends eppTransferRequest {
         $this->addSessionId();
     }
 
-
-    public function addDnsbeExtension($tech, $billing) {
+    public function addDnsbeExtension($tech, $billing, $onsite=null, $registrant=null) {
         $this->addExtension('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
         $ext = $this->createElement('extension');
         $sidnext = $this->createElement('dnsbe:ext');
         $create = $this->createElement('dnsbe:transfer');
         $contact = $this->createElement('dnsbe:domain');
-        $contact->appendChild($this->createElement('dnsbe:registrant', '#AUTO#'));
+        if ($registrant) {
+            $contact->appendChild($this->createElement('dnsbe:registrant', $registrant));
+        } else {
+            $contact->appendChild($this->createElement('dnsbe:registrant', '#AUTO#'));
+        }
         $contact->appendChild($this->createElement('dnsbe:billing', $billing));
         $contact->appendChild($this->createElement('dnsbe:tech', $tech));
-
+        if ($tech) {
+            $contact->appendChild($this->createElement('dnsbe:tech', $tech));
+        }
+		if ($onsite) {
+            $contact->appendChild($this->createElement('dnsbe:onsite', $onsite));
+        }
         $create->appendChild($contact);
         $sidnext->appendChild($create);
         $ext->appendChild($sidnext);
