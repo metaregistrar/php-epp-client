@@ -14,7 +14,7 @@ namespace Metaregistrar\EPP;
 </extension>
 */
 class dnsbeEppTransferRequest extends eppTransferRequest {
-    function __construct($operation, $object, $registrant = null, $onsite = null, $tech = null, $billing = null) {
+    function __construct($operation, $object, $tech = null, $billing = null, $onsite = null, $registrant = null) {
         parent::__construct($operation, $object);
         $this->addDnsbeExtension($tech, $billing, $onsite, $registrant);
         $this->addSessionId();
