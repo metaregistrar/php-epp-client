@@ -14,13 +14,13 @@ namespace Metaregistrar\EPP;
 </extension>
 */
 class dnsbeEppTransferRequest extends eppTransferRequest {
-    function __construct($operation, $object, $tech, $billing) {
+    function __construct($operation, $object, $registrant = null, $onsite = null, $tech = null, $billing = null) {
         parent::__construct($operation, $object);
-        $this->addDnsbeExtension($tech, $billing);
+        $this->addDnsbeExtension($tech, $billing, $onsite, $registrant);
         $this->addSessionId();
     }
 
-    public function addDnsbeExtension($tech, $billing, $onsite=null, $registrant=null) {
+    public function addDnsbeExtension($tech = null, $billing = null, $onsite=null, $registrant=null) {
         $this->addExtension('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
         $ext = $this->createElement('extension');
         $sidnext = $this->createElement('dnsbe:ext');
@@ -31,19 +31,18 @@ class dnsbeEppTransferRequest extends eppTransferRequest {
         } else {
             $contact->appendChild($this->createElement('dnsbe:registrant', '#AUTO#'));
         }
-        $contact->appendChild($this->createElement('dnsbe:billing', $billing));
-        $contact->appendChild($this->createElement('dnsbe:tech', $tech));
+        if ($billing) {
+            $contact->appendChild($this->createElement('dnsbe:billing', $billing));
+        }
         if ($tech) {
             $contact->appendChild($this->createElement('dnsbe:tech', $tech));
         }
-		if ($onsite) {
+        if ($onsite) {
             $contact->appendChild($this->createElement('dnsbe:onsite', $onsite));
         }
         $create->appendChild($contact);
         $sidnext->appendChild($create);
         $ext->appendChild($sidnext);
         $this->command->appendChild($ext);
-
     }
-
 }
