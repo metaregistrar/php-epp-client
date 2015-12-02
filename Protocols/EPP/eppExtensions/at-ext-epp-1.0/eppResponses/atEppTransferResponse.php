@@ -11,5 +11,5 @@ namespace Metaregistrar\EPP;
 
 class atEppTransferResponse extends eppTransferResponse
 {
-    use \Metaregistrar\EPP\atEppResponseTrait;
+    use atEppResponseTrait;
 }

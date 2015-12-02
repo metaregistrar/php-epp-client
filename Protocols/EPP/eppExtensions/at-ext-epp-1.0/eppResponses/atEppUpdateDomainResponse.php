@@ -11,5 +11,5 @@ namespace Metaregistrar\EPP;
 
 class atEppUpdateDomainResponse extends eppUpdateDomainResponse
 {
-    use \Metaregistrar\EPP\atEppResponseTrait;
+    use atEppResponseTrait;
 }

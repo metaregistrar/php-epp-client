@@ -3,7 +3,7 @@ namespace Metaregistrar\EPP;
 
 class atEppCreateResponse extends eppCreateResponse {
 
-    use \Metaregistrar\EPP\atEppResponseTrait;
+    use atEppResponseTrait;
 
 
     /**

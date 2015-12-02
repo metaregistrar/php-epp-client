@@ -11,12 +11,12 @@ namespace Metaregistrar\EPP;
 
 class atEppUpdateContactRequest extends eppUpdateContactRequest
 {
-    use \Metaregistrar\EPP\atEppCommandTrait;
+    use atEppCommandTrait;
     protected $atEppExtensionChain = null;
 
-    function __construct($objectname, $addinfo = null, $removeinfo = null,atEppContact $updateinfo = null,atEppExtensionChain $atEppExtensionChain=null) {
+    function __construct($objectname, atEppContact $addinfo = null, atEppContact $removeinfo = null,atEppContact $updateinfo = null,atEppExtensionChain $atEppExtensionChain=null) {
         $this->atEppExtensionChain = $atEppExtensionChain;
-        parent::__construct($objectname, $addinfo , $removeinfo , $updateinfo );
+        parent::__construct($objectname, $addinfo , $removeinfo , $updateinfo);
         $this->addSessionId();
     }
 
@@ -31,7 +31,7 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
      * @param eppContact $updateInfo
      * @return \domElement
      */
-    public function updateContact($contactid, $addInfo, $removeInfo, $updateInfo) {
+    public function updateContact($contactid,atEppContact $addInfo,atEppContact $removeInfo,atEppContact $updateInfo) {
         #
         # Object create structure
         #
@@ -63,7 +63,7 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
      * @param \domElement $element
      * @param eppContact $contact
      */
-    private function addContactStatus(\domElement $element, eppContact $contact) {
+    private function addContactStatus(\domElement $element, atEppContact $contact) {
         if ((is_array($contact->getStatus())) && (count($contact->getStatus()) > 0)) {
             $statuses = $contact->getStatus();
             if (is_array($statuses)) {
@@ -82,7 +82,7 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
      * @param \domElement $element
      * @param eppContact $contact
      */
-    private function addContactChanges($element, eppContact $contact) {
+    private function addContactChanges(\domElement $element, atEppContact $contact) {
 
         if ($contact->getPostalInfoLength() > 0) {
             $postal = $contact->getPostalInfo(0);
@@ -150,7 +150,7 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
 
 
 
-    protected function setAtContactDisclosure($element,atEppContact $contact)
+    protected function setAtContactDisclosure(\domElement $element,atEppContact $contact)
     {
 
         if (!is_null($contact->getDisclose())) {

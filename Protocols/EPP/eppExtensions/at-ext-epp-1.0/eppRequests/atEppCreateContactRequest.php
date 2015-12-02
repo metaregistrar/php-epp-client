@@ -3,7 +3,7 @@ namespace Metaregistrar\EPP;
 
 class atEppCreateContactRequest extends eppCreateContactRequest {
 
-    use \Metaregistrar\EPP\atEppCommandTrait;
+    use atEppCommandTrait;
 
     protected $atEppExtensionChain = null;
 
@@ -22,7 +22,7 @@ class atEppCreateContactRequest extends eppCreateContactRequest {
         return mb_check_encoding($str, 'ASCII');
     }
 
-    public function setContact(eppContact $contact) {
+    public function setContact(atEppContact $contact) {
         #
         # Object create structure
         #

@@ -11,5 +11,5 @@ namespace Metaregistrar\EPP;
 
 class atEppDeleteResponse extends eppDeleteResponse
 {
-    use \Metaregistrar\EPP\atEppResponseTrait;
+    use atEppResponseTrait;
 }

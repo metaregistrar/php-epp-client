@@ -11,7 +11,7 @@ namespace Metaregistrar\EPP;
 
 class atEppCreateDomainRequest extends eppCreateDomainRequest
 {
-    use \Metaregistrar\EPP\atEppCommandTrait;
+    use atEppCommandTrait;
 
     protected $atEppExtensionChain = null;
 
