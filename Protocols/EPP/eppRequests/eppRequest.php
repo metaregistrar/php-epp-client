@@ -124,6 +124,11 @@ class eppRequest extends \DomDocument {
         return $this->sessionid;
     }
 
+
+    protected static function isAscii($str) {
+        return mb_check_encoding($str, 'ASCII');
+    }
+
     public function addNamespaces($namespaces) {
         if (is_array($namespaces)) {
             foreach ($namespaces as $namespace => $xmlns) {

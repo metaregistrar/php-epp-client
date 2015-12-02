@@ -26,9 +26,9 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
     /**
      *
      * @param string $contactid
-     * @param eppContact $addInfo
-     * @param eppContact $removeInfo
-     * @param eppContact $updateInfo
+     * @param atEppContact $addInfo
+     * @param atEppContact $removeInfo
+     * @param atEppContact $updateInfo
      * @return \domElement
      */
     public function updateContact($contactid,atEppContact $addInfo,atEppContact $removeInfo,atEppContact $updateInfo) {
@@ -89,7 +89,7 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
             $postalinfo = $this->createElement('contact:postalInfo');
             if ($postal->getType()==eppContact::TYPE_AUTO) {
                 // If all fields are ascii, type = int (international) else type = loc (localization)
-                if (($this->isAscii($postal->getName())) && ($this->isAscii($postal->getOrganisationName())) && ($this->isAscii($postal->getStreet(0)))) {
+                if ((self::isAscii($postal->getName())) && (self::isAscii($postal->getOrganisationName())) && (self::isAscii($postal->getStreet(0)))) {
                     $postal->setType(eppContact::TYPE_INT);
                 } else {
                     $postal->setType(eppContact::TYPE_LOC);
@@ -142,12 +142,6 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
         $this->setAtContactDisclosure($element,$contact);
 
     }
-
-
-    private static function isAscii($str) {
-        return mb_check_encoding($str, 'ASCII');
-    }
-
 
 
     protected function setAtContactDisclosure(\domElement $element,atEppContact $contact)

@@ -3,6 +3,10 @@ namespace Metaregistrar\EPP;
 
 class eppCreateContactRequest extends eppCreateRequest {
 
+    /**
+     * eppCreateContactRequest constructor.
+     * @param eppContact $createinfo
+     */
     function __construct($createinfo) {
         parent::__construct($createinfo);
 
@@ -38,7 +42,7 @@ class eppCreateContactRequest extends eppCreateRequest {
         }
         if ($postal->getType()==eppContact::TYPE_AUTO) {
             // If all fields are ascii, type = int (international) else type = loc (localization)
-            if (($this->isAscii($postal->getName())) && ($this->isAscii($postal->getOrganisationName())) && ($this->isAscii($postal->getStreet(0)))) {
+            if ((self::isAscii($postal->getName())) && (self::isAscii($postal->getOrganisationName())) && (self::isAscii($postal->getStreet(0)))) {
                 $postal->setType(eppContact::TYPE_INT);
             } else {
                 $postal->setType(eppContact::TYPE_LOC);
@@ -99,8 +103,5 @@ class eppCreateContactRequest extends eppCreateRequest {
         $this->getCommand()->appendChild($create);
     }
 
-    private static function isAscii($str) {
-        return mb_check_encoding($str, 'ASCII');
-    }
 }
 
