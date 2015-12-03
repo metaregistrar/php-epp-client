@@ -131,12 +131,12 @@ class eppConnection {
     /**
      * @var bool Is the client connected to the server
      */
-    private $connected = false;
+    protected $connected = false;
 
     /**
      * @var bool Is the client logged in to the server
      */
-    private $loggedin = false;
+    protected $loggedin = false;
 
     /**
      * @param string $configfile
