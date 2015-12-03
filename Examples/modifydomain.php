@@ -22,12 +22,11 @@ try {
     $conn = new Metaregistrar\EPP\metaregEppConnection();
     $conn->setConnectionDetails('');
     // Connect to the EPP server
-    if ($conn->connect()) {
-        if ($conn->login()) {
-            modifydomain($conn, $domainname, null, null, null, null, array('ns1.metaregistrar.nl', 'ns2.metaregistrar.nl'));
-            $conn->logout();
-        }
+    if ($conn->login()) {
+        modifydomain($conn, $domainname, null, null, null, null, array('ns1.metaregistrar.nl', 'ns2.metaregistrar.nl'));
+        $conn->logout();
     }
+
 } catch (Metaregistrar\EPP\eppException $e) {
     echo $e->getMessage() . "\n";
     logout($conn);

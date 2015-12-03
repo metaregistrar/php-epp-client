@@ -23,14 +23,10 @@ try {
     $conn = new Metaregistrar\EPP\metaregEppConnection();
     $conn->setConnectionDetails('');
     $conn->enableLaunchphase('claims');
-    // Connect to the EPP server
-    if ($conn->connect()) {
-        if ($conn->login()) {
-            checkdomains($conn, $domains);
-            $conn->logout();
-        }
-    } else {
-        echo "ERROR CONNECTING\n";
+    // Connect and login to the EPP server
+    if ($conn->login()) {
+        checkdomains($conn, $domains);
+        $conn->logout();
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";

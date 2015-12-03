@@ -5,12 +5,12 @@ require('../autoloader.php');
 $conn = new Metaregistrar\EPP\metaregEppConnection();
 $conn->setConnectionDetails('');
 // Connect to the EPP server
-if ($conn->connect()) {
-    if ($conn->login()) {
-        createcontact($conn, 'info@test.com', '+31.201234567', 'Domain Administration', 'Metaregistrar', 'Address 1', 'Zipcode', 'City', 'NL');
-        $conn->logout();
-    }
+if ($conn->login()) {
+    createcontact($conn, 'info@test.com', '+31.201234567', 'Domain Administration', 'Metaregistrar', 'Address 1', 'Zipcode', 'City', 'NL');
+    $conn->logout();
 }
+
+
 /**
  * @param $conn Metaregistrar\EPP\eppConnection
  * @param $email string

@@ -57,30 +57,26 @@ try {
     $mtime = microtime();
     $mtime = explode(" ", $mtime);
     $starttime = $mtime[1] + $mtime[0];
-    if ($conn->connect()) {
-        if ($conn->login()) {
-            $counter = 0;
-            while ($counter < count($domains)) {
-                $list[] = $domains[$counter];
-                $counter++;
-                if (($counter % 10) == 0) {
-                    $mstime = microtime();
-                    $mstime = explode(" ", $mstime);
-                    $mstime = $mstime[1] + $mstime[0];
-                    $startstime = $mstime;
-                    checkdomains($conn, $list);
-                    $mstime = microtime();
-                    $mstime = explode(" ", $mstime);
-                    $endstime = $mstime[1] + $mstime[0];
-                    $totalstime = ($endstime - $startstime);
-                    echo "Check: " . $totalstime . " seconds\n\n";
-                    unset($list);
-                }
+    if ($conn->login()) {
+        $counter = 0;
+        while ($counter < count($domains)) {
+            $list[] = $domains[$counter];
+            $counter++;
+            if (($counter % 10) == 0) {
+                $mstime = microtime();
+                $mstime = explode(" ", $mstime);
+                $mstime = $mstime[1] + $mstime[0];
+                $startstime = $mstime;
+                checkdomains($conn, $list);
+                $mstime = microtime();
+                $mstime = explode(" ", $mstime);
+                $endstime = $mstime[1] + $mstime[0];
+                $totalstime = ($endstime - $startstime);
+                echo "Check: " . $totalstime . " seconds\n\n";
+                unset($list);
             }
-            $conn->logout();
         }
-    } else {
-        echo "ERROR CONNECTING\n";
+        $conn->logout();
     }
     $mtime = microtime();
     $mtime = explode(" ", $mtime);

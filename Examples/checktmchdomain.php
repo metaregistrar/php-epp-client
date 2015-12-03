@@ -23,13 +23,9 @@ try {
     $conn->setConnectionDetails('');
     $conn->enableLaunchphase('claims');
     // Connect to the EPP server
-    if ($conn->connect()) {
-        if ($conn->login()) {
-            checkdomains($conn, $domains);
-            $conn->logout();
-        }
-    } else {
-        echo "ERROR CONNECTING\n";
+    if ($conn->login()) {
+        checkdomains($conn, $domains);
+        $conn->logout();
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";

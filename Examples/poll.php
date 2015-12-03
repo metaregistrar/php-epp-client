@@ -13,15 +13,13 @@ try {
     echo "Polling for messages\n";
     $conn = new Metaregistrar\EPP\metaregEppConnection();
     $conn->setConnectionDetails('');
-// Connect to the EPP server
-    if ($conn->connect()) {
-        if ($conn->login()) {
-            $messageid = poll($conn);
-            if ($messageid) {
-                pollack($conn, $messageid);
-            }
-            $conn->logout();
+    // Connect and login to the EPP server
+    if ($conn->login()) {
+        $messageid = poll($conn);
+        if ($messageid) {
+            pollack($conn, $messageid);
         }
+        $conn->logout();
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";

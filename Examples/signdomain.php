@@ -7,7 +7,6 @@ try {
     $conn = new Metaregistrar\EPP\metaregEppConnection();
     $conn->setConnectionDetails('');
     $conn->enableDnssec();
-    $conn->connect();
     $conn->login();
     $add = new Metaregistrar\EPP\eppDomain($domainname);
     $sec = new Metaregistrar\EPP\eppSecdns();
@@ -22,6 +21,5 @@ try {
     return true;
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n";
-    $conn->disconnect();
 }
 

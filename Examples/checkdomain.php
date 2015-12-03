@@ -27,14 +27,10 @@ try {
     // password=xxxxxxxxx
     $conn->setConnectionDetails('');
     // Connect and login to the EPP server
-    if ($conn->connect()) {
-        if ($conn->login()) {
-            // Check domain names
-            checkdomains($conn, $domains);
-            $conn->logout();
-        }
-    } else {
-        echo "ERROR CONNECTING\n";
+    if ($conn->login()) {
+        // Check domain names
+        checkdomains($conn, $domains);
+        $conn->logout();
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";

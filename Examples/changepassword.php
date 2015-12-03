@@ -21,11 +21,9 @@ try {
     $conn = new Metaregistrar\EPP\metaregEppConnection();
     $conn->setConnectionDetails('');
     $conn->setNewPassword($newpassword);
-    // Connect to the EPP server
-    if ($conn->connect()) {
-        if ($conn->login()) {
-            echo "Password was changed, you are logged-out automatically\n";
-        }
+    // Connect and login to the EPP server
+    if ($conn->login()) {
+        echo "Password was changed, you are logged-out automatically\n";
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";

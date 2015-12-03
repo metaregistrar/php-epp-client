@@ -19,13 +19,9 @@ try {
     $conn = new Metaregistrar\EPP\metaregEppConnection();
     $conn->setConnectionDetails('');
     // Connect and login to the EPP server
-    if ($conn->connect()) {
-        if ($conn->login()) {
-            transferdomain($conn, $domainname, $authcode);
-            $conn->logout();
-        }
-    } else {
-        echo "ERROR CONNECTING\n";
+    if ($conn->login()) {
+        transferdomain($conn, $domainname, $authcode);
+        $conn->logout();
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";
