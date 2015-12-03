@@ -236,14 +236,14 @@ class eppConnection {
     function __destruct() {
         //echo "\nMemory usage: ".memory_get_usage()." bytes \n";
         //echo "Peak memory usage: ".memory_get_peak_usage()." bytes \n\n";
-        if ($this->logging) {
-            $this->showLog();
-        }
         if ($this->connected) {
             if ($this->loggedin) {
                 $this->logout();
             }
             $this->disconnect();
+        }
+        if ($this->logging) {
+            $this->showLog();
         }
     }
 
@@ -919,7 +919,7 @@ class eppConnection {
     }
 
     private function showLog() {
-        echo "==== LOG ====";
+        echo "==== LOG ====\n";
         if (property_exists($this, 'logentries')) {
             foreach ($this->logentries as $logentry) {
                 echo $logentry . "\n";
