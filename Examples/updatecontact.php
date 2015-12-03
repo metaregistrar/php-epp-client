@@ -11,11 +11,10 @@ try {
         $contactid = createcontact($conn,'test@test.com','+31.61234567890','Person name',null,'Address 1','12345','City','NL');
         echo "Updating $contactid\n";
         updatecontact($conn,$contactid,'up@hostmax.ch','+31.20123456789','Updates name','Updated org','Updated address 1','12345','City','NL');
-        logout($conn);
+        $conn->logout();
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo $e->getMessage() . "\n";
-    $conn->logout();
 }
 
 

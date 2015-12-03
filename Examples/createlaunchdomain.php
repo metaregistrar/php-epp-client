@@ -21,18 +21,23 @@ if ($argc <= 1) {
 $domainname = $argv[1];
 
 echo "Registering $domainname\n";
-$conn = new Metaregistrar\EPP\metaregEppConnection();
-$conn->setConnectionDetails('');
-// Connect to the EPP server
-if ($conn->login()) {
-    $contactid = 'mrg54b6560e01ddf';
-    $techcontact = $contactid;
-    $billingcontact = $contactid;
-    if ($contactid) {
-        createdomain($conn, $domainname, $contactid, $contactid, $techcontact, $billingcontact, array('ns1.metaregistrar.nl', 'ns2.metaregistrar.nl'));
+try {
+    $conn = new Metaregistrar\EPP\metaregEppConnection();
+    $conn->setConnectionDetails('');
+    // Connect to the EPP server
+    if ($conn->login()) {
+        $contactid = 'mrg54b6560e01ddf';
+        $techcontact = $contactid;
+        $billingcontact = $contactid;
+        if ($contactid) {
+            createdomain($conn, $domainname, $contactid, $contactid, $techcontact, $billingcontact, array('ns1.metaregistrar.nl', 'ns2.metaregistrar.nl'));
+        }
+        $conn->logout();
     }
-    $conn->logout();
+} catch (Metaregistrar\EPP\eppException $e) {
+        echo "ERROR: " . $e->getMessage() . "\n\n";
 }
+
 
 /**
  * @param $conn Metaregistrar\EPP\eppConnection
@@ -45,35 +50,30 @@ if ($conn->login()) {
  * @return bool
  */
 function createdomain($conn, $domainname, $registrant, $admincontact, $techcontact, $billingcontact, $nameservers) {
-    try {
-        $domain = new Metaregistrar\EPP\eppDomain($domainname, $registrant);
-        $reg = new Metaregistrar\EPP\eppContactHandle($registrant);
-        $domain->setRegistrant($reg);
-        $admin = new Metaregistrar\EPP\eppContactHandle($admincontact, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_ADMIN);
-        $domain->addContact($admin);
-        $tech = new Metaregistrar\EPP\eppContactHandle($techcontact, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_TECH);
-        $domain->addContact($tech);
-        $billing = new Metaregistrar\EPP\eppContactHandle($billingcontact, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_BILLING);
-        $domain->addContact($billing);
-        $domain->setAuthorisationCode($domain->generateRandomString(12));
-        if (is_array($nameservers)) {
-            foreach ($nameservers as $nameserver) {
-                $host = new Metaregistrar\EPP\eppHost($nameserver);
-                $domain->addHost($host);
-            }
+    $domain = new Metaregistrar\EPP\eppDomain($domainname, $registrant);
+    $reg = new Metaregistrar\EPP\eppContactHandle($registrant);
+    $domain->setRegistrant($reg);
+    $admin = new Metaregistrar\EPP\eppContactHandle($admincontact, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_ADMIN);
+    $domain->addContact($admin);
+    $tech = new Metaregistrar\EPP\eppContactHandle($techcontact, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_TECH);
+    $domain->addContact($tech);
+    $billing = new Metaregistrar\EPP\eppContactHandle($billingcontact, Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_BILLING);
+    $domain->addContact($billing);
+    $domain->setAuthorisationCode($domain->generateRandomString(12));
+    if (is_array($nameservers)) {
+        foreach ($nameservers as $nameserver) {
+            $host = new Metaregistrar\EPP\eppHost($nameserver);
+            $domain->addHost($host);
         }
-        $create = new Metaregistrar\EPP\eppLaunchCreateDomainRequest($domain);
-        $create->setLaunchPhase('claims', 'application');
-        if ((($response = $conn->writeandread($create)) instanceof Metaregistrar\EPP\eppLaunchCreateDomainResponse) && ($response->Success())) {
-            /* @var Metaregistrar\EPP\eppLaunchCreateDomainResponse $response */
-            echo "Domain " . $response->getDomainName() . " created on " . $response->getDomainCreateDate() . ", expiration date is " . $response->getDomainExpirationDate() . "\n";
-            echo "Registration phase: " . $response->getLaunchPhase() . " and Application ID: " . $response->getLaunchApplicationID() . "\n";
-        } else {
-            var_dump($response);
-        }
-    } catch (Metaregistrar\EPP\eppException $e) {
-        echo $e->getMessage() . "\n";
-        return false;
     }
-    return null;
+    $create = new Metaregistrar\EPP\eppLaunchCreateDomainRequest($domain);
+    $create->setLaunchPhase('claims', 'application');
+    if ((($response = $conn->writeandread($create)) instanceof Metaregistrar\EPP\eppLaunchCreateDomainResponse) && ($response->Success())) {
+        /* @var Metaregistrar\EPP\eppLaunchCreateDomainResponse $response */
+        echo "Domain " . $response->getDomainName() . " created on " . $response->getDomainCreateDate() . ", expiration date is " . $response->getDomainExpirationDate() . "\n";
+        echo "Registration phase: " . $response->getLaunchPhase() . " and Application ID: " . $response->getLaunchApplicationID() . "\n";
+    } else {
+        var_dump($response);
+    }
+return null;
 }
