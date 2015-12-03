@@ -129,6 +129,16 @@ class eppConnection {
     protected $checktransactionids = true;
 
     /**
+     * @var bool Is the client connected to the server
+     */
+    private $connected = false;
+
+    /**
+     * @var bool Is the client logged in to the server
+     */
+    private $loggedin = false;
+
+    /**
      * @param string $configfile
      * @param bool|false $debug
      * @return mixed
@@ -229,6 +239,12 @@ class eppConnection {
         if ($this->logging) {
             $this->showLog();
         }
+        if ($this->connected) {
+            if ($this->loggedin) {
+                $this->logout();
+            }
+            $this->disconnect();
+        }
     }
 
     public function enableLaunchphase($launchphase) {
@@ -282,6 +298,8 @@ class eppConnection {
             //echo "Fclosing $this->hostname\n";
             @ob_flush();
             fclose($this->connection);
+            $this->writeLog("Disconnected","DISCONNECT");
+            $this->connected = false;
         }
         return true;
     }
@@ -310,6 +328,7 @@ class eppConnection {
             stream_context_set_option($context, 'ssl', 'allow_self_signed', $this->allow_self_signed);
             if ($this->connection = stream_socket_client($target, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context)) {
                 $this->writeLog("Connection made","CONNECT");
+                $this->connected = true;
                 $this->read();
                 return true;
             } else {
@@ -327,6 +346,7 @@ class eppConnection {
                 stream_set_blocking($this->connection, false);
                 stream_set_timeout($this->connection, $this->timeout);
                 if ($errno == 0) {
+                    $this->connected = true;
                     $this->read();
                     return true;
                 } else {
@@ -346,6 +366,8 @@ class eppConnection {
     function login() {
         $login = new eppLoginRequest;
         if ((($response = $this->writeandread($login)) instanceof eppLoginResponse) && ($response->Success())) {
+            $this->writeLog("Logged in","LOGIN");
+            $this->loggedin = true;
             return true;
         }
         return false;
@@ -359,6 +381,8 @@ class eppConnection {
     function logout() {
             $logout = new eppLogoutRequest();
             if ((($response = $this->writeandread($logout)) instanceof eppLogoutResponse) && ($response->Success())) {
+                $this->writeLog("Logged out","LOGOUT");
+                $this->loggedin = false;
                 return true;
             } else {
                 throw new eppException("Logout failed: ".$response->getResultMessage());
