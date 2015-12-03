@@ -342,10 +342,10 @@ class eppConnection {
             $this->connection = fsockopen($this->hostname, $this->port, $errno, $errstr, $this->timeout);
             putenv('SURPRESS_ERROR_HANDLER=0');
             if (is_resource($this->connection)) {
-                $this->writeLog("Connection made","CONNECT");
                 stream_set_blocking($this->connection, false);
                 stream_set_timeout($this->connection, $this->timeout);
                 if ($errno == 0) {
+                    $this->writeLog("Connection made","CONNECT");
                     $this->connected = true;
                     $this->read();
                     return true;
@@ -364,6 +364,9 @@ class eppConnection {
      * @return bool
      */
     function login() {
+        if (!$this->connected) {
+            $this->connect();
+        }
         $login = new eppLoginRequest;
         if ((($response = $this->writeandread($login)) instanceof eppLoginResponse) && ($response->Success())) {
             $this->writeLog("Logged in","LOGIN");
