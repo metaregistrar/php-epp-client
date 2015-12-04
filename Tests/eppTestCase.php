@@ -20,10 +20,8 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
         try {
             $conn = new Metaregistrar\EPP\metaregEppConnection();
             if ($conn->setConnectionDetails(dirname(__FILE__).'/testsetup.ini')){
-                if ($conn->connect()) {
-                    if ($conn->login()) {
-                        return $conn;
-                    }
+                if ($conn->login()) {
+                    return $conn;
                 }
             }
         } catch (Metaregistrar\EPP\eppException $e) {
