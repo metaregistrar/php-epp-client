@@ -153,6 +153,8 @@ class eppConnection {
                 $result[$param] = $value;
             }
 
+        } else {
+            throw new eppException('File not found: '.$configfile);
         }
         if (isset($result['interface'])) {
             $classname = 'Metaregistrar\\EPP\\'.$result['interface'];
