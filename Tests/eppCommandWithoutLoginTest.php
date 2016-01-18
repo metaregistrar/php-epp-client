@@ -1,9 +1,9 @@
 <?php
 include_once(dirname(__FILE__).'/eppTestCase.php');
 
-class eppCommandWithoutConnectTest extends eppTestCase {
+class eppCommandWithoutLoginTest extends eppTestCase {
 
-    public function testCommandWithoutConnection()
+    public function testCommandWithoutLogin()
     {
         $conn = new Metaregistrar\EPP\metaregEppConnection(false);
         $conn->setHostname('ssl://epp.test2.metaregistrar.com');
