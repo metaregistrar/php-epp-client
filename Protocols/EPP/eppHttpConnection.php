@@ -132,7 +132,7 @@ class eppHttpConnection extends EppConnection {
      * @throws eppException
      */
 
-    public function read() {
+    public function read($nonBlocking=false) {
         $this->writeLog("Reading response.",'READ');
 
         if ($this->response === null) {
