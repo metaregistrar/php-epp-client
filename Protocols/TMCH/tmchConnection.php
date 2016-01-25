@@ -14,7 +14,7 @@ class tmchConnection {
      * Port of the connection
      * @var string
      */
-    protected $port = 700;
+    protected $port = 143;
 
     /**
      * Time-out value for the server connection
@@ -102,13 +102,7 @@ class tmchConnection {
             $this->setUsername($settings['userid']);
             $this->setPassword($settings['password']);
             $this->setPort($settings['port']);
-        } else {
-            $this->setHostname('tmcnis.org/cnis');
-            $this->setPort(143);
-            $this->setUsername('cnis143');
-            $this->setPassword('kf96kjFdoajij!y');
         }
-
     }
 
 
