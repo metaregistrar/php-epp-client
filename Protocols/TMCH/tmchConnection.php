@@ -34,6 +34,8 @@ class tmchConnection {
      */
     protected $password = '';
 
+    protected $logging = false;
+
     public function getTimeout() {
         return $this->timeout;
     }
@@ -89,6 +91,7 @@ class tmchConnection {
     }
 
     public function __construct($logging = false, $settingsfile = null) {
+        $this->logging = $logging;
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             $path = str_replace('Metaregistrar\TMCH\\',dirname(__FILE__).'\..\..\Registries\\',get_called_class());
         } else {
