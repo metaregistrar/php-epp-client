@@ -10,7 +10,7 @@ class cnisTmchConnection extends tmchConnection {
         if (is_null(parent::getHostname()) || (parent::getHostname()=='')) {
             throw new tmchException("Hostname must be set when requesting CNIS information");
         }
-        $url = urlencode("https://" . parent::getHostname() . "/" . $key . ".xml");
+        $url = "https://" . parent::getHostname() . "/" . urlencode($key) . ".xml";
         if ($this->logging) {
             echo "Calling interface $url\n\n";
         }
