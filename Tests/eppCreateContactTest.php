@@ -28,7 +28,7 @@ class eppCreateContactTest extends eppTestCase {
         $createdate = new DateTime($response->getContactCreateDate());
         $now = new DateTime();
         $this->assertEquals($createdate->format('Y-m-d'),$now->format('Y-m-d'));
-        $this->assertEquals($createdate->format('H:i:s'),$now->format('H:i:s'));
+        //$this->assertEquals($createdate->format('H:i:s'),$now->format('H:i:s'));
         $this->assertEquals('1000',$response->getResultCode());
         $this->assertGreaterThan(0,$response->getContactId());
         $contactinfo=$this->getContactInfo($response->getContactId());

@@ -8,7 +8,7 @@ class eppDeleteHostTest extends eppTestCase {
      * @throws \Metaregistrar\EPP\eppException
      */
     public function testDeleteHost() {
-        $hostname = $this->createHost();
+        $hostname = $this->createHost('ns1.'.self::randomstring(8).'.frl');
         $host = new Metaregistrar\EPP\eppHost($hostname);
         $delete = new Metaregistrar\EPP\eppDeleteHostRequest($host);
         $response = $this->conn->writeandread($delete);
@@ -36,7 +36,7 @@ class eppDeleteHostTest extends eppTestCase {
         } catch (Metaregistrar\EPP\eppException $e) {
             $message = $e->getMessage();
         }
-        $this->assertEquals('Error 2303: Object does not exist; contactid:'.$hostname.' (Host could not be found)',$message);
+        $this->assertEquals('Error 2303: Object does not exist; hostname:'.$hostname.' (Object does not exist)',$message);
     }
 
 }

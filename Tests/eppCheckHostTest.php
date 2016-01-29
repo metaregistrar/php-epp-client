@@ -32,14 +32,16 @@ class eppCheckHostTest extends eppTestCase {
      * Expects a standard result for a free contact handle
      */
     public function testCheckHostIllegarChars() {
-        $hostname = 'ns1.test%test.frl';
+        $hostname = 'ns1.test%@test.frl';
         $host = new Metaregistrar\EPP\eppHost($hostname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppHost',$host);
         $check = new Metaregistrar\EPP\eppCheckRequest($host);
         $this->assertInstanceOf('Metaregistrar\EPP\eppCheckRequest',$check);
+        //echo $check->saveXML();
         $response = $this->conn->writeandread($check);
         $this->assertInstanceOf('Metaregistrar\EPP\eppCheckResponse',$response);
         if ($response instanceof Metaregistrar\EPP\eppCheckResponse) {
+            //echo $response->saveXML();
             $this->setExpectedException('Metaregistrar\EPP\eppException');
             $this->assertTrue($response->Success());
 

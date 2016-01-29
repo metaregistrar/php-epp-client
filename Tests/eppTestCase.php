@@ -61,12 +61,12 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Create a contact to be used in create contact or create domain testing
+     * Create a hostname to be used in create host or create domain testing
      * @return string
      * @throws \Metaregistrar\EPP\eppException
      */
-    protected function createHost() {
-        $hostname = 'ns1.test.frl';
+    protected function createHost($hostname) {
+        //$hostname = 'ns1.metaregistrar.frl';
         $host = new Metaregistrar\EPP\eppHost($hostname);
         $create = new Metaregistrar\EPP\eppCreateHostRequest($host);
         if ((($response = $this->conn->writeandread($create)) instanceof Metaregistrar\EPP\eppCreateHostResponse) && ($response->Success())) {
