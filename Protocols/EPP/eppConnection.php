@@ -910,7 +910,7 @@ class eppConnection {
         if (is_readable($directory . '/'.$settingsfile)) {
             $settings = file($directory . '/'.$settingsfile, FILE_IGNORE_NEW_LINES);
             foreach ($settings as $setting) {
-                list($param, $value) = explode('=', $setting);
+                list($param, $value) = explode('=', $setting,2);
                 $param = trim($param);
                 $value = trim($value);
                 $result[$param] = $value;
