@@ -147,7 +147,7 @@ class eppConnection {
         if (is_readable($configfile)) {
             $settings = file($configfile, FILE_IGNORE_NEW_LINES);
             foreach ($settings as $setting) {
-                list($param, $value) = explode('=', $setting);
+                list($param, $value) = explode('=', $setting, 2);
                 $param = trim($param);
                 $value = trim($value);
                 $result[$param] = $value;
@@ -882,7 +882,7 @@ class eppConnection {
         if (is_readable($settingsfile)) {
             $settings = file($settingsfile, FILE_IGNORE_NEW_LINES);
             foreach ($settings as $setting) {
-                list($param, $value) = explode('=', $setting);
+                list($param, $value) = explode('=', $setting, 2);
                 $param = trim($param);
                 $value = trim($value);
                 $result[$param] = $value;
