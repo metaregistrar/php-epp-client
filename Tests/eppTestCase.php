@@ -18,8 +18,7 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
 
     private static function setupConnection() {
         try {
-            $conn = new Metaregistrar\EPP\metaregEppConnection();
-            if ($conn->setConnectionDetails(dirname(__FILE__).'/testsetup.ini')){
+            if ($conn = Metaregistrar\EPP\eppConnection::create(dirname(__FILE__).'/testsetup.ini')) {
                 if ($conn->login()) {
                     return $conn;
                 }
@@ -66,7 +65,6 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
      * @throws \Metaregistrar\EPP\eppException
      */
     protected function createHost($hostname) {
-        //$hostname = 'ns1.metaregistrar.frl';
         $host = new Metaregistrar\EPP\eppHost($hostname);
         $create = new Metaregistrar\EPP\eppCreateHostRequest($host);
         if ((($response = $this->conn->writeandread($create)) instanceof Metaregistrar\EPP\eppCreateHostResponse) && ($response->Success())) {

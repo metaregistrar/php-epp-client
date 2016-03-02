@@ -17,6 +17,7 @@ class iisEppCreateContactRequest extends eppCreateContactRequest {
 
     function __construct($createinfo, $orgno = null, $vatno = null) {
         parent::__construct($createinfo);
+        $this->contactobject->getElementsByTagName('contact:id')->item(0)->nodeValue=$this->createContactId();
         $this->addExtension('xmlns:iis', 'urn:se:iis:xml:epp:iis-1.2');
         if ($orgno) {
             $this->addIISOrganization($orgno);
@@ -47,6 +48,12 @@ class iisEppCreateContactRequest extends eppCreateContactRequest {
             $this->command->appendChild($this->extension);
         }
         $this->create->appendChild($this->createElement('iis:vatno', $vatnumber));
+    }
+
+    private function createContactId() {
+        $charset = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
+        $contact_id = substr(str_shuffle($charset), 0, 6) . date("ym") . "-" . str_pad((time() - strtotime("today")), 5, '0', STR_PAD_LEFT);
+        return $contact_id;
     }
 
 }
