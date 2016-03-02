@@ -17,7 +17,11 @@ class iisEppCreateContactRequest extends eppCreateContactRequest {
 
     function __construct($createinfo, $orgno = null, $vatno = null) {
         parent::__construct($createinfo);
-        $this->contactobject->getElementsByTagName('contact:id')->item(0)->nodeValue=$this->createContactId();
+        $contactname = $createinfo->getPostalInfo(0)->getOrganisationName();
+        if (!$contactname && (strlen($contactname==0))) {
+            $contactname = $createinfo->getPostalInfo(0)->getName();
+        }
+        $this->contactobject->getElementsByTagName('contact:id')->item(0)->nodeValue=$this->createContactId($contactname);
         $this->addExtension('xmlns:iis', 'urn:se:iis:xml:epp:iis-1.2');
         if ($orgno) {
             $this->addIISOrganization($orgno);
@@ -50,9 +54,14 @@ class iisEppCreateContactRequest extends eppCreateContactRequest {
         $this->create->appendChild($this->createElement('iis:vatno', $vatnumber));
     }
 
-    private function createContactId() {
-        $charset = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
-        $contact_id = substr(str_shuffle($charset), 0, 6) . date("ym") . "-" . str_pad((time() - strtotime("today")), 5, '0', STR_PAD_LEFT);
+    private function createContactId($name = null) {
+        if ((!$name) || (strlen($name)==0)) {
+            $charset = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
+            $contact_id = substr(str_shuffle($charset), 0, 6) . date("ym") . "-" . str_pad((time() - strtotime("today")), 5, '0', STR_PAD_LEFT);
+        } else {
+            $contact_id = str_pad(str_replace(' ','',substr(strtolower(iconv('utf-8', 'us-ascii//TRANSLIT', $name)),0,6)),6,'zzzzz');
+            $contact_id .= date("ym") . "-" . str_pad((time() - strtotime("today")), 5, '0', STR_PAD_LEFT);
+        }
         return $contact_id;
     }
 
