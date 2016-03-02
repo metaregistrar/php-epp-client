@@ -22,17 +22,18 @@ $domainname = $argv[1];
 
 echo "Registering $domainname\n";
 try {
-    $conn = new Metaregistrar\EPP\metaregEppConnection();
-    $conn->setConnectionDetails('');
-    // Connect to the EPP server
-    if ($conn->login()) {
-        $contactid = 'mrg54b6560e01ddf';
-        $techcontact = $contactid;
-        $billingcontact = $contactid;
-        if ($contactid) {
-            createdomain($conn, $domainname, $contactid, $contactid, $techcontact, $billingcontact, array('ns1.metaregistrar.nl', 'ns2.metaregistrar.nl'));
+    // Please enter your own settings file here under before using this example
+    if ($conn = Metaregistrar\EPP\eppConnection::create('')) {
+        // Connect to the EPP server
+        if ($conn->login()) {
+            $contactid = 'mrg54b6560e01ddf';
+            $techcontact = $contactid;
+            $billingcontact = $contactid;
+            if ($contactid) {
+                createdomain($conn, $domainname, $contactid, $contactid, $techcontact, $billingcontact, array('ns1.metaregistrar.nl', 'ns2.metaregistrar.nl'));
+            }
+            $conn->logout();
         }
-        $conn->logout();
     }
 } catch (Metaregistrar\EPP\eppException $e) {
         echo "ERROR: " . $e->getMessage() . "\n\n";

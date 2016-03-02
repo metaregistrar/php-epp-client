@@ -2,12 +2,13 @@
 require('../autoloader.php');
 
 try {
-    $conn = new Metaregistrar\EPP\metaregEppConnection();
-    $conn->setConnectionDetails('');
-    // Connect to the EPP server
-    if ($conn->login()) {
-        createcontact($conn, 'info@test.com', '+31.201234567', 'Domain Administration', 'Metaregistrar', 'Address 1', 'Zipcode', 'City', 'NL');
-        $conn->logout();
+// Please enter your own settings file here under before using this example
+    if ($conn = Metaregistrar\EPP\eppConnection::create('')) {
+        // Connect to the EPP server
+        if ($conn->login()) {
+            createcontact($conn, 'info@test.com', '+31.201234567', 'Domain Administration', 'Metaregistrar', 'Address 1', 'Zipcode', 'City', 'NL');
+            $conn->logout();
+        }
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";

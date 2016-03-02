@@ -51,38 +51,39 @@ for ($i = 0; $i < 1500; $i++) {
 
 echo "Checking " . count($domains) . " domain names\n";
 try {
-    $conn = new Metaregistrar\EPP\metaregEppConnection();
-    $conn->setConnectionDetails('');
-    // Connect to the EPP server
-    $mtime = microtime();
-    $mtime = explode(" ", $mtime);
-    $starttime = $mtime[1] + $mtime[0];
-    if ($conn->login()) {
-        $counter = 0;
-        while ($counter < count($domains)) {
-            $list[] = $domains[$counter];
-            $counter++;
-            if (($counter % 10) == 0) {
-                $mstime = microtime();
-                $mstime = explode(" ", $mstime);
-                $mstime = $mstime[1] + $mstime[0];
-                $startstime = $mstime;
-                checkdomains($conn, $list);
-                $mstime = microtime();
-                $mstime = explode(" ", $mstime);
-                $endstime = $mstime[1] + $mstime[0];
-                $totalstime = ($endstime - $startstime);
-                echo "Check: " . $totalstime . " seconds\n\n";
-                unset($list);
+    // Please enter your own settings file here under before using this example
+    if ($conn = Metaregistrar\EPP\eppConnection::create('')) {
+        // Connect to the EPP server
+        $mtime = microtime();
+        $mtime = explode(" ", $mtime);
+        $starttime = $mtime[1] + $mtime[0];
+        if ($conn->login()) {
+            $counter = 0;
+            while ($counter < count($domains)) {
+                $list[] = $domains[$counter];
+                $counter++;
+                if (($counter % 10) == 0) {
+                    $mstime = microtime();
+                    $mstime = explode(" ", $mstime);
+                    $mstime = $mstime[1] + $mstime[0];
+                    $startstime = $mstime;
+                    checkdomains($conn, $list);
+                    $mstime = microtime();
+                    $mstime = explode(" ", $mstime);
+                    $endstime = $mstime[1] + $mstime[0];
+                    $totalstime = ($endstime - $startstime);
+                    echo "Check: " . $totalstime . " seconds\n\n";
+                    unset($list);
+                }
             }
+            $conn->logout();
         }
-        $conn->logout();
+        $mtime = microtime();
+        $mtime = explode(" ", $mtime);
+        $endtime = $mtime[1] + $mtime[0];
+        $totaltime = ($endtime - $starttime);
+        echo "Checks performed in " . $totaltime . " seconds\n\n";
     }
-    $mtime = microtime();
-    $mtime = explode(" ", $mtime);
-    $endtime = $mtime[1] + $mtime[0];
-    $totaltime = ($endtime - $starttime);
-    echo "Checks performed in " . $totaltime . " seconds\n\n";
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";
 }

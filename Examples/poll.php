@@ -11,15 +11,16 @@ require('../autoloader.php');
 
 try {
     echo "Polling for messages\n";
-    $conn = new Metaregistrar\EPP\metaregEppConnection();
-    $conn->setConnectionDetails('');
-    // Connect and login to the EPP server
-    if ($conn->login()) {
-        $messageid = poll($conn);
-        if ($messageid) {
-            pollack($conn, $messageid);
+    // Please enter your own settings file here under before using this example
+    if ($conn = Metaregistrar\EPP\eppConnection::create('')) {
+        // Connect and login to the EPP server
+        if ($conn->login()) {
+            $messageid = poll($conn);
+            if ($messageid) {
+                pollack($conn, $messageid);
+            }
+            $conn->logout();
         }
-        $conn->logout();
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";

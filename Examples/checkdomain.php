@@ -18,19 +18,20 @@ for ($i = 1; $i < $argc; $i++) {
 
 echo "Checking " . count($domains) . " domain names\n";
 try {
-    $conn = new Metaregistrar\EPP\metaregEppConnection(true);
     // Set login details for the service in the form of
     // interface=metaregEppConnection
     // hostname=ssl://epp.test2.metaregistrar.com
     // port=7443
     // userid=xxxxxxxx
     // password=xxxxxxxxx
-    $conn->setConnectionDetails('');
-    // Connect and login to the EPP server
-    if ($conn->login()) {
-        // Check domain names
-        checkdomains($conn, $domains);
-        $conn->logout();
+    // Please enter the location of the file with these settings in the string location here under
+    if ($conn = Metaregistrar\EPP\eppConnection::create('')) {
+        // Connect and login to the EPP server
+        if ($conn->login()) {
+            // Check domain names
+            checkdomains($conn, $domains);
+            $conn->logout();
+        }
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";

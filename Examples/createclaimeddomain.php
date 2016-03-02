@@ -22,25 +22,26 @@ $claims = array(
 
 $domainname = '';
 try {
-    $conn = new Metaregistrar\EPP\metaregEppConnection();
-    $conn->setConnectionDetails('');
-    $conn->enableLaunchphase('claims');
+    // Please enter your own settings file here under before using this example
+    if ($conn = Metaregistrar\EPP\eppConnection::create('')) {
+        $conn->enableLaunchphase('claims');
+        // Connect and login to the EPP server
+        if ($conn->login()) {
+            $contactid = '';
+            $techcontact = $contactid;
+            $billingcontact = $contactid;
+            $nameservers = array('ns1.metaregistrar.nl','ns2.metaregistrar.nl');
+            echo "Registering $domainname\n";
+            $claim = checkdomainclaim($conn,$domainname);
+            if ($claim) {
+                createclaimeddomain($conn, $domainname, $claim, $contactid, $contactid, $techcontact, $billingcontact, $nameservers);
+            } else {
+                createdomain($conn, $domainname, $contactid, $contactid, $techcontact, $billingcontact, $nameservers);
 
-// Connect and login to the EPP server
-    if ($conn->login()) {
-        $contactid = '';
-        $techcontact = $contactid;
-        $billingcontact = $contactid;
-        $nameservers = array('ns1.metaregistrar.nl','ns2.metaregistrar.nl');
-        echo "Registering $domainname\n";
-        $claim = checkdomainclaim($conn,$domainname);
-        if ($claim) {
-            createclaimeddomain($conn, $domainname, $claim, $contactid, $contactid, $techcontact, $billingcontact, $nameservers);
-        } else {
-            createdomain($conn, $domainname, $contactid, $contactid, $techcontact, $billingcontact, $nameservers);
-
+            }
+            $conn->logout();
         }
-        $conn->logout();
+
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";

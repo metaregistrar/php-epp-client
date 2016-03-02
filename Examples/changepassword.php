@@ -18,12 +18,13 @@ $newpassword = $argv[1];
 
 echo "Changing password\n";
 try {
-    $conn = new Metaregistrar\EPP\metaregEppConnection();
-    $conn->setConnectionDetails('');
-    $conn->setNewPassword($newpassword);
-    // Connect and login to the EPP server
-    if ($conn->login()) {
-        echo "Password was changed, you are logged-out automatically\n";
+    // Please enter your own settings file here under before using this example
+    if ($conn = Metaregistrar\EPP\eppConnection::create('')) {
+        $conn->setNewPassword($newpassword);
+        // Connect and login to the EPP server
+        if ($conn->login()) {
+            echo "Password was changed, you are logged-out automatically\n";
+        }
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";

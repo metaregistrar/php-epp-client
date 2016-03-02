@@ -19,16 +19,16 @@ $domainname = $argv[1];
 
 echo "Modifying $domainname\n";
 try {
-    $conn = new Metaregistrar\EPP\metaregEppConnection();
-    $conn->setConnectionDetails('');
-    // Connect to the EPP server
-    if ($conn->login()) {
-        modifydomain($conn, $domainname, null, null, null, null, array('ns1.metaregistrar.nl', 'ns2.metaregistrar.nl'));
-        $conn->logout();
+    // Please enter your own settings file here under before using this example
+    if ($conn = Metaregistrar\EPP\eppConnection::create('')) {
+        // Connect to the EPP server
+        if ($conn->login()) {
+            modifydomain($conn, $domainname, null, null, null, null, array('ns1.metaregistrar.nl', 'ns2.metaregistrar.nl'));
+            $conn->logout();
+        }
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo $e->getMessage() . "\n";
-    logout($conn);
 }
 
 /**

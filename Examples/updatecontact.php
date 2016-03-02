@@ -3,15 +3,16 @@ require('../autoloader.php');
 
 
 try {
-    $conn = new Metaregistrar\EPP\metaregEppConnection();
-    $conn->setConnectionDetails('');
-    // Connect to the EPP server
-    if ($conn->login()) {
-        echo "Creating contact\n";
-        $contactid = createcontact($conn,'test@test.com','+31.61234567890','Person name',null,'Address 1','12345','City','NL');
-        echo "Updating $contactid\n";
-        updatecontact($conn,$contactid,'up@hostmax.ch','+31.20123456789','Updates name','Updated org','Updated address 1','12345','City','NL');
-        $conn->logout();
+    // Please enter your own settings file here under before using this example
+    if ($conn = Metaregistrar\EPP\eppConnection::create('')) {
+        // Connect to the EPP server
+        if ($conn->login()) {
+            echo "Creating contact\n";
+            $contactid = createcontact($conn,'test@test.com','+31.61234567890','Person name',null,'Address 1','12345','City','NL');
+            echo "Updating $contactid\n";
+            updatecontact($conn,$contactid,'up@hostmax.ch','+31.20123456789','Updates name','Updated org','Updated address 1','12345','City','NL');
+            $conn->logout();
+        }
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo $e->getMessage() . "\n";

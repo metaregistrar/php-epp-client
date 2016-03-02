@@ -20,13 +20,14 @@ for ($i = 1; $i < $argc; $i++) {
 
 echo "Checking " . count($domains) . " domain names\n";
 try {
-    $conn = new Metaregistrar\EPP\metaregEppConnection();
-    $conn->setConnectionDetails('');
-    $conn->enableLaunchphase('claims');
-    // Connect and login to the EPP server
-    if ($conn->login()) {
-        checkdomains($conn, $domains);
-        $conn->logout();
+    // Please enter your own settings file here under before using this example
+    if ($conn = Metaregistrar\EPP\eppConnection::create('')) {
+        $conn->enableLaunchphase('claims');
+        // Connect and login to the EPP server
+        if ($conn->login()) {
+            checkdomains($conn, $domains);
+            $conn->logout();
+        }
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";

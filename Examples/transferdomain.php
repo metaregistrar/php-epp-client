@@ -16,12 +16,14 @@ $authcode = $argv[2];
 
 echo "Transferring $domainname\n";
 try {
-    $conn = new Metaregistrar\EPP\metaregEppConnection();
-    $conn->setConnectionDetails('');
-    // Connect and login to the EPP server
-    if ($conn->login()) {
-        transferdomain($conn, $domainname, $authcode);
-        $conn->logout();
+    // Please enter your own settings file here under before using this example
+    if ($conn = Metaregistrar\EPP\eppConnection::create('')) {
+        // Connect and login to the EPP server
+        if ($conn->login()) {
+            transferdomain($conn, $domainname, $authcode);
+            $conn->logout();
+        }
+
     }
 } catch (Metaregistrar\EPP\eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";
