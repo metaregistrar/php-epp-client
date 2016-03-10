@@ -13,6 +13,7 @@ if ($argc <= 1) {
     echo "Please enter a domain name retrieve\n\n";
     die();
 }
+$domainname = $argv[1];
 
 echo "Retrieving info on " . $domainname . "\n";
 try {
