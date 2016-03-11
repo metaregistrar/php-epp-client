@@ -230,7 +230,11 @@ class eppConnection {
             }
             if (array_key_exists('certificatefile',$settings) && array_key_exists('certificatepassword',$settings)) {
                 // Enter the path to your certificate and the password here
-                $this->enableCertification($path . '/' . $settings['certificatefile'], $settings['certificatepassword']);
+                if (isset($settings['allowselfsigned'])) {
+                    $this->enableCertification($path . '/' . $settings['certificatefile'], $settings['certificatepassword'], $settings['allowselfsigned']);
+                } else {
+                    $this->enableCertification($path . '/' . $settings['certificatefile'], $settings['certificatepassword']);
+                }
             }
         }
     }
