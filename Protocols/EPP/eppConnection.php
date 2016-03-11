@@ -229,7 +229,15 @@ class eppConnection {
                 $this->setPort(700);
             }
             if (array_key_exists('certificatefile',$settings) && array_key_exists('certificatepassword',$settings)) {
-                // Enter the path to your certificate and the password here
+                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                    if (strpos($settings['certificatefile'],'\\')===false) {
+                        $settings['certificatefile']=$path . '\\' . $settings['certificatefile'];
+                    }
+                } else {
+                    if (strpos($settings['certificatefile'],'/')===false) {
+                        $settings['certificatefile']=$path . '/' . $settings['certificatefile'];
+                    }
+                }
                 if (isset($settings['allowselfsigned'])) {
                     $this->enableCertification($path . '/' . $settings['certificatefile'], $settings['certificatepassword'], $settings['allowselfsigned']);
                 } else {
