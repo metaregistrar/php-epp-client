@@ -33,8 +33,8 @@ function createcontact($conn, $email, $telephone, $name, $organization, $address
     $contactinfo = new Metaregistrar\EPP\eppContact($postalinfo, $email, $telephone);
     $contactinfo->setPassword('');
     $contact = new Metaregistrar\EPP\eppCreateContactRequest($contactinfo);
-    if ((($response = $conn->writeandread($contact)) instanceof Metaregistrar\EPP\eppCreateResponse) && ($response->Success())) {
-        /* @var $response Metaregistrar\EPP\eppCreateResponse */
+    if ((($response = $conn->writeandread($contact)) instanceof Metaregistrar\EPP\eppCreateContactResponse) && ($response->Success())) {
+        /* @var $response Metaregistrar\EPP\eppCreateContactResponse */
         echo "Contact created on " . $response->getContactCreateDate() . " with id " . $response->getContactId() . "\n";
         return $response->getContactId();
     }

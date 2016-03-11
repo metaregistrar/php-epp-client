@@ -50,8 +50,8 @@ function createcontact($conn, $email, $telephone, $name, $organization, $address
         $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, Metaregistrar\EPP\eppContact::TYPE_LOC);
         $contactinfo = new Metaregistrar\EPP\eppContact($postalinfo, $email, $telephone);
         $contact = new Metaregistrar\EPP\EppCreateContactRequest($contactinfo);
-        if ((($response = $conn->writeandread($contact)) instanceof Metaregistrar\EPP\eppCreateResponse) && ($response->Success())) {
-            /* @var $response Metaregistrar\EPP\eppCreateResponse */
+        if ((($response = $conn->writeandread($contact)) instanceof Metaregistrar\EPP\eppCreateContactResponse) && ($response->Success())) {
+            /* @var $response Metaregistrar\EPP\eppCreateContactResponse */
             echo "Contact created on " . $response->getContactCreateDate() . " with id " . $response->getContactId() . "\n";
             return $response->getContactId();
         }
