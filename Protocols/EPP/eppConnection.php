@@ -229,19 +229,17 @@ class eppConnection {
                 $this->setPort(700);
             }
             if (array_key_exists('certificatefile',$settings) && array_key_exists('certificatepassword',$settings)) {
-                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                    if (strpos($settings['certificatefile'],'\\')===false) {
-                        $settings['certificatefile']=$path . '\\' . $settings['certificatefile'];
-                    }
-                } else {
-                    if (strpos($settings['certificatefile'],'/')===false) {
-                        $settings['certificatefile']=$path . '/' . $settings['certificatefile'];
+                if ((strpos($settings['certificatefile'],'\\')===false) && (strpos($settings['certificatefile'],'/')===false)) {
+                    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                        $settings['certificatefile'] = $path . '\\' . $settings['certificatefile'];
+                    } else {
+                        $settings['certificatefile'] = $path . '/' . $settings['certificatefile'];
                     }
                 }
                 if (isset($settings['allowselfsigned'])) {
-                    $this->enableCertification($path . '/' . $settings['certificatefile'], $settings['certificatepassword'], $settings['allowselfsigned']);
+                    $this->enableCertification($settings['certificatefile'], $settings['certificatepassword'], $settings['allowselfsigned']);
                 } else {
-                    $this->enableCertification($path . '/' . $settings['certificatefile'], $settings['certificatepassword']);
+                    $this->enableCertification($settings['certificatefile'], $settings['certificatepassword']);
                 }
             }
         }
