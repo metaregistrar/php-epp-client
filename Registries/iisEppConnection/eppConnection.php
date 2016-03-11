@@ -16,9 +16,9 @@ class iisEppConnection extends eppConnection {
 
         // Add the commands and responses specific to this registry
         // Please make sure the corresponding PHP files are present!
-        parent::addCommandResponse('Metaregistrar\EPP\iisEppCreateContactRequest', 'Metaregistrar\EPP\eppCreateResponse');
+        parent::addCommandResponse('Metaregistrar\EPP\iisEppCreateContactRequest', 'Metaregistrar\EPP\eppCreateContactResponse');
         parent::addCommandResponse('Metaregistrar\EPP\eppInfoDomainRequest', 'Metaregistrar\EPP\iisEppInfoDomainResponse');
-        parent::addCommandResponse('Metaregistrar\EPP\iisEppUpdateDomainClientDeleteRequest', 'Metaregistrar\EPP\eppUpdateResponse');
+        parent::addCommandResponse('Metaregistrar\EPP\iisEppUpdateDomainClientDeleteRequest', 'Metaregistrar\EPP\eppUpdateDomainResponse');
     }
 
 }
