@@ -9,9 +9,9 @@ class eppCheckHostRequest extends eppRequest {
             $this->setHosts(array($checkrequest));
         } else {
             if (is_array($checkrequest)) {
-                if ($checkrequest[0] instanceof eppHost) {
+                //if ($checkrequest[0] instanceof eppHost) { WHY DID I PUT THIS IN?
                     $this->setHosts($checkrequest);
-                }
+                //}
             }
         }
     }
