@@ -117,15 +117,17 @@ class eppResponse extends \DomDocument {
      */
     public $version;
 
+    public $originalrequest;
     /**
      *
      * @var string $defaultnamespace
      */
     public $defaultnamespace;
 
-    public function __construct() {
+    public function __construct($originalrequest = null) {
         parent::__construct();
         $this->formatOutput = true;
+        $this->originalrequest = $originalrequest;
         #$this->validateOnParse = true;
     }
 

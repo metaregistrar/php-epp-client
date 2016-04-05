@@ -711,9 +711,9 @@ class eppConnection {
 
     public function createResponse($request) {
         $response = new eppResponse();
-        foreach ($this->responses as $req => $res) {
+        foreach ($this->getResponses() as $req => $res) {
             if ($request instanceof $req) {
-                $response = new $res();
+                $response = new $res($request);
             }
         }
         return $response;
@@ -807,6 +807,10 @@ class eppConnection {
 
     public function setLanguage($language) {
         $this->language = $language;
+    }
+
+    public function getResponses() {
+        return $this->responses;
     }
 
     public function getLanguage() {
