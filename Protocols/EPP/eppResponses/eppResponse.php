@@ -147,6 +147,10 @@ class eppResponse extends \DomDocument {
         return str_replace("\t", '  ', parent::saveXML($node, LIBXML_NOEMPTYTAG));
     }
 
+    public function dumpContents() {
+        echo $this->saveXML();
+    }
+
     //public function setParameters($language,$version,$objuri,$exturi,$xpathuri)
     //{
     //    $this->language = $language;

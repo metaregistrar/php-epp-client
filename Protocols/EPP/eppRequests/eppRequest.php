@@ -124,7 +124,11 @@ class eppRequest extends \DomDocument {
         return $this->sessionid;
     }
 
-
+    public function dumpContents() {
+        echo $this->saveXML();
+    }
+    
+    
     protected static function isAscii($str) {
         return mb_check_encoding($str, 'ASCII');
     }

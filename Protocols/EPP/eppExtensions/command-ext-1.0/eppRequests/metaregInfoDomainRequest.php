@@ -15,7 +15,7 @@ class metaregInfoDomainRequest extends eppInfoDomainRequest {
      */
     function __construct($domainname) {
         /*
-         <epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:command-ext-domain="http://www.metaregistrar.com/epp/command-ext-domain-1.0" xmlns:command-ext="http://www.metaregistrar.com/epp/command-ext-1.0" xmlns:ext="http://www.metaregistrar.com/epp/ext-1.0">
+  <epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:command-ext-domain="http://www.metaregistrar.com/epp/command-ext-domain-1.0" xmlns:command-ext="http://www.metaregistrar.com/epp/command-ext-1.0" xmlns:ext="http://www.metaregistrar.com/epp/ext-1.0">
   <command>
     <info>
       <domain:info xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
