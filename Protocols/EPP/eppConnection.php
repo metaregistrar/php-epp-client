@@ -144,17 +144,21 @@ class eppConnection {
      * @return mixed
      */
     static function create($configfile,$debug=false) {
-        if (is_readable($configfile)) {
-            $settings = file($configfile, FILE_IGNORE_NEW_LINES);
-            foreach ($settings as $setting) {
-                list($param, $value) = explode('=', $setting, 2);
-                $param = trim($param);
-                $value = trim($value);
-                $result[$param] = $value;
-            }
+        if ($configfile) {
+            if (is_readable($configfile)) {
+                $settings = file($configfile, FILE_IGNORE_NEW_LINES);
+                foreach ($settings as $setting) {
+                    list($param, $value) = explode('=', $setting, 2);
+                    $param = trim($param);
+                    $value = trim($value);
+                    $result[$param] = $value;
+                }
 
+            } else {
+                throw new eppException('File not found: '.$configfile);
+            }
         } else {
-            throw new eppException('File not found: '.$configfile);
+            throw new eppException('Configuration file not specified on eppConnection:create');
         }
         if (isset($result['interface'])) {
             $classname = 'Metaregistrar\\EPP\\'.$result['interface'];
