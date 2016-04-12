@@ -4,20 +4,23 @@ namespace Metaregistrar\EPP;
 
 class metaregSudoResponse extends eppResponse {
 
+    /**
+     * @var eppResponse
+     */
     private $originalResponse;
 
-    function __construct($originalrequest) {
+    /**
+     * metaregSudoResponse constructor.
+     * @param metaregSudoRequest $originalrequest
+     */
+    function __construct(metaregSudoRequest $originalrequest) {
         parent::__construct($originalrequest);
-        /* @var originalrequest Metaregistrar\EPP\metaregSudoRequest */
-        $testconn = new eppConnection;
-        foreach ($testconn->getResponses() as $req => $res) {
-            if ($originalrequest->getOriginalRequest() instanceof $req) {
-                $this->originalResponse = new $res();
-            }
-        }
+        $tmpConn = new eppConnection;
+        $this->originalResponse = $tmpConn->createResponse($originalrequest->getOriginalRequest());
     }
-    
-    function loadXML($xml) {
+
+    function loadXML($xml, $options = NULL)
+    {
         $this->originalResponse->loadXML($xml);
         return parent::loadXML($xml);
     }
