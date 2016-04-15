@@ -292,6 +292,12 @@ class eppConnection {
         unset($this->responses['Metaregistrar\\EPP\\eppDnssecUpdateDomainRequest']);
     }
 
+    /**
+     * @param string $certificatepath
+     * @param string | null $certificatepassword
+     * @param bool $selfsigned
+     *
+     */
     public function enableCertification($certificatepath, $certificatepassword, $selfsigned = false) {
         $this->local_cert_path = $certificatepath;
         $this->local_cert_pwd = $certificatepassword;
