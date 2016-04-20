@@ -79,7 +79,7 @@ class tmchConnection {
     /**
      * @param null $lastinfo
      */
-    public function setLastinfo($lastinfo) {
+    public function setLastInfo($lastinfo) {
         $this->lastinfo = $lastinfo;
     }
 

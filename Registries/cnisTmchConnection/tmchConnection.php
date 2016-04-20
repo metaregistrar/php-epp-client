@@ -10,7 +10,7 @@ class cnisTmchConnection extends tmchConnection {
         if (is_null(parent::getHostname()) || (parent::getHostname()=='')) {
             throw new tmchException("Hostname must be set when requesting CNIS information");
         }
-        $url = "https://" . parent::getHostname() . "/" . urlencode($key) . ".xml";
+        $url = "https://" . parent::getHostname() . "/" . $key . ".xml";
         if ($this->logging) {
             echo "Calling interface $url\n\n";
         }
@@ -83,7 +83,7 @@ class cnisTmchConnection extends tmchConnection {
         }
         $result .= $breakchar;
         //echo "This domain name label has previously been found to be used or registered abusively against the following trademarks accoring to the referenced decisions:\n";
-        $result .= "For more information concerning the records in this notice, contact mijndomein.nl".$breakchar;
+        $result .= "For more information concerning the records in this notice, contact your domain name registrar".$breakchar;
         return $result;
     }
 

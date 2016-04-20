@@ -5,22 +5,24 @@ $domain = 'nike';
 $domainkey = null;
 try {
     $dnl = new Metaregistrar\TMCH\dnlTmchConnection();
-    //$dnl->setConnectionDetails();
+    $dnl->setConnectionDetails('.');
     $cnis = new Metaregistrar\TMCH\cnisTmchConnection();
-    //$cnis->setConnectionDetails();
+    $cnis->setConnectionDetails('');
     $list = $dnl->getDnl();
     if (count($list)==1) {
         echo "empty list received\n";
         echo $list[0]."\n";
     } else {
         foreach ($list as $line) {
-            list($domainname, $key, $datetime) = explode(',', $line);
-            if ($domainname == $domain) {
-                $domainkey = $key;
+            if (strlen($line)>0) {
+                list($domainname, $key) = explode(',', $line);
+                if ($domainname == $domain) {
+                    $domainkey = $key;
+                }
             }
         }
         if ($domainkey) {
-            echo $cnis->showWarning($cnis->getCnis($domainkey), true);
+            echo $cnis->showWarning($cnis->getCnis($domainkey), false);
         } else {
             echo "Domain name not found in CNIS list\n";
         }
