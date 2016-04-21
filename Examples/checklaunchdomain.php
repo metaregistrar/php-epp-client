@@ -2,9 +2,13 @@
 
 require('../autoloader.php');
 
+use Metaregistrar\EPP\eppConnection;
+use Metaregistrar\EPP\eppException;
+use Metaregistrar\EPP\eppLaunchCheckRequest;
+
+
 /*
  * This script checks for the availability of domain names in a certain launchphase
- *
  * You can specify multiple domain names to be checked
  */
 
@@ -21,7 +25,7 @@ for ($i = 1; $i < $argc; $i++) {
 echo "Checking " . count($domains) . " domain names\n";
 try {
     // Please enter your own settings file here under before using this example
-    if ($conn = Metaregistrar\EPP\eppConnection::create('')) {
+    if ($conn = eppConnection::create('')) {
         $conn->enableLaunchphase('claims');
         // Connect and login to the EPP server
         if ($conn->login()) {
@@ -29,20 +33,20 @@ try {
             $conn->logout();
         }
     }
-} catch (Metaregistrar\EPP\eppException $e) {
+} catch (eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";
 }
 
 
 /**
- * @param $conn Metaregistrar\EPP\eppConnection
+ * @param $conn eppConnection
  * @param $domains array
  */
 function checkdomains($conn, $domains) {
     try {
-        $check = new Metaregistrar\EPP\eppLaunchCheckRequest($domains);
+        $check = new eppLaunchCheckRequest($domains);
         $check->setLaunchPhase('claims');
-        if ((($response = $conn->writeandread($check)) instanceof Metaregistrar\EPP\eppLaunchCheckResponse) && ($response->Success())) {
+        if ($response = $conn->request($check)) {
             /* @var $response Metaregistrar\EPP\eppLaunchCheckResponse */
             $checks = $response->getCheckedDomains();
             foreach ($checks as $check) {
@@ -51,7 +55,7 @@ function checkdomains($conn, $domains) {
         } else {
             echo "ERROR\n";
         }
-    } catch (Metaregistrar\EPP\eppException $e) {
+    } catch (eppException $e) {
         echo $e->getMessage() . "\n";
     }
 }

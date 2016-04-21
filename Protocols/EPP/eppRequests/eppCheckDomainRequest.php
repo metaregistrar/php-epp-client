@@ -12,13 +12,13 @@ class eppCheckDomainRequest extends eppRequest {
             if (is_array($checkrequest)) {
                 if ($checkrequest[0] instanceof eppDomain) {
                     $this->setDomainNames($checkrequest);
+                } else {
+                   if (is_string($checkrequest[0])) {
+                       $this->setDomainNames($checkrequest);
+                   }
                 }
             }
         }
-    }
-
-    function __destruct() {
-        parent::__destruct();
     }
 
 
@@ -34,7 +34,7 @@ class eppCheckDomainRequest extends eppRequest {
         $this->domainobject = $this->createElement('domain:check');
         foreach ($domains as $domain) {
             if ($domain instanceof eppDomain) {
-                $this->domainobject->appendChild($this->createElement('domain:name', $domain->getDomainName()));
+                $this->domainobject->appendChild($this->createElement('domain:name', $domain->getDomainname()));
             } else {
                 $this->domainobject->appendChild($this->createElement('domain:name', $domain));
             }

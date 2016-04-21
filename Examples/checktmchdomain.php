@@ -2,9 +2,15 @@
 
 require('../autoloader.php');
 
+use Metaregistrar\EPP\eppConnection;
+use Metaregistrar\EPP\eppException;
+use Metaregistrar\EPP\eppLaunchCheckRequest;
+use Metaregistrar\EPP\eppDomainClaim;
+use Metaregistrar\TMCH\cnisTmchConnection;
+use Metaregistrar\TMCH\tmchException;
+
 /*
- * This script checks for the availability of domain names in a certain launchphase
- *
+ * This script checks for the availability of domain names in the claims phase
  * You can specify multiple domain names to be checked
  */
 
@@ -20,7 +26,7 @@ for ($i = 1; $i < $argc; $i++) {
 echo "Checking " . count($domains) . " domain names\n";
 try {
     // Please enter your own settings file here under before using this example
-    if ($conn = Metaregistrar\EPP\eppConnection::create('')) {
+    if ($conn = eppConnection::create('')) {
         $conn->enableLaunchphase('claims');
         // Connect to the EPP server
         if ($conn->login()) {
@@ -28,19 +34,19 @@ try {
             $conn->logout();
         }
     }
-} catch (Metaregistrar\EPP\eppException $e) {
+} catch (eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";
 }
 
 /**
- * @param $conn Metaregistrar\EPP\eppConnection
+ * @param $conn eppConnection
  * @param $domains array
  */
 function checkdomains($conn, $domains) {
     try {
-        $check = new Metaregistrar\EPP\eppLaunchCheckRequest($domains);
-        $check->setLaunchPhase(Metaregistrar\EPP\eppLaunchCheckRequest::PHASE_CLAIMS, 'test', Metaregistrar\EPP\eppLaunchCheckRequest::TYPE_CLAIMS);
-        if ((($response = $conn->writeandread($check)) instanceof Metaregistrar\EPP\eppLaunchCheckResponse) && ($response->Success())) {
+        $check = new eppLaunchCheckRequest($domains);
+        $check->setLaunchPhase(eppLaunchCheckRequest::PHASE_CLAIMS, 'test', eppLaunchCheckRequest::TYPE_CLAIMS);
+        if ($response = $conn->request($check)) {
             /* @var $response Metaregistrar\EPP\eppLaunchCheckResponse */
             //$phase = $response->getLaunchPhase();
             $checks = $response->getDomainClaims();
@@ -49,9 +55,10 @@ function checkdomains($conn, $domains) {
                 echo $check['domainname'] . " has " . ($check['claimed'] ? 'a claim' : 'no claim') . "\n";
                 if ($check['claimed']) {
                     if ($check['claim']) {
-                        if ($check['claim'] instanceof Metaregistrar\EPP\eppDomainClaim) {
+                        if ($check['claim'] instanceof eppDomainClaim) {
                             echo "Claim validator: " . $check['claim']->getValidator() . ", claim key: " . $check['claim']->getClaimKey() . "\n";
-                            $tmch = new Metaregistrar\TMCH\cnisTmchConnection();
+                            // Do not forget to fill in the CNIS login details!
+                            $tmch = new cnisTmchConnection('');
                             $output = $tmch->getCnis($check['claim']->getClaimKey());
                             echo "Notice ID: ".$output->getNoticeId()." Not after: ".$output->getNotAfter()."\n";
                         } else {
@@ -67,9 +74,9 @@ function checkdomains($conn, $domains) {
         } else {
             echo "ERROR2\n";
         }
-    } catch (Metaregistrar\EPP\eppException $e) {
+    } catch (eppException $e) {
         echo 'ERROR1: ' . $e->getMessage() . "\n";
-    } catch (Metaregistrar\TMCH\tmchException $t) {
+    } catch (tmchException $t) {
         echo 'ERROR TMCH: ' . $t->getMessage() . "\n";
     }
 

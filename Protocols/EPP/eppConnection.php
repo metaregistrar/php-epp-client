@@ -189,28 +189,28 @@ class eppConnection {
         $this->responses['Metaregistrar\\EPP\\eppLoginRequest'] = 'Metaregistrar\\EPP\\eppLoginResponse';
         $this->responses['Metaregistrar\\EPP\\eppLogoutRequest'] = 'Metaregistrar\\EPP\\eppLogoutResponse';
         $this->responses['Metaregistrar\\EPP\\eppPollRequest'] = 'Metaregistrar\\EPP\\eppPollResponse';
-        $this->responses['Metaregistrar\\EPP\\eppCheckRequest'] = 'Metaregistrar\\EPP\\eppCheckResponse';
         $this->responses['Metaregistrar\\EPP\\eppCheckDomainRequest'] = 'Metaregistrar\\EPP\\eppCheckDomainResponse';
         $this->responses['Metaregistrar\\EPP\\eppCheckContactRequest'] = 'Metaregistrar\\EPP\\eppCheckContactResponse';
         $this->responses['Metaregistrar\\EPP\\eppCheckHostRequest'] = 'Metaregistrar\\EPP\\eppCheckHostResponse';
         $this->responses['Metaregistrar\\EPP\\eppInfoHostRequest'] = 'Metaregistrar\\EPP\\eppInfoHostResponse';
         $this->responses['Metaregistrar\\EPP\\eppInfoContactRequest'] = 'Metaregistrar\\EPP\\eppInfoContactResponse';
         $this->responses['Metaregistrar\\EPP\\eppInfoDomainRequest'] = 'Metaregistrar\\EPP\\eppInfoDomainResponse';
-        $this->responses['Metaregistrar\\EPP\\eppCreateRequest'] = 'Metaregistrar\\EPP\\eppCreateResponse';
         $this->responses['Metaregistrar\\EPP\\eppCreateDomainRequest'] = 'Metaregistrar\\EPP\\eppCreateDomainResponse';
         $this->responses['Metaregistrar\\EPP\\eppCreateContactRequest'] = 'Metaregistrar\\EPP\\eppCreateContactResponse';
         $this->responses['Metaregistrar\\EPP\\eppCreateHostRequest'] = 'Metaregistrar\\EPP\\eppCreateHostResponse';
-        $this->responses['Metaregistrar\\EPP\\eppDeleteRequest'] = 'Metaregistrar\\EPP\\eppDeleteResponse';
         $this->responses['Metaregistrar\\EPP\\eppDeleteDomainRequest'] = 'Metaregistrar\\EPP\\eppDeleteResponse';
         $this->responses['Metaregistrar\\EPP\\eppDeleteContactRequest'] = 'Metaregistrar\\EPP\\eppDeleteResponse';
         $this->responses['Metaregistrar\\EPP\\eppDeleteHostRequest'] = 'Metaregistrar\\EPP\\eppDeleteResponse';
         $this->responses['Metaregistrar\\EPP\\eppUndeleteRequest'] = 'Metaregistrar\\EPP\\eppUndeleteResponse';
-        $this->responses['Metaregistrar\\EPP\\eppUpdateRequest'] = 'Metaregistrar\\EPP\\eppUpdateResponse';
         $this->responses['Metaregistrar\\EPP\\eppUpdateDomainRequest'] = 'Metaregistrar\\EPP\\eppUpdateResponse';
         $this->responses['Metaregistrar\\EPP\\eppUpdateContactRequest'] = 'Metaregistrar\\EPP\\eppUpdateResponse';
         $this->responses['Metaregistrar\\EPP\\eppUpdateHostRequest'] = 'Metaregistrar\\EPP\\eppUpdateResponse';
         $this->responses['Metaregistrar\\EPP\\eppRenewRequest'] = 'Metaregistrar\\EPP\\eppRenewResponse';
         $this->responses['Metaregistrar\\EPP\\eppTransferRequest'] = 'Metaregistrar\\EPP\\eppTransferResponse';
+        $this->responses['Metaregistrar\\EPP\\eppCheckRequest'] = 'Metaregistrar\\EPP\\eppCheckResponse';
+        $this->responses['Metaregistrar\\EPP\\eppCreateRequest'] = 'Metaregistrar\\EPP\\eppCreateResponse';
+        $this->responses['Metaregistrar\\EPP\\eppUpdateRequest'] = 'Metaregistrar\\EPP\\eppUpdateResponse';
+        $this->responses['Metaregistrar\\EPP\\eppDeleteRequest'] = 'Metaregistrar\\EPP\\eppDeleteResponse';
 
         #
         # Read settings.ini or specified settings file
@@ -389,7 +389,7 @@ class eppConnection {
      * Performs an EPP login request and checks the result
      * @return bool
      */
-    function login() {
+    public function login() {
         if (!$this->connected) {
             $this->connect();
         }
@@ -407,7 +407,7 @@ class eppConnection {
      * @return bool
      * @throws eppException
      */
-    function logout() {
+    public function logout() {
             $logout = new eppLogoutRequest();
             if ((($response = $this->writeandread($logout)) instanceof eppLogoutResponse) && ($response->Success())) {
                 $this->writeLog("Logged out","LOGOUT");
@@ -419,9 +419,31 @@ class eppConnection {
     }
 
     /**
+     * @param eppRequest $eppRequest
+     * @return eppResponse|null
+     * @throws eppException
+     */
+    public function request($eppRequest) {
+        $check = null;
+        foreach ($this->getResponses() as $req => $check) {
+            if ($eppRequest instanceof $req) {
+                break;
+            }
+        }
+        if (($response = $this->writeandread($eppRequest)) instanceof $check) {
+            // Success() will trigger an eppException when failed
+            $response->Success();
+            return $response;
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * This will read 1 response from the connection if there is one
      * @param boolean $nonBlocking to prevent the blocking of the thread in case there is nothing to read and not wait for the timeout
      * @return string
+     * @throws eppException
      */
     public function read($nonBlocking=false) {
         putenv('SURPRESS_ERROR_HANDLER=1');
@@ -728,6 +750,7 @@ class eppConnection {
         foreach ($this->getResponses() as $req => $res) {
             if ($request instanceof $req) {
                 $response = new $res($request);
+                break;
             }
         }
         return $response;
