@@ -3,25 +3,39 @@ php-epp-client
 
 Object-oriented PHP EPP Client
 
-Welcome to the object-oriented EPP client in PHP project. 
+Welcome to the "object-oriented EPP client in PHP" project.
 
 This project supports the following:
 ------------------------------------
 - Full EPP 57xx RFC standard
-- Fully extensible PHP objects to add registry-specific extensions
+- Extensible PHP objects to add registry-specific additions
 - Rock-solid object-oriented programming, object inheritance and exception handling
 - Interface tested and in use with a registrar that handles 600.000+ domain names
 - Public/private key client certificates for connecting to EPP service (for example see Registries/IIS)
 - Connection to EPP via HTTP/SSL (for example see Registries/Openprovider)
 - DNSSEC transactions
 - Registry sunrise, landrush and claims periods (draft-ietf-eppext-launchphase)
-- TMCH CNIS retrieval examples with standard ICANN registrar message
+- TMCH/TMDB CNIS retrieval examples with standard ICANN registrar message
 
 This code will provide you with a fully functional EPP client to connect to any registry world-wide that supports EPP.
 
 All code is organized in objects, so connecting to a new registry is just a matter of object re-use and extension.
 
 Sample registry connections are provided in the Registries directory.
+
+Currently supported registries:
+- SIDN (.nl)
+- dotAmsterdam
+- Donuts
+- EurID (.eu)
+- dotFRL
+- CarDNS (.hr)
+- IIS (.se and .nu)
+- Metaregistrar
+- Nic.AT (.at)
+- Key Systems RRPPROXY
+- Openprovider
+
 
 All code changes are tested automatically with the phpunit tests in the Tests directory
 
