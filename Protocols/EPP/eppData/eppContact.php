@@ -56,7 +56,6 @@ class eppContact {
      * @param string $fax
      * @param string $password
      * @param string $status
-     * @return void
      */
     public function __construct($postalInfo = null, $email = null, $voice = null, $fax = null, $password = null, $status = null) {
         if ($postalInfo instanceof eppContactPostalInfo) {
@@ -75,6 +74,7 @@ class eppContact {
         $this->setVoice($voice);
         $this->setFax($fax);
         $this->setStatus($status);
+        $this->setPassword(self::generateRandomString(10));
     }
 
     public function setDisclose($disclose) {
@@ -97,7 +97,7 @@ class eppContact {
     /**
      * Add postal info to this contact
      * @param eppContactPostalInfo $postalInfo
-     * @return void
+     * @throws eppException
      */
     public function addPostalInfo(eppContactPostalInfo $postalInfo) {
         if (count($this->postalInfo) < 2) {
@@ -226,6 +226,7 @@ class eppContact {
      * Formats the phone number according to SIDN formatting rules
      * @param int $number
      * @return string
+     * @throws eppException
      */
     private function validatePhoneNumber($number) {
         //Format the phone number according to EPP formatting rules.
@@ -247,5 +248,15 @@ class eppContact {
      */
     public function generateContactId() {
         return uniqid('MRG');
+    }
+
+    public static function generateRandomString($length = 10) {
+        $characters = '123456789ABCDEFGHIJKLMNPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }

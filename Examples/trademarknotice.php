@@ -1,12 +1,16 @@
 <?php
 require("../autoloader.php");
 
+use Metaregistrar\TMCH\dnlTmchConnection;
+use Metaregistrar\TMCH\cnisTmchConnection;
+use Metaregistrar\TMCH\tmchException;
+
 $domain = 'nike';
 $domainkey = null;
 try {
-    $dnl = new Metaregistrar\TMCH\dnlTmchConnection();
+    $dnl = new dnlTmchConnection();
     $dnl->setConnectionDetails('.');
-    $cnis = new Metaregistrar\TMCH\cnisTmchConnection();
+    $cnis = new cnisTmchConnection();
     $cnis->setConnectionDetails('');
     $list = $dnl->getDnl();
     if (count($list)==1) {
@@ -29,7 +33,7 @@ try {
 
     }
 
-} catch (Metaregistrar\TMCH\tmchException $e) {
+} catch (tmchException $e) {
     echo "ERROR: " . $e->getMessage() . "\n";
 }
 

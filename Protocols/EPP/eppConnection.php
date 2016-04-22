@@ -142,6 +142,7 @@ class eppConnection {
      * @param string $configfile
      * @param bool|false $debug
      * @return mixed
+     * @throws eppException
      */
     static function create($configfile,$debug=false) {
         if ($configfile) {
@@ -328,9 +329,11 @@ class eppConnection {
 
     /**
      * Connect to the address and port
-     * @param string $address
+     * @param null $hostname
      * @param int $port
-     * @return boolean
+     * @return bool
+     * @throws eppException
+     * @internal param string $address
      */
     public function connect($hostname = null, $port = null) {
         if ($hostname) {
@@ -431,11 +434,12 @@ class eppConnection {
             }
         }
         if (($response = $this->writeandread($eppRequest)) instanceof $check) {
-            // Success() will trigger an eppException when failed
+            // $response->Success() will trigger an eppException when fails have occurred
             $response->Success();
             return $response;
         } else {
-            return null;
+            /* @var $response eppResponse */
+            throw new eppException("Return class $check expected, but received a ".get_class($response)." class");
         }
     }
 
@@ -540,7 +544,8 @@ class eppConnection {
     /**
      * Write stuff over the EPP connection
      * @param string $content
-     * @return boolean
+     * @return bool
+     * @throws eppException
      */
     public function write($content) {
         $this->writeLog("Writing: " . strlen($content) . " + 4 bytes","WRITE");
@@ -854,23 +859,44 @@ class eppConnection {
         return $this->language;
     }
 
+    /**
+     * Set service list with one call
+     * @param array $services
+     */
     public function setServices($services) {
         $this->objuri = $services;
     }
 
+    /**
+     * Add a service to the list of services
+     * @param string $xmlns
+     * @param string $namespace
+     */
     public function addService($xmlns, $namespace) {
         $this->objuri[$xmlns] = $namespace;
     }
 
+    /**
+     * Get all supported services
+     * @return array
+     */
     public function getServices() {
         return $this->objuri;
     }
 
+    /**
+     * Set all extensions in one call
+     * @param array $extensions
+     */
     public function setExtensions($extensions) {
-        // Remove unusable extensions from the list
+        // Set all extensions at once in an array
         $this->exturi = $extensions;
     }
 
+    /**
+     * @param string $xmlns
+     * @param string $namespace
+     */
     public function addExtension($xmlns, $namespace) {
         $this->exturi[$namespace] = $xmlns;
         // Include the extension data, request and response files
