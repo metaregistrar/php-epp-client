@@ -30,6 +30,12 @@ class eppInfoContactRequest extends eppRequest {
         $info = $this->createElement('info');
         $this->contactobject = $this->createElement('contact:info');
         $this->contactobject->appendChild($this->createElement('contact:id', $contacthandle->getContactHandle()));
+        if (!is_null($contacthandle->getPassword()))
+        {
+            $authinfo = $this->createElement('contact:authInfo');
+            $authinfo->appendChild($this->createElement('contact:pw', $contacthandle->getPassword()));
+            $this->contactobject->appendChild($authinfo);
+        }
         $info->appendChild($this->contactobject);
         $this->getCommand()->appendChild($info);
     }

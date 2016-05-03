@@ -171,7 +171,7 @@ class eppContact {
     /**
      * Sets the password
      *
-     * **NOTE** This is not used by at the moment, but they do require it to be given
+     * **NOTE** This is not used by most registries at the moment, but they do require it to be given
      * @param string $password
      * @return void
      */

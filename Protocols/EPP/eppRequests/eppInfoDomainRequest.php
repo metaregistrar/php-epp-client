@@ -28,7 +28,7 @@ class eppInfoDomainRequest extends eppRequest {
     }
 
     public function setDomain(eppDomain $domain, $hosts = null) {
-        if (!strlen($domain->getDomainName())) {
+        if (!strlen($domain->getDomainname())) {
             throw new eppException('Domain object does not contain a valid domain name');
         }
         #
@@ -42,7 +42,7 @@ class eppInfoDomainRequest extends eppRequest {
         $this->domainobject = $this->createElement('domain:info');
         $info->appendChild($this->domainobject);
 
-        $dname = $this->createElement('domain:name', $domain->getDomainName());
+        $dname = $this->createElement('domain:name', $domain->getDomainname());
         if ($hosts) {
             if (($hosts == self::HOSTS_ALL) || ($hosts == self::HOSTS_DELEGATED) || ($hosts == self::HOSTS_NONE) || ($hosts == self::HOSTS_SUBORDINATE)) {
                 $dname->setAttribute('hosts', $hosts);
@@ -51,6 +51,12 @@ class eppInfoDomainRequest extends eppRequest {
             }
         }
         $this->domainobject->appendChild($dname);
+        if (!is_null($domain->getAuthorisationCode()))
+        {
+            $authinfo = $this->createElement('domain:authInfo');
+            $authinfo->appendChild($this->createElement('domain:pw', $domain->getAuthorisationCode()));
+            $this->domainobject->appendChild($authinfo);
+        }
         if (!$this->command) {
             $this->command = $this->getCommand();
         }

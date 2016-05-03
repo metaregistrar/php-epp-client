@@ -15,20 +15,26 @@ class eppContactHandle {
     const CONTACT_TYPE_TECH = 'tech';
     const CONTACT_TYPE_BILLING = 'billing';
     /**
+     * Registry handle of contact
      * @var string
      */
     private $contactHandle;
     /**
-     *
+     * Type of contact: ADMIN, TECH, BILLING
      * @var string
      */
     private $contactType;
+    /**
+     * Authcode to retrieve contact information
+     * @var string
+     */
+    private $password=null;
 
     /**
      *
      * @param string $contactHandle
      * @param string $contactType
-     * @return void
+     * @throws eppException
      */
     public function  __construct($contactHandle, $contactType = null) {
         $this->setContactHandle($contactHandle);
@@ -49,9 +55,9 @@ class eppContactHandle {
     }
 
     /**
-     * Sets the contact handle
+     * Set the handle of the desired contact
      * @param string $contactHandle
-     * @return void
+     * @throws eppException
      */
     public function setContactHandle($contactHandle) {
         if (!strlen($contactHandle)) {
@@ -77,6 +83,25 @@ class eppContactHandle {
         $this->contactType = $contactType;
     }
 
+    /**
+     * Sets the password
+     *
+     * **NOTE** This is not used by at the moment, but they do require it to be given
+     * @param string $password
+     * @return void
+     */
+
+    public function setPassword($password) {
+        $this->password = $password;
+    }
+
+    /**
+     * Gets the password
+     * @return string
+     */
+    public function getPassword() {
+        return $this->password;
+    }
 
 }
 
