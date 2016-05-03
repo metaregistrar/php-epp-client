@@ -339,6 +339,23 @@ class eppDomain {
 
     /**
      *
+     * @param string $authorisationCode
+     * @return void
+     */
+    public function setPassword($password) {
+        $this->authorisationCode = htmlspecialchars($password, ENT_COMPAT, "UTF-8");
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getPassword() {
+        return $this->authorisationCode;
+    }    
+    
+    /**
+     *
      * @param string $status
      */
     public function addStatus($status) {

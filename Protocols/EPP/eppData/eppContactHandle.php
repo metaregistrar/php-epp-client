@@ -92,7 +92,7 @@ class eppContactHandle {
      */
 
     public function setPassword($password) {
-        $this->password = $password;
+        $this->password = htmlspecialchars($password, ENT_COMPAT, "UTF-8");
     }
 
     /**
