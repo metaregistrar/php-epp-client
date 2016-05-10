@@ -33,7 +33,7 @@ class eppUpdateContactRequest extends eppRequest {
      * @param eppContact $addInfo
      * @param eppContact $removeInfo
      * @param eppContact $updateInfo
-     * @return \domElement
+     * @return \DOMElement
      */
     public function updateContact($contactid, $addInfo, $removeInfo, $updateInfo) {
         #
@@ -63,10 +63,10 @@ class eppUpdateContactRequest extends eppRequest {
 
     /**
      *
-     * @param \domElement $element
+     * @param \DOMElement $element
      * @param eppContact $contact
      */
-    private function addContactStatus(\domElement $element, eppContact $contact) {
+    private function addContactStatus(\DOMElement $element, eppContact $contact) {
         if ((is_array($contact->getStatus())) && (count($contact->getStatus()) > 0)) {
             $statuses = $contact->getStatus();
             if (is_array($statuses)) {
@@ -82,7 +82,7 @@ class eppUpdateContactRequest extends eppRequest {
 
     /**
      *
-     * @param \domElement $element
+     * @param \DOMElement $element
      * @param eppContact $contact
      */
     private function addContactChanges($element, eppContact $contact) {

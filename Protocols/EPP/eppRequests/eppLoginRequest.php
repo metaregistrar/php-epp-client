@@ -6,6 +6,9 @@ namespace Metaregistrar\EPP;
 
 class eppLoginRequest extends eppRequest {
 
+    /**
+     * @var \DOMElement
+     */
     protected $options = null;
 
     function __construct($newpassword = null) {
@@ -37,7 +40,7 @@ class eppLoginRequest extends eppRequest {
             throw new eppException('No new password specified for password change');
         }
         $pw = $this->login->appendChild($this->createElement('newPW'));
-        $pw->appendChild($this->createCDATAsection($password));
+        $pw->appendChild($this->createCDATASection($password));
     }
 
     public function addUsername($username) {
@@ -52,7 +55,7 @@ class eppLoginRequest extends eppRequest {
             throw new eppException('No password specified for login attempt');
         }
         $pw = $this->login->appendChild($this->createElement('pw'));
-        $pw->appendChild($this->createCDATAsection($password));
+        $pw->appendChild($this->createCDATASection($password));
     }
 
     public function addVersion($version) {

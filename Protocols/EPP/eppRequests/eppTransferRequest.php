@@ -17,7 +17,7 @@ class eppTransferRequest extends eppRequest {
         switch ($operation) {
             case self::OPERATION_QUERY:
                 if ($object instanceof eppDomain) {
-                    if (!strlen($object->getDomainName())) {
+                    if (!strlen($object->getDomainname())) {
                         throw new eppException('Domain object does not contain a valid domain name on eppTransferRequest');
                     }
                     $this->setDomainQuery($object);
@@ -27,7 +27,7 @@ class eppTransferRequest extends eppRequest {
                 break;
             case self::OPERATION_REQUEST:
                 if ($object instanceof eppDomain) {
-                    if (!strlen($object->getDomainName())) {
+                    if (!strlen($object->getDomainname())) {
                         throw new eppException('Domain object does not contain a valid domain name on eppTransferRequest');
                     }
                     $this->setDomainRequest($object);
@@ -37,7 +37,7 @@ class eppTransferRequest extends eppRequest {
                 break;
             case self::OPERATION_CANCEL:
                 if ($object instanceof eppDomain) {
-                    if (!strlen($object->getDomainName())) {
+                    if (!strlen($object->getDomainname())) {
                         throw new eppException('Domain object does not contain a valid domain name on eppTransferRequest');
                     }
                     $this->setDomainCancel($object);
@@ -47,7 +47,7 @@ class eppTransferRequest extends eppRequest {
                 break;
             case self::OPERATION_APPROVE:
                 if ($object instanceof eppDomain) {
-                    if (!strlen($object->getDomainName())) {
+                    if (!strlen($object->getDomainname())) {
                         throw new eppException('Domain object does not contain a valid domain name on eppTransferRequest');
                     }
                     $this->setDomainApprove($object);
@@ -57,7 +57,7 @@ class eppTransferRequest extends eppRequest {
                 break;
             case self::OPERATION_REJECT:
                 if ($object instanceof eppDomain) {
-                    if (!strlen($object->getDomainName())) {
+                    if (!strlen($object->getDomainname())) {
                         throw new eppException('Domain object does not contain a valid domain name on eppTransferRequest');
                     }
                     $this->setDomainReject($object);

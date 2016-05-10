@@ -115,8 +115,9 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
-     *
-     * @return string registrant id
+     * 
+     * @param string $contacttype Type of contact
+     * @return string
      */
     public function getDomainContact($contacttype) {
         $xpath = $this->xPath();
@@ -137,6 +138,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:contact');
         $cont = null;
         foreach ($result as $contact) {
+            /* @var $contact \DOMElement */
             $contacttype = $contact->getAttribute('type');
             if ($contacttype) {
                 // DNSBE specific, but too much hassle to create an override for this
@@ -262,6 +264,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
         if ($result->length > 0) {
             $ns = null;
             foreach ($result as $nameserver) {
+                /* @var $nameserver \DOMElement */
                 if (strstr($nameserver->tagName, ":hostObj")) {
                     $ns[] = new eppHost(trim($nameserver->nodeValue));
                 }
@@ -286,6 +289,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string nameservers
      */
     public function getDomainNameserversCSV() {
+        $nameservers = [];
         $ns = $this->getDomainNameservers();
         foreach ($ns as $n) {
             $nameservers[] = $n->getHostname();
@@ -314,13 +318,14 @@ class eppInfoDomainResponse extends eppInfoResponse {
             $xpath = $this->xPath();
             $result = $xpath->query('/epp:epp/epp:response/epp:extension/secDNS:infData/*');
             $keys = array();
-            if (count($result) > 0) {
+            if ($result->length > 0) {
                 foreach ($result as $keydata) {
+                    /* @var $keydata \DOMElement */
                     $secdns = new eppSecdns();
-                    $secdns->setFlags($result->item(0)->getElementsByTagName('flags')->item(0)->nodeValue);
-                    $secdns->setAlgorithm($result->item(0)->getElementsByTagName('alg')->item(0)->nodeValue);
-                    $secdns->setProtocol($result->item(0)->getElementsByTagName('protocol')->item(0)->nodeValue);
-                    $secdns->setPubkey($result->item(0)->getElementsByTagName('pubKey')->item(0)->nodeValue);
+                    $secdns->setFlags($keydata->getElementsByTagName('flags')->item(0)->nodeValue);
+                    $secdns->setAlgorithm($keydata->getElementsByTagName('alg')->item(0)->nodeValue);
+                    $secdns->setProtocol($keydata->getElementsByTagName('protocol')->item(0)->nodeValue);
+                    $secdns->setPubkey($keydata->getElementsByTagName('pubKey')->item(0)->nodeValue);
                     $keys[] = $secdns;
                 }
             }

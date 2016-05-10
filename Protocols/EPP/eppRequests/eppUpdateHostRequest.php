@@ -2,6 +2,11 @@
 namespace Metaregistrar\EPP;
 
 class eppUpdateHostRequest extends eppRequest {
+    /**
+     * @var \DOMElement
+     */
+    private $hostobject;
+
     function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null) {
         parent::__construct();
 
@@ -33,7 +38,8 @@ class eppUpdateHostRequest extends eppRequest {
      * @param eppHost $addInfo
      * @param eppHost $removeInfo
      * @param eppHost $updateInfo
-     * @return \domElement
+     * @return \DOMElement
+     * @throws eppException
      */
     public function updateHost($hostname, $addInfo, $removeInfo, $updateInfo) {
         #
@@ -61,8 +67,8 @@ class eppUpdateHostRequest extends eppRequest {
                 } else {
                     throw new eppException('New hostname must be specified on host:update command');
                 }
+                $this->hostobject->appendChild($chgcmd);
             }
-            $this->hostobject->appendChild($chgcmd);
         }
         $update->appendChild($this->hostobject);
         $this->getCommand()->appendChild($update);
@@ -70,7 +76,7 @@ class eppUpdateHostRequest extends eppRequest {
 
     /**
      *
-     * @param \domElement $element
+     * @param \DOMElement $element
      * @param eppHost $host
      */
     private function addHostChanges($element, eppHost $host) {

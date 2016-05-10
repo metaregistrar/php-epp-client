@@ -9,7 +9,7 @@ class eppUpdateDomainRequest extends eppRequest {
 
         $this->setForcehostattr($forcehostattr);
         if ($objectname instanceof eppDomain) {
-            $domainname = $objectname->getDomainName();
+            $domainname = $objectname->getDomainname();
         } else {
             if (strlen($objectname)) {
                 $domainname = $objectname;

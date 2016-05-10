@@ -6,9 +6,10 @@ class eppCreateContactRequest extends eppCreateRequest {
     /**
      * eppCreateContactRequest constructor.
      * @param eppContact $createinfo
+     * @throws eppException
      */
     function __construct($createinfo) {
-        parent::__construct($createinfo);
+        parent::__construct();
 
         if ($createinfo instanceof eppContact) {
             $this->setContact($createinfo);
@@ -27,6 +28,7 @@ class eppCreateContactRequest extends eppCreateRequest {
      *
      * @param eppContact $contact
      * @return \domElement
+     * @throws eppException
      */
     public function setContact(eppContact $contact) {
         #

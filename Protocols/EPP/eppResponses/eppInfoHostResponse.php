@@ -8,7 +8,7 @@ class eppInfoHostResponse extends eppInfoResponse {
      * @return eppHost
      */
     public function getHost() {
-        $hostname = $this->getHostname();
+        $hostname = $this->getHostName();
         $address = $this->getHostAddresses();
         $host = new eppHost($hostname, $address);
         return $host;
@@ -37,6 +37,7 @@ class eppInfoHostResponse extends eppInfoResponse {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:addr');
         foreach ($result as $address) {
+            /* @var $address \DOMElement */
             $ip[$address->nodeValue] = $address->getAttribute('ip');
         }
         return $ip;
@@ -61,7 +62,7 @@ class eppInfoHostResponse extends eppInfoResponse {
      * @return string statuses
      */
     public function getHostStatusCSV() {
-        return parent::arrayToCSV($this->getHostStatus());
+        return parent::arrayToCSV($this->getHostStatuses());
     }
 
     /**

@@ -469,7 +469,6 @@ class eppResponse extends \DOMDocument {
 
     /**
      * @return \DOMXpath
-     * @internal param \domDocument $document
      */
     public function xPath() {
         $xpath = new \DOMXpath($this);

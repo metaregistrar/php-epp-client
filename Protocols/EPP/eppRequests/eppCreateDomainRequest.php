@@ -6,7 +6,7 @@ class eppCreateDomainRequest extends eppCreateRequest {
     private $forcehostattr = false;
 
     function __construct($createinfo, $forcehostattr = false) {
-        parent::__construct($createinfo);
+        parent::__construct();
 
         if ($createinfo instanceof eppDomain) {
             $this->setForcehostattr($forcehostattr);
@@ -83,7 +83,8 @@ class eppCreateDomainRequest extends eppCreateRequest {
     /**
      *
      * @param eppDomain $domain
-     * @return \domElement
+     * @return \DOMElement
+     * @throws eppException
      */
     public function setDomain(eppDomain $domain) {
         if (!strlen($domain->getDomainname())) {
@@ -107,6 +108,7 @@ class eppCreateDomainRequest extends eppCreateRequest {
         if ($domain->getHostLength() > 0) {
             $nameservers = $this->createElement('domain:ns');
             foreach ($nsobjects as $nsobject) {
+                /* @var $nsobject eppHost */
                 if (($this->forcehostattr) || ($nsobject->getIpAddressCount() > 0)) {
                     $nameservers->appendChild($this->addDomainHostAttr($nsobject));
                 } else {
@@ -119,6 +121,7 @@ class eppCreateDomainRequest extends eppCreateRequest {
         $contacts = $domain->getContacts();
         if ($domain->getContactLength() > 0) {
             foreach ($contacts as $contact) {
+                /* @var $contact eppContactHandle */
                 $this->addDomainContact($this->domainobject, $contact->getContactHandle(), $contact->getContactType());
             }
         }
@@ -146,7 +149,7 @@ class eppCreateDomainRequest extends eppCreateRequest {
 
     /**
      *
-     * @param string $domain
+     * @param \DOMElement $domain
      * @param string $contactid
      * @param string $contacttype
      */
@@ -159,7 +162,7 @@ class eppCreateDomainRequest extends eppCreateRequest {
     /**
      *
      * @param eppHost $host
-     * @return \domElement
+     * @return \DOMElement
      */
     private function addDomainHostAttr(eppHost $host) {
 
@@ -179,7 +182,7 @@ class eppCreateDomainRequest extends eppCreateRequest {
     /**
      *
      * @param eppHost $host
-     * @return \domElement
+     * @return \DOMElement
      */
     private function addDomainHostObj(eppHost $host) {
         $ns = $this->createElement('domain:hostObj', $host->getHostname());

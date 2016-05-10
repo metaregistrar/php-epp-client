@@ -649,7 +649,7 @@ class eppConnection {
                 $response->setXpath($this->getExtensions());
                 $response->setXpath($this->getXpathExtensions());
                 if ($response instanceof eppHelloResponse) {
-                    $response->validateServices($this->getLanguage(), $this->getVersion(), $this->getServices(), $this->getExtensions());
+                    $response->validateServices($this->getLanguage(), $this->getVersion());
                 }
                 return $response;
             }
@@ -737,7 +737,7 @@ class eppConnection {
                     $response->setXpath($this->getExtensions());
                     $response->setXpath($this->getXpathExtensions());
                     if ($response instanceof eppHelloResponse) {
-                        $response->validateServices($this->getLanguage(), $this->getVersion(), $this->getServices(), $this->getExtensions());
+                        $response->validateServices($this->getLanguage(), $this->getVersion());
                     }
                     return $response;
                 }

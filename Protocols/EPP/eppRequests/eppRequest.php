@@ -4,7 +4,7 @@ namespace Metaregistrar\EPP;
  * This object contains all the logic to create an EPP command
  */
 
-class eppRequest extends \DomDocument {
+class eppRequest extends \DOMDocument {
 
 
     /**

@@ -52,7 +52,7 @@ class eppCheckRequest extends eppRequest {
         $this->domainobject = $this->createElement('domain:check');
         foreach ($domains as $domain) {
             if ($domain instanceof eppDomain) {
-                $this->domainobject->appendChild($this->createElement('domain:name', $domain->getDomainName()));
+                $this->domainobject->appendChild($this->createElement('domain:name', $domain->getDomainname()));
             } else {
                 $this->domainobject->appendChild($this->createElement('domain:name', $domain));
             }

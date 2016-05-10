@@ -95,7 +95,7 @@ class eppPollResponse extends eppResponse {
     }
 
     public function getDomainRequestClientId() {
-        $xpath = $this->xPath($this);
+        $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:reID');
         return $result->item(0)->nodeValue;
     }

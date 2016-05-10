@@ -15,6 +15,7 @@ class eppCheckResponse extends eppResponse {
      * @return array of checked domains with status true/false
      */
     public function getCheckedDomains() {
+        $result = null;
         if ($this->getResultCode() == self::RESULT_SUCCESS) {
             $result = array();
             $xpath = $this->xPath();
@@ -23,7 +24,7 @@ class eppCheckResponse extends eppResponse {
                 $childs = $domain->childNodes;
                 $checkeddomain = array('domainname' => null, 'available' => false, 'reason' => null);
                 foreach ($childs as $child) {
-                    if ($child instanceof \domElement) {
+                    if ($child instanceof \DOMElement) {
                         if (strpos($child->tagName, ':name')) {
                             $available = $child->getAttribute('avail');
                             switch ($available) {
@@ -54,10 +55,12 @@ class eppCheckResponse extends eppResponse {
      * @return array of checked hosts with status true/false
      */
     public function getCheckedHosts() {
+        $result = null;
         if ($this->getResultCode() == self::RESULT_SUCCESS) {
             $xpath = $this->xPath();
             $hosts = $xpath->query('/epp:epp/epp:response/epp:resData/host:chkData/host:cd/host:name');
             $checks = $xpath->query('/epp:epp/epp:response/epp:resData/host:chkData/host:cd/host:name/@avail');
+            $avail = false;
             foreach ($hosts as $idx => $host) {
                 $available = $checks->item($idx)->nodeValue;
                 switch ($available) {
@@ -87,6 +90,7 @@ class eppCheckResponse extends eppResponse {
             $contacts = $xpath->query('/epp:epp/epp:response/epp:resData/contact:chkData/contact:cd/contact:id');
             $checks = $xpath->query('/epp:epp/epp:response/epp:resData/contact:chkData/contact:cd/contact:id/@avail');
             foreach ($contacts as $idx => $contact) {
+                $avail = false;
                 $available = $checks->item($idx)->nodeValue;
                 switch ($available) {
                     case '0':

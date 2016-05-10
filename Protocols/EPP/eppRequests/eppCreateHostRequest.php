@@ -3,7 +3,7 @@ namespace Metaregistrar\EPP;
 
 class eppCreateHostRequest extends eppCreateRequest {
     function __construct($createinfo) {
-        parent::__construct($createinfo);
+        parent::__construct();
 
         if ($createinfo instanceof eppHost) {
             $this->setHost($createinfo);
@@ -20,7 +20,8 @@ class eppCreateHostRequest extends eppCreateRequest {
     /**
      *
      * @param eppHost $host
-     * @return \domElement
+     * @return \DOMElement
+     * @throws eppException
      */
     public function setHost(eppHost $host) {
         if (!strlen($host->getHostname())) {
