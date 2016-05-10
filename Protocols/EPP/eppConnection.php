@@ -361,7 +361,7 @@ class eppConnection {
                 $this->read();
                 return true;
             } else {
-                throw new eppException("Error connecting to $target: $errstr (code $errno)");
+                throw new eppException("Error connecting to $target: $errstr (code $errno)",$errno,null,$errstr);
             }
         } else {
             //We don't want our error handler to kick in at this point...
@@ -417,7 +417,7 @@ class eppConnection {
                 $this->loggedin = false;
                 return true;
             } else {
-                throw new eppException("Logout failed: ".$response->getResultMessage());
+                throw new eppException("Logout failed: ".$response->getResultMessage(),0,null,null,$logout->saveXML());
             }
     }
 
@@ -439,7 +439,7 @@ class eppConnection {
             return $response;
         } else {
             /* @var $response eppResponse */
-            throw new eppException("Return class $check expected, but received a ".get_class($response)." class");
+            throw new eppException("Return class $check expected, but received a ".get_class($response)." class",0,null,null,$eppRequest->saveXML());
         }
     }
 
@@ -457,7 +457,7 @@ class eppConnection {
         while ((!isset ($length)) || ($length > 0)) {
             if (feof($this->connection)) {
                 putenv('SURPRESS_ERROR_HANDLER=0');
-                throw new eppException ('Unexpected closed connection by remote host...');
+                throw new eppException ('Unexpected closed connection by remote host...',0,null,null,$read);
             }
             //Check if timeout occured
             if (time() >= $time) {
@@ -487,7 +487,7 @@ class eppConnection {
                 $this->writeLog("Reading next: $length bytes","READ");
             }
             if ($length > 1000000) {
-                throw new eppException("Packet size is too big: $length. Closing connection");
+                throw new eppException("Packet size is too big: $length. Closing connection",0,null,null,$read);
             }
             //We know the length of what to read, so lets read the stuff
             if ((isset($length)) && ($length > 0)) {
@@ -709,7 +709,7 @@ class eppConnection {
         $response = $this->createResponse($content);
         /* @var $response /domDocument */
         if (!$response) {
-            throw new eppException("No valid response from server");
+            throw new eppException("No valid response from server",0,null,null,$content);
         }
         $content->formatOutput = true;
         $this->writeLog($content->saveXML(null, LIBXML_NOEMPTYTAG),"WRITE");
@@ -731,7 +731,7 @@ class eppConnection {
                     */
                     $clienttransid = $response->getClientTransactionId();
                     if (($this->checktransactionids) && ($clienttransid) && ($clienttransid != $requestsessionid)) {
-                        throw new eppException("Client transaction id $requestsessionid does not match returned $clienttransid\nMessage: ".$xml);
+                        throw new eppException("Client transaction id $requestsessionid does not match returned $clienttransid",0,null,null,$xml);
                     }
                     $response->setXpath($this->getServices());
                     $response->setXpath($this->getExtensions());
@@ -745,7 +745,7 @@ class eppConnection {
                 throw new eppException('Empty XML document when receiving data!');
             }
         } else {
-            throw new eppException('Error writing content');
+            throw new eppException('Error writing content',0,null,null,$content);
         }
         return null;
     }

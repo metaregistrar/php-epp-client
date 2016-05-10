@@ -10,7 +10,7 @@ namespace Metaregistrar\EPP;
 
 include_once(dirname(__FILE__) . '/eppConnection.php');
 
-class eppHttpConnection extends EppConnection {
+class eppHttpConnection extends eppConnection {
 
     /**
      * CURL resource
@@ -118,7 +118,7 @@ class eppHttpConnection extends EppConnection {
         $error = curl_errno($ch);
 
         if ($error) {
-            throw new eppException(sprintf('Error occurred while executing CURL %d: %s', $error, curl_error($ch)));
+            throw new eppException(sprintf('Error occurred while executing CURL %d: %s', $error, curl_error($ch)),$error,null,curl_error($ch));
         }
 
         $this->response = $response;

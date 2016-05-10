@@ -6,7 +6,7 @@ namespace Metaregistrar\EPP;
  */
 
 
-class eppResponse extends \DomDocument {
+class eppResponse extends \DOMDocument {
     const RESULT_SUCCESS = '1000';
     const RESULT_SUCCESS_ACTION_PENDING = '1001';
     const RESULT_NO_MESSAGES = '1300';
@@ -163,7 +163,8 @@ class eppResponse extends \DomDocument {
     //}
 
     /**
-     * @return boolean
+     * @return bool
+     * @throws eppException
      */
     public function Success() {
         $resultcode = $this->getResultCode();
@@ -224,7 +225,7 @@ class eppResponse extends \DomDocument {
             if (strlen($resultreason)) {
                 $errorstring .= ' (' . $resultreason . ')';
             }
-            throw new eppException($errorstring, $resultcode, null, $resultreason, $id);
+            throw new eppException($errorstring, $resultcode, null, $resultreason, $this->saveXML());
         } else {
             return true;
         }
@@ -467,13 +468,12 @@ class eppResponse extends \DomDocument {
 
 
     /**
-     *
-     * @param \domDocument $document
      * @return \DOMXpath
+     * @internal param \domDocument $document
      */
     public function xPath() {
         $xpath = new \DOMXpath($this);
-        $this->defaultnamespace = $this->documentElement->lookupNamespaceURI(NULL);
+        $this->defaultnamespace = $this->documentElement->lookupNamespaceUri(NULL);
         $xpath->registerNamespace('epp', $this->defaultnamespace);
         if (is_array($this->xpathuri)) {
             foreach ($this->xpathuri as $uri => $namespace) {
