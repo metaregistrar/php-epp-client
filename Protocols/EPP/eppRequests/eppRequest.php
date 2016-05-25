@@ -150,6 +150,19 @@ class eppRequest extends \DOMDocument {
             }
         }
     }
-
+    
+    /**
+     * @return \DOMXpath
+     */
+    public function xPath() {
+        $xpath = new \DOMXpath($this);
+        $defaultnamespace = $this->documentElement->lookupNamespaceUri(NULL);
+        var_dump($defaultnamespace);
+        //$xpath->registerNamespace('epp', 'urn:ietf:params:xml:ns:epp-1.0');
+        $xpath->registerNamespace('contact','urn:ietf:params:xml:ns:contact-1.0');
+        //$xpath->registerNamespace('domain','urn:ietf:params:xml:ns:domain-1.0');
+        //$xpath->registerNamespace('host','urn:ietf:params:xml:ns:host-1.0');
+        return $xpath;
+    }
 
 }

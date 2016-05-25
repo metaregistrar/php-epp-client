@@ -233,7 +233,7 @@ class eppConnection {
             } else {
                 $this->setPort(700);
             }
-            if (array_key_exists('certificatefile',$settings) && array_key_exists('certificatepassword',$settings)) {
+            if (array_key_exists('certificatefile',$settings)) {
                 if ((strpos($settings['certificatefile'],'\\')===false) && (strpos($settings['certificatefile'],'/')===false)) {
                     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
                         $settings['certificatefile'] = $path . '\\' . $settings['certificatefile'];
@@ -241,10 +241,18 @@ class eppConnection {
                         $settings['certificatefile'] = $path . '/' . $settings['certificatefile'];
                     }
                 }
+                $certpassword = null;
+                if (array_key_exists('certificatepassword',$settings)) {
+                    $certpassword = $settings['certificatepassword'];
+                }
+                $allowselfsigned = null;
+                if (array_key_exists('allowselfsigned',$settings)) {
+                    $allowselfsigned = $settings['allowselfsigned'];
+                }
                 if (isset($settings['allowselfsigned'])) {
-                    $this->enableCertification($settings['certificatefile'], $settings['certificatepassword'], $settings['allowselfsigned']);
+                    $this->enableCertification($settings['certificatefile'], $certpassword, $allowselfsigned);
                 } else {
-                    $this->enableCertification($settings['certificatefile'], $settings['certificatepassword']);
+                    $this->enableCertification($settings['certificatefile'], $certpassword);
                 }
             }
         }
@@ -429,7 +437,7 @@ class eppConnection {
     public function request($eppRequest) {
         $check = null;
         foreach ($this->getResponses() as $req => $check) {
-            if ($eppRequest instanceof $req) {
+            if (($eppRequest instanceof $req) && (!is_subclass_of($eppRequest, $req))) {
                 break;
             }
         }
@@ -753,7 +761,7 @@ class eppConnection {
     public function createResponse($request) {
         $response = new eppResponse();
         foreach ($this->getResponses() as $req => $res) {
-            if ($request instanceof $req) {
+            if (($request instanceof $req) && (!is_subclass_of($request,$req))) {
                 $response = new $res($request);
                 break;
             }
@@ -893,12 +901,17 @@ class eppConnection {
         $this->exturi = $extensions;
     }
 
+
+
     /**
      * @param string $xmlns
      * @param string $namespace
+     * @param bool $addtonamespace
      */
-    public function addExtension($xmlns, $namespace) {
-        $this->exturi[$namespace] = $xmlns;
+    public function addExtension($xmlns, $namespace, $addtonamespace = true) {
+        if ($addtonamespace) {
+            $this->exturi[$namespace] = $xmlns;
+        }
         // Include the extension data, request and response files
         $pos = strrpos($namespace,'/');
         if ($pos!==false) {
@@ -972,9 +985,14 @@ class eppConnection {
             } else {
                 $this->setPort(700);
             }
-            if (array_key_exists('certificatefile',$result) && array_key_exists('certificatepassword',$result)) {
+            if (array_key_exists('certificatefile',$result)) {
                 // Enter the path to your certificate and the password here
-                $this->enableCertification($result['certificatefile'], $result['certificatepassword']);
+                if (array_key_exists('certificatepassword',$result)) {
+                    $this->enableCertification($result['certificatefile'], $result['certificatepassword']);
+                } else {
+                    $this->enableCertification($result['certificatefile'], null);
+                }
+
             }
             return true;
         } else {

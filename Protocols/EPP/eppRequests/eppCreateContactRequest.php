@@ -5,16 +5,18 @@ class eppCreateContactRequest extends eppCreateRequest {
 
     /**
      * eppCreateContactRequest constructor.
-     * @param eppContact $createinfo
+     * @param eppContact|null $createinfo
      * @throws eppException
      */
     function __construct($createinfo) {
         parent::__construct();
-
-        if ($createinfo instanceof eppContact) {
-            $this->setContact($createinfo);
-        } else {
-            throw new eppException('createinfo must be of type eppContact on eppCreateContactRequest');
+        $this->emptyContact();
+        if ($createinfo){
+            if ($createinfo instanceof eppContact) {
+                $this->setContact($createinfo);
+            } else {
+                throw new eppException('createinfo must be of type eppContact on eppCreateContactRequest');
+            }
         }
         $this->addSessionId();
     }
@@ -23,6 +25,16 @@ class eppCreateContactRequest extends eppCreateRequest {
         parent::__destruct();
     }
 
+
+    public function emptyContact() {
+        #
+        # Object create structure
+        #
+        $create = $this->createElement('create');
+        $this->contactobject = $this->createElement('contact:create');
+        $create->appendChild($this->contactobject);
+        $this->getCommand()->appendChild($create);
+    }
 
     /**
      *
@@ -34,11 +46,30 @@ class eppCreateContactRequest extends eppCreateRequest {
         #
         # Object create structure
         #
-        $create = $this->createElement('create');
-        $this->contactobject = $this->createElement('contact:create');
-        $this->contactobject->appendChild($this->createElement('contact:id', $contact->generateContactId()));
+        $this->setContactId( $contact->generateContactId());
+        $this->setPostalInfo($contact->getPostalInfo(0));
+        $this->setVoice($contact->getVoice());
+        $this->setFax($contact->getFax());
+        $this->setEmail($contact->getEmail());
+        $this->setPassword($contact->getPassword());
+        $this->setDisclose($contact->getDisclose());
+    }
+
+    /**
+     * Create the contact:id field
+     * @param $contactid
+     */
+    public function setContactId($contactid) {
+        $this->contactobject->appendChild($this->createElement('contact:id', $contactid));
+    }
+
+    /**
+     * Set the postalinfo information in the contact
+     * @param eppContactPostalInfo $postal
+     * @throws eppException
+     */
+    public function setPostalInfo(eppContactPostalInfo $postal) {
         $postalinfo = $this->createElement('contact:postalInfo');
-        $postal = $contact->getPostalInfo(0);
         if (!$postal instanceof eppContactPostalInfo) {
             throw new eppException('PostalInfo must be filled on eppCreateContact request');
         }
@@ -68,32 +99,54 @@ class eppCreateContactRequest extends eppCreateRequest {
         $postaladdr->appendChild($this->createElement('contact:cc', $postal->getCountrycode()));
         $postalinfo->appendChild($postaladdr);
         $this->contactobject->appendChild($postalinfo);
-        $this->contactobject->appendChild($this->createElement('contact:voice', $contact->getVoice()));
-        if ($contact->getFax()) {
-            $this->contactobject->appendChild($this->createElement('contact:fax', $contact->getFax()));
+    }
+
+    /**
+     * @param $voice
+     */
+    public function setVoice($voice) {
+        if ($voice) {
+            $this->contactobject->appendChild($this->createElement('contact:voice', $voice));
         }
-        $this->contactobject->appendChild($this->createElement('contact:email', $contact->getEmail()));
-        if (!is_null($contact->getPassword()))
+    }
+
+    public function setFax($fax) {
+        if ($fax) {
+            $this->contactobject->appendChild($this->createElement('contact:fax', $fax));
+        }
+    }
+
+    public function setEmail($email) {
+        if ($email) {
+            $this->contactobject->appendChild($this->createElement('contact:email', $email));
+        }
+    }
+
+    public function setPassword($password) {
+        if (!is_null($password))
         {
             $authinfo = $this->createElement('contact:authInfo');
-            $authinfo->appendChild($this->createElement('contact:pw', $contact->getPassword()));
+            $authinfo->appendChild($this->createElement('contact:pw', $password));
             $this->contactobject->appendChild($authinfo);
         }
-        if (!is_null($contact->getDisclose())) {
+    }
+
+    public function setDisclose($contactdisclose) {
+        if (!is_null($contactdisclose)) {
             $disclose = $this->createElement('contact:disclose');
-            $disclose->setAttribute('flag',$contact->getDisclose());
+            $disclose->setAttribute('flag',$contactdisclose);
             $name = $this->createElement('contact:name');
-            if ($contact->getDisclose()==1) {
+            if ($contactdisclose==1) {
                 $name->setAttribute('type',eppContact::TYPE_LOC);
             }
             $disclose->appendChild($name);
             $org = $this->createElement('contact:org');
-            if ($contact->getDisclose()==1) {
+            if ($contactdisclose==1) {
                 $org->setAttribute('type',eppContact::TYPE_LOC);
             }
             $disclose->appendChild($org);
             $addr = $this->createElement('contact:addr');
-            if ($contact->getDisclose()==1) {
+            if ($contactdisclose==1) {
                 $addr->setAttribute('type',eppContact::TYPE_LOC);
             }
             $disclose->appendChild($addr);
@@ -101,9 +154,6 @@ class eppCreateContactRequest extends eppCreateRequest {
             $disclose->appendChild($this->createElement('contact:email'));
             $this->contactobject->appendChild($disclose);
         }
-        $create->appendChild($this->contactobject);
-        $this->getCommand()->appendChild($create);
     }
-
 }
 
