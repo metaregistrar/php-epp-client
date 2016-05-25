@@ -3,7 +3,8 @@ namespace Metaregistrar\EPP;
 
 class eppCheckDomainRequest extends eppDomainRequest {
 
-    function __construct($checkrequest) {
+    function __construct($checkrequest, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
         parent::__construct(eppRequest::TYPE_CHECK);
         if ($checkrequest instanceof eppDomain) {
             $this->setDomainNames(array($checkrequest));

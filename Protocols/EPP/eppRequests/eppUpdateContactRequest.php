@@ -2,7 +2,8 @@
 namespace Metaregistrar\EPP;
 
 class eppUpdateContactRequest extends eppContactRequest {
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null) {
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
         parent::__construct(eppRequest::TYPE_UPDATE);
 
         if ($objectname instanceof eppContactHandle) {

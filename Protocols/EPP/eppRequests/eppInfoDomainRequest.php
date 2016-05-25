@@ -18,7 +18,8 @@ class eppInfoDomainRequest extends eppDomainRequest {
      * @param null $hosts
      * @throws eppException
      */
-    public function __construct($infodomain, $hosts = null) {
+    public function __construct($infodomain, $hosts = null, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
         parent::__construct(eppRequest::TYPE_INFO);
 
         if ($infodomain instanceof eppDomain) {

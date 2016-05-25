@@ -3,7 +3,8 @@ namespace Metaregistrar\EPP;
 
 class eppDeleteHostRequest extends eppHostRequest {
 
-    function __construct(eppHost $deleteinfo) {
+    function __construct(eppHost $deleteinfo, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
         parent::__construct(eppRequest::TYPE_DELETE);
 
         if ($deleteinfo instanceof eppHost) {

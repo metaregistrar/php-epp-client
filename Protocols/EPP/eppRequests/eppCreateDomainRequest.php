@@ -3,13 +3,16 @@ namespace Metaregistrar\EPP;
 
 class eppCreateDomainRequest extends eppDomainRequest {
 
-    private $forcehostattr = false;
+    
 
-    function __construct($createinfo, $forcehostattr = false) {
+    function __construct($createinfo, $forcehostattr = false, $namespacesinroot=true) {
+        $this->setNamespacesinroot($namespacesinroot);
+        $this->setForcehostattr($forcehostattr);
+        
         parent::__construct(eppRequest::TYPE_CREATE);
 
         if ($createinfo instanceof eppDomain) {
-            $this->setForcehostattr($forcehostattr);
+
             $this->setDomain($createinfo);
         } else {
             throw new eppException('createinfo must be of type eppDomain on eppCreateDomainRequest');
@@ -20,14 +23,7 @@ class eppCreateDomainRequest extends eppDomainRequest {
     function __destruct() {
         parent::__destruct();
     }
-
-    public function getForcehostattr() {
-        return $this->forcehostattr;
-    }
-
-    public function setForcehostattr($forcehostattr) {
-        $this->forcehostattr = $forcehostattr;
-    }
+    
 
     /*
      * @param eppSecdns $secdns
@@ -107,7 +103,7 @@ class eppCreateDomainRequest extends eppDomainRequest {
             $nameservers = $this->createElement('domain:ns');
             foreach ($nsobjects as $nsobject) {
                 /* @var $nsobject eppHost */
-                if (($this->forcehostattr) || ($nsobject->getIpAddressCount() > 0)) {
+                if (($this->getForcehostattr()) || ($nsobject->getIpAddressCount() > 0)) {
                     $nameservers->appendChild($this->addDomainHostAttr($nsobject));
                 } else {
                     $nameservers->appendChild($this->addDomainHostObj($nsobject));

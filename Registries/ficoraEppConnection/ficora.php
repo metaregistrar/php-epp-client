@@ -57,8 +57,7 @@ try {
  */
 function checkdomains($conn, $domains) {
     // Create request to be sent to EPP service
-    $check = new eppCheckDomainRequest($domains);
-    $check->setNamespacesinroot(false);
+    $check = new eppCheckDomainRequest($domains,false);
     // Write request to EPP service, read and check the results
     if ($response = $conn->request($check)) {
         /* @var $response eppCheckDomainResponse */
@@ -78,8 +77,7 @@ function checkdomains($conn, $domains) {
 function checkcontact($conn, $contactid) {
     /* @var $conn Metaregistrar\EPP\eppConnection */
     try {
-        $check = new eppCheckContactRequest(new eppContactHandle($contactid));
-        $check->setNamespacesinroot(false);
+        $check = new eppCheckContactRequest(new eppContactHandle($contactid),false);
         if ($response = $conn->request($check)) {
             /* @var $response Metaregistrar\EPP\eppCheckContactResponse */
             $checks = $response->getCheckedContacts();
@@ -134,7 +132,7 @@ function checkhosts($conn, $hosts) {
         foreach ($hosts as $host) {
             $checkhost[] = new eppHost($host);
         }
-        $check = new eppCheckHostRequest($checkhost);
+        $check = new eppCheckHostRequest($checkhost,false);
         $check->setNamespacesinroot(false);
         if ($response = $conn->request($check)) {
             /* @var $response Metaregistrar\EPP\eppCheckHostResponse */
@@ -162,7 +160,7 @@ function checkhosts($conn, $hosts) {
 function createhost($conn, $hostname, $ipaddress=null) {
 
     try {
-        $create = new eppCreateHostRequest(new eppHost($hostname,$ipaddress));
+        $create = new eppCreateHostRequest(new eppHost($hostname,$ipaddress),false);
         $create->setNamespacesinroot(false);
         if ($response = $conn->request($create)) {
             /* @var $response Metaregistrar\EPP\eppCreateHostResponse */
@@ -204,8 +202,7 @@ function createdomain($conn, $domainname, $registrant, $admincontact, $techconta
                 $domain->addHost(new eppHost($nameserver));
             }
         }
-        $create = new eppCreateDomainRequest($domain);
-        $create->setNamespacesinroot(false);
+        $create = new eppCreateDomainRequest($domain,false,false);
         $create->dumpContents();
         if ($response = $conn->request($create)) {
             /* @var $response Metaregistrar\EPP\eppCreateDomainResponse */

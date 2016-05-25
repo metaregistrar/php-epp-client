@@ -2,7 +2,8 @@
 namespace Metaregistrar\EPP;
 
 class eppCreateHostRequest extends eppHostRequest {
-    function __construct($createinfo) {
+    function __construct($createinfo, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
         parent::__construct(eppRequest::TYPE_CREATE);
 
         if ($createinfo instanceof eppHost) {

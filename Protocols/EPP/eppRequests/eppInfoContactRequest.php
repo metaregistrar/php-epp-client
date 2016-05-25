@@ -7,7 +7,8 @@ namespace Metaregistrar\EPP;
 
 class eppInfoContactRequest extends eppContactRequest {
 
-    function __construct($inforequest) {
+    function __construct($inforequest, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
         parent::__construct(eppRequest::TYPE_INFO);
 
         if ($inforequest instanceof eppContactHandle) {

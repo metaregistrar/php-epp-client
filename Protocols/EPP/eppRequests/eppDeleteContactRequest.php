@@ -3,7 +3,8 @@ namespace Metaregistrar\EPP;
 
 class eppDeleteContactRequest extends eppContactRequest {
 
-    function __construct(eppContactHandle $deleteinfo) {
+    function __construct(eppContactHandle $deleteinfo, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
         parent::__construct(eppRequest::TYPE_DELETE);
 
         if ($deleteinfo instanceof eppContactHandle) {

@@ -2,8 +2,11 @@
 namespace Metaregistrar\EPP;
 
 class eppDomainRequest extends eppRequest {
-    
 
+    /**
+     * @var bool
+     */
+    private $forcehostattr = false;
 
     /**
      * DomainObject object to add namespaces to
@@ -20,5 +23,13 @@ class eppDomainRequest extends eppRequest {
         }
         $check->appendChild($this->domainobject);
         $this->getCommand()->appendChild($check);
+    }
+
+    public function getForcehostattr() {
+        return $this->forcehostattr;
+    }
+
+    public function setForcehostattr($forcehostattr) {
+        $this->forcehostattr = $forcehostattr;
     }
 }

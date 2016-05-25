@@ -2,12 +2,13 @@
 namespace Metaregistrar\EPP;
 
 class eppUpdateDomainRequest extends eppDomainRequest {
-    private $forcehostattr = false;
 
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false) {
-        parent::__construct(eppRequest::TYPE_UPDATE);
 
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false, $namespacesinroot=true) {
+
+        $this->setNamespacesinroot($namespacesinroot);
         $this->setForcehostattr($forcehostattr);
+        parent::__construct(eppRequest::TYPE_UPDATE);
         if ($objectname instanceof eppDomain) {
             $domainname = $objectname->getDomainname();
         } else {
@@ -29,13 +30,6 @@ class eppUpdateDomainRequest extends eppDomainRequest {
         parent::__destruct();
     }
 
-    public function getForcehostattr() {
-        return $this->forcehostattr;
-    }
-
-    public function setForcehostattr($forcehostattr) {
-        $this->forcehostattr = $forcehostattr;
-    }
 
         /**
      *
@@ -81,7 +75,7 @@ class eppUpdateDomainRequest extends eppDomainRequest {
             $nameservers = $this->createElement('domain:ns');
             foreach ($hosts as $host) {
                 /* @var eppHost $host */
-                if (($this->forcehostattr) ||  (is_array($host->getIpAddresses()))) {
+                if (($this->getForcehostattr()) ||  (is_array($host->getIpAddresses()))) {
                     $nameservers->appendChild($this->addDomainHostAttr($host));
                 } else {
                     $nameservers->appendChild($this->addDomainHostObj($host));
