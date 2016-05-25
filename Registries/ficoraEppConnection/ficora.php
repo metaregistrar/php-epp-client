@@ -43,12 +43,10 @@ try {
             checkdomains($conn, $domains);
             echo "Checking contact\n";
             checkcontact($conn,'C5525');
-            echo "Checking host\n";
+            echo "Checking hosts\n";
             checkhosts($conn,['ns1.metaregistrar.com','ns2.metaregistrar.com','ns3.metaregistrar.com']);
             //echo "Creating contact\n";
            //$contactid = createcontact($conn, 'ewout@metaregistrar.com','+35.8401231234','Department' ,'Metaregistrar' ,'Zuidelijk Halfrond 1' ,'8201 DD' , 'Gouda', 'NL');
-            //createhost($conn,'ns1.metaregistrar.com');
-            //createhost($conn,'ns2.metaregistrar.com');
             $registrant = 'C5525';
             $admin = 'C2526';
             $tech = 'C4529';
@@ -115,7 +113,7 @@ function checkcontact($conn, $contactid) {
         $check = new eppCheckContactRequest(new eppContactHandle($contactid),false);
         if ($response = $conn->request($check)) {
             /* @var $response Metaregistrar\EPP\eppCheckContactResponse */
-            $response->dumpContents();
+            //$response->dumpContents();
             $checks = $response->getCheckedContacts();
             foreach ($checks as $contact => $check) {
                 echo "Contact $contact " . ($check ? 'does not exist' : 'exists') . "\n";
