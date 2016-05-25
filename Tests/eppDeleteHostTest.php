@@ -8,7 +8,10 @@ class eppDeleteHostTest extends eppTestCase {
      * @throws \Metaregistrar\EPP\eppException
      */
     public function testDeleteHost() {
-        $hostname = $this->createHost('ns1.'.self::randomstring(8).'.frl');
+        $domainname = $this->createDomain();
+        $name = 'ns1.'.$domainname;
+        $hostname = $this->createHost($name);
+        $this->assertEquals($hostname,$name);
         $host = new Metaregistrar\EPP\eppHost($hostname);
         $delete = new Metaregistrar\EPP\eppDeleteHostRequest($host);
         $response = $this->conn->writeandread($delete);

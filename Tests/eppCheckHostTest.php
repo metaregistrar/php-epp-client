@@ -8,7 +8,7 @@ class eppCheckHostTest extends eppTestCase {
      * Expects a standard result for a free contact handle
      */
     public function testCheckHostAvailable() {
-        $hostname = 'ns1.'.self::randomString(30).'.frl';
+        $hostname = 'ns1.'.self::randomstring(30).'.frl';
         $host = new Metaregistrar\EPP\eppHost($hostname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppHost',$host);
         $check = new Metaregistrar\EPP\eppCheckRequest($host);
@@ -42,7 +42,7 @@ class eppCheckHostTest extends eppTestCase {
         $this->assertInstanceOf('Metaregistrar\EPP\eppCheckResponse',$response);
         if ($response instanceof Metaregistrar\EPP\eppCheckResponse) {
             //echo $response->saveXML();
-            $this->setExpectedException('Metaregistrar\EPP\eppException');
+            //$this->setExpectedException('Metaregistrar\EPP\eppException');
             $this->assertTrue($response->Success());
 
         }
