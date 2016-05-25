@@ -1,9 +1,9 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppCreateHostRequest extends eppCreateRequest {
+class eppCreateHostRequest extends eppHostRequest {
     function __construct($createinfo) {
-        parent::__construct();
+        parent::__construct(eppRequest::TYPE_CREATE);
 
         if ($createinfo instanceof eppHost) {
             $this->setHost($createinfo);
@@ -30,8 +30,6 @@ class eppCreateHostRequest extends eppCreateRequest {
         #
         # Object create structure
         #
-        $create = $this->createElement('create');
-        $this->hostobject = $this->createElement('host:create');
         $this->hostobject->appendChild($this->createElement('host:name', $host->getHostname()));
         $addresses = $host->getIpAddresses();
         if (is_array($addresses)) {
@@ -41,8 +39,6 @@ class eppCreateHostRequest extends eppCreateRequest {
                 $this->hostobject->appendChild($ipaddress);
             }
         }
-        $create->appendChild($this->hostobject);
-        $this->getCommand()->appendChild($create);
         return;
     }
 

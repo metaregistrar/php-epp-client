@@ -5,8 +5,15 @@ namespace Metaregistrar\EPP;
  */
 
 class eppRequest extends \DOMDocument {
-
-
+    
+    CONST TYPE_CHECK = 'check';
+    CONST TYPE_CREATE = 'create';
+    CONST TYPE_INFO = 'info';
+    CONST TYPE_UPDATE = 'update';
+    CONST TYPE_DELETE = 'delete';
+    CONST TYPE_TRANSFER = 'transfer';
+    CONST TYPE_RENEW = 'renew';
+    
     /**
      * Element object to add command structures
      * @var \DomElement
@@ -27,21 +34,9 @@ class eppRequest extends \DOMDocument {
      * @var string Unique session id
      */
     public $sessionid = null;
-    /**
-     * DomainObject object to add namespaces to
-     * @var \DomElement
-     */
-    public $domainobject = null;
-    /**
-     * ContactObject object to add namespaces to
-     * @var \DomElement
-     */
-    public $contactobject = null;
-    /**
-     * HostObject object to add namespaces to
-     * @var \DomElement
-     */
-    public $hostobject = null;
+
+
+
     /*
      * Login element
      * @var \DomElement
@@ -52,6 +47,13 @@ class eppRequest extends \DOMDocument {
      * @var \DomElement
      */
     public $hello = null;
+
+    /**
+     * If true, namespaces are sent at the beginning of the EPP command
+     * If false, namespaces are sent with each contact, domain or host object
+     * @var bool
+     */
+    private $namespacesinroot = true;
 
     function __construct() {
         $this->sessionid = uniqid();
@@ -64,10 +66,22 @@ class eppRequest extends \DOMDocument {
     function __destruct() {
     }
 
+    /**
+     * Determine whether the namespaces must be put in the root or at the corresponding objects 
+     * @param bool $setting
+     */
+    public function setNamespacesinroot($setting) {
+        $this->namespacesinroot = $setting;
+    }
+    
+    public function rootNamespaces() {
+        return $this->namespacesinroot;
+    }
+    
     protected function getEpp() {
         if (!$this->epp) {
             #
-            # Create base epp structure
+            # if its not there, then create base epp structure
             #
             $this->epp = $this->createElement('epp');
             $this->appendChild($this->epp);
@@ -78,7 +92,7 @@ class eppRequest extends \DOMDocument {
     protected function getCommand() {
         if (!$this->command) {
             #
-            # Create command structure
+            # If its not there, then create command structure
             #
             $this->command = $this->createElement('command');
             $this->getEpp()->appendChild($this->command);
@@ -89,7 +103,7 @@ class eppRequest extends \DOMDocument {
     protected function getExtension() {
         if (!$this->extension) {
             #
-            # Create extension structure
+            # If its not there, then create extension structure
             #
             $this->extension = $this->createElement('extension');
             $this->getCommand()->appendChild($this->extension);
@@ -104,8 +118,7 @@ class eppRequest extends \DOMDocument {
             throw new eppException('Cannot set attribute on an empty epp element');
         }
     }
-
-
+    
     public function addSessionId() {
         #
         # Remove earlier session id's to make sure session id is at the end
@@ -151,18 +164,7 @@ class eppRequest extends \DOMDocument {
         }
     }
     
-    /**
-     * @return \DOMXpath
-     */
-    public function xPath() {
-        $xpath = new \DOMXpath($this);
-        $defaultnamespace = $this->documentElement->lookupNamespaceUri(NULL);
-        var_dump($defaultnamespace);
-        //$xpath->registerNamespace('epp', 'urn:ietf:params:xml:ns:epp-1.0');
-        $xpath->registerNamespace('contact','urn:ietf:params:xml:ns:contact-1.0');
-        //$xpath->registerNamespace('domain','urn:ietf:params:xml:ns:domain-1.0');
-        //$xpath->registerNamespace('host','urn:ietf:params:xml:ns:host-1.0');
-        return $xpath;
-    }
 
+
+    
 }

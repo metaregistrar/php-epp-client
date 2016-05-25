@@ -1,5 +1,5 @@
 <?php
-require('../autoloader.php');
+require('../../autoloader.php');
 
 use Metaregistrar\EPP\eppConnection;
 use Metaregistrar\EPP\eppException;
@@ -11,16 +11,10 @@ use Metaregistrar\EPP\eppHost;
 use Metaregistrar\EPP\eppContactHandle;
 use Metaregistrar\EPP\eppContactPostalInfo;
 use Metaregistrar\EPP\eppCheckContactRequest;
-use Metaregistrar\EPP\eppCheckContactResponse;
 use Metaregistrar\EPP\eppCheckHostRequest;
-use Metaregistrar\EPP\eppCheckHostResponse;
 use Metaregistrar\EPP\ficoraEppCreateContactRequest;
-use Metaregistrar\EPP\ficoraEppCreateDomainRequest;
-use Metaregistrar\EPP\ficoraEppCreateHostRequest;
-use Metaregistrar\EPP\eppCreateHostRequest;
-use Metaregistrar\EPP\eppCreateContactResponse;
-use Metaregistrar\EPP\eppCreateHostResponse;
 use Metaregistrar\EPP\eppCreateDomainRequest;
+use Metaregistrar\EPP\eppCreateHostRequest;
 
 
 /*
@@ -33,7 +27,7 @@ $domains = ['test.fi'];
 
 try {
 
-    if ($conn = eppConnection::create('', true)) {
+    if ($conn = eppConnection::create('settings.ini', false)) {
         // Connect and login to the EPP server
         if ($conn->login()) {
             // Check domain names
@@ -47,7 +41,7 @@ try {
             $admin = 'C2526';
             $tech = 'C4529';
             echo "Creating domain\n";
-            createdomain($conn,'ewoutdegraaf3.fi',$registrant,$admin,$tech,null,['ns1.metaregistrar.com','ns2.metaregistrar.com']);
+            createdomain($conn,'ewoutdegraaf4.fi',$registrant,$admin,$tech,null,['ns1.metaregistrar.com','ns2.metaregistrar.com']);
             $conn->logout();
         }
     }
@@ -64,6 +58,7 @@ try {
 function checkdomains($conn, $domains) {
     // Create request to be sent to EPP service
     $check = new eppCheckDomainRequest($domains);
+    $check->setNamespacesinroot(false);
     // Write request to EPP service, read and check the results
     if ($response = $conn->request($check)) {
         /* @var $response eppCheckDomainResponse */
@@ -84,6 +79,7 @@ function checkcontact($conn, $contactid) {
     /* @var $conn Metaregistrar\EPP\eppConnection */
     try {
         $check = new eppCheckContactRequest(new eppContactHandle($contactid));
+        $check->setNamespacesinroot(false);
         if ($response = $conn->request($check)) {
             /* @var $response Metaregistrar\EPP\eppCheckContactResponse */
             $checks = $response->getCheckedContacts();
@@ -139,6 +135,7 @@ function checkhosts($conn, $hosts) {
             $checkhost[] = new eppHost($host);
         }
         $check = new eppCheckHostRequest($checkhost);
+        $check->setNamespacesinroot(false);
         if ($response = $conn->request($check)) {
             /* @var $response Metaregistrar\EPP\eppCheckHostResponse */
             $checks = $response->getCheckedHosts();
@@ -165,7 +162,8 @@ function checkhosts($conn, $hosts) {
 function createhost($conn, $hostname, $ipaddress=null) {
 
     try {
-        $create = new ficoraEppCreateHostRequest(new eppHost($hostname,$ipaddress));
+        $create = new eppCreateHostRequest(new eppHost($hostname,$ipaddress));
+        $create->setNamespacesinroot(false);
         if ($response = $conn->request($create)) {
             /* @var $response Metaregistrar\EPP\eppCreateHostResponse */
             echo "Host created on " . $response->getHostCreateDate() . " with name " . $response->getHostName() . "\n";
@@ -206,7 +204,8 @@ function createdomain($conn, $domainname, $registrant, $admincontact, $techconta
                 $domain->addHost(new eppHost($nameserver));
             }
         }
-        $create = new ficoraEppCreateDomainRequest($domain);
+        $create = new eppCreateDomainRequest($domain);
+        $create->setNamespacesinroot(false);
         $create->dumpContents();
         if ($response = $conn->request($create)) {
             /* @var $response Metaregistrar\EPP\eppCreateDomainResponse */

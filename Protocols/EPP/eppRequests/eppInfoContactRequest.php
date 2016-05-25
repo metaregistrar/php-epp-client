@@ -5,10 +5,10 @@ namespace Metaregistrar\EPP;
  * This object contains all the logic to create an EPP contact:info command
  */
 
-class eppInfoContactRequest extends eppRequest {
+class eppInfoContactRequest extends eppContactRequest {
 
     function __construct($inforequest) {
-        parent::__construct();
+        parent::__construct(eppRequest::TYPE_INFO);
 
         if ($inforequest instanceof eppContactHandle) {
             $this->setContactHandle($inforequest);
@@ -27,8 +27,6 @@ class eppInfoContactRequest extends eppRequest {
         #
         # Domain check structure
         #
-        $info = $this->createElement('info');
-        $this->contactobject = $this->createElement('contact:info');
         $this->contactobject->appendChild($this->createElement('contact:id', $contacthandle->getContactHandle()));
         if (!is_null($contacthandle->getPassword()))
         {
@@ -36,8 +34,6 @@ class eppInfoContactRequest extends eppRequest {
             $authinfo->appendChild($this->createElement('contact:pw', $contacthandle->getPassword()));
             $this->contactobject->appendChild($authinfo);
         }
-        $info->appendChild($this->contactobject);
-        $this->getCommand()->appendChild($info);
     }
 
 }

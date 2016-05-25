@@ -1,7 +1,7 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppConnection {
+class eppConnection extends eppBase {
     /**
      * Hostname of this connection
      * @var string
@@ -13,12 +13,6 @@ class eppConnection {
      * @var string
      */
     protected $port = 700;
-
-    /**
-     * Time-out value for the server connection
-     * @var integer
-     */
-    protected $timeout = 5;
 
     /*
     * Number of times read operations will be retried
@@ -66,13 +60,13 @@ class eppConnection {
      * Base objects
      * @var array of accepted URI's for xpath
      */
-    protected $xpathuri = array('urn:ietf:params:xml:ns:epp-1.0' => 'epp', 'urn:ietf:params:xml:ns:domain-1.0' => 'domain', 'urn:ietf:params:xml:ns:contact-1.0' => 'contact', 'urn:ietf:params:xml:ns:host-1.0' => 'host');
+    protected $xpathuri = ['urn:ietf:params:xml:ns:epp-1.0' => 'epp', 'urn:ietf:params:xml:ns:domain-1.0' => 'domain', 'urn:ietf:params:xml:ns:contact-1.0' => 'contact', 'urn:ietf:params:xml:ns:host-1.0' => 'host'];
 
     /**
      * These namespaces are needed in the root of the EPP object
      * @var array of accepted URI's for xpath
      */
-    protected $rootspace = array();
+    protected $rootspace = [];
 
     /**
      *
@@ -86,17 +80,7 @@ class eppConnection {
      */
     protected $version = '';
 
-    /**
-     *
-     * @var resource $connection
-     */
-    protected $connection;
 
-    /**
-     *
-     * @var boolean $logging
-     */
-    protected $logging;
 
     /**
      * Commands and equivalent responses
@@ -104,6 +88,10 @@ class eppConnection {
      */
     protected $responses;
 
+    /**
+     * Are we using the launchphase extensions or not
+     * @var null
+     */
     protected $launchphase = null;
 
     /**
@@ -123,9 +111,11 @@ class eppConnection {
      * @var boolean
      */
     protected $allow_self_signed = null;
-
-    protected $logentries = array();
-
+    
+    /**
+     * Variable to check if the sent and received transaction id's remain the same
+     * @var bool
+     */
     protected $checktransactionids = true;
 
     /**
@@ -138,40 +128,7 @@ class eppConnection {
      */
     protected $loggedin = false;
 
-    /**
-     * @param string $configfile
-     * @param bool|false $debug
-     * @return mixed
-     * @throws eppException
-     */
-    static function create($configfile,$debug=false) {
-        if ($configfile) {
-            if (is_readable($configfile)) {
-                $settings = file($configfile, FILE_IGNORE_NEW_LINES);
-                foreach ($settings as $setting) {
-                    list($param, $value) = explode('=', $setting, 2);
-                    $param = trim($param);
-                    $value = trim($value);
-                    $result[$param] = $value;
-                }
-
-            } else {
-                throw new eppException('File not found: '.$configfile);
-            }
-        } else {
-            throw new eppException('Configuration file not specified on eppConnection:create');
-        }
-        if (isset($result['interface'])) {
-            $classname = 'Metaregistrar\\EPP\\'.$result['interface'];
-            $c = new $classname($debug);
-            /* @var $c eppConnection */
-            $c->setConnectionDetails($configfile);
-            return $c;
-        }
-        return null;
-
-    }
-
+    
     function __construct($logging = false, $settingsfile = null) {
         if ($logging) {
             $this->enableLogging();
@@ -186,6 +143,8 @@ class eppConnection {
         $this->setTimeout(10);
         $this->setLanguage($this->language);
         $this->setVersion($this->version);
+
+        // Initialise default, EPP standard responses
         $this->responses['Metaregistrar\\EPP\\eppHelloRequest'] = 'Metaregistrar\\EPP\\eppHelloResponse';
         $this->responses['Metaregistrar\\EPP\\eppLoginRequest'] = 'Metaregistrar\\EPP\\eppLoginResponse';
         $this->responses['Metaregistrar\\EPP\\eppLogoutRequest'] = 'Metaregistrar\\EPP\\eppLogoutResponse';
@@ -214,7 +173,7 @@ class eppConnection {
         $this->responses['Metaregistrar\\EPP\\eppDeleteRequest'] = 'Metaregistrar\\EPP\\eppDeleteResponse';
 
         #
-        # Read settings.ini or specified settings file
+        # Read settings.ini or specified settings file from the directory where the called class resides
         #
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             $path = str_replace('Metaregistrar\EPP\\',dirname(__FILE__).'\..\..\Registries\\',get_called_class());
@@ -259,8 +218,6 @@ class eppConnection {
     }
 
     function __destruct() {
-        //echo "\nMemory usage: ".memory_get_usage()." bytes \n";
-        //echo "Peak memory usage: ".memory_get_peak_usage()." bytes \n\n";
         if ($this->connected) {
             if ($this->loggedin) {
                 $this->logout();
@@ -269,6 +226,8 @@ class eppConnection {
         }
         if ($this->logging) {
             $this->showLog();
+            echo "\n\nMemory usage: ".memory_get_usage()." bytes";
+            echo "\nPeak memory usage: ".memory_get_peak_usage()." bytes \n\n";
         }
     }
 
@@ -451,127 +410,7 @@ class eppConnection {
         }
     }
 
-    /**
-     * This will read 1 response from the connection if there is one
-     * @param boolean $nonBlocking to prevent the blocking of the thread in case there is nothing to read and not wait for the timeout
-     * @return string
-     * @throws eppException
-     */
-    public function read($nonBlocking=false) {
-        putenv('SURPRESS_ERROR_HANDLER=1');
-        $content = '';
-        $time = time() + $this->timeout;
-        $read = "";
-        while ((!isset ($length)) || ($length > 0)) {
-            if (feof($this->connection)) {
-                putenv('SURPRESS_ERROR_HANDLER=0');
-                throw new eppException ('Unexpected closed connection by remote host...',0,null,null,$read);
-            }
-            //Check if timeout occured
-            if (time() >= $time) {
-                putenv('SURPRESS_ERROR_HANDLER=0');
-                return false;
-            }
-            //If we dont know how much to read we read the first few bytes first, these contain the content-length
-            //of whats to come
-            if ((!isset($length)) || ($length == 0)) {
-                $readLength = 4;
-                //$readbuffer = "";
-                $read = "";
-                while ($readLength > 0) {
-                    if ($readbuffer = fread($this->connection, $readLength)) {
-                        $readLength = $readLength - strlen($readbuffer);
-                        $read .= $readbuffer;
-                        $time = time() + $this->timeout;
-                    }
-                    //Check if timeout occured
-                    if (time() >= $time) {
-                        putenv('SURPRESS_ERROR_HANDLER=0');
-                        return false;
-                    }
-                }
-                //$this->writeLog("Read 4 bytes for integer. (read: " . strlen($read) . "):$read","READ");
-                $length = $this->readInteger($read) - 4;
-                $this->writeLog("Reading next: $length bytes","READ");
-            }
-            if ($length > 1000000) {
-                throw new eppException("Packet size is too big: $length. Closing connection",0,null,null,$read);
-            }
-            //We know the length of what to read, so lets read the stuff
-            if ((isset($length)) && ($length > 0)) {
-                $time = time() + $this->timeout;
-                if ($read = fread($this->connection, $length)) {
-                    //$this->writeLog(print_R(socket_get_status($this->connection), true));
-                    $length = $length - strlen($read);
-                    $content .= $read;
-                    $time = time() + $this->timeout;
-                }
-                if (strpos($content, 'Session limit exceeded') > 0) {
-                    $read = fread($this->connection, 4);
-                    $content .= $read;
-                }
-            }
-            if($nonBlocking && strlen($content)<1)
-            {
-                //there is no content don't keep waiting
-                break;
-            }
-
-            if (!strlen($read)) {
-                usleep(100);
-            }
-
-        }
-        putenv('SURPRESS_ERROR_HANDLER=0');
-        #ob_flush();
-        return $content;
-    }
-
-    /**
-     * This parses the first 4 bytes into an integer for use to compare content-length
-     *
-     * @param string $content
-     * @return integer
-     */
-    private function readInteger($content) {
-        $int = unpack('N', substr($content, 0, 4));
-        return $int[1];
-    }
-
-    /**
-     * This adds the content-length to the content that is about to be written over the EPP Protocol
-     *
-     * @param string $content Your XML
-     * @return string String to write
-     */
-    private function addInteger($content) {
-        $int = pack('N', intval(strlen($content) + 4));
-        return $int . $content;
-    }
-
-    /**
-     * Write stuff over the EPP connection
-     * @param string $content
-     * @return bool
-     * @throws eppException
-     */
-    public function write($content) {
-        $this->writeLog("Writing: " . strlen($content) . " + 4 bytes","WRITE");
-        $content = $this->addInteger($content);
-        if (!is_resource($this->connection)) {
-            throw new eppException ('Writing while no connection is made is not supported.');
-        }
-
-        putenv('SURPRESS_ERROR_HANDLER=1');
-        #ob_flush();
-        if (fwrite($this->connection, $content)) {
-            //fpassthru($this->connection);
-            putenv('SURPRESS_ERROR_HANDLER=0');
-            return true;
-        }
-        putenv('SURPRESS_ERROR_HANDLER=0');
-        return false;
-    }
+    
 
     /**
      * Writes a request object to the stream
@@ -667,9 +506,9 @@ class eppConnection {
     }
 
     /**
-     * Write the content domDocument to the stream
+     * Write the content of the domDocument object as XML to the stream
      * Read the answer
-     * Load the answer in a response domDocument
+     * Load the answer in a response domDocument matching the request
      * return the reponse
      *
      * @param eppRequest $content
@@ -707,43 +546,64 @@ class eppConnection {
         /*
          * $content->hello is only set if this is an instance or a sub-instance of an eppHelloRequest
          */
-        if (!($content->hello)) {
+        if ((!($content->hello)) && ($content->rootNamespaces())) {
             /**
              * Add used namespaces to the correct places in the XML
+             * Some registries require the namespaces to be in each host, contact or domain segment
+             * In that case, $this->namespacesinroot can be false to allow for the namespaces to be in each segment
              */
             $content->addNamespaces($this->getServices());
             $content->addNamespaces($this->getExtensions());
         }
+
+        // Create the proper response object from the request we have put out
+        // Response/request matches can be found in the variable $this->responses
         $response = $this->createResponse($content);
+
         /* @var $response /domDocument */
         if (!$response) {
             throw new eppException("No valid response from server",0,null,null,$content);
         }
+
+        // Write the response into the logfile
         $content->formatOutput = true;
         $this->writeLog($content->saveXML(null, LIBXML_NOEMPTYTAG),"WRITE");
+
+        // Write the request to the server
         $content->formatOutput = false;
         if ($this->write($content->saveXML(null, LIBXML_NOEMPTYTAG))) {
             $readcounter = 0;
             $xml = $this->read();
-            // When no data is present on the stream, retry reading several times
+
+            // When no data is present on the stream, keep on reading several times, maybe timeouts were too low
             while ((strlen($xml)==0) && ($readcounter < $this->retry)) {
                 $xml = $this->read();
                 $readcounter++;
             }
 
             if (strlen($xml)) {
+                // Load the response form the server in the object we have created earlier
                 if ($response->loadXML($xml)) {
+
+                    // Write the response to the logfile
                     $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG),"READ");
                     /*
                     ob_flush();
                     */
+
+                    // Check if the transaction ID from the response matches the one from the request
+                    // You can switch this off if it gives problems
                     $clienttransid = $response->getClientTransactionId();
                     if (($this->checktransactionids) && ($clienttransid) && ($clienttransid != $requestsessionid)) {
                         throw new eppException("Client transaction id $requestsessionid does not match returned $clienttransid",0,null,null,$xml);
                     }
+
+                    // Set the proper namespaces to process the response
                     $response->setXpath($this->getServices());
                     $response->setXpath($this->getExtensions());
                     $response->setXpath($this->getXpathExtensions());
+
+                    // If it is an Hello response, validate if the language and version matches
                     if ($response instanceof eppHelloResponse) {
                         $response->validateServices($this->getLanguage(), $this->getVersion());
                     }
@@ -780,15 +640,7 @@ class eppConnection {
     public function setCheckTransactionIds($value) {
         $this->checktransactionids = $value;
     }
-
-    public function getTimeout() {
-        return $this->timeout;
-    }
-
-    public function setTimeout($timeout) {
-        $this->timeout = $timeout;
-    }
-
+    
     public function getUsername() {
         return $this->username;
     }
@@ -846,7 +698,7 @@ class eppConnection {
     public function getDefaultNamespaces() {
         return $this->defaultnamespace;
     }
-
+    
     public function setVersion($version) {
         $this->version = $version;
     }
@@ -961,12 +813,14 @@ class eppConnection {
     public function getXpathExtensions() {
         return $this->xpathuri;
     }
+    
 
-    private function enableLogging() {
-        date_default_timezone_set("Europe/Amsterdam");
-        $this->logging = true;
-    }
-
+    /**
+     * Creates all needed settings from the settinsgfile
+     * @param string $settingsfile
+     * @return bool
+     * @throws eppException
+     */
     public function setConnectionDetails($settingsfile) {
         $result = array();
         if (is_readable($settingsfile)) {
@@ -1015,19 +869,5 @@ class eppConnection {
         return null;
     }
 
-    private function showLog() {
-        echo "==== LOG ====\n";
-        if (property_exists($this, 'logentries')) {
-            foreach ($this->logentries as $logentry) {
-                echo $logentry . "\n";
-            }
-        }
-    }
 
-    protected function writeLog($text,$action) {
-        if ($this->logging) {
-            //echo "-----".date("Y-m-d H:i:s")."-----".$text."-----end-----\n";
-            $this->logentries[] = "-----" . $action . "-----" . date("Y-m-d H:i:s") . "-----\n" . $text . "\n-----END-----" . date("Y-m-d H:i:s") . "-----\n";
-        }
-    }
 }

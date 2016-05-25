@@ -1,7 +1,7 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppCreateContactRequest extends eppCreateRequest {
+class eppCreateContactRequest extends eppContactRequest {
 
     /**
      * eppCreateContactRequest constructor.
@@ -9,8 +9,8 @@ class eppCreateContactRequest extends eppCreateRequest {
      * @throws eppException
      */
     function __construct($createinfo) {
-        parent::__construct();
-        $this->emptyContact();
+        parent::__construct(eppRequest::TYPE_CREATE);
+        
         if ($createinfo){
             if ($createinfo instanceof eppContact) {
                 $this->setContact($createinfo);
@@ -24,18 +24,7 @@ class eppCreateContactRequest extends eppCreateRequest {
     function __destruct() {
         parent::__destruct();
     }
-
-
-    public function emptyContact() {
-        #
-        # Object create structure
-        #
-        $create = $this->createElement('create');
-        $this->contactobject = $this->createElement('contact:create');
-        $create->appendChild($this->contactobject);
-        $this->getCommand()->appendChild($create);
-    }
-
+    
     /**
      *
      * @param eppContact $contact

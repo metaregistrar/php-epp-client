@@ -1,11 +1,11 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppUpdateDomainRequest extends eppRequest {
+class eppUpdateDomainRequest extends eppDomainRequest {
     private $forcehostattr = false;
 
     function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false) {
-        parent::__construct();
+        parent::__construct(eppRequest::TYPE_UPDATE);
 
         $this->setForcehostattr($forcehostattr);
         if ($objectname instanceof eppDomain) {
@@ -49,8 +49,6 @@ class eppUpdateDomainRequest extends eppRequest {
         #
         # Object create structure
         #
-        $update = $this->createElement('update');
-        $this->domainobject = $this->createElement('domain:update');
         $this->domainobject->appendChild($this->createElement('domain:name', $domainname));
         if ($addInfo instanceof eppDomain) {
             $addcmd = $this->createElement('domain:add');
@@ -67,8 +65,6 @@ class eppUpdateDomainRequest extends eppRequest {
             $this->addDomainChanges($chgcmd, $updateInfo);
             $this->domainobject->appendChild($chgcmd);
         }
-        $update->appendChild($this->domainobject);
-        $this->getCommand()->appendChild($update);
     }
 
     /**

@@ -1,10 +1,10 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppDeleteContactRequest extends eppRequest {
+class eppDeleteContactRequest extends eppContactRequest {
 
     function __construct(eppContactHandle $deleteinfo) {
-        parent::__construct();
+        parent::__construct(eppRequest::TYPE_DELETE);
 
         if ($deleteinfo instanceof eppContactHandle) {
             $this->setContactHandle($deleteinfo);
@@ -25,11 +25,7 @@ class eppDeleteContactRequest extends eppRequest {
         #
         # Object delete structure
         #
-        $this->contactobject = $this->createElement('delete');
-        $contactdelete = $this->createElement('contact:delete');
-        $contactdelete->appendChild($this->createElement('contact:id', $contacthandle->getContactHandle()));
-        $this->contactobject->appendChild($contactdelete);
-        $this->getCommand()->appendChild($this->contactobject);
+        $this->contactobject->appendChild($this->createElement('contact:id', $contacthandle->getContactHandle()));
     }
 
 

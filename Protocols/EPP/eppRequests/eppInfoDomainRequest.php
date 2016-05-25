@@ -5,15 +5,21 @@ namespace Metaregistrar\EPP;
  * This object contains all the logic to create an EPP domain:info command
  */
 
-class eppInfoDomainRequest extends eppRequest {
+class eppInfoDomainRequest extends eppDomainRequest {
     const HOSTS_ALL = 'all';
     const HOSTS_DELEGATED = 'del';
     const HOSTS_SUBORDINATE = 'sub';
     const HOSTS_NONE = 'none';
 
 
+    /**
+     * eppInfoDomainRequest constructor.
+     * @param $infodomain
+     * @param null $hosts
+     * @throws eppException
+     */
     public function __construct($infodomain, $hosts = null) {
-        parent::__construct();
+        parent::__construct(eppRequest::TYPE_INFO);
 
         if ($infodomain instanceof eppDomain) {
             $this->setDomain($infodomain, $hosts);
@@ -38,9 +44,6 @@ class eppInfoDomainRequest extends eppRequest {
         #
         # Domain check structure
         #
-        $info = $this->createElement('info');
-        $this->domainobject = $this->createElement('domain:info');
-        $info->appendChild($this->domainobject);
 
         $dname = $this->createElement('domain:name', $domain->getDomainname());
         if ($hosts) {
@@ -57,13 +60,5 @@ class eppInfoDomainRequest extends eppRequest {
             $authinfo->appendChild($this->createElement('domain:pw', $domain->getAuthorisationCode()));
             $this->domainobject->appendChild($authinfo);
         }
-        if (!$this->command) {
-            $this->command = $this->getCommand();
-        }
-        $this->command->appendChild($info);
-        if (!$this->epp) {
-            $this->epp = $this->getEpp();
-        }
-        $this->epp->appendChild($this->command);
     }
 }
