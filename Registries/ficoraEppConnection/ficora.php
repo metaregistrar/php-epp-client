@@ -15,6 +15,10 @@ use Metaregistrar\EPP\eppCheckHostRequest;
 use Metaregistrar\EPP\ficoraEppCreateContactRequest;
 use Metaregistrar\EPP\eppCreateDomainRequest;
 use Metaregistrar\EPP\eppCreateHostRequest;
+use Metaregistrar\EPP\ficoraEppCheckBalanceRequest;
+use Metaregistrar\EPP\ficoraEppCheckBalanceResponse;
+use Metaregistrar\EPP\eppPollRequest;
+use Metaregistrar\EPP\eppPollResponse;
 
 
 /*
@@ -22,7 +26,7 @@ use Metaregistrar\EPP\eppCreateHostRequest;
  * You can specify multiple domain names to be checked
  */
 
-$domains = ['test.fi'];
+$domains = ['ewoutdegraaf.fi'];
 
 
 try {
@@ -30,9 +34,17 @@ try {
     if ($conn = eppConnection::create('settings.ini', false)) {
         // Connect and login to the EPP server
         if ($conn->login()) {
+            echo "Checking balance\n";
+            checkbalance($conn);
+            echo "Checking poll\n";
+            checkpoll($conn);
             // Check domain names
-            //echo "Checking " . count($domains) . " domain names\n";
-            //checkdomains($conn, $domains);
+            echo "Checking " . count($domains) . " domain names\n";
+            checkdomains($conn, $domains);
+            echo "Checking contact\n";
+            checkcontact($conn,'C5525');
+            echo "Checking host\n";
+            checkhosts($conn,['ns1.metaregistrar.com','ns2.metaregistrar.com','ns3.metaregistrar.com']);
             //echo "Creating contact\n";
            //$contactid = createcontact($conn, 'ewout@metaregistrar.com','+35.8401231234','Department' ,'Metaregistrar' ,'Zuidelijk Halfrond 1' ,'8201 DD' , 'Gouda', 'NL');
             //createhost($conn,'ns1.metaregistrar.com');
@@ -49,6 +61,29 @@ try {
     echo "ERROR: " . $e->getMessage()."\n";
     echo $e->getLastCommand();
     echo "\n\n";
+}
+
+/**
+ * @param eppConnection $conn
+ */
+function checkbalance($conn) {
+    $check = new ficoraEppCheckBalanceRequest();
+    if ($response = $conn->request($check)) {
+        /* @var $response ficoraEppCheckBalanceResponse */
+        echo "Balance is ".$response->getBalanceAmount()." on ".$response->getBalanceDate()."\n";
+        //echo $response->saveXML();
+    }
+}
+
+/**
+ * @param eppConnection $conn
+ */
+function checkpoll($conn) {
+    $poll = new eppPollRequest(eppPollRequest::POLL_REQ);
+    if ($response = $conn->request($poll)) {
+        /* @var $response eppPollResponse */
+        echo "You have ".$response->getMessageCount()." poll messages waiting\n";
+    }
 }
 
 /**
@@ -80,6 +115,7 @@ function checkcontact($conn, $contactid) {
         $check = new eppCheckContactRequest(new eppContactHandle($contactid),false);
         if ($response = $conn->request($check)) {
             /* @var $response Metaregistrar\EPP\eppCheckContactResponse */
+            $response->dumpContents();
             $checks = $response->getCheckedContacts();
             foreach ($checks as $contact => $check) {
                 echo "Contact $contact " . ($check ? 'does not exist' : 'exists') . "\n";
@@ -133,7 +169,6 @@ function checkhosts($conn, $hosts) {
             $checkhost[] = new eppHost($host);
         }
         $check = new eppCheckHostRequest($checkhost,false);
-        $check->setNamespacesinroot(false);
         if ($response = $conn->request($check)) {
             /* @var $response Metaregistrar\EPP\eppCheckHostResponse */
             $checks = $response->getCheckedHosts();
@@ -161,7 +196,6 @@ function createhost($conn, $hostname, $ipaddress=null) {
 
     try {
         $create = new eppCreateHostRequest(new eppHost($hostname,$ipaddress),false);
-        $create->setNamespacesinroot(false);
         if ($response = $conn->request($create)) {
             /* @var $response Metaregistrar\EPP\eppCreateHostResponse */
             echo "Host created on " . $response->getHostCreateDate() . " with name " . $response->getHostName() . "\n";
