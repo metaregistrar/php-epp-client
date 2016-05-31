@@ -7,7 +7,9 @@ class ptEppConnection extends eppConnection {
         // Construct the EPP connection object en specify if you want logging on or off
         parent::__construct($logging, $settingsfile);
         parent::setServices(array('urn:ietf:params:xml:ns:domain-1.0' => 'domain', 'urn:ietf:params:xml:ns:contact-1.0' => 'contact'));
-        // Specify timeout values in seconds
+
+        parent::addCommandResponse('Metaregistrar\EPP\ptEppInfoDomainRequest', 'Metaregistrar\EPP\eppInfoDomainResponse');
+
         // Default server configuration stuff - this varies per connected registry
         // Check the greeting of the server to see which of these values you need to add
 
