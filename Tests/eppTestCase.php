@@ -18,7 +18,7 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
 
     private static function setupConnection() {
         try {
-            if ($conn = Metaregistrar\EPP\eppConnection::create(dirname(__FILE__).'/testsetup.epl')) {
+            if ($conn = Metaregistrar\EPP\eppConnection::create(dirname(__FILE__).'/testsetup.ini')) {
                 /* @var $conn Metaregistrar\EPP\eppConnection */
                 if ($conn->login()) {
                     return $conn;

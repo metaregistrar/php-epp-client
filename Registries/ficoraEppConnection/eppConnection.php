@@ -16,7 +16,7 @@ class ficoraEppConnection extends eppConnection {
         parent::setServices(null);
 
         // Not a real extension, but okay then
-        parent::addExtension('ficora','http://www.ficora.fi/epp/ficora', false);
+        parent::addExtension('ficora','http://www.ficora.fi/epp/ficora');
         // Add the commands and responses specific to this registry
         // Please make sure the corresponding PHP files are present!
         parent::addCommandResponse('Metaregistrar\EPP\ficoraEppCreateContactRequest', 'Metaregistrar\EPP\eppCreateContactResponse');
