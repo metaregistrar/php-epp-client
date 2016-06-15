@@ -1,10 +1,11 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppDeleteDomainRequest extends eppRequest {
+class eppDeleteDomainRequest extends eppDomainRequest {
 
-    function __construct(eppDomain $deleteinfo) {
-        parent::__construct();
+    function __construct(eppDomain $deleteinfo, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
+        parent::__construct(eppRequest::TYPE_DELETE);
          if ($deleteinfo instanceof eppDomain) {
                $this->setDomain($deleteinfo);
          } else {
@@ -24,11 +25,7 @@ class eppDeleteDomainRequest extends eppRequest {
         #
         # Object delete structure
         #
-        $this->domainobject = $this->createElement('delete');
-        $domaindelete = $this->createElement('domain:delete');
-        $domaindelete->appendChild($this->createElement('domain:name', $domain->getDomainname()));
-        $this->domainobject->appendChild($domaindelete);
-        $this->getCommand()->appendChild($this->domainobject);
+        $this->domainobject->appendChild($this->createElement('domain:name', $domain->getDomainname()));
     }
 
 }

@@ -1,14 +1,15 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppUpdateHostRequest extends eppRequest {
+class eppUpdateHostRequest extends eppHostRequest {
     /**
      * @var \DOMElement
      */
     private $hostobject;
 
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null) {
-        parent::__construct();
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
+        parent::__construct(eppRequest::TYPE_UPDATE);
 
         if ($objectname instanceof eppHost) {
             $hostname = $objectname->getHostname();
@@ -45,8 +46,6 @@ class eppUpdateHostRequest extends eppRequest {
         #
         # Object create structure
         #
-        $update = $this->createElement('update');
-        $this->hostobject = $this->createElement('host:update');
         $this->hostobject->appendChild($this->createElement('host:name', $hostname));
         if ($addInfo instanceof eppHost) {
             $addcmd = $this->createElement('host:add');
@@ -70,8 +69,6 @@ class eppUpdateHostRequest extends eppRequest {
                 $this->hostobject->appendChild($chgcmd);
             }
         }
-        $update->appendChild($this->hostobject);
-        $this->getCommand()->appendChild($update);
     }
 
     /**

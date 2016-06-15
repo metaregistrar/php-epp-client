@@ -1,9 +1,10 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppUpdateContactRequest extends eppRequest {
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null) {
-        parent::__construct();
+class eppUpdateContactRequest extends eppContactRequest {
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
+        parent::__construct(eppRequest::TYPE_UPDATE);
 
         if ($objectname instanceof eppContactHandle) {
             $contacthandle = $objectname->getContactHandle();
@@ -39,8 +40,6 @@ class eppUpdateContactRequest extends eppRequest {
         #
         # Object create structure
         #
-        $update = $this->createElement('update');
-        $this->contactobject = $this->createElement('contact:update');
         $this->contactobject->appendChild($this->createElement('contact:id', $contactid));
         if ($updateInfo instanceof eppContact) {
             $chgcmd = $this->createElement('contact:chg');
@@ -57,8 +56,6 @@ class eppUpdateContactRequest extends eppRequest {
             $this->addContactStatus($addcmd, $addInfo);
             $this->contactobject->appendChild($addcmd);
         }
-        $update->appendChild($this->contactobject);
-        $this->getCommand()->appendChild($update);
     }
 
     /**

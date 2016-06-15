@@ -1,11 +1,11 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppCheckDomainRequest extends eppRequest {
+class eppCheckDomainRequest extends eppDomainRequest {
 
-    function __construct($checkrequest) {
-        parent::__construct();
-
+    function __construct($checkrequest, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
+        parent::__construct(eppRequest::TYPE_CHECK);
         if ($checkrequest instanceof eppDomain) {
             $this->setDomainNames(array($checkrequest));
         } else {
@@ -21,7 +21,6 @@ class eppCheckDomainRequest extends eppRequest {
         }
     }
 
-
     /**
      *
      * @param array $domains
@@ -30,8 +29,6 @@ class eppCheckDomainRequest extends eppRequest {
         #
         # Domain check structure
         #
-        $check = $this->createElement('check');
-        $this->domainobject = $this->createElement('domain:check');
         foreach ($domains as $domain) {
             if ($domain instanceof eppDomain) {
                 $this->domainobject->appendChild($this->createElement('domain:name', $domain->getDomainname()));
@@ -39,8 +36,7 @@ class eppCheckDomainRequest extends eppRequest {
                 $this->domainobject->appendChild($this->createElement('domain:name', $domain));
             }
         }
-        $check->appendChild($this->domainobject);
-        $this->getCommand()->appendChild($check);
+
     }
 
 

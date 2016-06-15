@@ -7,7 +7,7 @@ class eppInfoDomainTest extends eppTestCase {
      * @throws \Metaregistrar\EPP\eppException
      */
     public function testInfoDomainSuccess() {
-        $domainname = 'test.frl';
+        $domainname = $this->createDomain();
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $info = new Metaregistrar\EPP\eppInfoDomainRequest($domain);
         $response = $this->conn->writeandread($info);
@@ -23,11 +23,11 @@ class eppInfoDomainTest extends eppTestCase {
      * @throws \Metaregistrar\EPP\eppException
      */
     public function testInfoDomainWithAuthcode() {
-        $domainname = 'test.frl';
+        $domainname = $this->createDomain();
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $domain->setAuthorisationCode('foorbar');
         $info = new Metaregistrar\EPP\eppInfoDomainRequest($domain);
-        $info->dumpContents();
+        //$info->dumpContents();
         $response = $this->conn->writeandread($info);
         $this->assertInstanceOf('Metaregistrar\EPP\eppInfoDomainResponse',$response);
         /* @var $response Metaregistrar\EPP\eppInfoDomainResponse */

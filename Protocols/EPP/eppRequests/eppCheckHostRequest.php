@@ -1,9 +1,10 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppCheckHostRequest extends eppRequest {
-    function __construct($checkrequest) {
-        parent::__construct();
+class eppCheckHostRequest extends eppHostRequest {
+    function __construct($checkrequest, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
+        parent::__construct(eppRequest::TYPE_CHECK);
 
         if ($checkrequest instanceof eppHost) {
             $this->setHosts(array($checkrequest));
@@ -24,8 +25,6 @@ class eppCheckHostRequest extends eppRequest {
         #
         # Domain check structure
         #
-        $check = $this->createElement('check');
-        $this->hostobject = $this->createElement('host:check');
         foreach ($hosts as $host) {
             if ($host instanceof eppHost) {
                 if (strlen($host->getHostname()) > 0) {
@@ -41,8 +40,6 @@ class eppCheckHostRequest extends eppRequest {
                 }
             }
         }
-        $check->appendChild($this->hostobject);
-        $this->getCommand()->appendChild($check);
     }
 
 

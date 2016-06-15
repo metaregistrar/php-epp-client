@@ -1,10 +1,11 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppDeleteHostRequest extends eppRequest {
+class eppDeleteHostRequest extends eppHostRequest {
 
-    function __construct(eppHost $deleteinfo) {
-        parent::__construct();
+    function __construct(eppHost $deleteinfo, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
+        parent::__construct(eppRequest::TYPE_DELETE);
 
         if ($deleteinfo instanceof eppHost) {
             $this->setHost($deleteinfo);
@@ -22,15 +23,7 @@ class eppDeleteHostRequest extends eppRequest {
         if (!strlen($host->getHostname())) {
             throw new eppException('eppDeleteRequest host object does not contain a valid hostname');
         }
-        #
-        # Object delete structure
-        #
-        $this->hostobject = $this->createElement('delete');
-
-        $hostdelete = $this->createElement('host:delete');
-        $hostdelete->appendChild($this->createElement('host:name', $host->getHostname()));
-        $this->hostobject->appendChild($hostdelete);
-        $this->getCommand()->appendChild($this->hostobject);
+        $this->hostobject->appendChild($this->createElement('host:name', $host->getHostname()));
     }
 
 }

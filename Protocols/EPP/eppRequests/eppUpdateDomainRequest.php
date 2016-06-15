@@ -1,13 +1,14 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppUpdateDomainRequest extends eppRequest {
-    private $forcehostattr = false;
+class eppUpdateDomainRequest extends eppDomainRequest {
 
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false) {
-        parent::__construct();
 
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false, $namespacesinroot=true) {
+
+        $this->setNamespacesinroot($namespacesinroot);
         $this->setForcehostattr($forcehostattr);
+        parent::__construct(eppRequest::TYPE_UPDATE);
         if ($objectname instanceof eppDomain) {
             $domainname = $objectname->getDomainname();
         } else {
@@ -29,13 +30,6 @@ class eppUpdateDomainRequest extends eppRequest {
         parent::__destruct();
     }
 
-    public function getForcehostattr() {
-        return $this->forcehostattr;
-    }
-
-    public function setForcehostattr($forcehostattr) {
-        $this->forcehostattr = $forcehostattr;
-    }
 
         /**
      *
@@ -49,8 +43,6 @@ class eppUpdateDomainRequest extends eppRequest {
         #
         # Object create structure
         #
-        $update = $this->createElement('update');
-        $this->domainobject = $this->createElement('domain:update');
         $this->domainobject->appendChild($this->createElement('domain:name', $domainname));
         if ($addInfo instanceof eppDomain) {
             $addcmd = $this->createElement('domain:add');
@@ -67,8 +59,6 @@ class eppUpdateDomainRequest extends eppRequest {
             $this->addDomainChanges($chgcmd, $updateInfo);
             $this->domainobject->appendChild($chgcmd);
         }
-        $update->appendChild($this->domainobject);
-        $this->getCommand()->appendChild($update);
     }
 
     /**
@@ -85,7 +75,7 @@ class eppUpdateDomainRequest extends eppRequest {
             $nameservers = $this->createElement('domain:ns');
             foreach ($hosts as $host) {
                 /* @var eppHost $host */
-                if (($this->forcehostattr) ||  (is_array($host->getIpAddresses()))) {
+                if (($this->getForcehostattr()) ||  (is_array($host->getIpAddresses()))) {
                     $nameservers->appendChild($this->addDomainHostAttr($host));
                 } else {
                     $nameservers->appendChild($this->addDomainHostObj($host));

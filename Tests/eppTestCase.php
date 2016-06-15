@@ -18,7 +18,8 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
 
     private static function setupConnection() {
         try {
-            if ($conn = Metaregistrar\EPP\eppConnection::create(dirname(__FILE__).'/testsetup.ini')) {
+            if ($conn = Metaregistrar\EPP\eppConnection::create(dirname(__FILE__).'/testsetup.epl')) {
+                /* @var $conn Metaregistrar\EPP\eppConnection */
                 if ($conn->login()) {
                     return $conn;
                 }
@@ -67,7 +68,7 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
     protected function createHost($hostname) {
         $host = new Metaregistrar\EPP\eppHost($hostname);
         $create = new Metaregistrar\EPP\eppCreateHostRequest($host);
-        if ((($response = $this->conn->writeandread($create)) instanceof Metaregistrar\EPP\eppCreateHostResponse) && ($response->Success())) {
+        if ($response = $this->conn->request($create)) {
             /* @var $response Metaregistrar\EPP\eppCreateHostResponse */
             return $hostname;
         }
@@ -96,9 +97,23 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
         $contactinfo = new Metaregistrar\EPP\eppContact($postalinfo, $email, $telephone);
         $contactinfo->setPassword($password);
         $create = new Metaregistrar\EPP\eppCreateContactRequest($contactinfo);
-        if ((($response = $this->conn->writeandread($create)) instanceof Metaregistrar\EPP\eppCreateContactResponse) && ($response->Success())) {
+        if ($response = $this->conn->request($create)) {
             /* @var $response Metaregistrar\EPP\eppCreateContactResponse */
             return $response->getContactId();
+        }
+        return null;
+    }
+
+    protected function createDomain() {
+        $contactid = $this->createContact();
+        $domain = new \Metaregistrar\EPP\eppDomain($this->randomstring(20).'.frl');
+        $domain->setPeriod(1);
+        $domain->setRegistrant($contactid);
+        $domain->setAuthorisationCode('fubar');
+        $create = new \Metaregistrar\EPP\eppCreateDomainRequest($domain);
+        if ($response = $this->conn->request($create)) {
+            /* @var $response \Metaregistrar\EPP\eppCreateDomainResponse */
+            return $response->getDomainName();
         }
         return null;
     }
