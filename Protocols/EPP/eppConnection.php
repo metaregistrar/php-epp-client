@@ -429,7 +429,7 @@ class eppConnection {
     public function request($eppRequest) {
         $check = null;
         foreach ($this->getResponses() as $req => $check) {
-            if ($eppRequest instanceof $req) {
+            if (get_class($eppRequest) == $req) {
                 break;
             }
         }
@@ -753,7 +753,7 @@ class eppConnection {
     public function createResponse($request) {
         $response = new eppResponse();
         foreach ($this->getResponses() as $req => $res) {
-            if ($request instanceof $req) {
+            if (get_class($request) == $req) {
                 $response = new $res($request);
                 break;
             }
