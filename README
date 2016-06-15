@@ -35,6 +35,8 @@ Currently supported registries:
 - Nic.AT (.at)
 - Key Systems RRPPROXY
 - Openprovider
+- Ficora (.fi)
+- DNS.PT (.pt)
 
 
 All code changes are tested automatically with the phpunit tests in the Tests directory
