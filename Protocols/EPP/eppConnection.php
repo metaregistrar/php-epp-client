@@ -707,7 +707,7 @@ class eppConnection {
             $content->addNamespaces($this->getExtensions());
         }
         $response = $this->createResponse($content);
-        /* @var $response /domDocument */
+        /* @var $response eppResponse */
         if (!$response) {
             throw new eppException("No valid response from server",0,null,null,$content);
         }
@@ -737,6 +737,7 @@ class eppConnection {
                     $response->setXpath($this->getExtensions());
                     $response->setXpath($this->getXpathExtensions());
                     if ($response instanceof eppHelloResponse) {
+                        /* @var $response eppHelloResponse */
                         $response->validateServices($this->getLanguage(), $this->getVersion());
                     }
                     return $response;
@@ -751,12 +752,15 @@ class eppConnection {
     }
 
     public function createResponse($request) {
-        $response = new eppResponse();
+        $response = null;
         foreach ($this->getResponses() as $req => $res) {
             if (get_class($request) == $req) {
                 $response = new $res($request);
                 break;
             }
+        }
+        if (!$response) {
+            throw new eppException('No valid response class found for request class '.get_class($request));
         }
         return $response;
     }
