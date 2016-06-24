@@ -397,7 +397,9 @@ class eppConnection {
      */
     public function login() {
         if (!$this->connected) {
-            $this->connect();
+            if (!$this->connect()) {
+                return false;
+            }
         }
         $login = new eppLoginRequest;
         if ((($response = $this->writeandread($login)) instanceof eppLoginResponse) && ($response->Success())) {
@@ -992,9 +994,9 @@ class eppConnection {
     protected function loadSettings($directory, $settingsfile) {
         $result = array();
         if (is_readable($directory . '/'.$settingsfile)) {
-            $settings = file($directory . '/'.$settingsfile, FILE_IGNORE_NEW_LINES);
+            $settings = file($directory . '/' . $settingsfile, FILE_IGNORE_NEW_LINES);
             foreach ($settings as $setting) {
-                list($param, $value) = explode('=', $setting,2);
+                list($param, $value) = explode('=', $setting, 2);
                 $param = trim($param);
                 $value = trim($value);
                 $result[$param] = $value;
