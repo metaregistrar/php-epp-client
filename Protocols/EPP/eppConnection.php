@@ -368,7 +368,10 @@ class eppConnection {
             putenv('SURPRESS_ERROR_HANDLER=1');
             #echo "Connecting: $this->hostname:$this->port\n";
             #$this->writeLog("Connecting: $this->hostname:$this->port");
-            $this->connection = fsockopen($this->hostname, $this->port, $errno, $errstr, $this->timeout);
+            $context = stream_context_create();
+            stream_context_set_option($context, 'ssl','verify_peer',false);
+            stream_context_set_option($context, 'ssl','verify_peer_name',false);
+            $this->connection = stream_socket_client($this->hostname.':'.$this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context);
             putenv('SURPRESS_ERROR_HANDLER=0');
             if (is_resource($this->connection)) {
                 stream_set_blocking($this->connection, false);

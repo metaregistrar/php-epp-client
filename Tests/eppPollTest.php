@@ -16,7 +16,7 @@ class eppPollTest extends eppTestCase {
             /* @var $response Metaregistrar\EPP\eppPollResponse */
             $this->assertTrue($response->Success());
             while ($response->getMessageCount()>0) {
-                echo "message id:".$response->getMessageId()."\n";
+                //echo "message id:".$response->getMessageId()."\n";
                 $ack = new Metaregistrar\EPP\eppPollRequest(Metaregistrar\EPP\eppPollRequest::POLL_ACK, $response->getMessageId());
                 $response = $this->conn->writeandread($ack);
                 $this->assertInstanceOf('Metaregistrar\EPP\eppPollResponse',$response);
