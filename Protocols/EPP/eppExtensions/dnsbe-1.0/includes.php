@@ -10,5 +10,6 @@ include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppInfoDomainRequest.php');
 include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppTransferRequest.php');
 
 include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppCreateResponse.php');
+include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppCreateContactResponse.php');
 include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppInfoDomainResponse.php');
 include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppCreateNsgroupResponse.php');
