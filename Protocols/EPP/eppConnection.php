@@ -224,6 +224,11 @@ class eppConnection {
         if (!$settingsfile) {
             $settingsfile = 'settings.ini';
         }
+        $test = pathinfo($settingsfile);
+        if ($test['dirname']!='.') {
+            $path = $test['dirname'];
+            $settingsfile=$test['basename'];
+        }
         if ($settings = $this->loadSettings($path,$settingsfile)) {
             $this->setHostname($settings['hostname']);
             $this->setUsername($settings['userid']);
