@@ -10,6 +10,7 @@ class eppInfoHostResponse extends eppInfoResponse {
     public function getHost() {
         $hostname = $this->getHostName();
         $address = $this->getHostAddresses();
+        $address = array_keys($address);
         $host = new eppHost($hostname, $address);
         return $host;
     }
