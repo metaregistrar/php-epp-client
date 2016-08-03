@@ -989,6 +989,9 @@ class eppConnection {
             if (array_key_exists('certificatefile',$result) && array_key_exists('certificatepassword',$result)) {
                 // Enter the path to your certificate and the password here
                 $this->enableCertification($result['certificatefile'], $result['certificatepassword']);
+            } elseif (array_key_exists('certificatefile',$result)) {
+				// Enter the path to your certificate without password
+                $this->enableCertification($result['certificatefile'], null);
             }
             return true;
         } else {
