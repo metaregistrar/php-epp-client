@@ -366,7 +366,8 @@ class eppConnection {
                 $this->read();
                 return true;
             } else {
-                throw new eppException("Error connecting to $target: $errstr (code $errno)",$errno,null,$errstr);
+            	$this->writeLog("Connection could not be opened to $target: $errno $errstr","ERROR");
+                return false;
             }
         } else {
             //We don't want our error handler to kick in at this point...
@@ -390,7 +391,7 @@ class eppConnection {
                     return false;
                 }
             } else {
-                $this->writeLog("Connection could not be opened: $errno $errstr","ERROR");
+                $this->writeLog("Connection could not be opened to $target: $errno $errstr","ERROR");
                 return false;
             }
         }
