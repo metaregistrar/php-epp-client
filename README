@@ -65,7 +65,7 @@ How to use this repository
 - Check out the latest version from github
 - Use the Examples/checkdomain.php and create a connection to your favorite registry (for example new Metaregistrar\EPP\metaregEppConnection())
 - Create a settings.ini in with the following contents:
-        interface=metaregEppConnection
+        interface=eppConnection
         hostname=ssl://epp.test2.metaregistrar.com
         port=7443
         userid=xxxxxxxx
@@ -76,7 +76,7 @@ If you do not want to use settings.ini files in the Registries directory, you ca
 $conn = Metaregistrar\EPP\eppConnection::create('path-to-settings.ini');
 
 Or set all parameters individually:
-$conn = Metaregistrar\EPP\metaregEppConnection();
+$conn = Metaregistrar\EPP\eppConnection();
 $conn->setHostname('ssl://epp.test2.metaregistrar.com'); // Hostname may vary depending on the registry selected
 $conn->setPort(7443); // Port may vary depending on the registry selected
 $conn->setUsername('xxxxxxxx');

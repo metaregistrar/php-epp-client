@@ -37,4 +37,45 @@ class eppInfoDomainTest extends eppTestCase {
     }
 
 
+    public function testInfoDomainEmptyContact() {
+        $xml = '<?xml version="1.0" encoding="utf-8"?>
+<epp xmlns:host="urn:ietf:params:xml:ns:host-1.0" xmlns:domain="urn:ietf:params:xml:ns:domain-1.0" xmlns:contact="urn:ietf:params:xml:ns:contact-1.0" xmlns:obj="urn:ietf:params:xml:ns:obj-1.0" xmlns="urn:ietf:params:xml:ns:epp-1.0">
+  <response>
+    <result code="1000">
+      <msg>Command completed successfully</msg>
+    </result>
+    <resData>
+      <domain:infData>
+        <domain:name>DOMAIN_NAME</domain:name>
+        <domain:registrylock>0</domain:registrylock>
+        <domain:autorenew>0</domain:autorenew>
+        <domain:status s="Granted"></domain:status>
+        <domain:registrant>CXXXXX</domain:registrant>
+        <domain:contact type="admin"></domain:contact>
+        <domain:contact type="billing"></domain:contact>
+        <domain:contact type="tech">CXXXXX</domain:contact>
+        <domain:ns>
+          <domain:hostObj>NAMESERVER1</domain:hostObj>
+          <domain:hostObj>NAMESERVER2</domain:hostObj>
+        </domain:ns>
+        <domain:clID>CXXXX</domain:clID>
+        <domain:crID>CXXXX</domain:crID>
+        <domain:crDate>2016-07-13T20:59:52.097</domain:crDate>
+        <domain:exDate>2017-07-13T20:59:52.02</domain:exDate>
+        <domain:authInfo></domain:authInfo>
+      </domain:infData>
+    </resData>
+    <trID>
+      <svTRID>1234567</svTRID>
+    </trID>
+  </response>
+</epp>';
+        $infodomain = new \Metaregistrar\EPP\eppInfoDomainResponse;
+        $infodomain->loadXML($xml);
+        $contacts = $infodomain->getDomainContacts();
+        $this->assertEquals(count($contacts),1);
+        $this->assertEquals($contacts[0]->getContactHandle(),'CXXXXX');
+        $this->assertEquals($contacts[0]->getContactType(),'tech');
+    }
+
 }

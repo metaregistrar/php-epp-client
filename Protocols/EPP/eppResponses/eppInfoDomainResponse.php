@@ -139,13 +139,15 @@ class eppInfoDomainResponse extends eppInfoResponse {
         $cont = null;
         foreach ($result as $contact) {
             /* @var $contact \DOMElement */
-            $contacttype = $contact->getAttribute('type');
-            if ($contacttype) {
-                // DNSBE specific, but too much hassle to create an override for this
-                if ($contacttype == 'onsite') {
-                    $contacttype = 'admin';
+            if (($contact->nodeValue) && (strlen($contact->nodeValue) > 0)) {
+                $contacttype = $contact->getAttribute('type');
+                if ($contacttype) {
+                    // DNSBE specific, but too much hassle to create an override for this
+                    if ($contacttype == 'onsite') {
+                        $contacttype = 'admin';
+                    }
+                    $cont[] = new eppContactHandle($contact->nodeValue, $contacttype);
                 }
-                $cont[] = new eppContactHandle($contact->nodeValue, $contacttype);
             }
         }
         return $cont;
