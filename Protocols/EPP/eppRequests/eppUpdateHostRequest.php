@@ -5,7 +5,7 @@ class eppUpdateHostRequest extends eppHostRequest {
     /**
      * @var \DOMElement
      */
-    private $hostobject;
+    public $hostobject;
 
     function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $namespacesinroot = true) {
         $this->setNamespacesinroot($namespacesinroot);

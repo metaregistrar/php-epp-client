@@ -18,8 +18,9 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
 
     private static function setupConnection() {
         try {
-            if ($conn = Metaregistrar\EPP\eppConnection::create(dirname(__FILE__).'/testsetup.ini')) {
+            if ($conn = Metaregistrar\EPP\metaregEppConnection::create(dirname(__FILE__).'/testsetup.ini')) {
                 /* @var $conn Metaregistrar\EPP\eppConnection */
+                $conn->enableRgp();
                 if ($conn->login()) {
                     return $conn;
                 }
@@ -89,9 +90,11 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
         $organization = 'Test company';
         $address = 'Teststreet 1';
         $province = 'CA';
-        $postcode = '00000';
-        $email = 'test@test.com';
-        $telephone = '+1.55500000';
+        //$postcode = '00000';
+        $postcode = '3825 AB';
+        $email = 'ewout@mdmail.nl';
+        //$telephone = '+1.55500000';
+        $telephone = '+31.628901768';
         $password = self::randomstring(8);
         $postalinfo = new Metaregistrar\EPP\eppContactPostalInfo($name, $city, $country, $organization, $address, $province, $postcode, Metaregistrar\EPP\eppContact::TYPE_LOC);
         $contactinfo = new Metaregistrar\EPP\eppContact($postalinfo, $email, $telephone);
@@ -104,18 +107,36 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
         return null;
     }
 
-    protected function createDomain() {
+    protected function createDomain($domainname = null) {
+        // If no domain name was given, test with a random .FRL domain name
+        if (!$domainname) {
+            $domainname = $this->randomstring(20).'.frl';
+        }
         $contactid = $this->createContact();
-        $domain = new \Metaregistrar\EPP\eppDomain($this->randomstring(20).'.frl');
+        $domain = new \Metaregistrar\EPP\eppDomain($domainname);
         $domain->setPeriod(1);
         $domain->setRegistrant($contactid);
         $domain->setAuthorisationCode('fubar');
+        $domain->addContact(new \Metaregistrar\EPP\eppContactHandle($contactid, \Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_ADMIN));
+        $domain->addContact(new \Metaregistrar\EPP\eppContactHandle($contactid, \Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_TECH));
+        $domain->addContact(new \Metaregistrar\EPP\eppContactHandle($contactid, \Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_BILLING));
         $create = new \Metaregistrar\EPP\eppCreateDomainRequest($domain);
         if ($response = $this->conn->request($create)) {
             /* @var $response \Metaregistrar\EPP\eppCreateDomainResponse */
             return $response->getDomainName();
         }
         return null;
+    }
+
+    protected function deleteDomain($domainname) {
+        $domain = new \Metaregistrar\EPP\eppDomain($domainname);
+        $delete = new \Metaregistrar\EPP\eppDeleteDomainRequest($domain);
+        if ($response = $this->conn->request($delete)) {
+            if ($response->getResultCode()==1000) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -287,6 +287,7 @@ class eppConnection {
 
     public function enableRgp() {
         $this->addExtension('rgp','urn:ietf:params:xml:ns:rgp-1.0');
+        $this->responses['Metaregistrar\\EPP\\eppRgpRestoreRequest'] = 'Metaregistrar\\EPP\\eppRgpRestoreResponse';
     }
 
     public function disableRgp() {
