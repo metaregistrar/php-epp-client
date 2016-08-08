@@ -26,13 +26,11 @@ class eppUndeleteRequest extends eppRequest {
         #
         # Object delete structure
         #
-        $ext = $this->createElement('extension');
         $commandext = $this->createElement('ext:command');
         $undelete = $this->createElement('ext:undelete');
         $undelete->appendChild($this->createElement('domain:name', $domain->getDomainname()));
         $commandext->appendChild($undelete);
-        $ext->appendChild($commandext);
-        $this->epp->appendChild($ext);
+        $this->getExtension()->appendChild($commandext);
     }
 
 }
