@@ -44,7 +44,7 @@ class ficoraEppInfoContactResponse extends eppInfoContactResponse {
      *
      * @return string|null legalemail
      */
-    public function getLegalEmail()
+    public function getContactLegalEmail()
     {
         return $this->getXpathQueryResult('/epp:epp/epp:response/epp:resData/contact:infData/contact:legalemail');
     }
