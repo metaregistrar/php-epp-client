@@ -339,7 +339,6 @@ class eppConnection {
      * @param int $port
      * @return bool
      * @throws eppException
-     * @internal param string $address
      */
     public function connect($hostname = null, $port = null) {
         if ($hostname) {
@@ -468,6 +467,8 @@ class eppConnection {
         while ((!isset ($length)) || ($length > 0)) {
             if (feof($this->connection)) {
                 putenv('SURPRESS_ERROR_HANDLER=0');
+                $this->loggedin = false;
+                $this->connected = false;
                 throw new eppException ('Unexpected closed connection by remote host...',0,null,null,$read);
             }
             //Check if timeout occured
@@ -1013,6 +1014,22 @@ class eppConnection {
             return $result;
         }
         return null;
+    }
+
+    /**
+     * Returns if the session is still open
+     * @return bool
+     */
+    public function isConnected() {
+        return $this->connected;
+    }
+
+    /**
+     * Return if the system is still logged in
+     * @return bool
+     */
+    public function isLoggedin() {
+        return $this->loggedin;
     }
 
     private function showLog() {
