@@ -68,7 +68,7 @@ class ficoraEppInfoContactTest extends eppTestCase {
         $contactResponse = $this->getFicoraContactResponse();
         $this->assertEquals($contactResponse->getContactRole(), 5);
         $this->assertEquals($contactResponse->getContactType(), 0);
-        $this->assertEquals($contactResponse->getLegalEmail(), 'legal@mail.mail');
+        $this->assertEquals($contactResponse->getContactLegalEmail(), 'legal@mail.mail');
 
         $contacts = $contactResponse->getContactPostalInfo();
         $this->assertCount(1, $contacts);
