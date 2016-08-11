@@ -325,7 +325,7 @@ class eppConnection {
     public function disconnect() {
         if (is_resource($this->connection)) {
             //echo "Fclosing $this->hostname\n";
-            @ob_flush();
+            //@ob_flush();
             fclose($this->connection);
             $this->writeLog("Disconnected","DISCONNECT");
             $this->connected = false;
