@@ -16,31 +16,36 @@ namespace Metaregistrar\EPP;
 
 */
 class dnsbeEppCreateContactRequest extends eppCreateContactRequest {
-    function __construct($createinfo, $contacttype='licensee') {
 
-        if ($createinfo instanceof eppContact) {
-            parent::__construct($createinfo);
-            $this->addDnsbeExtension($createinfo,$contacttype);
-        } else {
-            throw new eppException('DNSBE does not support Host objects');
-        }
+    /**
+     * dnsbeEppCreateContactRequest constructor.
+     * @param eppContact|null $createinfo
+     * @param string $contacttype
+     * $param string $language
+     * @throws eppException
+     */
+    function __construct($createinfo, $contacttype='licensee', $language = 'en') {
+        parent::__construct($createinfo);
+        $this->addDnsbeExtension($contacttype, $language);
         $this->addSessionId();
     }
 
-
-    public function addDnsbeExtension(eppContact $contact, $contacttype) {
+    /**
+     * @param string $contacttype
+     * @param string $language
+     */
+    public function addDnsbeExtension($contacttype, $language) {
         $this->addExtension('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
         $ext = $this->createElement('extension');
         $dnsbeext = $this->createElement('dnsbe:ext');
         $create = $this->createElement('dnsbe:create');
         $contact = $this->createElement('dnsbe:contact');
         $contact->appendChild($this->createElement('dnsbe:type', $contacttype));
-        $contact->appendChild($this->createElement('dnsbe:lang', 'nl'));
+        $contact->appendChild($this->createElement('dnsbe:lang', $language));
         $create->appendChild($contact);
         $dnsbeext->appendChild($create);
         $ext->appendChild($dnsbeext);
         $this->command->appendChild($ext);
-
     }
 
 }
