@@ -8,17 +8,20 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
      */
     protected $conn;
 
-    protected function setUp() {
-        $this->conn = self::setupConnection();
+    protected function setUp($configfile = null) {
+        if (!$configfile) {
+            $configfile = dirname(__FILE__).'/testsetup.ini';
+        }
+        $this->conn = self::setupConnection($configfile);
     }
 
     protected function tearDown() {
         self::teardownConncection($this->conn);
     }
 
-    private static function setupConnection() {
+    private static function setupConnection($configfile) {
         try {
-            if ($conn = Metaregistrar\EPP\metaregEppConnection::create(dirname(__FILE__).'/testsetup.ini')) {
+            if ($conn = Metaregistrar\EPP\metaregEppConnection::create($configfile)) {
                 /* @var $conn Metaregistrar\EPP\eppConnection */
                 //$conn->enableRgp();
                 if ($conn->login()) {
@@ -63,6 +66,7 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
 
     /**
      * Create a hostname to be used in create host or create domain testing
+     * @var string $hostname
      * @return string
      * @throws \Metaregistrar\EPP\eppException
      */

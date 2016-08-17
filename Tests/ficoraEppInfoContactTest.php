@@ -3,7 +3,10 @@ include_once(dirname(__FILE__).'/eppTestCase.php');
 
 class ficoraEppInfoContactTest extends eppTestCase {
 
-    protected function setUp()
+    /**
+     * @param null $configfile
+     */
+    protected function setUp($configfile=null)
     {
         // Initialize ficora to load ficora extension classes
         $this->connection = new \Metaregistrar\EPP\ficoraEppConnection;
@@ -12,7 +15,7 @@ class ficoraEppInfoContactTest extends eppTestCase {
     protected function getFicoraContactResponse()
     {
         $xml = '<?xml version="1.0" encoding="utf-8"?>
-<epp xmlns:host="urn:ietf:params:xml:ns:host-1.0" xmlns:domain="urn:ietf:params:xml:ns:domain-1.0" xmlns:contact="urn:ietf:params:xml:ns:contact-1.0" xmlns:obj="urn:ietf:params:xml:ns:obj-1.0" xmlns="urn:ietf:params:xml:ns:epp-1.0">
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
   <response>
     <result code="1000">
       <msg>Command completed successfully</msg>
