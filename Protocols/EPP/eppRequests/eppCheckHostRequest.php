@@ -15,6 +15,7 @@ class eppCheckHostRequest extends eppHostRequest {
                 //}
             }
         }
+        $this->addSessionId();
     }
 
     function __destruct() {

@@ -19,6 +19,7 @@ class eppCheckDomainRequest extends eppDomainRequest {
                 }
             }
         }
+        $this->addSessionId();
     }
 
     /**

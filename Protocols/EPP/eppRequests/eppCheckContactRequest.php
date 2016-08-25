@@ -15,6 +15,7 @@ class eppCheckContactRequest extends eppContactRequest {
                 }
             }
         }
+        $this->addSessionId();
     }
 
     function __destruct() {
