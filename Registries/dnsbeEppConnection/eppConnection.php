@@ -20,6 +20,8 @@ class dnsbeEppConnection extends eppConnection {
         parent::addCommandResponse('Metaregistrar\EPP\dnsbeEppInfoDomainRequest', 'Metaregistrar\EPP\dnsbeEppInfoDomainResponse');
         parent::addCommandResponse('Metaregistrar\EPP\dnsbeEppDeleteDomainRequest', 'Metaregistrar\EPP\dnsbeEppDeleteDomainResponse');
         parent::addCommandResponse('Metaregistrar\EPP\dnsbeEppUpdateContactRequest', 'Metaregistrar\EPP\dnsbeEppUpdateContactResponse');
+        parent::addCommandResponse('Metaregistrar\EPP\dnsbeEppCreateNsgroupRequest', 'Metaregistrar\EPP\dnsbeEppCreateNsgroupResponse');
+        parent::addCommandResponse('Metaregistrar\EPP\dnsbeEppTransferRequest', 'Metaregistrar\EPP\eppTransferResponse');
     }
 
 }
