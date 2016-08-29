@@ -14,7 +14,7 @@ class eppInfoContactRequest extends eppContactRequest {
         if ($inforequest instanceof eppContactHandle) {
             $this->setContactHandle($inforequest);
         } else {
-            throw new eppException('parameter of infocontactrequest needs to be eeppContact object');
+            throw new eppException('parameter of infocontactrequest needs to be eppContactHandle object');
         }
         $this->addSessionId();
     }
