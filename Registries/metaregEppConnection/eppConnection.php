@@ -12,8 +12,7 @@ class metaregEppConnection extends eppConnection {
         parent::addCommandResponse('Metaregistrar\EPP\eppPollRequest', 'Metaregistrar\EPP\metaregEppPollResponse');
         parent::addCommandResponse('Metaregistrar\EPP\metaregSudoRequest', 'Metaregistrar\EPP\metaregSudoResponse');
         parent::addCommandResponse('Metaregistrar\EPP\metaregInfoDomainRequest', 'Metaregistrar\EPP\eppInfoDomainResponse');
-        parent::addCommandResponse('Metaregistrar\EPP\eppDnssecUpdateDomainRequest','Metaregistrar\EPP\eppUpdateDomainResponse');
-        parent::addCommandResponse('Metaregistrar\EPP\eppTransferExtendedRequest', 'Metaregistrar\EPP\eppTransferResponse');
+        parent::addCommandResponse('Metaregistrar\EPP\metaregEppTransferExtendedRequest', 'Metaregistrar\EPP\eppTransferResponse');
         parent::addExtension('polldata', 'http://www.metaregistrar.com/epp/polldata-1.0');
         parent::addExtension('command-ext', 'http://www.metaregistrar.com/epp/command-ext-1.0');
         parent::addExtension('ext', 'http://www.metaregistrar.com/epp/ext-1.0');

@@ -1,16 +1,10 @@
 <?php
 namespace Metaregistrar\EPP;
 
-use Metaregistrar\EPP\eppHost;
-use Metaregistrar\EPP\eppTransferRequest;
-use Metaregistrar\EPP\eppUpdateDomainRequest;
-use Metaregistrar\EPP\eppDomain;
-
 /**
- * Class EppRGPRestoreRequest
- * @package Metaregistrar\CustomerEPPLBundle\EppExtension
+ * Class metaregEppTransferExtendedRequest
  */
-class eppTransferExtendedRequest extends eppTransferRequest
+class metaregEppTransferExtendedRequest extends eppTransferRequest
 {
     /**
      * eppTransferExtendedRequest constructor.
