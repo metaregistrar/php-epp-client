@@ -16,6 +16,8 @@ class ptEppInfoDomainRequest extends eppInfoDomainRequest {
 
     private function addRoid($roid) {
         $ptdomain = $this->createElement('ptdomain:info');
+        $this->setNamespace('ptdomain', 'http://eppdev.dns.pt/schemas/ptdomain-1.0',$ptdomain);
+        //parent::addExtension('ptcontact', 'http://eppdev.dns.pt/schemas/ptcontact-1.0');
         $ptdomain->appendChild($this->createElement('ptdomain:roid',$roid));
         $this->getExtension()->appendChild($ptdomain);
     }

@@ -25,7 +25,7 @@ class eppRgpRestoreRequest extends eppUpdateDomainRequest
         }
         parent::__construct($domainname, null, null, $updateinfo);
         $rgp = $this->createElement('rgp:update');
-        //$this->addExtension('xmlns:rgp', 'urn:ietf:params:xml:ns:rgp-1.0');
+        $this->setNamespace('xmlns:rgp', 'urn:ietf:params:xml:ns:rgp-1.0',$rgp);
         $restore = $this->createElement('rgp:restore');
         $restore->setAttribute('op', 'request');
         $rgp->appendChild($restore);

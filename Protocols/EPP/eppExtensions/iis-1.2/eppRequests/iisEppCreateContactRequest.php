@@ -22,7 +22,7 @@ class iisEppCreateContactRequest extends eppCreateContactRequest {
             $contactname = $createinfo->getPostalInfo(0)->getName();
         }
         $this->contactobject->getElementsByTagName('contact:id')->item(0)->nodeValue=$this->createContactId($contactname);
-        $this->addExtension('xmlns:iis', 'urn:se:iis:xml:epp:iis-1.2');
+        //$this->addExtension('xmlns:iis', 'urn:se:iis:xml:epp:iis-1.2');
         if ($orgno) {
             $this->addIISOrganization($orgno);
         }
@@ -37,6 +37,7 @@ class iisEppCreateContactRequest extends eppCreateContactRequest {
         if (!$this->extension) {
             $this->extension = $this->createElement('extension');
             $this->create = $this->createElement('iis:create');
+            $this->setNamespace('xmlns:iis', 'urn:se:iis:xml:epp:iis-1.2',$this->create);
             $this->extension->appendChild($this->create);
             $this->command->appendChild($this->extension);
         }
@@ -48,6 +49,7 @@ class iisEppCreateContactRequest extends eppCreateContactRequest {
         if (!$this->extension) {
             $this->extension = $this->createElement('extension');
             $this->create = $this->createElement('iis:create');
+            $this->setNamespace('xmlns:iis', 'urn:se:iis:xml:epp:iis-1.2',$this->create);
             $this->extension->appendChild($this->create);
             $this->command->appendChild($this->extension);
         }

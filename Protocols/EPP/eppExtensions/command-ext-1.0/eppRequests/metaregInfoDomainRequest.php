@@ -50,9 +50,11 @@ class metaregInfoDomainRequest extends eppInfoDomainRequest {
             $this->command->appendChild($ext);
 
             $commandext = $this->createElement('command-ext:command-ext');
+            $this->setNamespace('command-ext', 'http://www.metaregistrar.com/epp/command-ext-1.0',$commandext);
             $ext->appendChild($commandext);
 
             $infoext = $this->createElement('command-ext-domain:domain');
+            $this->setNamespace('xmlns:command-ext-domain', 'http://www.metaregistrar.com/epp/command-ext-domain-1.0',$infoext);
             $commandext->appendChild($infoext);
 
             $domaininfoext = $this->createElement('command-ext-domain:info');

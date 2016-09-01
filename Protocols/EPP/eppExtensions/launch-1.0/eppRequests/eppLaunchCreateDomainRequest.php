@@ -21,7 +21,8 @@ class eppLaunchCreateDomainRequest extends eppCreateDomainRequest {
     public function setLaunchPhase($name, $launchType = null, $customName = null) {
         if (!$this->launchCreate) {
             $this->launchCreate = $this->createElement("launch:create");
-            $this->getExtension()->appendchild($this->launchCreate);
+            $this->setNamespace('xmlns:launch', 'urn:ietf:params:xml:ns:launch-1.0',$this->launchCreate);
+            $this->getExtension()->appendChild($this->launchCreate);
         }
         if ($launchType) {
             $this->launchCreate->setAttribute("type", $launchType);

@@ -14,7 +14,7 @@ namespace Metaregistrar\EPP;
 
 class rrpproxyEppUpdateDomainRequest extends eppUpdateDomainRequest {
     function __construct(eppDomain $domain, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false) {
-        $upd = new eppDomain($domain->getDomainName());
+        $upd = new eppDomain($domain->getDomainname());
         parent::__construct($domain, null, null, $upd);
         $this->addTrustee();
         parent::addSessionId();
@@ -24,6 +24,7 @@ class rrpproxyEppUpdateDomainRequest extends eppUpdateDomainRequest {
     private function addTrustee() {
         $ext = $this->createElement('extension');
         $infdata = $this->createElement('keysys:update');
+        $this->setNamespace('xmlns:keysys','http://www.key-systems.net/epp/keysys-1.0',$infdata);
         $domdata = $this->createElement('keysys:domain');
         $cd = $this->createElement('keysys:de-accept-trustee-tac', '1');
         $domdata->appendChild($cd);

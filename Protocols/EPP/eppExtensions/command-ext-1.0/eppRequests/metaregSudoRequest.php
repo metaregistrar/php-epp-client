@@ -1,6 +1,6 @@
 <?php
 /*
- * <epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:command-ext="http://www.metaregistrar.com/epp/command-ext-1.0" xmlns:ext="http://www.metaregistrar.com/epp/ext-1.0">
+ * <epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:ext="http://www.metaregistrar.com/epp/ext-1.0">
  *   <extension>
  *     <ext:sudo>
  *       <clID>client-id</clID>
@@ -21,6 +21,7 @@ class metaregSudoRequest extends eppRequest {
         parent::__construct();
         $ext = $this->createElement('extension');
         $extSudo = $this->createElement('ext:sudo');
+        $this->setNamespace('ext', 'http://www.metaregistrar.com/epp/ext-1.0',$extSudo);
         $ext->appendChild($extSudo);
         parent::getEpp()->appendChild($ext);
         $clID = $this->createElement('ext:clID');

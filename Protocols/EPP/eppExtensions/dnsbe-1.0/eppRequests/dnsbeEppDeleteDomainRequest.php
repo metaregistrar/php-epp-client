@@ -33,9 +33,9 @@ class dnsbeEppDeleteDomainRequest extends eppDeleteDomainRequest {
     }
 
     public function addDnsbeExtension($deletedate) {
-        $this->addExtension('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
         $ext = $this->createElement('extension');
         $dnsbeext = $this->createElement('dnsbe:ext');
+        $this->setNamespace('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0',$dnsbeext);
         $delete = $this->createElement('dnsbe:delete');
         $deletedomain = $this->createElement('dnsbe:domain');
         if($deletedate)

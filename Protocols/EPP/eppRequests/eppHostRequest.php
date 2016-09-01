@@ -13,9 +13,7 @@ class eppHostRequest extends eppRequest {
         parent::__construct();
         $check = $this->createElement($type);
         $this->hostobject = $this->createElement('host:'.$type);
-        if (!$this->rootNamespaces()) {
-            $this->hostobject->setAttribute('xmlns:host','urn:ietf:params:xml:ns:host-1.0');
-        }
+        $this->setNamespace('xmlns:host','urn:ietf:params:xml:ns:host-1.0', $this->hostobject);
         $check->appendChild($this->hostobject);
         $this->getCommand()->appendChild($check);
     }

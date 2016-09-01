@@ -20,15 +20,15 @@ class dnsbeEppInfoDomainRequest extends eppInfoDomainRequest {
 
 
     public function addDnsbeExtension() {
-        $this->addExtension('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
         $ext = $this->createElement('extension');
-        $sidnext = $this->createElement('dnsbe:ext');
+        $dnsbeext = $this->createElement('dnsbe:ext');
+        $this->setNamespace('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0',$dnsbeext);
         $info = $this->createElement('dnsbe:info');
         $infodomain = $this->createElement('dnsbe:domain');
         $infodomain->setAttribute('version', '2.0');
         $info->appendChild($infodomain);
-        $sidnext->appendChild($info);
-        $ext->appendChild($sidnext);
+        $dnsbeext->appendChild($info);
+        $ext->appendChild($dnsbeext);
         $this->command->appendChild($ext);
 
     }

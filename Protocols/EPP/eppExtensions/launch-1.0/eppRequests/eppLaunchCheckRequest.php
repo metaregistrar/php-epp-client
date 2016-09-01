@@ -45,7 +45,6 @@ class eppLaunchCheckRequest extends eppCheckRequest {
 
     function __construct($checkrequest) {
         parent::__construct($checkrequest);
-        $this->addExtension('xmlns:launch', 'urn:ietf:params:xml:ns:launch-1.0');
     }
 
 
@@ -56,6 +55,7 @@ class eppLaunchCheckRequest extends eppCheckRequest {
      */
     public function setLaunchPhase($name, $customName = null, $type = self::TYPE_AVAIL) {
         $launchCheck = $this->createElement("launch:check");
+        $this->setNamespace('xmlns:launch', 'urn:ietf:params:xml:ns:launch-1.0',$launchCheck);
         $launchCheck->setAttribute("type", $type);
 
         $launchPhase = $this->createElement("launch:phase", $name);
@@ -67,7 +67,7 @@ class eppLaunchCheckRequest extends eppCheckRequest {
             }
         }
         $launchCheck->appendChild($launchPhase);
-        $this->getExtension()->appendchild($launchCheck);
+        $this->getExtension()->appendChild($launchCheck);
         $this->addSessionId();
     }
 }

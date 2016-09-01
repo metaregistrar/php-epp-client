@@ -35,9 +35,10 @@ class dnsbeEppCreateContactRequest extends eppCreateContactRequest {
      * @param string $language
      */
     public function addDnsbeExtension($contacttype, $language) {
-        $this->addExtension('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
+        //$this->addExtension('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
         $ext = $this->createElement('extension');
         $dnsbeext = $this->createElement('dnsbe:ext');
+        $this->setNamespace('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0',$dnsbeext);
         $create = $this->createElement('dnsbe:create');
         $contact = $this->createElement('dnsbe:contact');
         $contact->appendChild($this->createElement('dnsbe:type', $contacttype));

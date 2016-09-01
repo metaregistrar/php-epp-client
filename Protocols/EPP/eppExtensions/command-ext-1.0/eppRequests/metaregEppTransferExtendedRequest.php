@@ -15,8 +15,8 @@ class metaregEppTransferExtendedRequest extends eppTransferRequest
     public function __construct($operation, eppDomain $object)
     {
         parent::__construct($operation, $object);
-        $this->addExtension('xmlns:command-ext-domain', 'http://www.metaregistrar.com/epp/command-ext-domain-1.0');
         $domainChild = $this->createElement('command-ext-domain:domain');
+        $this->setNamespace('xmlns:command-ext-domain', 'http://www.metaregistrar.com/epp/command-ext-domain-1.0',$domainChild);
         $transfer = $this->createElement('command-ext-domain:transfer');
         $ns = $this->createElement('command-ext-domain:ns');
         $nameservers = $object->getHosts();
@@ -38,6 +38,7 @@ class metaregEppTransferExtendedRequest extends eppTransferRequest
         }
         $domainChild->appendChild($transfer);
         $commandExt = $this->createElement('command-ext:command-ext');
+        $this->setNamespace('command-ext', 'http://www.metaregistrar.com/epp/command-ext-1.0',$commandExt);
         $commandExt->appendChild($domainChild);
         $this->getExtension()->appendChild($commandExt);
         $this->addSessionId();

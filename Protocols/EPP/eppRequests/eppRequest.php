@@ -35,8 +35,6 @@ class eppRequest extends \DOMDocument {
      */
     public $sessionid = null;
 
-
-
     /*
      * Login element
      * @var \DomElement
@@ -59,6 +57,7 @@ class eppRequest extends \DOMDocument {
         $this->sessionid = uniqid();
         parent::__construct('1.0', 'UTF-8');
         $this->formatOutput = true;
+        $this->namespacelocation = $this->getEpp();
         //$this->standalone = false;
         #$this->validateOnParse = true;
     }
@@ -85,6 +84,7 @@ class eppRequest extends \DOMDocument {
             #
             $this->epp = $this->createElement('epp');
             $this->appendChild($this->epp);
+            $this->epp->setAttribute('xmlns','urn:ietf:params:xml:ns:epp-1.0');
         }
         return $this->epp;
     }
@@ -140,16 +140,31 @@ class eppRequest extends \DOMDocument {
     public function dumpContents() {
         echo $this->saveXML();
     }
-    
+
+    /**
+     * Adds the namespace to the EPP root element or to the applicable element, depending on the setting
+     * @param string $xmlns
+     * @param string $namespace
+     * @param \DOMElement $object
+     */
+    protected function setNamespace($xmlns, $namespace, $object = null) {
+        if ($this->rootNamespaces()) {
+            $this->getEpp()->setAttribute($xmlns,$namespace);
+        } else {
+            if ($object) {
+                $object->setAttribute($xmlns,$namespace);
+            }
+        }
+    }
     
     protected static function isAscii($str) {
         return mb_check_encoding($str, 'ASCII');
     }
 
     public function addNamespaces($namespaces) {
-        if (is_array($namespaces)) {
-            foreach ($namespaces as $namespace => $xmlns) {
-                $this->getEpp()->setAttribute('xmlns:' . $xmlns, $namespace);
+//        if (is_array($namespaces)) {
+//            foreach ($namespaces as $namespace => $xmlns) {
+//                $this->getEpp()->setAttribute('xmlns:' . $xmlns, $namespace);
                 /*$object = $xmlns.'object';
                 if ($object == 'secDNSobject')
                 {
@@ -160,8 +175,8 @@ class eppRequest extends \DOMDocument {
                 {
                     $this->$object->setAttribute('xmlns:'.$xmlns,$namespace);
                 }*/
-            }
-        }
+//            }
+//        }
     }
     
 

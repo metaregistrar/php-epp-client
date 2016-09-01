@@ -35,9 +35,9 @@ class dnsbeEppAuthcodeRequest extends eppRequest {
     }
 
     private function addDnsbeExtension($domainname) {
-        $this->addExtension('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
         $ext = $this->createElement('extension');
         $dnsext = $this->createElement('dnsbe:ext');
+        $this->setNamespace('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0',$dnsext);
         $command = $this->createElement('dnsbe:command');
         $authcode = $this->createElement('dnsbe:requestAuthCode');
         $authcode->appendChild($this->createElement('dnsbe:domainName', $domainname));

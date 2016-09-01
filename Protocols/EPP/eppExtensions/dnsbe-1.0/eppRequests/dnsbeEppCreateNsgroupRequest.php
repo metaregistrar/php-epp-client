@@ -16,13 +16,13 @@ namespace Metaregistrar\EPP;
  */
 class dnsbeEppCreateNsgroupRequest extends eppRequest {
 
+    private $hostobject;
 
     function __construct($createinfo) {
-        parent::__construct($createinfo);
+        parent::__construct();
 
         if ($createinfo instanceof eppHost) {
-            $this->addExtension('xmlns:nsgroup', 'http://www.dns.be/xml/epp/nsgroup-1.0');
-            $this->addNsgroup($createinfo);
+            $this->addNsGroup($createinfo);
         }
         $this->addSessionId();
     }
@@ -40,6 +40,7 @@ class dnsbeEppCreateNsgroupRequest extends eppRequest {
         #
         $create = $this->createElement('create');
         $this->hostobject = $this->createElement('nsgroup:create');
+        $this->setNamespace('xmlns:nsgroup', 'http://www.dns.be/xml/epp/nsgroup-1.0',$this->hostobject);
         $this->hostobject->appendChild($this->createElement('nsgroup:name', $host->getHostname()));
         $this->hostobject->appendChild($this->createElement('nsgroup:ns', $host->getHostname()));
         $create->appendChild($this->hostobject);
