@@ -13,7 +13,7 @@ namespace Metaregistrar\EPP;
 */
 class iisEppCreateContactRequest extends eppCreateContactRequest {
 
-    private $create;
+    private $create=null;
 
     function __construct($createinfo, $orgno = null, $vatno = null) {
         parent::__construct($createinfo);
@@ -34,24 +34,20 @@ class iisEppCreateContactRequest extends eppCreateContactRequest {
 
 
     public function addIISOrganization($organizationnumber) {
-        if (!$this->extension) {
-            $this->extension = $this->createElement('extension');
+        if (!$this->create) {
             $this->create = $this->createElement('iis:create');
             $this->setNamespace('xmlns:iis', 'urn:se:iis:xml:epp:iis-1.2',$this->create);
-            $this->extension->appendChild($this->create);
-            $this->command->appendChild($this->extension);
+            $this->getExtension()->appendChild($this->create);
         }
         $this->create->appendChild($this->createElement('iis:orgno', $organizationnumber));
 
     }
 
     public function addIISVat($vatnumber) {
-        if (!$this->extension) {
-            $this->extension = $this->createElement('extension');
+        if (!$this->create) {
             $this->create = $this->createElement('iis:create');
             $this->setNamespace('xmlns:iis', 'urn:se:iis:xml:epp:iis-1.2',$this->create);
-            $this->extension->appendChild($this->create);
-            $this->command->appendChild($this->extension);
+            $this->getExtension()->appendChild($this->create);
         }
         $this->create->appendChild($this->createElement('iis:vatno', $vatnumber));
     }
