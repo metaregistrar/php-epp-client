@@ -3,9 +3,15 @@ namespace Metaregistrar\EPP;
 
 class eppDeleteRequest extends eppRequest {
 
-    function __construct($deleteinfo) {
-        parent::__construct();
+    private $domainobject;
+    private $contactobject;
+    private $hostobject;
 
+    function __construct($deleteinfo) {
+        if (defined("NAMESPACESINROOT")) {
+            $this->setNamespacesinroot(NAMESPACESINROOT);
+        }
+        parent::__construct();
 
         if ($deleteinfo instanceof eppHost) {
             $this->setHost($deleteinfo);

@@ -7,8 +7,14 @@ class eppUpdateHostRequest extends eppHostRequest {
      */
     public $hostobject;
 
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $namespacesinroot = true) {
-        $this->setNamespacesinroot($namespacesinroot);
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $namespacesinroot = null) {
+        if ($namespacesinroot!==null) {
+            $this->setNamespacesinroot($namespacesinroot);
+        } else {
+            if (defined("NAMESPACESINROOT")) {
+                $this->setNamespacesinroot(NAMESPACESINROOT);
+            }
+        }
         parent::__construct(eppRequest::TYPE_UPDATE);
 
         if ($objectname instanceof eppHost) {
@@ -39,7 +45,6 @@ class eppUpdateHostRequest extends eppHostRequest {
      * @param eppHost $addInfo
      * @param eppHost $removeInfo
      * @param eppHost $updateInfo
-     * @return \DOMElement
      * @throws eppException
      */
     public function updateHost($hostname, $addInfo, $removeInfo, $updateInfo) {
@@ -69,6 +74,7 @@ class eppUpdateHostRequest extends eppHostRequest {
                 $this->hostobject->appendChild($chgcmd);
             }
         }
+        return;
     }
 
     /**

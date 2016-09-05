@@ -2,8 +2,14 @@
 namespace Metaregistrar\EPP;
 
 class eppCreateHostRequest extends eppHostRequest {
-    function __construct($createinfo, $namespacesinroot = true) {
-        $this->setNamespacesinroot($namespacesinroot);
+    function __construct($createinfo, $namespacesinroot = null) {
+        if ($namespacesinroot!==null) {
+            $this->setNamespacesinroot($namespacesinroot);
+        } else {
+            if (defined("NAMESPACESINROOT")) {
+                $this->setNamespacesinroot(NAMESPACESINROOT);
+            }
+        }
         parent::__construct(eppRequest::TYPE_CREATE);
 
         if ($createinfo instanceof eppHost) {
@@ -21,7 +27,6 @@ class eppCreateHostRequest extends eppHostRequest {
     /**
      *
      * @param eppHost $host
-     * @return \DOMElement
      * @throws eppException
      */
     public function setHost(eppHost $host) {

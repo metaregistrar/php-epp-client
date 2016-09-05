@@ -5,8 +5,14 @@ class eppCreateDomainRequest extends eppDomainRequest {
 
     
 
-    function __construct($createinfo, $forcehostattr = false, $namespacesinroot=true) {
-        $this->setNamespacesinroot($namespacesinroot);
+    function __construct($createinfo, $forcehostattr = false, $namespacesinroot=null) {
+        if ($namespacesinroot!==null) {
+            $this->setNamespacesinroot($namespacesinroot);
+        } else {
+            if (defined("NAMESPACESINROOT")) {
+                $this->setNamespacesinroot(NAMESPACESINROOT);
+            }
+        }
         $this->setForcehostattr($forcehostattr);
         
         parent::__construct(eppRequest::TYPE_CREATE);
@@ -79,7 +85,6 @@ class eppCreateDomainRequest extends eppDomainRequest {
     /**
      *
      * @param eppDomain $domain
-     * @return \DOMElement
      * @throws eppException
      */
     public function setDomain(eppDomain $domain) {

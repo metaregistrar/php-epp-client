@@ -8,8 +8,10 @@ class eppCheckRequest extends eppRequest {
     private $hostobject;
 
     function __construct($checkrequest) {
+        if (defined("NAMESPACESINROOT")) {
+            $this->setNamespacesinroot(NAMESPACESINROOT);
+        }
         parent::__construct();
-
         if ($checkrequest instanceof eppDomain) {
             $this->setDomainNames(array($checkrequest));
         } else {

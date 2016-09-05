@@ -2,8 +2,14 @@
 namespace Metaregistrar\EPP;
 
 class eppCheckContactRequest extends eppContactRequest {
-    function __construct($checkrequest, $namespacesinroot = true) {
-        $this->setNamespacesinroot($namespacesinroot);
+    function __construct($checkrequest, $namespacesinroot = null) {
+        if ($namespacesinroot!==null) {
+            $this->setNamespacesinroot($namespacesinroot);
+        } else {
+            if (defined("NAMESPACESINROOT")) {
+                $this->setNamespacesinroot(NAMESPACESINROOT);
+            }
+        }
         parent::__construct(eppRequest::TYPE_CHECK);
 
         if ($checkrequest instanceof eppContactHandle) {

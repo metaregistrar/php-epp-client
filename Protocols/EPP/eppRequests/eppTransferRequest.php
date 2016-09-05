@@ -8,7 +8,13 @@ class eppTransferRequest extends eppRequest {
     const OPERATION_REJECT = 'reject';
     const OPERATION_CANCEL = 'cancel';
 
+    private $domainobject;
+    private $contactobject;
+
     function __construct($operation, $object) {
+        if (defined("NAMESPACESINROOT")) {
+            $this->setNamespacesinroot(NAMESPACESINROOT);
+        }
         parent::__construct();
 
         #

@@ -2,8 +2,14 @@
 namespace Metaregistrar\EPP;
 
 class eppRenewRequest extends eppDomainRequest {
-    function __construct($domain, $expdate = null, $namespacesinroot = true) {
-        $this->setNamespacesinroot($namespacesinroot);
+    function __construct($domain, $expdate = null, $namespacesinroot = null) {
+        if ($namespacesinroot!==null) {
+            $this->setNamespacesinroot($namespacesinroot);
+        } else {
+            if (defined("NAMESPACESINROOT")) {
+                $this->setNamespacesinroot(NAMESPACESINROOT);
+            }
+        }
         parent::__construct(eppRequest::TYPE_RENEW);
 
         #

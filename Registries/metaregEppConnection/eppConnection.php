@@ -1,5 +1,6 @@
 <?php
 namespace Metaregistrar\EPP;
+//define("NAMESPACESINROOT", false);
 
 class metaregEppConnection extends eppConnection {
     

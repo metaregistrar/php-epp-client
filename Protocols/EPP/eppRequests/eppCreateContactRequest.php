@@ -8,8 +8,14 @@ class eppCreateContactRequest extends eppContactRequest {
      * @param eppContact|null $createinfo
      * @throws eppException
      */
-    function __construct($createinfo, $namespacesinroot = true) {
-        $this->setNamespacesinroot($namespacesinroot);
+    function __construct($createinfo, $namespacesinroot = null) {
+        if ($namespacesinroot!==null) {
+            $this->setNamespacesinroot($namespacesinroot);
+        } else {
+            if (defined("NAMESPACESINROOT")) {
+                $this->setNamespacesinroot(NAMESPACESINROOT);
+            }
+        }
         parent::__construct(eppRequest::TYPE_CREATE);
         
         if ($createinfo){
@@ -29,7 +35,6 @@ class eppCreateContactRequest extends eppContactRequest {
     /**
      *
      * @param eppContact $contact
-     * @return \domElement
      * @throws eppException
      */
     public function setContact(eppContact $contact) {
@@ -43,6 +48,7 @@ class eppCreateContactRequest extends eppContactRequest {
         $this->setEmail($contact->getEmail());
         $this->setPassword($contact->getPassword());
         $this->setDisclose($contact->getDisclose());
+        return;
     }
 
     /**
