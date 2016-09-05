@@ -21,7 +21,7 @@ class metaregSudoRequest extends eppRequest {
         parent::__construct();
         $ext = $this->createElement('extension');
         $extSudo = $this->createElement('ext:sudo');
-        $this->setNamespace('ext', 'http://www.metaregistrar.com/epp/ext-1.0',$extSudo);
+        $this->setNamespace('xmlns:ext', 'http://www.metaregistrar.com/epp/ext-1.0',$extSudo);
         $ext->appendChild($extSudo);
         parent::getEpp()->appendChild($ext);
         $clID = $this->createElement('ext:clID');

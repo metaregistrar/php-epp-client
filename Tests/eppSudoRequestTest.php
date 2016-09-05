@@ -10,7 +10,7 @@ class eppSudoRequestTest extends eppTestCase {
     public function testSudoCheckDomain()
     {
         $domain = new Metaregistrar\EPP\eppDomain('domainname.frl');
-        $check = new Metaregistrar\EPP\eppCheckDomainRequest($domain);
+        $check = new Metaregistrar\EPP\eppCheckDomainRequest($domain,false);
         $sudorequest = new Metaregistrar\EPP\MetaregSudoRequest($check,'mtr-enrise');
         //$sudorequest->dumpContents();
         $response = $this->conn->writeandread($sudorequest);

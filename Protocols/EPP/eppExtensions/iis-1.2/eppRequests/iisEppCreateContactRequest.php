@@ -21,11 +21,14 @@ class iisEppCreateContactRequest extends eppCreateContactRequest {
         if ((!$contactname) || (strlen($contactname)==0)) {
             $contactname = $createinfo->getPostalInfo(0)->getName();
         }
+        // Set the contact ID, as it is specified by IIS.SE
         $this->contactobject->getElementsByTagName('contact:id')->item(0)->nodeValue=$this->createContactId($contactname);
-        //$this->addExtension('xmlns:iis', 'urn:se:iis:xml:epp:iis-1.2');
+
+        // Add organisation number, if applicable
         if ($orgno) {
             $this->addIISOrganization($orgno);
         }
+        // Add vat no if applicable
         if ($vatno) {
             $this->addIISVat($vatno);
         }

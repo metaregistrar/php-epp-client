@@ -5,7 +5,7 @@ class amsterdamEppConnection extends eppConnection {
 
     public function __construct($logging = false, $settingsfile = null) {
         parent::__construct($logging, $settingsfile);
-        parent::addExtension('sidn-ext-epp', 'http://rxsd.domain-registry.nl/sidn-ext-epp-1.0');
+        parent::useExtension('sidn-ext-epp-1.0');
         parent::enableRgp();
         parent::enableDnssec();
         parent::addCommandResponse('Metaregistrar\EPP\sidnEppPollRequest', 'Metaregistrar\EPP\sidnEppPollResponse');

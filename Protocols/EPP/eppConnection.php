@@ -281,13 +281,12 @@ class eppConnection {
     }
 
     public function enableDnssec() {
-        $this->addExtension('secDNS','urn:ietf:params:xml:ns:secDNS-1.1');
-        $this->responses['Metaregistrar\\EPP\\eppDnssecUpdateDomainRequest'] = 'Metaregistrar\\EPP\\eppUpdateDomainResponse';
+        $this->useExtension('secDNS-1.1');
     }
 
     public function enableRgp() {
-        $this->addExtension('rgp','urn:ietf:params:xml:ns:rgp-1.0');
-        $this->responses['Metaregistrar\\EPP\\eppRgpRestoreRequest'] = 'Metaregistrar\\EPP\\eppRgpRestoreResponse';
+        $this->useExtension('rgp-1.0');
+
     }
 
     public function disableRgp() {
@@ -584,15 +583,15 @@ class eppConnection {
      * @return boolean
      * @throws eppException
      */
-    public function writeRequest(eppRequest $content)
+    public function writeRequestDEPRECATED(eppRequest $content)
     {
         //$requestsessionid = $content->getSessionId();
-        $namespaces = $this->getDefaultNamespaces();
-        if (is_array($namespaces)) {
-            foreach ($namespaces as $id => $namespace) {
-                $content->addExtension($id, $namespace);
-            }
-        }
+        //$namespaces = $this->getDefaultNamespaces();
+        //if (is_array($namespaces)) {
+        //    foreach ($namespaces as $id => $namespace) {
+        //        $content->addExtension($id, $namespace);
+        //    }
+        //}
         /*
          * $content->login is only set if this is an instance or a sub-instance of an eppLoginRequest
          */
@@ -682,12 +681,12 @@ class eppConnection {
      */
     public function writeandread($content) {
         $requestsessionid = $content->getSessionId();
-        $namespaces = $this->getDefaultNamespaces();
-        if (is_array($namespaces)) {
-            foreach ($namespaces as $id => $namespace) {
-                $content->addExtension($id, $namespace);
-            }
-        }
+        //$namespaces = $this->getDefaultNamespaces();
+        //if (is_array($namespaces)) {
+        //    foreach ($namespaces as $id => $namespace) {
+        //        $content->addExtension($id, $namespace);
+        //    }
+        //}
         /*
          * $content->login is only set if this is an instance or a sub-instance of an eppLoginRequest
          */
@@ -909,44 +908,34 @@ class eppConnection {
         $this->exturi = $extensions;
     }
 
+
     /**
+     * Indicate a connection is going to use a specific extension and load the includes
+     * @param string $namespace
+     */
+    public function useExtension($namespace) {
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $includepath = dirname(__FILE__).'\\eppExtensions\\'.$namespace.'\\includes.php';
+        } else {
+            $includepath = dirname(__FILE__).'/eppExtensions/'.$namespace.'/includes.php';
+        }
+        if (is_file($includepath)) {
+            include($includepath);
+        } else {
+            throw new eppException("Unable to use extension $namespace because extension files cannot be located");
+        }
+    }
+
+
+    /**
+     * Add an extension to the Login command of the EPP connection
+     * The login command will specify which extensions will be used in this session
+     *
      * @param string $xmlns
      * @param string $namespace
      */
     public function addExtension($xmlns, $namespace) {
         $this->exturi[$namespace] = $xmlns;
-        // Include the extension data, request and response files
-        $pos = strrpos($namespace,'/');
-        if ($pos!==false) {
-            $path = substr($namespace,$pos+1,999);
-            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                $includepath = dirname(__FILE__).'\\eppExtensions\\'.$path.'\\includes.php';
-            } else {
-                $includepath = dirname(__FILE__).'/eppExtensions/'.$path.'/includes.php';
-            }
-
-        } else {
-            $pos = strrpos($namespace,':');
-            if ($pos!==false) {
-                $path = substr($namespace,$pos+1,999);
-                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                    $includepath = dirname(__FILE__).'\\eppExtensions\\'.$path.'\\includes.php';
-                } else {
-                    $includepath = dirname(__FILE__).'/eppExtensions/'.$path.'/includes.php';
-                }
-
-            } else {
-                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                    $includepath = dirname(__FILE__).'\\eppExtensions\\'.$namespace.'\\includes.php';
-                } else {
-                    $includepath = dirname(__FILE__).'/eppExtensions/'.$namespace.'/includes.php';
-                }
-
-            }
-        }
-        if (is_file($includepath)) {
-            include_once($includepath);
-        }
     }
 
     public function removeExtension($namespace) {

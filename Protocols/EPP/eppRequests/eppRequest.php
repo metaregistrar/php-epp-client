@@ -57,9 +57,8 @@ class eppRequest extends \DOMDocument {
         $this->sessionid = uniqid();
         parent::__construct('1.0', 'UTF-8');
         $this->formatOutput = true;
-        $this->namespacelocation = $this->getEpp();
         //$this->standalone = false;
-        #$this->validateOnParse = true;
+        //$this->validateOnParse = true;
     }
 
     function __destruct() {
@@ -111,13 +110,13 @@ class eppRequest extends \DOMDocument {
         return $this->extension;
     }
 
-    public function addExtension($name, $value) {
-        if ($epp = $this->getEpp()) {
-            $epp->setAttribute($name, $value);
-        } else {
-            throw new eppException('Cannot set attribute on an empty epp element');
-        }
-    }
+    //public function addExtension($name, $value) {
+    //    if ($epp = $this->getEpp()) {
+    //        $epp->setAttribute($name, $value);
+    //    } else {
+    //        throw new eppException('Cannot set attribute on an empty epp element');
+    //    }
+    //}
     
     public function addSessionId() {
         #

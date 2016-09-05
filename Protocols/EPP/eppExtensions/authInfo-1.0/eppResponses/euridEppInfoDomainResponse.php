@@ -17,6 +17,7 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
         $cont = null;
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:contact');
         foreach ($result as $contact) {
+            /* @var $contact \DOMElement */
             $contacttype = $contact->getAttribute('type');
             if ($contacttype) {
                 $cont[] = new eppContactHandle($contact->nodeValue, $contacttype);
@@ -24,6 +25,7 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
         }
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/domain-ext:infData/domain-ext:contact');
         foreach ($result as $contact) {
+            /* @var $contact \DOMElement */
             $contacttype = $contact->getAttribute('type');
             if ($contacttype) {
                 // EURID specific
