@@ -1,6 +1,13 @@
 <?php
 namespace Metaregistrar\EPP;
-
+/**
+ * DEPRECATED!!!
+ *
+ * Please use eppDeleteDomainRequest, eppDeleteContactRequest or eppDeleteHostRequest instead
+ *
+ * Class eppDeleteRequest
+ * @package Metaregistrar\EPP
+ */
 class eppDeleteRequest extends eppRequest {
 
     private $domainobject;

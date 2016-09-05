@@ -1,6 +1,12 @@
 <?php
 namespace Metaregistrar\EPP;
-
+/**
+ * DEPRECATED!!!
+ * Please use eppCheckDomainRequest, eppCheckContactRequest or eppCheckHostRequest instead
+ *
+ * Class eppCheckRequest
+ * @package Metaregistrar\EPP
+ */
 class eppCheckRequest extends eppRequest {
 
     private $domainobject;

@@ -1,6 +1,14 @@
 <?php
 namespace Metaregistrar\EPP;
-
+/**
+ * DEPRECATED!!!!
+ *
+ * Please use eppTransferDomainRequest instead
+ * There is no transfer contact request any more
+ *
+ * Class eppTransferRequest
+ * @package Metaregistrar\EPP
+ */
 class eppTransferRequest extends eppRequest {
     const OPERATION_QUERY = 'query';
     const OPERATION_REQUEST = 'request';

@@ -13,7 +13,7 @@ class euridEppConnection extends eppConnection {
         #parent::addCommandResponse('euridEppCreateRequest', 'euridEppCreateResponse');
         #parent::addCommandResponse('euridEppAuthcodeRequest', 'eppResponse');
         #parent::addCommandResponse('euridEppCreateRequest', 'eppCreateResponse');
-        #parent::addCommandResponse('eppCheckRequest', 'euridEppCheckResponse');
+        #parent::addCommandResponse('eppCheckDomainRequest', 'euridEppCheckDomainResponse');
     }
 
 }

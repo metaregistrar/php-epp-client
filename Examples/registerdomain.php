@@ -4,7 +4,8 @@ require('../autoloader.php');
 use Metaregistrar\EPP\eppConnection;
 use Metaregistrar\EPP\eppException;
 use Metaregistrar\EPP\eppContactHandle;
-use Metaregistrar\EPP\eppCheckRequest;
+use Metaregistrar\EPP\eppCheckContactRequest;
+use Metaregistrar\EPP\eppCheckHostRequest;
 use Metaregistrar\EPP\eppContactPostalInfo;
 use Metaregistrar\EPP\eppContact;
 use Metaregistrar\EPP\eppCreateContactRequest;
@@ -58,7 +59,7 @@ try {
 function checkcontact($conn, $contactid) {
     /* @var $conn Metaregistrar\EPP\eppConnection */
     try {
-        $check = new eppCheckRequest(new eppContactHandle($contactid));
+        $check = new eppCheckContactRequest(new eppContactHandle($contactid));
         if ($response = $conn->request($check)) {
             /* @var $response Metaregistrar\EPP\eppCheckResponse */
             $checks = $response->getCheckedContacts();
@@ -101,7 +102,7 @@ function checkhosts($conn, $hosts) {
         foreach ($hosts as $host) {
             $checkhost[] = new eppHost($host);
         }
-        $check = new eppCheckRequest($checkhost);
+        $check = new eppCheckHostRequest($checkhost);
         if ($response = $conn->request($check)) {
             /* @var $response Metaregistrar\EPP\eppCheckResponse */
             $checks = $response->getCheckedHosts();

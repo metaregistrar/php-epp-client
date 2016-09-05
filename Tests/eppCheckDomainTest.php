@@ -40,11 +40,11 @@ class eppCheckDomainTest extends eppTestCase {
         $domainname = self::randomstring(30).'.frl';
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppDomain',$domain);
-        $check = new Metaregistrar\EPP\eppCheckRequest($domain);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckRequest',$check);
+        $check = new Metaregistrar\EPP\eppCheckDomainRequest($domain);
+        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckDomainRequest',$check);
         $response = $this->conn->writeandread($check);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckResponse',$response);
-        if ($response instanceof Metaregistrar\EPP\eppCheckResponse) {
+        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckDomainResponse',$response);
+        if ($response instanceof Metaregistrar\EPP\eppCheckDomainResponse) {
             $this->assertTrue($response->Success());
             if ($response->Success()) {
                 $checks = $response->getCheckedDomains();
@@ -69,11 +69,11 @@ class eppCheckDomainTest extends eppTestCase {
         $domainname = 'nic.frl';
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppDomain',$domain);
-        $check = new Metaregistrar\EPP\eppCheckRequest($domain);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckRequest',$check);
+        $check = new Metaregistrar\EPP\eppCheckDomainRequest($domain);
+        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckDomainRequest',$check);
         $response = $this->conn->writeandread($check);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckResponse',$response);
-        if ($response instanceof Metaregistrar\EPP\eppCheckResponse) {
+        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckDomainResponse',$response);
+        if ($response instanceof Metaregistrar\EPP\eppCheckDomainResponse) {
             $this->assertTrue($response->Success());
             if ($response->Success()) {
                 $checks = $response->getCheckedDomains();
@@ -97,11 +97,11 @@ class eppCheckDomainTest extends eppTestCase {
         $domainname = 'test.frl';
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppDomain',$domain);
-        $check = new Metaregistrar\EPP\eppCheckRequest($domain);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckRequest',$check);
+        $check = new Metaregistrar\EPP\eppCheckDomainRequest($domain);
+        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckDomainRequest',$check);
         $response = $this->conn->writeandread($check);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckResponse',$response);
-        if ($response instanceof Metaregistrar\EPP\eppCheckResponse) {
+        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckDomainResponse',$response);
+        if ($response instanceof Metaregistrar\EPP\eppCheckDomainResponse) {
             $this->assertTrue($response->Success());
             if ($response->Success()) {
                 $checks = $response->getCheckedDomains();
@@ -125,11 +125,11 @@ class eppCheckDomainTest extends eppTestCase {
         $domainname = 'test%test.frl';
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppDomain',$domain);
-        $check = new Metaregistrar\EPP\eppCheckRequest($domain);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckRequest',$check);
+        $check = new Metaregistrar\EPP\eppCheckDomainRequest($domain);
+        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckDomainRequest',$check);
         $response = $this->conn->writeandread($check);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckResponse',$response);
-        if ($response instanceof Metaregistrar\EPP\eppCheckResponse) {
+        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckDomainResponse',$response);
+        if ($response instanceof Metaregistrar\EPP\eppCheckDomainResponse) {
             $this->assertTrue($response->Success());
             if ($response->Success()) {
                 $checks = $response->getCheckedDomains();
@@ -153,11 +153,11 @@ class eppCheckDomainTest extends eppTestCase {
         $domainname = self::randomstring(30).'.abracadabra';
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppDomain',$domain);
-        $check = new Metaregistrar\EPP\eppCheckRequest($domain);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckRequest',$check);
+        $check = new Metaregistrar\EPP\eppCheckDomainRequest($domain);
+        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckDomainRequest',$check);
         $response = $this->conn->writeandread($check);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckResponse',$response);
-        if ($response instanceof Metaregistrar\EPP\eppCheckResponse) {
+        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckDomainResponse',$response);
+        if ($response instanceof Metaregistrar\EPP\eppCheckDomainResponse) {
             $this->assertTrue($response->Success());
             if ($response->Success()) {
                 $checks = $response->getCheckedDomains();
