@@ -352,12 +352,11 @@ class eppConnection {
         if ($this->local_cert_path) {
             $ssl = true;
         }
-        if (strpos($hostname,'ssl://')!==false) {
+        if (stripos($this->hostname,'ssl://')===false) {
             $target = sprintf('%s://%s:%d', ($ssl === true ? 'ssl' : 'tcp'), $this->hostname, $this->port);
         } else {
             $target = sprintf('%s:%d', $this->hostname, $this->port);
         }
-
         $errno = '';
         $errstr = '';
         $context = stream_context_create();
