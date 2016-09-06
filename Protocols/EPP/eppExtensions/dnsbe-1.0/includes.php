@@ -1,6 +1,5 @@
 <?php
 
-
 $this->addExtension('dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
 #$this->addExtension('keygroup','http://www.dns.be/xml/epp/keygroup-1.0');
 

@@ -21,7 +21,6 @@ class dnsbeEppTransferRequest extends eppTransferRequest {
     }
 
     public function addDnsbeExtension($tech = null, $billing = null, $onsite=null, $registrant=null) {
-        $ext = $this->createElement('extension');
         $dnsbeext = $this->createElement('dnsbe:ext');
         $this->setNamespace('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0',$dnsbeext);
         $create = $this->createElement('dnsbe:transfer');
@@ -42,7 +41,6 @@ class dnsbeEppTransferRequest extends eppTransferRequest {
         }
         $create->appendChild($contact);
         $dnsbeext->appendChild($create);
-        $ext->appendChild($dnsbeext);
-        $this->command->appendChild($ext);
+        $this->getExtension()->appendChild($dnsbeext);
     }
 }

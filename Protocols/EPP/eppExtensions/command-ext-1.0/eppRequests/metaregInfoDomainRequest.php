@@ -46,28 +46,19 @@ class metaregInfoDomainRequest extends eppInfoDomainRequest {
             throw new eppException("Duplicate option: $option");
         }
         if (!$this->domaininfoext) {
-            $ext = $this->createElement('extension');
-            $this->command->appendChild($ext);
-
             $commandext = $this->createElement('command-ext:command-ext');
             $this->setNamespace('command-ext', 'http://www.metaregistrar.com/epp/command-ext-1.0',$commandext);
-            $ext->appendChild($commandext);
+            $this->getExtension()->appendChild($commandext);
 
             $infoext = $this->createElement('command-ext-domain:domain');
             $this->setNamespace('xmlns:command-ext-domain', 'http://www.metaregistrar.com/epp/command-ext-domain-1.0',$infoext);
             $commandext->appendChild($infoext);
-
             $domaininfoext = $this->createElement('command-ext-domain:info');
             $infoext->appendChild($domaininfoext);
-
             $this->domaininfoext = $domaininfoext;
-
-
         }
-
         $option = $this->createElement("command-ext-domain:option", $option->getType());
         $this->domaininfoext->appendChild($option);
-
         $this->options[] = $option;
         $this->addSessionId();
     }
