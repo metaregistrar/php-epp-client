@@ -34,7 +34,7 @@ class eppTransferRequest extends eppDomainRequest {
             }
         }
         $transfer = $this->getCommand()->firstChild;
-        $transfer->setAttribute('op', self::OPERATION_QUERY);
+        $transfer->setAttribute('op', $operation);
         $this->domainobject->appendChild($this->createElement('domain:name', $object->getDomainname()));
         if (strlen($object->getAuthorisationCode())) {
             $authinfo = $this->createElement('domain:authInfo');
