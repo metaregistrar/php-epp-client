@@ -37,6 +37,26 @@ class eppInfoDomainTest extends eppTestCase {
     }
 
 
+    /**
+     * Test succesful contact info giving an authcode
+     * @throws \Metaregistrar\EPP\eppException
+     */
+    public function testInfoDomainWithoutAuthcode() {
+        $domainname = $this->createDomain($this->randomstring(20).'.be');
+        $info = new Metaregistrar\EPP\metaregEppAuthcodeRequest(new Metaregistrar\EPP\eppDomain($domainname));
+        $response = $this->conn->writeandread($info);
+        $this->assertInstanceOf('Metaregistrar\EPP\eppInfoDomainResponse',$response);
+        /* @var $response Metaregistrar\EPP\eppInfoDomainResponse */
+        $this->assertTrue($response->Success());
+        $this->assertEquals('Command completed successfully',$response->getResultMessage());
+        $this->assertEquals(1000,$response->getResultCode());
+    }
+
+
+    /**
+     * Test that cannot be performed using the EPP client, because the client will not allow this
+     * This test should fail
+     */
     public function testInfoDomainEmptyContact() {
         $xml = '<?xml version="1.0" encoding="utf-8"?>
 <epp xmlns:host="urn:ietf:params:xml:ns:host-1.0" xmlns:domain="urn:ietf:params:xml:ns:domain-1.0" xmlns:contact="urn:ietf:params:xml:ns:contact-1.0" xmlns:obj="urn:ietf:params:xml:ns:obj-1.0" xmlns="urn:ietf:params:xml:ns:epp-1.0">

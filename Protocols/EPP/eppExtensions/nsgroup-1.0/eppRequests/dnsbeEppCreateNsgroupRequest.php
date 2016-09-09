@@ -22,6 +22,7 @@ class dnsbeEppCreateNsgroupRequest extends eppRequest {
         parent::__construct();
 
         if ($createinfo instanceof eppHost) {
+            $this->addExtension('xmlns:nsgroup', 'http://www.dns.be/xml/epp/nsgroup-1.0');
             $this->addNsGroup($createinfo);
         }
         $this->addSessionId();
@@ -32,20 +33,14 @@ class dnsbeEppCreateNsgroupRequest extends eppRequest {
             throw new eppException('No valid hostname in create host request');
         }
         #
-        # Create command structure
-        #
-        $this->command = $this->createElement('command');
-        #
         # Object create structure
         #
         $create = $this->createElement('create');
         $this->hostobject = $this->createElement('nsgroup:create');
-        $this->setNamespace('xmlns:nsgroup', 'http://www.dns.be/xml/epp/nsgroup-1.0',$this->hostobject);
         $this->hostobject->appendChild($this->createElement('nsgroup:name', $host->getHostname()));
         $this->hostobject->appendChild($this->createElement('nsgroup:ns', $host->getHostname()));
         $create->appendChild($this->hostobject);
-        $this->command->appendChild($create);
-        $this->epp->appendChild($this->command);
+        $this->getCommand()->appendChild($create);
         return;
     }
 }

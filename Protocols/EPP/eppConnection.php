@@ -679,6 +679,25 @@ class eppConnection {
     }
 
     /**
+     * Error handler for loadxml() so that a nice exception is thrown
+     * @param int $errno
+     * @param string $errstr
+     * @param string $errfile
+     * @param string $errline
+     * @return bool
+     * @throws eppException
+     */
+    function HandleXmlError($errno, $errstr, $errfile, $errline)
+    {
+        if ($errno==E_WARNING && (substr_count($errstr,"DOMDocument::loadXML()")>0))
+        {
+            throw new eppException('ERROR reading EPP message: '.str_replace('DOMDocument::loadXML(): ','',$errstr),$errno, null, $errfile.'('.$errline.')');
+        }
+        else
+            return false;
+    }
+
+    /**
      * Write the content domDocument to the stream
      * Read the answer
      * Load the answer in a response domDocument
@@ -738,7 +757,9 @@ class eppConnection {
             }
 
             if (strlen($xml)) {
+                set_error_handler(array($this,'HandleXmlError'));
                 if ($response->loadXML($xml)) {
+                    restore_error_handler();
                     $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG),"READ");
                     $clienttransid = $response->getClientTransactionId();
                     if (($this->checktransactionids) && ($clienttransid) && ($clienttransid != $requestsessionid)) {
@@ -752,8 +773,11 @@ class eppConnection {
                         $response->validateServices($this->getLanguage(), $this->getVersion());
                     }
                     return $response;
+                } else {
+                    restore_error_handler();
                 }
             } else {
+
                 throw new eppException('Empty XML document when receiving data!');
             }
         } else {
