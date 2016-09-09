@@ -147,11 +147,12 @@ class eppRequest extends \DOMDocument {
      * @param \DOMElement $object
      */
     protected function setNamespace($xmlns, $namespace, $object = null) {
+        $xmlns = str_replace('xmlns:','',$xmlns);
         if ($this->rootNamespaces()) {
-            $this->getEpp()->setAttribute($xmlns,$namespace);
+            $this->getEpp()->setAttribute('xmlns:'.$xmlns,$namespace);
         } else {
             if ($object) {
-                $object->setAttribute($xmlns,$namespace);
+                $object->setAttribute('xmlns:'.$xmlns,$namespace);
             }
         }
     }
