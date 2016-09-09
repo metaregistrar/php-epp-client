@@ -45,7 +45,7 @@ class dnsbeEppCreateContactRequest extends eppCreateContactRequest {
         $create->appendChild($contact);
         $dnsbeext->appendChild($create);
         $ext->appendChild($dnsbeext);
-        $this->command->appendChild($ext);
+        $this->getCommand()->appendChild($ext);
     }
 
 }

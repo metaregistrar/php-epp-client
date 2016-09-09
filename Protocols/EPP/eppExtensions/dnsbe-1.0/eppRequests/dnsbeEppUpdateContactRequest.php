@@ -52,7 +52,7 @@ class dnsbeEppUpdateContactRequest extends eppUpdateContactRequest {
         $update->appendChild($contact);
         $dnsbeext->appendChild($update);
         $ext->appendChild($dnsbeext);
-        $this->command->appendChild($ext);
+        $this->getCommand()->appendChild($ext);
     }
 
 }

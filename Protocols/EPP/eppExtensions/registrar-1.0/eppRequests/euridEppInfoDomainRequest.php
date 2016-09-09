@@ -32,7 +32,7 @@ class euridEppInfoDomainRequest extends eppInfoDomainRequest {
         $authext->setAttribute('xmlns:authInfo', 'http://www.eurid.eu/xml/epp/authInfo-1.0');
         $authext->appendChild($this->createElement('authInfo:request'));
         $ext->appendChild($authext);
-        $this->command->appendChild($ext);
+        $this->getCommand()->appendChild($ext);
     }
 
 }

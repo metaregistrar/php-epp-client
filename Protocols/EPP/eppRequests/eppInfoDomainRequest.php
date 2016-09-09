@@ -39,13 +39,8 @@ class eppInfoDomainRequest extends eppDomainRequest {
             throw new eppException('Domain object does not contain a valid domain name');
         }
         #
-        # Create command structure
+        # Domain structure
         #
-        $this->command = $this->createElement('command');
-        #
-        # Domain check structure
-        #
-
         $dname = $this->createElement('domain:name', $domain->getDomainname());
         if ($hosts) {
             if (($hosts == self::HOSTS_ALL) || ($hosts == self::HOSTS_DELEGATED) || ($hosts == self::HOSTS_NONE) || ($hosts == self::HOSTS_SUBORDINATE)) {

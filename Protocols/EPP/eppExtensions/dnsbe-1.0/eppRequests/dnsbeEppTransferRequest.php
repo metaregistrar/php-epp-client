@@ -43,6 +43,6 @@ class dnsbeEppTransferRequest extends eppTransferRequest {
         $create->appendChild($contact);
         $sidnext->appendChild($create);
         $ext->appendChild($sidnext);
-        $this->command->appendChild($ext);
+        $this->getCommand()->appendChild($ext);
     }
 }

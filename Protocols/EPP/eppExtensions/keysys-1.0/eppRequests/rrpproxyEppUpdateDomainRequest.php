@@ -14,7 +14,7 @@ namespace Metaregistrar\EPP;
 
 class rrpproxyEppUpdateDomainRequest extends eppUpdateDomainRequest {
     function __construct(eppDomain $domain, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false) {
-        $upd = new eppDomain($domain->getDomainName());
+        $upd = new eppDomain($domain->getDomainname());
         parent::__construct($domain, null, null, $upd);
         $this->addTrustee();
         parent::addSessionId();
@@ -29,7 +29,7 @@ class rrpproxyEppUpdateDomainRequest extends eppUpdateDomainRequest {
         $domdata->appendChild($cd);
         $infdata->appendChild($domdata);
         $ext->appendChild($infdata);
-        $this->command->appendChild($ext);
+        $this->getCommand()->appendChild($ext);
     }
 
 

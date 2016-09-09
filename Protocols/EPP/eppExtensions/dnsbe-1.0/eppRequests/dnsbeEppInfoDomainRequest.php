@@ -29,7 +29,7 @@ class dnsbeEppInfoDomainRequest extends eppInfoDomainRequest {
         $info->appendChild($infodomain);
         $sidnext->appendChild($info);
         $ext->appendChild($sidnext);
-        $this->command->appendChild($ext);
+        $this->getCommand()->appendChild($ext);
 
     }
 

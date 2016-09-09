@@ -45,7 +45,7 @@ class dnsbeEppDeleteDomainRequest extends eppDeleteDomainRequest {
         $delete->appendChild($deletedomain);
         $dnsbeext->appendChild($delete);
         $ext->appendChild($dnsbeext);
-        $this->command->appendChild($ext);
+        $this->getCommand()->appendChild($ext);
     }
 
 }

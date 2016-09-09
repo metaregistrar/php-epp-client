@@ -47,7 +47,7 @@ class metaregInfoDomainRequest extends eppInfoDomainRequest {
         }
         if (!$this->domaininfoext) {
             $ext = $this->createElement('extension');
-            $this->command->appendChild($ext);
+            $this->getCommand()->appendChild($ext);
 
             $commandext = $this->createElement('command-ext:command-ext');
             $ext->appendChild($commandext);

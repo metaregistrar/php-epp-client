@@ -38,7 +38,7 @@ class iisEppCreateContactRequest extends eppCreateContactRequest {
             $this->extension = $this->createElement('extension');
             $this->create = $this->createElement('iis:create');
             $this->extension->appendChild($this->create);
-            $this->command->appendChild($this->extension);
+            $this->getCommand()->appendChild($this->extension);
         }
         $this->create->appendChild($this->createElement('iis:orgno', $organizationnumber));
 
@@ -49,7 +49,7 @@ class iisEppCreateContactRequest extends eppCreateContactRequest {
             $this->extension = $this->createElement('extension');
             $this->create = $this->createElement('iis:create');
             $this->extension->appendChild($this->create);
-            $this->command->appendChild($this->extension);
+            $this->getCommand()->appendChild($this->extension);
         }
         $this->create->appendChild($this->createElement('iis:vatno', $vatnumber));
     }
