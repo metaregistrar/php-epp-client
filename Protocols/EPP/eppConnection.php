@@ -356,6 +356,7 @@ class eppConnection {
             $target = sprintf('%s://%s:%d', ($ssl === true ? 'ssl' : 'tcp'), $this->hostname, $this->port);
         } else {
             $target = sprintf('%s:%d', $this->hostname, $this->port);
+            $ssl = true;
         }
         $errno = '';
         $errstr = '';
