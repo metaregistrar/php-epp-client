@@ -496,7 +496,7 @@ class eppConnection {
                 }
                 //$this->writeLog("Read 4 bytes for integer. (read: " . strlen($read) . "):$read","READ");
                 $length = $this->readInteger($read) - 4;
-                $this->writeLog("Reading next: $length bytes","READ");
+                //$this->writeLog("Reading next: $length bytes","READ");
             }
             if ($length > 1000000) {
                 throw new eppException("Packet size is too big: $length. Closing connection",0,null,null,$read);
@@ -560,7 +560,7 @@ class eppConnection {
      * @throws eppException
      */
     public function write($content) {
-        $this->writeLog("Writing: " . strlen($content) . " + 4 bytes","WRITE");
+        //$this->writeLog("Writing: " . strlen($content) . " + 4 bytes","WRITE");
         $content = $this->addInteger($content);
         if (!is_resource($this->connection)) {
             throw new eppException ('Writing while no connection is made is not supported.');
