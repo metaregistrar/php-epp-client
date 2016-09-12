@@ -2,8 +2,14 @@
 namespace Metaregistrar\EPP;
 
 class eppUpdateContactRequest extends eppContactRequest {
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $namespacesinroot = true) {
-        $this->setNamespacesinroot($namespacesinroot);
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $namespacesinroot = null) {
+        if ($namespacesinroot!==null) {
+            $this->setNamespacesinroot($namespacesinroot);
+        } else {
+            if (defined("NAMESPACESINROOT")) {
+                $this->setNamespacesinroot(NAMESPACESINROOT);
+            }
+        }
         parent::__construct(eppRequest::TYPE_UPDATE);
 
         if ($objectname instanceof eppContactHandle) {
@@ -34,7 +40,6 @@ class eppUpdateContactRequest extends eppContactRequest {
      * @param eppContact $addInfo
      * @param eppContact $removeInfo
      * @param eppContact $updateInfo
-     * @return \DOMElement
      */
     public function updateContact($contactid, $addInfo, $removeInfo, $updateInfo) {
         #
@@ -56,6 +61,7 @@ class eppUpdateContactRequest extends eppContactRequest {
             $this->addContactStatus($addcmd, $addInfo);
             $this->contactobject->appendChild($addcmd);
         }
+        return;
     }
 
     /**

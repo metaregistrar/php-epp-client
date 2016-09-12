@@ -11,10 +11,10 @@ class eppCheckHostTest extends eppTestCase {
         $hostname = 'ns1.'.self::randomstring(30).'.frl';
         $host = new Metaregistrar\EPP\eppHost($hostname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppHost',$host);
-        $check = new Metaregistrar\EPP\eppCheckRequest($host);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckRequest',$check);
+        $check = new Metaregistrar\EPP\eppCheckHostRequest($host);
+        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckHostRequest',$check);
         $response = $this->conn->writeandread($check);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckResponse',$response);
+        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckHostResponse',$response);
         if ($response instanceof Metaregistrar\EPP\eppCheckResponse) {
             $this->assertTrue($response->Success());
             if ($response->Success()) {
@@ -35,12 +35,12 @@ class eppCheckHostTest extends eppTestCase {
         $hostname = 'ns1.test%@test.frl';
         $host = new Metaregistrar\EPP\eppHost($hostname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppHost',$host);
-        $check = new Metaregistrar\EPP\eppCheckRequest($host);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckRequest',$check);
+        $check = new Metaregistrar\EPP\eppCheckHostRequest($host);
+        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckHostRequest',$check);
         //echo $check->saveXML();
         $response = $this->conn->writeandread($check);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckResponse',$response);
-        if ($response instanceof Metaregistrar\EPP\eppCheckResponse) {
+        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckHostResponse',$response);
+        if ($response instanceof Metaregistrar\EPP\eppCheckHostResponse) {
             //echo $response->saveXML();
             //$this->setExpectedException('Metaregistrar\EPP\eppException');
             $this->assertTrue($response->Success());

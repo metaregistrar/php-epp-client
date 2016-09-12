@@ -1,10 +1,23 @@
 <?php
 namespace Metaregistrar\EPP;
-
+/**
+ * DEPRECATED!!!
+ * Please use eppCheckDomainRequest, eppCheckContactRequest or eppCheckHostRequest instead
+ *
+ * Class eppCheckRequest
+ * @package Metaregistrar\EPP
+ */
 class eppCheckRequest extends eppRequest {
-    function __construct($checkrequest) {
-        parent::__construct();
 
+    private $domainobject;
+    private $contactobject;
+    private $hostobject;
+
+    function __construct($checkrequest) {
+        if (defined("NAMESPACESINROOT")) {
+            $this->setNamespacesinroot(NAMESPACESINROOT);
+        }
+        parent::__construct();
         if ($checkrequest instanceof eppDomain) {
             $this->setDomainNames(array($checkrequest));
         } else {
@@ -50,6 +63,7 @@ class eppCheckRequest extends eppRequest {
         #
         $check = $this->createElement('check');
         $this->domainobject = $this->createElement('domain:check');
+        $this->setNamespace('xmlns:domain','urn:ietf:params:xml:ns:domain-1.0', $this->domainobject);
         foreach ($domains as $domain) {
             if ($domain instanceof eppDomain) {
                 $this->domainobject->appendChild($this->createElement('domain:name', $domain->getDomainname()));
@@ -67,6 +81,7 @@ class eppCheckRequest extends eppRequest {
         #
         $check = $this->createElement('check');
         $this->contactobject = $this->createElement('contact:check');
+        $this->setNamespace('xmlns:contact','urn:ietf:params:xml:ns:contact-1.0', $this->contactobject);
         foreach ($contacthandles as $contacthandle) {
             if ($contacthandle instanceof eppContactHandle) {
                 $this->contactobject->appendChild($this->createElement('contact:id', $contacthandle->getContactHandle()));
@@ -84,6 +99,7 @@ class eppCheckRequest extends eppRequest {
         #
         $check = $this->createElement('check');
         $this->hostobject = $this->createElement('host:check');
+        $this->setNamespace('xmlns:host','urn:ietf:params:xml:ns:host-1.0', $this->hostobject);
         foreach ($hosts as $host) {
             if ($host instanceof eppHost) {
                 if (strlen($host->getHostname()) > 0) {

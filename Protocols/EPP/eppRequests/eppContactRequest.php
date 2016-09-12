@@ -14,9 +14,7 @@ class eppContactRequest extends eppRequest {
         parent::__construct();
         $check = $this->createElement($type);
         $this->contactobject = $this->createElement('contact:'.$type);
-        if (!$this->rootNamespaces()) {
-            $this->contactobject->setAttribute('xmlns:contact','urn:ietf:params:xml:ns:contact-1.0');
-        }
+        $this->setNamespace('xmlns:contact','urn:ietf:params:xml:ns:contact-1.0', $this->contactobject);
         $check->appendChild($this->contactobject);
         $this->getCommand()->appendChild($check);
     }

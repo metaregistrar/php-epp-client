@@ -22,14 +22,13 @@ class rrpproxyEppUpdateDomainRequest extends eppUpdateDomainRequest {
     }
 
     private function addTrustee() {
-        $ext = $this->createElement('extension');
         $infdata = $this->createElement('keysys:update');
+        $this->setNamespace('xmlns:keysys','http://www.key-systems.net/epp/keysys-1.0',$infdata);
         $domdata = $this->createElement('keysys:domain');
         $cd = $this->createElement('keysys:de-accept-trustee-tac', '1');
         $domdata->appendChild($cd);
         $infdata->appendChild($domdata);
-        $ext->appendChild($infdata);
-        $this->getCommand()->appendChild($ext);
+        $this->getExtension()->appendChild($infdata);
     }
 
 

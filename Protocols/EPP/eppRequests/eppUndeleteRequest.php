@@ -4,6 +4,9 @@ namespace Metaregistrar\EPP;
 class eppUndeleteRequest extends eppRequest {
 
     function __construct($restoreinfo) {
+        if (defined("NAMESPACESINROOT")) {
+            $this->setNamespacesinroot(NAMESPACESINROOT);
+        }
         parent::__construct();
         if ($restoreinfo instanceof eppDomain) {
             $this->setDomain($restoreinfo);

@@ -29,7 +29,7 @@ class eppDnssecUpdateDomainRequest extends eppUpdateDomainRequest {
         /* @var $removeinfo eppDomain */
         /* @var $updateinfo eppDomain */
         if ($objectname instanceof eppDomain) {
-            $domainname = $objectname->getDomainName();
+            $domainname = $objectname->getDomainname();
         } else {
             $domainname = $objectname;
         }
@@ -38,7 +38,7 @@ class eppDnssecUpdateDomainRequest extends eppUpdateDomainRequest {
         }
         parent::__construct($domainname, $addinfo, $removeinfo, $updateinfo);
         $secdns = $this->createElement('secDNS:update');
-        $secdns->setAttribute('xmlns:secDNS', 'urn:ietf:params:xml:ns:secDNS-1.1');
+        $this->setNamespace('xmlns:secDNS', 'urn:ietf:params:xml:ns:secDNS-1.1',$secdns);
         if ($removeinfo instanceof eppDomain) {
             $dnssecs = $removeinfo->getSecdns();
             foreach ($dnssecs as $dnssec) {
@@ -93,7 +93,7 @@ class eppDnssecUpdateDomainRequest extends eppUpdateDomainRequest {
                 $secdns->appendChild($add);
             }
         }
-        $this->getExtension()->appendchild($secdns);
+        $this->getExtension()->appendChild($secdns);
         $this->addSessionId();
     }
 

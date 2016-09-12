@@ -16,13 +16,11 @@ class eppDomainRequest extends eppRequest {
 
     function __construct($type) {
         parent::__construct();
-        $check = $this->createElement($type);
+        $object = $this->createElement($type);
         $this->domainobject = $this->createElement('domain:'.$type);
-        if (!$this->rootNamespaces()) {
-            $this->domainobject->setAttribute('xmlns:domain','urn:ietf:params:xml:ns:domain-1.0');
-        }
-        $check->appendChild($this->domainobject);
-        $this->getCommand()->appendChild($check);
+        $this->setNamespace('xmlns:domain','urn:ietf:params:xml:ns:domain-1.0', $this->domainobject);
+        $object->appendChild($this->domainobject);
+        $this->getCommand()->appendChild($object);
     }
 
     public function getForcehostattr() {

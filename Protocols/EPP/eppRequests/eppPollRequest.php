@@ -11,6 +11,9 @@ class eppPollRequest extends eppRequest {
     const POLL_ACK = 'ack';
 
     function __construct($polltype, $messageid = null, $services = null, $extensions = null) {
+        if (defined("NAMESPACESINROOT")) {
+            $this->setNamespacesinroot(NAMESPACESINROOT);
+        }
         parent::__construct();
 
         #

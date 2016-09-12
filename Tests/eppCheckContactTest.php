@@ -11,11 +11,11 @@ class eppCheckContactTest extends eppTestCase {
         $handleid = 999999999;
         $contact = new Metaregistrar\EPP\eppContactHandle($handleid);
         $this->assertInstanceOf('Metaregistrar\EPP\eppContactHandle',$contact);
-        $check = new Metaregistrar\EPP\eppCheckRequest($contact);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckRequest',$check);
+        $check = new Metaregistrar\EPP\eppCheckContactRequest($contact);
+        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckContactRequest',$check);
         $response = $this->conn->writeandread($check);
-        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckResponse',$response);
-        if ($response instanceof Metaregistrar\EPP\eppCheckResponse) {
+        $this->assertInstanceOf('Metaregistrar\EPP\eppCheckContactResponse',$response);
+        if ($response instanceof Metaregistrar\EPP\eppCheckContactResponse) {
             $this->assertTrue($response->Success());
             if ($response->Success()) {
                 $checks = $response->getCheckedContacts();

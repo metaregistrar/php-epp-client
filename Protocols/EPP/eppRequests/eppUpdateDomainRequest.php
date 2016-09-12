@@ -4,9 +4,14 @@ namespace Metaregistrar\EPP;
 class eppUpdateDomainRequest extends eppDomainRequest {
 
 
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false, $namespacesinroot=true) {
-
-        $this->setNamespacesinroot($namespacesinroot);
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false, $namespacesinroot=null) {
+        if ($namespacesinroot!==null) {
+            $this->setNamespacesinroot($namespacesinroot);
+        } else {
+            if (defined("NAMESPACESINROOT")) {
+                $this->setNamespacesinroot(NAMESPACESINROOT);
+            }
+        }
         $this->setForcehostattr($forcehostattr);
         parent::__construct(eppRequest::TYPE_UPDATE);
         if ($objectname instanceof eppDomain) {
@@ -37,7 +42,6 @@ class eppUpdateDomainRequest extends eppDomainRequest {
      * @param eppDomain $addInfo
      * @param eppDomain $removeInfo
      * @param eppDomain $updateInfo
-     * @return \domElement
      */
     public function updateDomain($domainname, $addInfo, $removeInfo, $updateInfo) {
         #
@@ -59,6 +63,7 @@ class eppUpdateDomainRequest extends eppDomainRequest {
             $this->addDomainChanges($chgcmd, $updateInfo);
             $this->domainobject->appendChild($chgcmd);
         }
+        return;
     }
 
     /**

@@ -189,7 +189,7 @@ function checkandcreatehosts($conn, $hosts) {
         foreach ($hosts as $host) {
             $checkhost[] = new Metaregistrar\EPP\eppHost($host);
         }
-        $check = new Metaregistrar\EPP\eppCheckRequest($checkhost);
+        $check = new Metaregistrar\EPP\eppCheckHostRequest($checkhost);
         if ((($response = $conn->writeandread($check)) instanceof Metaregistrar\EPP\eppCheckHostResponse) && ($response->Success())) {
             /* @var $response Metaregistrar\EPP\eppCheckHostResponse */
             $checks = $response->getCheckedHosts();
@@ -587,12 +587,12 @@ function infohost($conn, $hostname) {
  * @return mixed
  */
 function checkdomain($conn, $domain) {
-    $check = new Metaregistrar\EPP\eppCheckRequest($domain);
+    $check = new Metaregistrar\EPP\eppCheckDomainRequest($domain);
     if ((($response = $conn->writeandread($check)) instanceof Metaregistrar\EPP\eppCheckResponse) && ($response->Success())) {
         /* @var $response Metaregistrar\EPP\eppCheckResponse */
         $result = $response->getCheckedDomains();
         foreach ($result as $checkeddomain) {
-            if ($checkeddomain['domainname'] == $domain->getDomainName()) {
+            if ($checkeddomain['domainname'] == $domain->getDomainname()) {
                 return $checkeddomain['available'];
             }
         }

@@ -6,8 +6,14 @@ namespace Metaregistrar\EPP;
  */
 
 class eppInfoHostRequest extends eppHostRequest {
-    function __construct($inforequest, $namespacesinroot = true) {
-        $this->setNamespacesinroot($namespacesinroot);
+    function __construct($inforequest, $namespacesinroot = null) {
+        if ($namespacesinroot!==null) {
+            $this->setNamespacesinroot($namespacesinroot);
+        } else {
+            if (defined("NAMESPACESINROOT")) {
+                $this->setNamespacesinroot(NAMESPACESINROOT);
+            }
+        }
         parent::__construct(eppRequest::TYPE_INFO);
 
         if ($inforequest instanceof eppHost) {

@@ -35,17 +35,15 @@ class dnsbeEppAuthcodeRequest extends eppRequest {
     }
 
     private function addDnsbeExtension($domainname) {
-        $this->addExtension('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
-        $ext = $this->createElement('extension');
         $dnsext = $this->createElement('dnsbe:ext');
+        $this->setNamespace('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0',$dnsext);
         $command = $this->createElement('dnsbe:command');
         $authcode = $this->createElement('dnsbe:requestAuthCode');
         $authcode->appendChild($this->createElement('dnsbe:domainName', $domainname));
         $authcode->appendChild($this->createElement('dnsbe:url', 'http://www.metaregistrar.com/tranfer?domainname=' . $domainname));
         $command->appendChild($authcode);
         $dnsext->appendChild($command);
-        $ext->appendChild($dnsext);
-        $this->epp->appendChild($ext);
+        $this->getExtension()->appendChild($dnsext);
     }
 
 }

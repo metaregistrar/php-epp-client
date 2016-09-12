@@ -208,6 +208,7 @@ class eppConnection {
         $this->responses['Metaregistrar\\EPP\\eppUpdateHostRequest'] = 'Metaregistrar\\EPP\\eppUpdateResponse';
         $this->responses['Metaregistrar\\EPP\\eppRenewRequest'] = 'Metaregistrar\\EPP\\eppRenewResponse';
         $this->responses['Metaregistrar\\EPP\\eppTransferRequest'] = 'Metaregistrar\\EPP\\eppTransferResponse';
+        $this->responses['Metaregistrar\\EPP\\eppTransferDomainRequest'] = 'Metaregistrar\\EPP\\eppTransferResponse';
         $this->responses['Metaregistrar\\EPP\\eppCheckRequest'] = 'Metaregistrar\\EPP\\eppCheckResponse';
         $this->responses['Metaregistrar\\EPP\\eppCreateRequest'] = 'Metaregistrar\\EPP\\eppCreateResponse';
         $this->responses['Metaregistrar\\EPP\\eppUpdateRequest'] = 'Metaregistrar\\EPP\\eppUpdateResponse';
@@ -281,13 +282,12 @@ class eppConnection {
     }
 
     public function enableDnssec() {
-        $this->addExtension('secDNS','urn:ietf:params:xml:ns:secDNS-1.1');
-        $this->responses['Metaregistrar\\EPP\\eppDnssecUpdateDomainRequest'] = 'Metaregistrar\\EPP\\eppUpdateDomainResponse';
+        $this->useExtension('secDNS-1.1');
     }
 
     public function enableRgp() {
-        $this->addExtension('rgp','urn:ietf:params:xml:ns:rgp-1.0');
-        $this->responses['Metaregistrar\\EPP\\eppRgpRestoreRequest'] = 'Metaregistrar\\EPP\\eppRgpRestoreResponse';
+        $this->useExtension('rgp-1.0');
+
     }
 
     public function disableRgp() {
@@ -340,7 +340,71 @@ class eppConnection {
      * @return bool
      * @throws eppException
      */
-    public function connect($hostname = null, $port = null) {
+    public function connect($hostname = null, $port = null)
+    {
+        if ($hostname) {
+            $this->hostname = $hostname;
+        }
+        if ($port) {
+            $this->port = $port;
+        }
+        $ssl = false;
+        if ($this->local_cert_path) {
+            $ssl = true;
+        }
+        if (stripos($this->hostname,'ssl://')===false) {
+            $target = sprintf('%s://%s:%d', ($ssl === true ? 'ssl' : 'tcp'), $this->hostname, $this->port);
+        } else {
+            $target = sprintf('%s:%d', $this->hostname, $this->port);
+            $ssl = true;
+        }
+        $errno = '';
+        $errstr = '';
+        $context = stream_context_create();
+        if ($ssl) {
+            stream_context_set_option($context, 'ssl', 'verify_peer', false);
+            stream_context_set_option($context, 'ssl', 'verify_peer_name', false);
+        }
+        if ($this->local_cert_path) {
+            stream_context_set_option($context, 'ssl', 'local_cert', $this->local_cert_path);
+        }
+        if (isset($this->local_cert_pwd) && (strlen($this->local_cert_pwd) > 0)) {
+            stream_context_set_option($context, 'ssl', 'passphrase', $this->local_cert_pwd);
+        }
+        if (isset($this->allow_self_signed)) {
+            stream_context_set_option($context, 'ssl', 'allow_self_signed', $this->allow_self_signed);
+        }
+        if ($this->connection = stream_socket_client($target, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context)) {
+            if (is_resource($this->connection)) {
+                stream_set_blocking($this->connection, false);
+                stream_set_timeout($this->connection, $this->timeout);
+                if ($errno == 0) {
+                    $this->writeLog("Connection made", "CONNECT");
+                    $this->connected = true;
+                    $this->read();
+                    return true;
+                } else {
+                    $this->writeLog("Error $errno occurred during open of connection ($errstr)", "ERROR");
+                    throw new eppException("Error $errno occurred during open of connection to $target: $errstr", $errno, null, $errstr);
+                }
+            } else {
+                $this->writeLog("Connection could not be opened: $errno $errstr", "ERROR");
+                throw new eppException("Connection could not be openen to $target: $errstr (code $errno)", $errno, null, $errstr);
+            }
+        } else {
+            throw new eppException("Error connecting to $target: $errstr (code $errno)", $errno, null, $errstr);
+        }
+    }
+
+
+    /**
+     * Connect to the address and port
+     * @param null $hostname
+     * @param int $port
+     * @return bool
+     * @throws eppException
+     */
+    public function connectDEPRECATED($hostname = null, $port = null) {
         if ($hostname) {
             $this->hostname = $hostname;
         }
@@ -407,7 +471,7 @@ class eppConnection {
             }
         }
         $login = new eppLoginRequest;
-        if ((($response = $this->writeandread($login)) instanceof eppLoginResponse) && ($response->Success())) {
+        if ($response = $this->request($login)) {
             $this->writeLog("Logged in","LOGIN");
             $this->loggedin = true;
             return true;
@@ -422,7 +486,7 @@ class eppConnection {
      */
     public function logout() {
             $logout = new eppLogoutRequest();
-            if ((($response = $this->writeandread($logout)) instanceof eppLogoutResponse) && ($response->Success())) {
+        if ($response = $this->request($logout)) {
                 $this->writeLog("Logged out","LOGOUT");
                 $this->loggedin = false;
                 return true;
@@ -577,61 +641,6 @@ class eppConnection {
         return false;
     }
 
-    /**
-     * Writes a request object to the stream
-     *
-     * @param eppRequest $content
-     * @return boolean
-     * @throws eppException
-     */
-    public function writeRequest(eppRequest $content)
-    {
-        //$requestsessionid = $content->getSessionId();
-        $namespaces = $this->getDefaultNamespaces();
-        if (is_array($namespaces)) {
-            foreach ($namespaces as $id => $namespace) {
-                $content->addExtension($id, $namespace);
-            }
-        }
-        /*
-         * $content->login is only set if this is an instance or a sub-instance of an eppLoginRequest
-         */
-        if ($content->login) {
-            /* @var $content eppLoginRequest */
-            // Set username for login request
-            $content->addUsername($this->getUsername());
-            // Set password for login request
-            $content->addPassword($this->getPassword());
-            // Set 'new password' for login request
-            if ($this->getNewPassword()) {
-                $content->addNewPassword($this->getNewPassword());
-            }
-            // Add version to this object
-            $content->addVersion($this->getVersion());
-            // Add language to this object
-            $content->addLanguage($this->getLanguage());
-            // Add services and extensions to this content
-            $content->addServices($this->getServices(), $this->getExtensions());
-        }
-        /*
-         * $content->hello is only set if this is an instance or a sub-instance of an eppHelloRequest
-         */
-        if (!($content->hello)) {
-            /**
-             * Add used namespaces to the correct places in the XML
-             */
-            $content->addNamespaces($this->getServices());
-            $content->addNamespaces($this->getExtensions());
-        }
-        $content->formatOutput = false;
-        if ($this->write($content->saveXML(null, LIBXML_NOEMPTYTAG))) {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
 
     /**
      * Reads a response asynchronously.
@@ -701,12 +710,6 @@ class eppConnection {
      */
     public function writeandread($content) {
         $requestsessionid = $content->getSessionId();
-        $namespaces = $this->getDefaultNamespaces();
-        if (is_array($namespaces)) {
-            foreach ($namespaces as $id => $namespace) {
-                $content->addExtension($id, $namespace);
-            }
-        }
         /*
          * $content->login is only set if this is an instance or a sub-instance of an eppLoginRequest
          */
@@ -759,9 +762,6 @@ class eppConnection {
                 if ($response->loadXML($xml)) {
                     restore_error_handler();
                     $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG),"READ");
-                    /*
-                    ob_flush();
-                    */
                     $clienttransid = $response->getClientTransactionId();
                     if (($this->checktransactionids) && ($clienttransid) && ($clienttransid != $requestsessionid)) {
                         throw new eppException("Client transaction id $requestsessionid does not match returned $clienttransid",0,null,null,$xml);
@@ -787,6 +787,14 @@ class eppConnection {
         return null;
     }
 
+    /**
+     * Create a proper response structure based on the request that wase done
+     * If the response belonging to the request is not set, an exception is thrown
+     *
+     * @param $request
+     * @return null
+     * @throws eppException
+     */
     public function createResponse($request) {
         $response = null;
         foreach ($this->getResponses() as $req => $res) {
@@ -800,6 +808,13 @@ class eppConnection {
         }
         return $response;
     }
+
+    /**
+     * Add a new command-response pair. Used mostly by extension that want to add new commands and new responses to existing commands
+     *
+     * @param $command
+     * @param $response
+     */
 
     public function addCommandResponse($command, $response) {
         $this->responses[$command] = $response;
@@ -933,44 +948,34 @@ class eppConnection {
         $this->exturi = $extensions;
     }
 
+
     /**
+     * Indicate a connection is going to use a specific extension and load the includes
+     * @param string $namespace
+     */
+    public function useExtension($namespace) {
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $includepath = dirname(__FILE__).'\\eppExtensions\\'.$namespace.'\\includes.php';
+        } else {
+            $includepath = dirname(__FILE__).'/eppExtensions/'.$namespace.'/includes.php';
+        }
+        if (is_file($includepath)) {
+            include($includepath);
+        } else {
+            throw new eppException("Unable to use extension $namespace because extension files cannot be located");
+        }
+    }
+
+
+    /**
+     * Add an extension to the Login command of the EPP connection
+     * The login command will specify which extensions will be used in this session
+     *
      * @param string $xmlns
      * @param string $namespace
      */
     public function addExtension($xmlns, $namespace) {
         $this->exturi[$namespace] = $xmlns;
-        // Include the extension data, request and response files
-        $pos = strrpos($namespace,'/');
-        if ($pos!==false) {
-            $path = substr($namespace,$pos+1,999);
-            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                $includepath = dirname(__FILE__).'\\eppExtensions\\'.$path.'\\includes.php';
-            } else {
-                $includepath = dirname(__FILE__).'/eppExtensions/'.$path.'/includes.php';
-            }
-
-        } else {
-            $pos = strrpos($namespace,':');
-            if ($pos!==false) {
-                $path = substr($namespace,$pos+1,999);
-                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                    $includepath = dirname(__FILE__).'\\eppExtensions\\'.$path.'\\includes.php';
-                } else {
-                    $includepath = dirname(__FILE__).'/eppExtensions/'.$path.'/includes.php';
-                }
-
-            } else {
-                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                    $includepath = dirname(__FILE__).'\\eppExtensions\\'.$namespace.'\\includes.php';
-                } else {
-                    $includepath = dirname(__FILE__).'/eppExtensions/'.$namespace.'/includes.php';
-                }
-
-            }
-        }
-        if (is_file($includepath)) {
-            include_once($includepath);
-        }
     }
 
     public function removeExtension($namespace) {

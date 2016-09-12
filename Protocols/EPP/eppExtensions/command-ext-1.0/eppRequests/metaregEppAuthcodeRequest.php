@@ -36,13 +36,14 @@ class metaregEppAuthcodeRequest extends eppInfoDomainRequest
 
     function addAuthcodeRequest() {
         $commandext = $this->createElement('command-ext:command-ext');
+        $this->setNamespace('xmlns:command-ext', 'http://www.metaregistrar.com/epp/command-ext-1.0',$commandext);
         $domainext = $this->createElement('command-ext-domain:domain');
+        $this->setNamespace('xmlns:command-ext-domain', 'http://www.metaregistrar.com/epp/command-ext-domain-1.0',$domainext);
         $domaininfoext = $this->createElement('command-ext-domain:info');
         $domainoptionext = $this->createElement("command-ext-domain:option", "dnsbe-request-authcode");
         $domaininfoext->appendChild($domainoptionext);
         $domainext->appendChild($domaininfoext);
         $commandext->appendChild($domainext);
         $this->getExtension()->appendChild($commandext);
-
     }
 }

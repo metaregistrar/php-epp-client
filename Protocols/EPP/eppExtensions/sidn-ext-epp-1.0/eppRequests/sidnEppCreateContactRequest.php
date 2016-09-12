@@ -32,6 +32,7 @@ class sidnEppCreateContactRequest extends eppCreateContactRequest {
             $legalform= 'PERSOON';
         }
         $sidnext = $this->createElement('sidn-ext-epp:ext');
+        $this->setNamespace('sidn-ext-epp','http://rxsd.domain-registry.nl/sidn-ext-epp-1.0',$sidnext);
         $create = $this->createElement('sidn-ext-epp:create');
         $contact = $this->createElement('sidn-ext-epp:contact');
         $contact->appendChild($this->createElement('sidn-ext-epp:legalForm', $legalform));
