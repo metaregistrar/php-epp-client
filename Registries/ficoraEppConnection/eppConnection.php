@@ -20,7 +20,6 @@ class ficoraEppConnection extends eppConnection {
         // Add the commands and responses specific to this registry
         // Please make sure the corresponding PHP files are present!
         parent::addCommandResponse('Metaregistrar\EPP\ficoraEppCreateContactRequest', 'Metaregistrar\EPP\eppCreateContactResponse');
-        parent::addCommandResponse('Metaregistrar\EPP\eppCheckContactRequest', 'Metaregistrar\EPP\ficoraEppCheckContactResponse');
         parent::addCommandResponse('Metaregistrar\EPP\ficoraEppCheckBalanceRequest', 'Metaregistrar\EPP\ficoraEppCheckBalanceResponse');
         parent::addCommandResponse('Metaregistrar\EPP\ficoraEppUpdateDomainRequest', 'Metaregistrar\EPP\eppUpdateDomainResponse');
         parent::addCommandResponse('Metaregistrar\EPP\eppInfoContactRequest', 'Metaregistrar\EPP\ficoraEppInfoContactResponse');
