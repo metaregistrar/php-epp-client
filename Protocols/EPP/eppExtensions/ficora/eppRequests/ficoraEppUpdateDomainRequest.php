@@ -43,11 +43,11 @@ class ficoraEppUpdateDomainRequest extends eppUpdateDomainRequest {
                 $this->addDomainContact($element, $contact->getContactHandle(), $contact->getContactType());
             }
         }
+
+        // Changing status is not supported for *.fi domains, verified from registry
         $statuses = $domain->getStatuses();
-        if (is_array($statuses)) {
-            foreach ($statuses as $status) {
-                $this->addDomainStatus($element, $status);
-            }
+        if (is_array($statuses) && count($statuses)) {
+            throw new eppException('Changing statuses is not supported for *.fi domains.');
         }
 
         // authinfo might contain domain:pw (provider transfer key) and/or domain:pwregistranttransfer (registrant transfer key)
@@ -58,10 +58,13 @@ class ficoraEppUpdateDomainRequest extends eppUpdateDomainRequest {
                 $pw = $this->createElement('domain:pw');
                 $pw->appendChild($this->createCDATASection($domain->getAuthorisationCode()));
                 $authinfo->appendChild($pw);
-            } else if ($domain->getRegistrant() || $domain->getRegistrantTransferCode()) {
+            }
+
+            if ($domain->getRegistrant() || $domain->getRegistrantTransferCode()) {
                 $registrantPassword = $this->createElement('domain:pwregistranttransfer', $domain->getRegistrantTransferCode());
                 $authinfo->appendChild($registrantPassword);
             }
+
             $element->appendChild($authinfo);
         }
     }
