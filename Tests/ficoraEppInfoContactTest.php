@@ -14,6 +14,7 @@ class ficoraEppInfoContactTest extends eppTestCase {
 
     protected function getFicoraContactResponse()
     {
+        // The following XML would never be returned in production due to multiple "identity" fields (birth date, identity, registernumber) being specified
         $xml = '<?xml version="1.0" encoding="utf-8"?>
 <epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
   <response>
@@ -26,8 +27,12 @@ class ficoraEppInfoContactTest extends eppTestCase {
         <contact:role>5</contact:role>
         <contact:type>0</contact:type>
         <contact:postalInfo type="loc">
+          <contact:isFinnish>1</contact:isFinnish>
           <contact:firstname>Bob</contact:firstname>
           <contact:lastname>Bobson</contact:lastname>
+          <contact:identity>123456-123X</contact:identity>
+          <contact:registernumber>1234567-1</contact:registernumber>
+          <contact:birthDate>1.2.1980</contact:birthDate>
           <contact:addr>
             <contact:street>Streetstreet 12</contact:street>
             <contact:city>Helsinki</contact:city>
@@ -96,5 +101,9 @@ class ficoraEppInfoContactTest extends eppTestCase {
         $this->assertEquals($postalInfo[0]->getFirstName(), 'Bob');
         $this->assertEquals($postalInfo[0]->getLastName(), 'Bobson');
         $this->assertEquals($postalInfo[0]->getPersonName(), 'Bob Bobson');
+        $this->assertEquals($postalInfo[0]->getIsFinnish(), '1');
+        $this->assertEquals($postalInfo[0]->getIdentity(), '123456-123X');
+        $this->assertEquals($postalInfo[0]->getBirthDate(), '1.2.1980');
+        $this->assertEquals($postalInfo[0]->getRegisterNumber(), '1234567-1');
     }
 }
