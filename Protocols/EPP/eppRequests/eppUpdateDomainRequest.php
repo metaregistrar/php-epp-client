@@ -66,7 +66,7 @@ class eppUpdateDomainRequest extends eppDomainRequest {
      * @param \domElement $element
      * @param eppDomain $domain
      */
-    private function addDomainChanges($element, eppDomain $domain) {
+    protected function addDomainChanges($element, eppDomain $domain) {
         if ($domain->getRegistrant()) {
             $element->appendChild($this->createElement('domain:registrant', $domain->getRegistrant()));
         }
@@ -111,7 +111,7 @@ class eppUpdateDomainRequest extends eppDomainRequest {
      * @param \domElement $element
      * @param string $status
      */
-    private function addDomainStatus($element, $status) {
+    protected function addDomainStatus($element, $status) {
         $stat = $this->createElement('domain:status');
         $stat->setAttribute('s', $status);
         $element->appendChild($stat);
@@ -124,7 +124,7 @@ class eppUpdateDomainRequest extends eppDomainRequest {
      * @param string $contactid
      * @param string $contacttype
      */
-    private function addDomainContact($domain, $contactid, $contacttype) {
+    protected function addDomainContact($domain, $contactid, $contacttype) {
         $domaincontact = $this->createElement('domain:contact', $contactid);
         $domaincontact->setAttribute('type', $contacttype);
         $domain->appendChild($domaincontact);
@@ -136,7 +136,7 @@ class eppUpdateDomainRequest extends eppDomainRequest {
      * @param eppHost $host
      * @return \domElement
      */
-    private function addDomainHostAttr(eppHost $host) {
+    protected function addDomainHostAttr(eppHost $host) {
 
         $ns = $this->createElement('domain:hostAttr');
         $ns->appendChild($this->createElement('domain:hostName', $host->getHostname()));
@@ -156,7 +156,7 @@ class eppUpdateDomainRequest extends eppDomainRequest {
      * @param eppHost $host
      * @return \domElement
      */
-    private function addDomainHostObj(eppHost $host) {
+    protected function addDomainHostObj(eppHost $host) {
         $ns = $this->createElement('domain:hostObj', $host->getHostname());
         return $ns;
     }
