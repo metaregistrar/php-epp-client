@@ -34,8 +34,9 @@ namespace Metaregistrar\EPP;
 class eppPollResponse extends eppResponse {
     const TYPE_TRANSFER = 'trn';
     const TYPE_CREATE = 'cre';
-    const TYPE_UPDATE = 'upd';
-    const TYPE_DELETE = 'del';
+    const TYPE_INFO = 'inf';
+    const TYPE_PAN = 'pan';
+    const TYPE_CHECK = 'chk';
 
     private $messageType = null;
 
@@ -125,13 +126,17 @@ class eppPollResponse extends eppResponse {
             if (is_object($result)) {
                 return self::TYPE_CREATE;
             }
-            $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:updData');
+            $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:chkData');
             if (is_object($result)) {
-                return self::TYPE_UPDATE;
+                return self::TYPE_CHECK;
             }
-            $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:delData');
+            $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData');
             if (is_object($result)) {
-                return self::TYPE_DELETE;
+                return self::TYPE_INFO;
+            }
+            $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:panData');
+            if (is_object($result)) {
+                return self::TYPE_PAN;
             }
             throw new eppException("Type of message cannot be determined on EPP poll message");
         }

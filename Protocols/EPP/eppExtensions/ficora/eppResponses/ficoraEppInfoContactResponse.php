@@ -9,7 +9,7 @@ class ficoraEppInfoContactResponse extends eppInfoContactResponse {
      */
     protected function getXpathQueryResult($query, $cast = null)
     {
-        $xpath = $this->xpath();
+        $xpath = $this->xPath();
         $result = $xpath->query($query);
         if ($result->length > 0) {
             $value = $result->item(0)->nodeValue;
