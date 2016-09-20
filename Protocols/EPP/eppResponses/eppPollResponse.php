@@ -32,6 +32,13 @@ namespace Metaregistrar\EPP;
  */
 
 class eppPollResponse extends eppResponse {
+    const TYPE_TRANSFER = 'trn';
+    const TYPE_CREATE = 'cre';
+    const TYPE_UPDATE = 'upd';
+    const TYPE_DELETE = 'del';
+
+    private $messageType = null;
+
     function __construct() {
         parent::__construct();
     }
@@ -41,6 +48,11 @@ class eppPollResponse extends eppResponse {
     }
 
 
+    /**
+     * Return the identifier of the message
+     * Use this identifier to acknowledge the poll message
+     * @return null|string
+     */
     public function getMessageId() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:msgQ/@id');
@@ -51,6 +63,10 @@ class eppPollResponse extends eppResponse {
         }
     }
 
+    /**
+     * Return the date of the message
+     * @return null|string
+     */
     public function getMessageDate() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:msgQ/epp:qDate');
@@ -61,6 +77,10 @@ class eppPollResponse extends eppResponse {
         }
     }
 
+    /**
+     * Return the poll message
+     * @return null|string
+     */
     public function getMessage() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:msgQ/epp:msg');
@@ -71,6 +91,10 @@ class eppPollResponse extends eppResponse {
         }
     }
 
+    /**
+     * return the number of messages that remain
+     * @return int|string
+     */
     public function getMessageCount() {
         if ($this->getResultCode() == eppResponse::RESULT_NO_MESSAGES) {
             return 0;
@@ -81,46 +105,84 @@ class eppPollResponse extends eppResponse {
         }
     }
 
+    /**
+     * Determine the type of poll message
+     * TYPE_TRANSFER
+     * TYPE_CREATE
+     * TYPE_UPDATE
+     * TYPE_DELETE
+     */
+    public function getMessageType() {
+        if ($this->messageType) {
+            return $this->messageType;
+        } else {
+            $xpath = $this->xPath();
+            $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:name');
+            if (is_object($result)) {
+                return self::TYPE_TRANSFER;
+            }
+            $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:creData');
+            if (is_object($result)) {
+                return self::TYPE_CREATE;
+            }
+            $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:updData');
+            if (is_object($result)) {
+                return self::TYPE_UPDATE;
+            }
+            $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:delData');
+            if (is_object($result)) {
+                return self::TYPE_DELETE;
+            }
+            throw new eppException("Type of message cannot be determined on EPP poll message");
+        }
+    }
 
     public function getDomainName() {
+        $this->messageType = $this->getMessageType();
         $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:name');
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:name');
         return $result->item(0)->nodeValue;
     }
 
     public function getDomainTrStatus() {
+        $this->messageType = $this->getMessageType();
         $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:trStatus');
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:'.substr($this->messageType,0,2).'Status');
         return $result->item(0)->nodeValue;
     }
 
     public function getDomainRequestClientId() {
+        $this->messageType = $this->getMessageType();
         $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:reID');
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:reID');
         return $result->item(0)->nodeValue;
     }
 
     public function getDomainRequestDate() {
+        $this->messageType = $this->getMessageType();
         $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:reDate');
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:reDate');
         return $result->item(0)->nodeValue;
     }
 
     public function getDomainExpirationDate() {
+        $this->messageType = $this->getMessageType();
         $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:exDate');
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:exDate');
         return $result->item(0)->nodeValue;
     }
 
     public function getDomainActionDate() {
+        $this->messageType = $this->getMessageType();
         $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:acDate');
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:acDate');
         return $result->item(0)->nodeValue;
     }
 
     public function getDomainActionClientId() {
+        $this->messageType = $this->getMessageType();
         $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:acID');
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:acID');
         return $result->item(0)->nodeValue;
     }
 
