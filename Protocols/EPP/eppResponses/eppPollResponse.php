@@ -37,6 +37,7 @@ class eppPollResponse extends eppResponse {
     const TYPE_INFO = 'inf';
     const TYPE_PAN = 'pan';
     const TYPE_CHECK = 'chk';
+    const TYPE_RENEW = 'ren';
 
     private $messageType = null;
 
@@ -119,24 +120,28 @@ class eppPollResponse extends eppResponse {
         } else {
             $xpath = $this->xPath();
             $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:name');
-            if (is_object($result)) {
+            if ((is_object($result)) && ($result->length>0)) {
                 return self::TYPE_TRANSFER;
             }
             $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:creData');
-            if (is_object($result)) {
+            if ((is_object($result)) && ($result->length>0)) {
                 return self::TYPE_CREATE;
             }
             $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:chkData');
-            if (is_object($result)) {
+            if ((is_object($result)) && ($result->length>0)) {
                 return self::TYPE_CHECK;
             }
             $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData');
-            if (is_object($result)) {
+            if ((is_object($result)) && ($result->length>0)) {
                 return self::TYPE_INFO;
             }
             $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:panData');
-            if (is_object($result)) {
+            if ((is_object($result)) && ($result->length>0)) {
                 return self::TYPE_PAN;
+            }
+            $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:renData');
+            if ((is_object($result)) && ($result->length>0)) {
+                return self::TYPE_RENEW;
             }
             throw new eppException("Type of message cannot be determined on EPP poll message");
         }
@@ -152,7 +157,7 @@ class eppPollResponse extends eppResponse {
     public function getDomainTrStatus() {
         $this->messageType = $this->getMessageType();
         $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:'.substr($this->messageType,0,2).'Status');
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:trStatus');
         return $result->item(0)->nodeValue;
     }
 
