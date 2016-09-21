@@ -78,9 +78,9 @@ class eppPollTest extends eppTestCase {
         $pollResponse->loadXML($response);
         $pollResponse->xpathuri = ['urn:ietf:params:xml:ns:domain-1.0'=>'domain'];
         $this->assertSame($pollResponse->getMessageCount(),'5');
-        //$this->assertSame($pollResponse->getMessageType(),'trn');
         $this->assertSame($pollResponse->getMessage(),'Transfer requested.');
         $this->assertSame($pollResponse->getResultCode(),'1301');
+        $this->assertSame($pollResponse->getResultMessage(),'Command completed successfully; ack to dequeue');
         $this->assertSame($pollResponse->getMessageId(),'12345');
         $this->assertSame($pollResponse->getMessageDate(),'2000-06-08T22:00:00.0Z');
         $this->assertSame($pollResponse->getMessageType(),'trn');
@@ -122,6 +122,7 @@ class eppPollTest extends eppTestCase {
         $this->assertSame($pollResponse->getMessageCount(),'1');
         $this->assertSame($pollResponse->getMessage(),'Domain transfertest.frl renewed.');
         $this->assertSame($pollResponse->getResultCode(),'1301');
+        $this->assertSame($pollResponse->getResultMessage(),'Command completed successfully; ack to dequeue');
         $this->assertSame($pollResponse->getMessageId(),'100');
         $this->assertSame($pollResponse->getMessageDate(),'2016-09-20T14:49:27.000000+0200');
         $this->assertSame($pollResponse->getMessageType(),'ren');
