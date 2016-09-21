@@ -119,7 +119,7 @@ class eppPollResponse extends eppResponse {
             return $this->messageType;
         } else {
             $xpath = $this->xPath();
-            $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:name');
+            $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData');
             if ((is_object($result)) && ($result->length>0)) {
                 return self::TYPE_TRANSFER;
             }
