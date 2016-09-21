@@ -93,4 +93,40 @@ class eppPollTest extends eppTestCase {
         $this->assertSame($pollResponse->getDomainExpirationDate(),'2002-09-08T22:00:00.0Z');
     }
 
+    public function testPollRenewResponse() {
+        $response = '<?xml version="1.0" encoding="UTF-8"?>
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+ <response>
+   <result code="1301">
+     <msg>Command completed successfully; ack to dequeue</msg>
+   </result>
+   <resData>
+     <domain:renData>
+       <domain:name>transfertest.frl</domain:name>
+       <domain:exDate>2019-09-20T07:55:35.000000+0000</domain:exDate>
+     </domain:renData>
+   </resData>
+   <msgQ count="1" id="100">
+     <qDate>2016-09-20T14:49:27.000000+0200</qDate>
+     <msg lang="en">Domain transfertest.frl renewed.</msg>
+   </msgQ>
+   <trID>
+     <svTRID>MTR_15d45b90826bcc2c90b2d8b362f6c2c0dfab4f5f</svTRID>
+     <clTRID>57e14c7fcd236</clTRID>
+   </trID>
+ </response>
+</epp>';
+        $pollResponse = new Metaregistrar\EPP\eppPollResponse();
+        $pollResponse->loadXML($response);
+        $pollResponse->xpathuri = ['urn:ietf:params:xml:ns:domain-1.0'=>'domain'];
+        $this->assertSame($pollResponse->getMessageCount(),'1');
+        $this->assertSame($pollResponse->getMessage(),'Domain transfertest.frl renewed.');
+        $this->assertSame($pollResponse->getResultCode(),'1301');
+        $this->assertSame($pollResponse->getMessageId(),'100');
+        $this->assertSame($pollResponse->getMessageDate(),'2016-09-20T14:49:27.000000+0200');
+        $this->assertSame($pollResponse->getMessageType(),'ren');
+        $this->assertSame($pollResponse->getDomainName(),'transfertest.frl');
+        $this->assertSame($pollResponse->getDomainExpirationDate(),'2019-09-20T07:55:35.000000+0000');
+    }
+
 }
