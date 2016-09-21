@@ -36,7 +36,7 @@ class eppCreateDomainTest extends eppTestCase {
         $response = $this->conn->writeandread($create);
         $this->assertInstanceOf('Metaregistrar\EPP\eppCreateDomainResponse',$response);
         /* @var $response Metaregistrar\EPP\eppCreateDomainResponse */
-        $this->setExpectedException('Metaregistrar\EPP\eppException','Error 2001: Command syntax error; value:line: 2 column: 606 cvc-complex-type.2.4.b: The content of element \'domain:create\' is not complete. One of \'{"urn:ietf:params:xml:ns:domain-1.0":contact, "urn:ietf:params:xml:ns:domain-1.0":authInfo}\' is expected.');
+        $this->setExpectedException('Metaregistrar\EPP\eppException',"Error 2001: Command syntax error; value:line: 2 column: 689 cvc-complex-type.2.4.b: The content of element 'domain:create' is not complete. One of '{\"urn:ietf:params:xml:ns:domain-1.0\":contact, \"urn:ietf:params:xml:ns:domain-1.0\":authInfo}' is expected.");
         $this->assertFalse($response->Success());
     }
 

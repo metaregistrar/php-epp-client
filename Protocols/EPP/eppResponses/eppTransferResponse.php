@@ -15,9 +15,7 @@ class eppTransferResponse extends eppResponse {
     #
 
     public function getDomainName() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:name');
-        return $result->item(0)->nodeValue;
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:trnData/domain:name');
     }
 
     public function getDomain() {
@@ -27,38 +25,26 @@ class eppTransferResponse extends eppResponse {
     }
 
     public function getTransferStatus() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:trStatus');
-        return $result->item(0)->nodeValue;
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:trnData/domain:trStatus');
     }
 
     public function getTransferRequestClientId() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:reID');
-        return $result->item(0)->nodeValue;
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:trnData/domain:reID');
     }
 
     public function getTransferRequestDate() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:reDate');
-        return $result->item(0)->nodeValue;
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:trnData/domain:reDate');
     }
 
     public function getTransferExpirationDate() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:exDate');
-        return $result->item(0)->nodeValue;
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:trnData/domain:exDate');
     }
 
     public function getTransferActionDate() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:acDate');
-        return $result->item(0)->nodeValue;
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:trnData/domain:acDate');
     }
 
     public function getTransferActionClientId() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:trnData/domain:acID');
-        return $result->item(0)->nodeValue;
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:trnData/domain:acID');
     }
 }

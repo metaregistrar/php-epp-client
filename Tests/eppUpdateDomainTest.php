@@ -24,7 +24,7 @@ class eppUpdateDomainTest extends eppTestCase
         $mod->addHost($h2);
         $update = new Metaregistrar\EPP\eppUpdateDomainRequest($domain, $add, $del, $mod, true);
         //echo $update->saveXML();
-        $this->setExpectedException('Metaregistrar\EPP\eppException','Error 2001: Command syntax error; value:line: 2 column: 768 cvc-complex-type.2.4.a: Invalid content was found starting with element \'domain:ns\'. One of \'{"urn:ietf:params:xml:ns:domain-1.0":registrant, "urn:ietf:params:xml:ns:domain-1.0":authInfo}\' is expected.');
+        $this->setExpectedException('Metaregistrar\EPP\eppException',"Error 2001: Command syntax error; value:line: 2 column: 851 cvc-complex-type.2.4.a: Invalid content was found starting with element 'domain:ns'. One of '{\"urn:ietf:params:xml:ns:domain-1.0\":registrant, \"urn:ietf:params:xml:ns:domain-1.0\":authInfo}' is expected.");
         $response = $this->conn->writeandread($update);
         $this->assertFalse($response->Success());
     }

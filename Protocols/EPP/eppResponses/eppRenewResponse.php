@@ -15,15 +15,11 @@ class eppRenewResponse extends eppResponse {
     #
 
     public function getDomainName() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:renData/domain:name');
-        return $result->item(0)->nodeValue;
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:renData/domain:name');
     }
 
     public function getDomainExpirationDate() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:renData/domain:exDate');
-        return $result->item(0)->nodeValue;
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:renData/domain:exDate');
     }
 
 

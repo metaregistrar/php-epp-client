@@ -87,9 +87,7 @@ class eppHelloResponse extends eppResponse {
      * @return string
      */
     public function getServerName() {
-        $xpath = $this->xPath();
-        $servername = $xpath->query('/epp:epp/epp:greeting/epp:svID');
-        return $servername->item(0)->nodeValue;
+        return $this->queryPath('/epp:epp/epp:greeting/epp:svID');
     }
 
     /**
@@ -97,9 +95,7 @@ class eppHelloResponse extends eppResponse {
      * @return string
      */
     public function getServerDate() {
-        $xpath = $this->xPath();
-        $serverdate = $xpath->query('/epp:epp/epp:greeting/epp:svDate');
-        return $serverdate->item(0)->nodeValue;
+        return $this->queryPath('/epp:epp/epp:greeting/epp:svDate');
     }
 
     /**

@@ -491,4 +491,19 @@ class eppResponse extends \DOMDocument {
 #        }
         return $xpath;
     }
+
+    /**
+     * Make an xpath query and return the results if applicable
+     * @param string $path
+     * @return null|string
+     */
+    protected function queryPath($path) {
+        $xpath = $this->xPath();
+        $result = $xpath->query($path);
+        if (is_object($result) && ($result->length > 0)) {
+            return trim($result->item(0)->nodeValue);
+        } else {
+            return null;
+        }
+    }
 }

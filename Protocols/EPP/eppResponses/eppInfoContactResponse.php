@@ -19,13 +19,7 @@ class eppInfoContactResponse extends eppInfoResponse {
      * @return string contactid
      */
     public function getContactId() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:id');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/contact:infData/contact:id');
     }
 
     /**
@@ -33,13 +27,7 @@ class eppInfoContactResponse extends eppInfoResponse {
      * @return string contact_resource_id
      */
     public function getContactRoid() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:roid');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/contact:infData/contact:roid');
     }
 
     /**
@@ -47,13 +35,7 @@ class eppInfoContactResponse extends eppInfoResponse {
      * @return string client id
      */
     public function getContactClientId() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:clID');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/contact:infData/contact:clID');
     }
 
     /**
@@ -61,13 +43,7 @@ class eppInfoContactResponse extends eppInfoResponse {
      * @return string client id
      */
     public function getContactCreateClientId() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:crID');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/contact:infData/contact:crID');
     }
 
 
@@ -76,13 +52,7 @@ class eppInfoContactResponse extends eppInfoResponse {
      * @return string update_date
      */
     public function getContactUpdateDate() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:upDate');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/contact:infData/contact:upDate');
     }
 
     /**
@@ -90,13 +60,7 @@ class eppInfoContactResponse extends eppInfoResponse {
      * @return string create_date
      */
     public function getContactCreateDate() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:crDate');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/contact:infData/contact:crDate');
     }
 
 
@@ -128,14 +92,7 @@ class eppInfoContactResponse extends eppInfoResponse {
      * @return string voice_telephone_number
      */
     public function getContactVoice() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:voice');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
-
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/contact:infData/contact:voice');
     }
 
     /**
@@ -143,13 +100,7 @@ class eppInfoContactResponse extends eppInfoResponse {
      * @return string fax_telephone_number
      */
     public function getContactFax() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:fax');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/contact:infData/contact:fax');
     }
 
     /**
@@ -157,13 +108,7 @@ class eppInfoContactResponse extends eppInfoResponse {
      * @return string email_address
      */
     public function getContactEmail() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:email');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/contact:infData/contact:email');
     }
 
     /**
@@ -261,13 +206,7 @@ class eppInfoContactResponse extends eppInfoResponse {
     }
 
     public function getContactDisclose() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:disclose/@flag');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/contact:infData/contact:disclose/@flag');
     }
 
     /**
@@ -275,23 +214,11 @@ class eppInfoContactResponse extends eppInfoResponse {
      * @return string client id
      */
     public function getContactUpdateClientId() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:upID');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/contact:infData/contact:upID');
     }
 
     public function getContactAuthInfo() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:infData/contact:authInfo/contact:pw');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/contact:infData/contact:authInfo/contact:pw');
     }
 
     /**

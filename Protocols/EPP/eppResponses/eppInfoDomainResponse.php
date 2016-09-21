@@ -55,13 +55,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string domainname
      */
     public function getDomainName() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:name');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:name');
     }
 
     /**
@@ -91,13 +85,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string roid
      */
     public function getDomainRoid() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:roid');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:roid');
     }
 
     /**
@@ -105,13 +93,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string registrant id
      */
     public function getDomainRegistrant() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:registrant');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:registrant');
     }
 
     /**
@@ -120,13 +102,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string
      */
     public function getDomainContact($contacttype) {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:contact[@type=\'' . $contacttype . '\']');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:contact[@type=\'' . $contacttype . '\']');
     }
 
     /**
@@ -175,13 +151,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string create_date
      */
     public function getDomainCreateDate() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:crDate');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:crDate');
     }
 
     /**
@@ -189,13 +159,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string update_date
      */
     public function getDomainUpdateDate() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:upDate');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:upDate');
     }
 
     /**
@@ -204,13 +168,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      */
     public function getDomainExpirationDate() {
         date_default_timezone_set("UTC");
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:exDate');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:exDate');
     }
 
     /**
@@ -218,13 +176,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string client id
      */
     public function getDomainClientId() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:clID');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:clID');
     }
 
     /**
@@ -232,13 +184,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string client id
      */
     public function getDomainCreateClientId() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:crID');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:crID');
     }
 
     /**
@@ -246,13 +192,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string client id
      */
     public function getDomainUpdateClientId() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:upID');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:upID');
     }
 
     /**
@@ -305,13 +245,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string authcode
      */
     public function getDomainAuthInfo() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:authInfo/domain:pw');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:authInfo/domain:pw');
     }
 
     public function getKeydata() {

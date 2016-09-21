@@ -20,13 +20,7 @@ class eppInfoHostResponse extends eppInfoResponse {
      * @return string hostname
      */
     public function getHostName() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:name');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/host:infData/host:name');
     }
 
     /**
@@ -71,13 +65,7 @@ class eppInfoHostResponse extends eppInfoResponse {
      * @return string roid
      */
     public function getHostRoid() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:roid');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/host:infData/host:roid');
     }
 
     /**
@@ -85,13 +73,7 @@ class eppInfoHostResponse extends eppInfoResponse {
      * @return string create_date
      */
     public function getHostCreateDate() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:crDate');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/host:infData/host:crDate');
     }
 
     /**
@@ -99,13 +81,7 @@ class eppInfoHostResponse extends eppInfoResponse {
      * @return string update_date
      */
     public function getHostUpdateDate() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:upDate');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/host:infData/host:upDate');
     }
 
     /**
@@ -113,13 +89,7 @@ class eppInfoHostResponse extends eppInfoResponse {
      * @return string client id
      */
     public function getHostClientId() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:clID');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/host:infData/host:clID');
     }
 
     /**
@@ -127,13 +97,7 @@ class eppInfoHostResponse extends eppInfoResponse {
      * @return string client id
      */
     public function getHostCreateClientId() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:crID');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/host:infData/host:crID');
     }
 
     /**
@@ -141,12 +105,6 @@ class eppInfoHostResponse extends eppInfoResponse {
      * @return string client id
      */
     public function getHostUpdateClientId() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/host:infData/host:upID');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/host:infData/host:upID');
     }
 }
