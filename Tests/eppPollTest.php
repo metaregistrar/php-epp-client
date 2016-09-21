@@ -127,6 +127,11 @@ class eppPollTest extends eppTestCase {
         $this->assertSame($pollResponse->getMessageType(),'ren');
         $this->assertSame($pollResponse->getDomainName(),'transfertest.frl');
         $this->assertSame($pollResponse->getDomainExpirationDate(),'2019-09-20T07:55:35.000000+0000');
+        $this->assertNull($pollResponse->getDomainRequestClientId());
+        $this->assertNull($pollResponse->getDomainActionClientId());
+        $this->assertNull($pollResponse->getDomainRequestDate());
+        $this->assertNull($pollResponse->getDomainTrStatus());
+
     }
 
 }
