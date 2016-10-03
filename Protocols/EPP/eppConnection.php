@@ -329,6 +329,7 @@ class eppConnection {
             fclose($this->connection);
             $this->writeLog("Disconnected","DISCONNECT");
             $this->connected = false;
+            $this->loggedin = false;
         }
         return true;
     }
