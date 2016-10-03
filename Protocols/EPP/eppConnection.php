@@ -328,9 +328,9 @@ class eppConnection {
             //@ob_flush();
             fclose($this->connection);
             $this->writeLog("Disconnected","DISCONNECT");
-            $this->connected = false;
-            $this->loggedin = false;
         }
+        $this->connected = false;
+        $this->loggedin = false;
         return true;
     }
 
