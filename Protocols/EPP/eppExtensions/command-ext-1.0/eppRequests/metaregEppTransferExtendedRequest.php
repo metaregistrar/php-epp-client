@@ -7,10 +7,10 @@ namespace Metaregistrar\EPP;
 class metaregEppTransferExtendedRequest extends eppTransferRequest
 {
     /**
-     * eppTransferExtendedRequest constructor.
-     *
-     * @param string    $operation
+     * metaregEppTransferExtendedRequest constructor.
+     * @param string $operation
      * @param eppDomain $object
+     * @throws eppException
      */
     public function __construct($operation, eppDomain $object)
     {
@@ -24,17 +24,29 @@ class metaregEppTransferExtendedRequest extends eppTransferRequest
             /**
              * @var eppHost $nsRecord
              */
-            $hostObj = $this->createElement('command-ext-domain:hostObj', $nsRecord->getHostname());
-            $ns->appendChild($hostObj);
+            if ($nsRecord->getHostname()) {
+                $hostObj = $this->createElement('command-ext-domain:hostObj', $nsRecord->getHostname());
+                $ns->appendChild($hostObj);
+            } else {
+                throw new eppException("nsRecord has no hostname on metaregEppTransferExtendedRequest");
+            }
         }
         $transfer->appendChild($ns);
-        $registrant = $this->createElement('command-ext-domain:registrant', $object->getRegistrant());
+        if ($object->getRegistrant()) {
+            $registrant = $this->createElement('command-ext-domain:registrant', $object->getRegistrant());
+        } else {
+            throw new eppException("eppDomain object has no registrant on metaregEppTransferExtendedRequest");
+        }
         $transfer->appendChild($registrant);
         $types = ['admin', 'tech', 'billing'];
         foreach ($types as $type) {
-            $contact = $this->createElement('command-ext-domain:contact', $object->getContact($type)->getContactHandle());
-            $contact->setAttribute('type', $type);
-            $transfer->appendChild($contact);
+            if ($object->getContact($type)) {
+                $contact = $this->createElement('command-ext-domain:contact', $object->getContact($type)->getContactHandle());
+                $contact->setAttribute('type', $type);
+                $transfer->appendChild($contact);
+            } else {
+                throw new eppException("eppDomain object has no contact of type $type on metaregEppTransferExtendedRequest");
+            }
         }
         $domainChild->appendChild($transfer);
         $commandExt = $this->createElement('command-ext:command-ext');
