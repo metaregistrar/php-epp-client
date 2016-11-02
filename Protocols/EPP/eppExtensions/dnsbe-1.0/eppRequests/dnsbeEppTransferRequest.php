@@ -3,13 +3,20 @@ namespace Metaregistrar\EPP;
 /*
 <extension>
     <dnsbe:ext>
-        <dnsbe:create>
-            <dnsbe:contact>
-                <dnsbe:type>licensee</dnsbe:type>
-                <dnsbe:vat>BE 123 4576 5645</dnsbe:vat>
-                <dnsbe:lang>nl</dnsbe:lang>
-            </dnsbe:contact>
-        </dnsbe:create>
+      <dnsbe:transfer>
+        <dnsbe:domain>
+         <dnsbe:registrant>c25</dnsbe:registrant>
+         <dnsbe:billing>c20</dnsbe:billing>
+         <dnsbe:tech>c21</dnsbe:tech>
+        <dnsbe:ns>
+            <domain:hostAttr>
+                <domain:hostName>ns1.superdomain.be</domain:hostName>
+            </domain:hostAttr>
+            <domain:hostAttr>
+                <domain:hostName>ns.test.be</domain:hostName> </domain:hostAttr>
+          </dnsbe:ns>
+        </dnsbe:domain>
+      </dnsbe:transfer>
     </dnsbe:ext>
 </extension>
 */
