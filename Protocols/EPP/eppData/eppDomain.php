@@ -150,7 +150,7 @@ class eppDomain {
         if (($periodunit == eppDomain::DOMAIN_PERIOD_UNIT_Y) || ($periodunit == eppDomain::DOMAIN_PERIOD_UNIT_M)) {
             $this->periodunit = $periodunit;
         } else {
-            throw new eppException("Domain period unit " . $periodunit . " is invalid, only d or m allowed");
+            throw new eppException("Domain period unit " . $periodunit . " is invalid, only m or y allowed");
         }
     }
 
@@ -305,7 +305,7 @@ class eppDomain {
 
     /**
      * @param integer $row
-     * @return eppSecdns|null
+     * @return eppSecdns|null|array
      */
     public function getSecdns($row = null) {
         if (!is_null($row)) {
