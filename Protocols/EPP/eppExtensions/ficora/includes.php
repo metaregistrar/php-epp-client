@@ -2,6 +2,7 @@
 
 include_once(dirname(__FILE__) . '/eppData/ficoraEppContactPostalInfo.php');
 include_once(dirname(__FILE__) . '/eppData/ficoraEppDomain.php');
+include_once(dirname(__FILE__) . '/eppRequests/ficoraEppInfoDomainRequest.php');
 include_once(dirname(__FILE__) . '/eppRequests/ficoraEppCreateContactRequest.php');
 include_once(dirname(__FILE__) . '/eppResponses/ficoraEppCheckContactResponse.php');
 include_once(dirname(__FILE__) . '/eppRequests/ficoraEppCheckBalanceRequest.php');
