@@ -22,8 +22,9 @@ class ficoraEppConnection extends eppConnection {
         parent::addCommandResponse('Metaregistrar\EPP\ficoraEppCreateContactRequest', 'Metaregistrar\EPP\eppCreateContactResponse');
         parent::addCommandResponse('Metaregistrar\EPP\ficoraEppCheckBalanceRequest', 'Metaregistrar\EPP\ficoraEppCheckBalanceResponse');
         parent::addCommandResponse('Metaregistrar\EPP\ficoraEppUpdateDomainRequest', 'Metaregistrar\EPP\eppUpdateDomainResponse');
-        parent::addCommandResponse('Metaregistrar\EPP\eppInfoContactRequest', 'Metaregistrar\EPP\ficoraEppInfoContactResponse');
+//        parent::addCommandResponse('Metaregistrar\EPP\eppInfoContactRequest', 'Metaregistrar\EPP\ficoraEppInfoContactResponse');
         parent::addCommandResponse('Metaregistrar\EPP\ficoraEppInfoDomainRequest', 'Metaregistrar\EPP\eppInfoDomainResponse');
+        parent::addCommandResponse('Metaregistrar\EPP\ficoraEppInfoContactRequest', 'Metaregistrar\EPP\ficoraEppInfoContactResponse');
     }
 
 }
