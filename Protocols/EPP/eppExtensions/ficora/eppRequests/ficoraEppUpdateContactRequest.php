@@ -25,4 +25,21 @@ class ficoraEppUpdateContactRequest extends eppUpdateContactRequest
     {
         $this->contactobject->setAttribute('xmlns:contact', 'urn:ietf:params:xml:ns:contact-1.0');
     }
+
+    /**
+     * @param string $contactid
+     * @param eppContact $addInfo
+     * @param eppContact $removeInfo
+     * @param eppContact $updateInfo
+     */
+    public function updateContact($contactid, $addInfo, $removeInfo, $updateInfo) {
+        parent::updateContact($contactid, $addInfo, $removeInfo, $updateInfo);
+
+        /** @var ficoraEppContactPostalInfo $postalInfo */
+        $postalInfo = $updateInfo->getPostalInfo(0);
+
+        $this->getElementsByTagName('contact:postalInfo')->item(0)
+            ->appendChild($this->createElement('contact:firstname', $postalInfo->getFirstName()))
+            ->appendChild($this->createElement('contact:lastname', $postalInfo->getLastName()));
+    }
 }
