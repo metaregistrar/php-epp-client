@@ -38,8 +38,8 @@ class ficoraEppUpdateContactRequest extends eppUpdateContactRequest
         /** @var ficoraEppContactPostalInfo $postalInfo */
         $postalInfo = $updateInfo->getPostalInfo(0);
 
-        $this->getElementsByTagName('contact:postalInfo')->item(0)
-            ->appendChild($this->createElement('contact:firstname', $postalInfo->getFirstName()))
-            ->appendChild($this->createElement('contact:lastname', $postalInfo->getLastName()));
+        $contactPostalInfo = $this->getElementsByTagName('contact:postalInfo')->item(0);
+        $contactPostalInfo->appendChild($this->createElement('contact:firstname', $postalInfo->getFirstName()));
+        $contactPostalInfo->appendChild($this->createElement('contact:lastname', $postalInfo->getLastName()));
     }
 }
