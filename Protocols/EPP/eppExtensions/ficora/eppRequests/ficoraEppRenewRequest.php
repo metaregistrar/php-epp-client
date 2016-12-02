@@ -35,6 +35,7 @@ class ficoraEppRenewRequest extends eppRenewRequest
     public function setAutoRenew($autoRenew)
     {
         $this->autoRenew = $autoRenew;
+        $this->domainobject->appendChild($this->createElement('domain:autorenew', (int)$this->autoRenew));
     }
 
     /**
@@ -43,8 +44,6 @@ class ficoraEppRenewRequest extends eppRenewRequest
      */
     public function setDomain(eppDomain $domain, $expdate = null)
     {
-        $this->domainobject->appendChild($this->createElement('domain:autorenew', (int)$this->autoRenew));
-
         parent::setDomain($domain, $expdate);
     }
 }
