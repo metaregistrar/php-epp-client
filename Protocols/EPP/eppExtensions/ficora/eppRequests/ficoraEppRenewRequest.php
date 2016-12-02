@@ -9,7 +9,7 @@ namespace Metaregistrar\EPP;
  */
 class ficoraEppRenewRequest extends eppRenewRequest
 {
-    private $autoRenew = false;
+    private $domain;
 
     /**
      * ficoraEppRenewRequest constructor.
@@ -30,12 +30,22 @@ class ficoraEppRenewRequest extends eppRenewRequest
     }
 
     /**
-     * @param boolean $autoRenew
+     * @internal param bool $autoRenew
+     * @param bool $enable
      */
-    public function setAutoRenew($autoRenew)
+    public function setAutoRenew($enable = true)
     {
-        $this->autoRenew = $autoRenew;
-        $this->domainobject->appendChild($this->createElement('domain:autorenew', (int)$this->autoRenew));
+        $autoRenewObject = $this->createElement('domain:autorenew');
+        $autoRenewObject->setAttribute('xmlns:domain', 'urn:ietf:params:xml:ns:domain-1.0');
+        $autoRenewObject->appendChild($this->createElement('domain:name', $this->domain->getDomainname()));
+        $autoRenewObject->appendChild($this->createElement('domain:value', (int)$enable));
+
+        // dirty hack should be refactored
+        $this->getElementsByTagName('renew')
+            ->item(0)
+            ->appendChild($autoRenewObject);
+
+        $this->getElementsByTagName('renew')->item(0)->removeChild($this->domainobject);
     }
 
     /**
@@ -44,6 +54,7 @@ class ficoraEppRenewRequest extends eppRenewRequest
      */
     public function setDomain(eppDomain $domain, $expdate = null)
     {
+        $this->domain = $domain;
         parent::setDomain($domain, $expdate);
     }
 }
