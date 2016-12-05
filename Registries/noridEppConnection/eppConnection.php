@@ -34,7 +34,7 @@ class noridEppConnection extends eppConnection {
         // Contact Create/Check/Info/Update
         parent::addCommandResponse('Metaregistrar\\EPP\\noridEppCreateContactRequest', 'Metaregistrar\\EPP\\noridEppCreateContactResponse');
         parent::addCommandResponse('Metaregistrar\\EPP\\eppCheckContactRequest', 'Metaregistrar\\EPP\\noridEppCheckContactResponse');
-        parent::addCommandResponse('Metaregistrar\\EPP\\noridEppInfoContactRequest', 'Metaregistrar\\EPP\\noridEppInfoContactResponse');
+        parent::addCommandResponse('Metaregistrar\\EPP\\eppInfoContactRequest', 'Metaregistrar\\EPP\\noridEppInfoContactResponse');
         parent::addCommandResponse('Metaregistrar\\EPP\\noridEppUpdateContactRequest', 'Metaregistrar\\EPP\\noridEppUpdateContactResponse');
         
         // Host Create/Info/Update/Delete

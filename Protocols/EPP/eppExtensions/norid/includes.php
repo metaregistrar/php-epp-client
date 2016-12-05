@@ -25,6 +25,7 @@ include_once(dirname(__FILE__) . '/eppRequests/noridEppUpdateContactRequest.php'
 include_once(dirname(__FILE__) . '/eppResponses/noridEppInfoContactResponse.php');
 include_once(dirname(__FILE__) . '/eppResponses/noridEppCheckContactResponse.php');
 include_once(dirname(__FILE__) . '/eppResponses/noridEppCreateContactResponse.php');
+include_once(dirname(__FILE__) . '/eppResponses/noridEppUpdateContactResponse.php');
 
 
 // Host
@@ -35,6 +36,7 @@ include_once(dirname(__FILE__) . '/eppRequests/noridEppCreateHostRequest.php');
 include_once(dirname(__FILE__) . '/eppRequests/noridEppUpdateHostRequest.php');
 include_once(dirname(__FILE__) . '/eppRequests/noridEppInfoHostRequest.php');
 // Responses
-include_once(dirname(__FILE__) . '/eppResponses/noridEppUpdateHostResponse.php');
 include_once(dirname(__FILE__) . '/eppResponses/noridEppInfoHostResponse.php');
+include_once(dirname(__FILE__) . '/eppResponses/noridEppCreateHostResponse.php');
+include_once(dirname(__FILE__) . '/eppResponses/noridEppUpdateHostResponse.php');
 include_once(dirname(__FILE__) . '/eppResponses/noridEppDeleteHostResponse.php');
