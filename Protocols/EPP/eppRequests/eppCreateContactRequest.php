@@ -29,14 +29,13 @@ class eppCreateContactRequest extends eppContactRequest {
     /**
      *
      * @param eppContact $contact
-     * @return \domElement
      * @throws eppException
      */
     public function setContact(eppContact $contact) {
         #
         # Object create structure
         #
-        $this->setContactId( $contact->generateContactId());
+        $this->setContactId($contact->getId());
         $this->setPostalInfo($contact->getPostalInfo(0));
         $this->setVoice($contact->getVoice());
         $this->setFax($contact->getFax());
