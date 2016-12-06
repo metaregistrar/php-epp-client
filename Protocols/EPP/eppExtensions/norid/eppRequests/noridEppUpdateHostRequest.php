@@ -11,19 +11,19 @@ class noridEppUpdateHostRequest extends eppUpdateHostRequest {
         parent::__construct($objectname, $addInfo, $removeInfo, $updateInfo, $namespacesinroot);
 
         if (($addInfo instanceof noridEppHost) || ($removeInfo instanceof noridEppHost)) {
-            $this->updateExtHost($hostname, $addInfo, $removeInfo);
+            $this->updateExtHost($addInfo, $removeInfo);
         }
 
         $this->addSessionId();
     }
 
-    public function updateExtHost($hostname, $addInfo, $removeInfo) {
+    public function updateExtHost($addInfo, $removeInfo) {
         if ($addInfo instanceof noridEppHost) {
             // Add Norid EPP extensions
             if (!is_null($addInfo->getExtContact()) || !is_null($addInfo->getExtSponsoringClientID())) {
                 $extaddcmd = $this->createElement('no-ext-host:add');
                 $this->addHostExtChanges($extaddcmd, $addInfo);
-                $this->getHostExtension()->appendChild($extaddcmd);
+                $this->getHostExtension('update')->appendChild($extaddcmd);
             }
         }
         if ($removeInfo instanceof noridEppHost) {
@@ -31,7 +31,7 @@ class noridEppUpdateHostRequest extends eppUpdateHostRequest {
             if (!is_null($removeInfo->getExtContact()) || !is_null($removeInfo->getExtSponsoringClientID())) {
                 $extremcmd = $this->createElement('no-ext-host:rem');
                 $this->addHostExtChanges($extremcmd, $removeInfo);
-                $this->getHostExtension()->appendChild($extremcmd);
+                $this->getHostExtension('update')->appendChild($extremcmd);
             }
         }
     }

@@ -3,10 +3,15 @@ namespace Metaregistrar\EPP;
 
 trait noridEppResponseTrait {
 
-    public function getExtConditions($xpath) {
+    /**
+     * @param \DOMXpath $xpath
+     * @return array|null
+     */
+    public function getExtConditions(\DOMXPath $xpath) {
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/no-ext-result:conditions/no-ext-result:condition');
         if (is_object($result) && ($result->length > 0)) {
             return array_map(function($element) {
+                /* @var \DOMElement $element */
                 return array(
                     'code' => $element->getAttribute('code'),
                     'severity' => $element->getAttribute('severity'),
@@ -19,10 +24,15 @@ trait noridEppResponseTrait {
         }
     }
 
-    public function getExtServiceMessages($xpath) {
+    /**
+     * @param \DOMXpath $xpath
+     * @return array|null
+     */
+    public function getExtServiceMessages(\DOMXPath $xpath) {
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/no-ext-result:message');
         if (is_object($result) && ($result->length > 0)) {
             return array_map(function($element) {
+                /* @var \DOMElement $element */
                 return array(
                     'type' => $element->getAttribute('type'),
                     'description' => $element->getElementsByTagName('desc')->item(0)->nodeValue,

@@ -100,7 +100,10 @@ class eppRequest extends \DOMDocument {
         return $this->command;
     }
 
-    protected function getExtension() {
+    /**
+     * @return \DomElement
+     */
+    public function getExtension() {
         if (!$this->extension) {
             #
             # If its not there, then create extension structure

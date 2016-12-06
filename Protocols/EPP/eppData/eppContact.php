@@ -234,7 +234,7 @@ class eppContact {
      * @return string
      * @throws eppException
      */
-    private function validatePhoneNumber($number) {
+    protected function validatePhoneNumber($number) {
         //Format the phone number according to EPP formatting rules.
         if (!strlen($number)) {
             return null;

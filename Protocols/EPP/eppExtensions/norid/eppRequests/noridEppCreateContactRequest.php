@@ -27,7 +27,7 @@ class noridEppCreateContactRequest extends eppCreateContactRequest {
     private function setExtType($type) {
         // Can only be null if the contact is not a registrant, let the server figure that out
         if (!is_null($type)) {
-            $this->getContactExtension()->appendChild($this->createElement('no-ext-contact:type', $type));
+            $this->getContactExtension('create')->appendChild($this->createElement('no-ext-contact:type', $type));
         }
     }
 
@@ -38,7 +38,7 @@ class noridEppCreateContactRequest extends eppCreateContactRequest {
             }
 
             foreach ($organizations as $organization) {
-                $this->getContactExtension()->appendChild($this->createElement('no-ext-contact:organization', $organization));
+                $this->getContactExtension('create')->appendChild($this->createElement('no-ext-contact:organization', $organization));
             }
         }
     }
@@ -47,13 +47,13 @@ class noridEppCreateContactRequest extends eppCreateContactRequest {
         if (!is_null($type) && !is_null($identity)) {
             $element = $this->createElement('no-ext-contact:identity', $identity);
             $element->setAttribute('type', $type);
-            $this->getContactExtension()->appendChild($element);
+            $this->getContactExtension('create')->appendChild($element);
         }
     }
 
     private function setExtMobilePhone($phone) {
         if (!is_null($phone)) {
-            $this->getContactExtension()->appendChild($this->createElement('no-ext-contact:mobilePhone', $phone));
+            $this->getContactExtension('create')->appendChild($this->createElement('no-ext-contact:mobilePhone', $phone));
         }
     }
 
@@ -64,7 +64,7 @@ class noridEppCreateContactRequest extends eppCreateContactRequest {
             }
 
             foreach ($emails as $email) {
-                $this->getContactExtension()->appendChild($this->createElement('no-ext-contact:email', $email));
+                $this->getContactExtension('create')->appendChild($this->createElement('no-ext-contact:email', $email));
             }
         }
     }
@@ -76,7 +76,7 @@ class noridEppCreateContactRequest extends eppCreateContactRequest {
             }
 
             foreach ($contacts as $contact) {
-                $this->getContactExtension()->appendChild($this->createElement('no-ext-contact:roleContact', $contact));
+                $this->getContactExtension('create')->appendChild($this->createElement('no-ext-contact:roleContact', $contact));
             }
         }
     }

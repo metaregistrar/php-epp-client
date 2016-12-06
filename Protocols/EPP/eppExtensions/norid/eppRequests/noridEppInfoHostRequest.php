@@ -16,12 +16,12 @@ class noridEppInfoHostRequest extends eppInfoHostRequest {
     public function setExtHost(noridEppHost $host) {
         // Add Norid contact if specified
         if (strlen($host->getExtContact())) {
-            $this->getHostExtension()->appendChild($this->createElement('no-ext-host:contact', $host->getExtContact()));
+            $this->getHostExtension('info')->appendChild($this->createElement('no-ext-host:contact', $host->getExtContact()));
         }
 
         // Add Norid sponsoring client ID if specified
         if (strlen($host->getExtSponsoringClientID())) {
-            $this->getHostExtension()->appendChild($this->createElement('no-ext-host:sponsoringClientID', $host->getExtSponsoringClientID()));
+            $this->getHostExtension('info')->appendChild($this->createElement('no-ext-host:sponsoringClientID', $host->getExtSponsoringClientID()));
         }
     }
 

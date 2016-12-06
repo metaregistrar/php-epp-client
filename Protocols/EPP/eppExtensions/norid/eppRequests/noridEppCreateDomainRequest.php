@@ -15,7 +15,7 @@ class noridEppCreateDomainRequest extends eppCreateDomainRequest {
 
     public function setExtDomain(noridEppDomain $domain) {
         // Add Norid applicant dataset
-        $this->addDomainExtApplicantDataset($this->getDomainExtension(), $domain);
+        $this->addDomainExtApplicantDataset($this->getDomainExtension('create'), $domain);
     }
 
     private function addDomainExtApplicantDataset(\DOMElement $element, noridEppDomain $domain) {

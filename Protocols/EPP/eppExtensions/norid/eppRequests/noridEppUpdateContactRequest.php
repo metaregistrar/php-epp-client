@@ -11,32 +11,32 @@ class noridEppUpdateContactRequest extends eppUpdateContactRequest {
         parent::__construct($objectname, $addInfo, $removeInfo, $updateInfo, $namespacesinroot);
 
         if (($addInfo instanceof noridEppContact) || ($removeInfo instanceof noridEppContact) || ($updateInfo instanceof noridEppContact)) {
-            $this->updateExtContact($contactHandle, $addInfo, $removeInfo);
+            $this->updateExtContact($addInfo, $removeInfo, null);
         }
 
         $this->addSessionId();
     }
 
-    public function updateExtContact($contactid, $addInfo, $removeInfo, $updateInfo) {
+    public function updateExtContact($addInfo, $removeInfo, $updateInfo) {
         if ($updateInfo instanceof noridEppContact) {            // Add Norid EPP extensions
             if (!is_null($updateInfo->getExtOrganizations()) || (!is_null($updateInfo->getExtIdentityType()) && !is_null($updateInfo->getExtIdentity())) || !is_null($updateInfo->getExtMobilePhone()) || !is_null($updateInfo->getExtEmails()) || !is_null($updateInfo->getExtRoleContacts())) {
                 $extchgcmd = $this->createElement('no-ext-contact:chg');
                 $this->addContactExtChanges($extchgcmd, $updateInfo);
-                $this->getContactExtension()->appendChild($extchgcmd);
+                $this->getContactExtension('update')->appendChild($extchgcmd);
             }
         }
         if ($removeInfo instanceof noridEppContact) {
             if (!is_null($removeInfo->getExtOrganizations()) || (!is_null($removeInfo->getExtIdentityType()) && !is_null($removeInfo->getExtIdentity())) || !is_null($removeInfo->getExtMobilePhone()) || !is_null($removeInfo->getExtEmails()) || !is_null($removeInfo->getExtRoleContacts())) {
                 $extremcmd = $this->createElement('no-ext-contact:rem');
                 $this->addContactExtChanges($extremcmd, $removeInfo);
-                $this->getContactExtension()->appendChild($extremcmd);
+                $this->getContactExtension('update')->appendChild($extremcmd);
             }
         }
         if ($addInfo instanceof noridEppContact) {
             if (!is_null($addInfo->getExtOrganizations()) || (!is_null($addInfo->getExtIdentityType()) && !is_null($addInfo->getExtIdentity())) || !is_null($addInfo->getExtMobilePhone()) || !is_null($addInfo->getExtEmails()) || !is_null($addInfo->getExtRoleContacts())) {
                 $extaddcmd = $this->createElement('no-ext-contact:add');
                 $this->addContactExtChanges($extaddcmd, $addInfo);
-                $this->getContactExtension()->appendChild($extaddcmd);
+                $this->getContactExtension('update')->appendChild($extaddcmd);
             }
         }
     }

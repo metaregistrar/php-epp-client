@@ -22,7 +22,7 @@ class noridEppHost extends eppHost {
         return $this->extContact;
     }
 
-    public function setExtSponsoringClientID($clientID) {
+    public function setExtSponsoringClientID($clientId) {
         if (!is_null($clientId)) {
             $this->extSponsoringClientID = $clientId;
         }

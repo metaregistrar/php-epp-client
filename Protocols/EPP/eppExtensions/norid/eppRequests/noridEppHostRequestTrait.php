@@ -9,13 +9,15 @@ trait noridEppHostRequestTrait {
      */
     protected $hostextension = null;
 
-    protected function getHostExtension() {
+    protected function getHostExtension($type) {
         if (is_null($this->hostextension)) {
             $this->hostextension = $this->createElement('no-ext-host:'.$type);
             if (!$this->rootNamespaces()) {
                 $this->hostextension->setAttribute('xmlns:no-ext-host', 'http://www.norid.no/xsd/no-ext-host-1.0');
             }
-            $this->getExtension()->appendChild($this->hostextension);
+            $ext = $this->getExtension();
+            /* @var \DOMElement $ext */
+            $ext->appendChild($this->hostextension);
         }
 
         return $this->hostextension;

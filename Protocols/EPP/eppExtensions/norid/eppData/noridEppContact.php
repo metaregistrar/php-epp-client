@@ -33,14 +33,14 @@ class noridEppContact extends eppContact {
     }
 
     public function setExtType($extType) {
-        if ($extType !== NO_CONTACT_TYPE_ORGANIZATION || $extType !== NO_CONTACT_TYPE_PERSON || $extType !== NO_CONTACT_TYPE_ROLE) {
+        if ($extType !== self::NO_CONTACT_TYPE_ORGANIZATION || $extType !== self::NO_CONTACT_TYPE_PERSON || $extType !== self::NO_CONTACT_TYPE_ROLE) {
             throw new eppException('Invalid contact type specified');
         }
 
         $this->extType = $extType;
     }
 
-    public function getExtType($extType) {
+    public function getExtType() {
         return $this->extType;
     }
 

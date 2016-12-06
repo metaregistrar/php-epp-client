@@ -16,7 +16,7 @@ class noridEppCreateHostRequest extends eppCreateHostRequest {
     public function setExtHost(noridEppHost $host) {
         // Add Norid contact extension
         if (strlen($host->getExtContact())) {
-            $this->getHostExtension()->appendChild($this->createElement('no-ext-host:contact', $host->getExtContact()));
+            $this->getHostExtension('create')->appendChild($this->createElement('no-ext-host:contact', $host->getExtContact()));
         }
     }
 
