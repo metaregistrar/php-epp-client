@@ -37,6 +37,7 @@ Currently supported registries:
 - Openprovider
 - Ficora (.fi)
 - DNS.PT (.pt)
+- Norid (.no)
 
 
 All code changes are tested automatically with the phpunit tests in the Tests directory
