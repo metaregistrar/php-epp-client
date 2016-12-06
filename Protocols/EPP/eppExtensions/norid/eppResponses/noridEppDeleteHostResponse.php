@@ -5,12 +5,6 @@ namespace Metaregistrar\EPP;
 
 class noridEppDeleteHostResponse extends eppDeleteHostResponse {
     
-    public function getExtConditions() {
-        return noridEppResponse::getExtConditions($this->xPath());
-    }
-    
-    public function getExtServiceMessages() {
-        return noridEppResponse::getExtServiceMessages($this->xPath());
-    }
+    use noridEppResponseTrait;
     
 }

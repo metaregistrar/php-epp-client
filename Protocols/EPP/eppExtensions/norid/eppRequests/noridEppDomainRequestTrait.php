@@ -1,17 +1,13 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class noridEppDomainRequest extends eppDomainRequest {
+trait noridEppDomainRequestTrait {
 
     /**
      * Norid domain extension object to add namespaces to
      * @var \DomElement
      */
-    public $domainextension = null;
-
-    function __construct($type) {
-        parent::__construct($type);
-    }
+    protected $domainextension = null;
 
     protected function getDomainExtension() {
         if (is_null($this->domainextension)) {

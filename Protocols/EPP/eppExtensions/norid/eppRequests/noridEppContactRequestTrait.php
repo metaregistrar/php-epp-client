@@ -1,17 +1,13 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class noridEppContactRequest extends eppContactRequest {
+trait noridEppContactRequestTrait {
 
     /**
      * Norid contact extension object to add namespaces to
      * @var \DomElement
      */
-    public $contactextension = null;
-
-    function __construct($type) {
-        parent::__construct($type);
-    }
+    protected $contactextension = null;
 
     protected function getContactExtension() {
         if (is_null($this->contactextension)) {

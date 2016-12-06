@@ -4,8 +4,10 @@ namespace Metaregistrar\EPP;
 // See https://www.norid.no/no/registrar/system/dokumentasjon/eksempler/?op=dwit for example request/response
 
 class noridEppWithdrawContactRequest extends eppRequest {
+
+    use noridEppDomainRequestTrait;
     
-    public $domainobject = null;
+    protected $domainobject = null;
 
     function __construct(noridEppDomain $domain, $namespacesinroot = true) {
         $this->setNamespacesinroot($namespacesinroot);

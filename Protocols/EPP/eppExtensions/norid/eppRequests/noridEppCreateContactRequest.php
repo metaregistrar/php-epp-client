@@ -3,26 +3,17 @@ namespace Metaregistrar\EPP;
 
 // See https://www.norid.no/no/registrar/system/dokumentasjon/eksempler/?op=ccre for example request/response
 
-class noridEppCreateContactRequest extends noridEppContactRequest {
+class noridEppCreateContactRequest extends eppCreateContactRequest {
+
+    use noridEppContactRequestTrait;
     
     function __construct(noridEppContact $contact, $namespacesinroot = true) {
-        $this->setNamespacesinroot($namespacesinroot);
-        parent::__construct(eppRequest::TYPE_CREATE);
-        $this->setContact($contact);
+        parent::__construct($contact, $namespacesinroot);
+        $this->setExtContact($contact);
         $this->addSessionId();
     }
 
-    // Setter for values from a noridEppContact
-    public function setContact(noridEppContact $contact) {
-        // Replicate eppCreateContactRequest structure
-        $this->setContactId($contact->generateContactId());
-        $this->setPostalInfo($contact->getPostalInfo(0));
-        $this->setVoice($contact->getVoice());
-        $this->setFax($contact->getFax());
-        $this->setEmail($contact->getEmail());
-        $this->setPassword($contact->getPassword());
-        $this->setDisclose($contact->getDisclose());
-
+    public function setExtContact(noridEppContact $contact) {
         // Add extension structure
         $this->setExtType($contact->getExtType());
         $this->setExtIdentity($contact->getExtIdentityType(), $contact->getExtIdentity());
@@ -87,93 +78,6 @@ class noridEppCreateContactRequest extends noridEppContactRequest {
             foreach ($contacts as $contact) {
                 $this->getContactExtension()->appendChild($this->createElement('no-ext-contact:roleContact', $contact));
             }
-        }
-    }
-
-    // Standard setters
-    private function setContactId($contactid) {
-        $this->contactobject->appendChild($this->createElement('contact:id', $contactid));
-    }
-
-    private function setPostalInfo(eppContactPostalInfo $postal) {
-        $postalinfo = $this->createElement('contact:postalInfo');
-        if (!$postal instanceof eppContactPostalInfo) {
-            throw new eppException('PostalInfo must be filled on noridEppCreateContact request');
-        }
-        if ($postal->getType() != eppContact::TYPE_LOC) {
-            // Postal info must be of type 'loc' according to Norid
-            throw new eppException('PostalInfo must be of type LOC for the Norid registry');
-        }
-        $postalinfo->setAttribute('type', $postal->getType());
-        $postalinfo->appendChild($this->createElement('contact:name', $postal->getName()));
-        if ($postal->getOrganisationName()) {
-            $postalinfo->appendChild($this->createElement('contact:org', $postal->getOrganisationName()));
-        }
-        $postaladdr = $this->createElement('contact:addr');
-        $count = $postal->getStreetCount();
-        for ($i = 0; $i < $count; $i++) {
-            $postaladdr->appendChild($this->createElement('contact:street', $postal->getStreet($i)));
-        }
-        $postaladdr->appendChild($this->createElement('contact:city', $postal->getCity()));
-        if ($postal->getProvince()) {
-            $postaladdr->appendChild($this->createElement('contact:sp', $postal->getProvince()));
-        }
-        $postaladdr->appendChild($this->createElement('contact:pc', $postal->getZipcode()));
-        $postaladdr->appendChild($this->createElement('contact:cc', $postal->getCountrycode()));
-        $postalinfo->appendChild($postaladdr);
-        $this->contactobject->appendChild($postalinfo);
-    }
-
-    private function setVoice($voice) {
-        if (!is_null($voice)) {
-            $this->contactobject->appendChild($this->createElement('contact:voice', $voice));
-        }
-    }
-
-    private function setFax($fax) {
-        if (!is_null($fax)) {
-            $this->contactobject->appendChild($this->createElement('contact:fax', $fax));
-        }
-    }
-
-    private function setEmail($email) {
-        if (!is_null($email)) {
-            $this->contactobject->appendChild($this->createElement('contact:email', $email));
-        }
-    }
-
-    private function setPassword($password) {
-        $authinfo = $this->createElement('contact:authInfo');
-        if (!is_null($password)) {
-            $authinfo->appendChild($this->createElement('contact:pw', $password));
-        } else {
-            $authinfo->appendChild($this->createElement('contact:pw'));
-        }
-        $this->contactobject->appendChild($authinfo);
-    }
-
-    private function setDisclose($contactdisclose) {
-        if (!is_null($contactdisclose)) {
-            $disclose = $this->createElement('contact:disclose');
-            $disclose->setAttribute('flag',$contactdisclose);
-            $name = $this->createElement('contact:name');
-            if ($contactdisclose==1) {
-                $name->setAttribute('type',eppContact::TYPE_LOC);
-            }
-            $disclose->appendChild($name);
-            $org = $this->createElement('contact:org');
-            if ($contactdisclose==1) {
-                $org->setAttribute('type',eppContact::TYPE_LOC);
-            }
-            $disclose->appendChild($org);
-            $addr = $this->createElement('contact:addr');
-            if ($contactdisclose==1) {
-                $addr->setAttribute('type',eppContact::TYPE_LOC);
-            }
-            $disclose->appendChild($addr);
-            $disclose->appendChild($this->createElement('contact:voice'));
-            $disclose->appendChild($this->createElement('contact:email'));
-            $this->contactobject->appendChild($disclose);
         }
     }
 

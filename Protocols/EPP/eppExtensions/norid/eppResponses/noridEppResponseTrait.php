@@ -1,9 +1,9 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class noridEppResponse extends eppResponse {
+trait noridEppResponseTrait {
 
-    public static function getExtConditions($xpath) {
+    public function getExtConditions($xpath) {
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/no-ext-result:conditions/no-ext-result:condition');
         if (is_object($result) && ($result->length > 0)) {
             return array_map(function($element) {
@@ -19,7 +19,7 @@ class noridEppResponse extends eppResponse {
         }
     }
 
-    public static function getExtServiceMessages($xpath) {
+    public function getExtServiceMessages($xpath) {
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/no-ext-result:message');
         if (is_object($result) && ($result->length > 0)) {
             return array_map(function($element) {
