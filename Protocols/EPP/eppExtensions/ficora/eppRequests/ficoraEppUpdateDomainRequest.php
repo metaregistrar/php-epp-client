@@ -10,11 +10,11 @@ class ficoraEppUpdateDomainRequest extends eppUpdateDomainRequest {
     }
 
     /**
-     *
      * @param \domElement $element
-     * @param eppDomain $domain ficoraEppDomain element containing changes
+     * @param eppDomain $domain
+     * @throws eppException
      */
-    protected function addDomainChanges($element, eppDomain $domain) {
+     protected function addDomainChanges($element, eppDomain $domain) {
         // can't change function argument class due to strict standards warning
         if (!$domain instanceof ficoraEppDomain) {
             throw new eppException('Domains passed to ficoraEppUpdateDomainRequest must be instances of ficoraEppDomain');
