@@ -12,8 +12,6 @@ class noridEppUpdateHostRequest extends eppUpdateHostRequest {
 
         if (($addInfo instanceof noridEppHost) || ($removeInfo instanceof noridEppHost)) {
             $this->updateExtHost($hostname, $addInfo, $removeInfo);
-        } else {
-            throw new eppException('addInfo, removeInfo and updateInfo need to be noridEppHost objects');
         }
 
         $this->addSessionId();
