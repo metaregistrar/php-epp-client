@@ -11,10 +11,8 @@ class noridEppDomain extends eppDomain {
     private $extApplicantDatasetVersionNumber = '2.0';
     private $extApplicantDatasetAcceptName = null;
     private $extApplicantDatasetAcceptDate = null;
-    private $extApplicantDatasetUpdateClientID = null;
-    private $extApplicantDatasetUpdateDate = null;
 
-    public function __construct($domainname, $registrant = null, $contacts = null, $hosts = null, $period = 0, $authorisationCode = null, $extToken = null, $extNotifyMobilePhone = null, $extNotifyEmail = null, $extDeleteFromDNS = null, $extDeleteFromRegistry = null, $extApplicantDatasetVersionNumber = null, $extApplicantDatasetAcceptName = null, $extApplicantDatasetAcceptDate = null, $extApplicantDatasetUpdateClientID = null, $extApplicantDatasetUpdateDate = null) {
+    public function __construct($domainname, $registrant = null, $contacts = null, $hosts = null, $period = 0, $authorisationCode = null, $extToken = null, $extNotifyMobilePhone = null, $extNotifyEmail = null, $extDeleteFromDNS = null, $extDeleteFromRegistry = null, $extApplicantDatasetVersionNumber = null, $extApplicantDatasetAcceptName = null, $extApplicantDatasetAcceptDate = null) {
         parent::__construct($domainname, $registrant, $contacts, $hosts, $period, $authorisationCode);
 
         // Set extension values
@@ -22,7 +20,7 @@ class noridEppDomain extends eppDomain {
         $this->setExtNotify($extNotifyMobilePhone, $extNotifyEmail);
         $this->setExtDeleteFromDNS($extDeleteFromDNS);
         $this->setExtDeleteFromRegistry($extDeleteFromRegistry);
-        $this->setExtApplicantDataset($extApplicantDatasetVersionNumber, $extApplicantDatasetAcceptName, $extApplicantDatasetAcceptDate, $extApplicantDatasetUpdateClientID, $extApplicantDatasetUpdateDate);
+        $this->setExtApplicantDataset($extApplicantDatasetVersionNumber, $extApplicantDatasetAcceptName, $extApplicantDatasetAcceptDate);
     }
 
     public function setExtToken($token) {
@@ -84,7 +82,7 @@ class noridEppDomain extends eppDomain {
         return $this->extDeleteFromRegistry;
     }
 
-    public function setExtApplicantDataset($versionNumber, $acceptName, $acceptDate, $updateClientID, $updateDate) {
+    public function setExtApplicantDataset($versionNumber, $acceptName, $acceptDate) {
         if (!is_null($versionNumber)) {
             $this->extApplicantDatasetVersionNumber = $versionNumber;
         }
@@ -94,21 +92,13 @@ class noridEppDomain extends eppDomain {
         if (!is_null($acceptDate)) {
             $this->extApplicantDatasetAcceptDate = $acceptDate;
         }
-        if (!is_null($updateClientID)) {
-            $this->extApplicantDatasetUpdateClientID = $updateClientID;
-        }
-        if (!is_null($updateDate)) {
-            $this->extApplicantDatasetUpdateDate = $updateDate;
-        }
     }
 
     public function getExtApplicantDataset() {
         return array(
             'versionNumber' => $this->extApplicantDatasetVersionNumber,
             'acceptName' => $this->extApplicantDatasetAcceptName,
-            'acceptDate' => $this->extApplicantDatasetAcceptDate,
-            'updateClientID' => $this->extApplicantDatasetUpdateClientID,
-            'updateDate' => $this->extApplicantDatasetUpdateDate
+            'acceptDate' => $this->extApplicantDatasetAcceptDate
         );
     }
 
@@ -122,14 +112,6 @@ class noridEppDomain extends eppDomain {
 
     public function getExtApplicantDatasetAcceptDate() {
         return $this->extApplicantDatasetAcceptDate;
-    }
-
-    public function getExtApplicantDatasetUpdateClientID() {
-        return $this->extApplicantDatasetUpdateClientID;
-    }
-
-    public function getExtApplicantDatasetUpdateDate() {
-        return $this->extApplicantDatasetUpdateDate;
     }
 
 }
