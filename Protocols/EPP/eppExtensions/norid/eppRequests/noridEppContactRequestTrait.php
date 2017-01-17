@@ -9,6 +9,10 @@ trait noridEppContactRequestTrait {
      */
     protected $contactextension = null;
 
+    /**
+     * @param string $type
+     * @return \DomElement
+     */
     protected function getContactExtension($type) {
         if (is_null($this->contactextension)) {
             $this->contactextension = $this->createElement('no-ext-contact:'.$type);

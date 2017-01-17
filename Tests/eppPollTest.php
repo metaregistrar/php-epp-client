@@ -135,4 +135,21 @@ class eppPollTest extends eppTestCase {
 
     }
 
+
+public function testPollFailedResponse() {
+    $response = '<?xml version="1.0" encoding="UTF-8"?> <epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:domain="urn:ietf:params:xml:ns:domain-1.0" xmlns:contact="urn:ietf:params:xml:ns:contact-1.0" xmlns:host="urn:ietf:params:xml:ns:host-1.0" xmlns:ext="http://www.metaregistrar.com/epp/ext-1.0" xmlns:command-ext="http://www.metaregistrar.com/epp/command-ext-1.0" xmlns:command-ext-domain="http://www.metaregistrar.com/epp/command-ext-domain-1.0" xmlns:secDNS="urn:ietf:params:xml:ns:secDNS-1.1" xmlns:rgp="urn:ietf:params:xml:ns:rgp-1.0">   <response>     <msgQ count="522" id="8034">       <qDate>2016-12-07T13:13:51.000000+0100</qDate>       <msg lang="en"><![CDATA[Validating contact \'RP018RWE275DHuxEQhbswZ2q\' completed]]></msg>     </msgQ>     <trID>       <svTRID>MTR_250a12a4a7accb2dff22837edd74290daf6be43a</svTRID>       <clTRID>584ec780dfd19</clTRID>     </trID>   </response> </epp>';
+    $pollResponse = new Metaregistrar\EPP\eppPollResponse();
+    $pollResponse->loadXML($response);
+    $pollResponse->xpathuri = ['urn:ietf:params:xml:ns:domain-1.0'=>'domain'];
+    $this->assertSame($pollResponse->getMessageCount(),'522');
+    $this->assertSame($pollResponse->getMessage(),'Validating contact \'RP018RWE275DHuxEQhbswZ2q\' completed');
+    $this->assertSame($pollResponse->getResultCode(),'1000');
+    $this->assertNull($pollResponse->getResultMessage());
+    $this->assertSame($pollResponse->getMessageId(),'8034');
+    $this->assertSame($pollResponse->getMessageDate(),'2016-12-07T13:13:51.000000+0100');
+    $this->setExpectedException('Metaregistrar\EPP\eppException','Type of message cannot be determined on EPP poll message');
+    $this->assertSame($pollResponse->getMessageType(),'ren');
+
+    }
+
 }
