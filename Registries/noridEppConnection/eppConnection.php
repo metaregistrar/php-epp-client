@@ -30,6 +30,7 @@ class noridEppConnection extends eppConnection {
         // Domain Create/Withdraw
         parent::addCommandResponse('Metaregistrar\\EPP\\noridEppCreateDomainRequest', 'Metaregistrar\\EPP\\noridEppCreateDomainResponse');
         parent::addCommandResponse('Metaregistrar\\EPP\\noridEppWithdrawDomainRequest', 'Metaregistrar\\EPP\\noridEppWithdrawDomainResponse');
+        parent::addCommandResponse('Metaregistrar\\EPP\\noridEppTransferRequest', 'Metaregistrar\\EPP\\noridEppTransferResponse');
 
         // Contact Create/Check/Info/Update
         parent::addCommandResponse('Metaregistrar\\EPP\\noridEppCreateContactRequest', 'Metaregistrar\\EPP\\noridEppCreateContactResponse');
