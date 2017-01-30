@@ -14,9 +14,11 @@ include_once(dirname(__FILE__) . '/eppData/noridEppDomain.php');
 // Requests
 include_once(dirname(__FILE__) . '/eppRequests/noridEppCreateDomainRequest.php');
 include_once(dirname(__FILE__) . '/eppRequests/noridEppWithdrawDomainRequest.php');
+include_once(dirname(__FILE__) . '/eppRequests/noridEppTransferRequest.php');
 // Responses
-include_once(dirname(__FILE__) . '/eppResponses/noridEppWithdrawDomainResponse.php');
 include_once(dirname(__FILE__) . '/eppRequests/noridEppCreateDomainResponse.php');
+include_once(dirname(__FILE__) . '/eppResponses/noridEppWithdrawDomainResponse.php');
+include_once(dirname(__FILE__) . '/eppResponses/noridEppTransferResponse.php');
 
 
 // Contact
