@@ -22,7 +22,7 @@ class noridEppContact extends eppContact {
     private $extOrganizations = null;
     private $extRoleContacts = null;
 
-    function __construct($postalInfo, $email, $voice, $fax, $password, $status, $extType = null, $extIdentityType = null, $extIdentity = null, $extMobilePhone = null, $extEmails = null, $extOrganizations = null, $extRoleContacts = null) {
+    function __construct($postalInfo = null, $email = null, $voice = null, $fax = null, $password = null, $status = null, $extType = null, $extIdentityType = null, $extIdentity = null, $extMobilePhone = null, $extEmails = null, $extOrganizations = null, $extRoleContacts = null) {
         parent::__construct($postalInfo, $email, $voice, $fax, $password, $status);
         $this->setExtType($extType);
         $this->setExtIdentity($extIdentityType, $extIdentity);
