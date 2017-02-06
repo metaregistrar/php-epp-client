@@ -11,10 +11,15 @@ class noridEppTransferRequest extends eppTransferRequest {
     
     protected $domainobject = null;
 
-    function __construct(noridEppDomain $domain, $namespacesinroot = true) {
-        $this->setNamespacesinroot($namespacesinroot);
-        parent::__construct();
-        $this->setDomainExecute($domain);
+    function __construct($operation, $object) {
+        parent::__construct($operation, $object);
+        if ($operation == self::OPERATION_EXECUTE) {
+            if ($object instanceof noridEppDomain) {
+                $this->setDomainExecute($object);
+            } else {
+                throw new eppException('Object parameter should be an instance of noridEppDomain when operation is EXECUTE');
+            }
+        }
         $this->addSessionId();
     }
 

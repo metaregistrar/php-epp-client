@@ -15,10 +15,10 @@ class noridEppCreateDomainRequest extends eppCreateDomainRequest {
 
     public function setExtDomain(noridEppDomain $domain) {
         // Add Norid applicant dataset
-        $this->addDomainExtApplicantDataset($this->getDomainExtension('create'), $domain);
+        $this->addDomainExtApplicantDataset($domain);
     }
 
-    private function addDomainExtApplicantDataset(\DOMElement $element, noridEppDomain $domain) {
+    private function addDomainExtApplicantDataset(noridEppDomain $domain) {
         $dataset = $domain->getExtApplicantDataset();
         if (is_null($dataset['versionNumber']) || is_null($dataset['acceptName']) || is_null($dataset['acceptDate'])) {
             throw new eppException('A valid applicant dataset is required to create a domain in the Norid registry');
@@ -27,7 +27,7 @@ class noridEppCreateDomainRequest extends eppCreateDomainRequest {
         $datasetElement->appendChild($this->createElement('no-ext-domain:versionNumber', $dataset['versionNumber']));
         $datasetElement->appendChild($this->createElement('no-ext-domain:acceptName', $dataset['acceptName']));
         $datasetElement->appendChild($this->createElement('no-ext-domain:acceptDate', $dataset['acceptDate']));
-        $element->appendChild($datasetElement);
+        $this->getDomainExtension('create')->appendChild($datasetElement);
     }
 
 }
