@@ -66,9 +66,8 @@ class eppTransferRequest extends eppRequest {
                 }
                 break;
             default:
-                throw new eppException('Operation parameter needs to be QUERY, REQUEST, CANCEL, APPROVE or REJECT on eppTransferRequest');
+                trigger_error('Operation parameter should be QUERY, REQUEST, CANCEL, APPROVE or REJECT on eppTransferRequest, ignore this if you are using a custom transfer operation', E_USER_NOTICE);
                 break;
-
         }
         $this->addSessionId();
     }
