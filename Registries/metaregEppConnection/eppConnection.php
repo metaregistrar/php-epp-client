@@ -18,6 +18,8 @@ class metaregEppConnection extends eppConnection {
         parent::addExtension('command-ext', 'http://www.metaregistrar.com/epp/command-ext-1.0');
         parent::addExtension('command-ext-domain', 'http://www.metaregistrar.com/epp/command-ext-domain-1.0');
         parent::addExtension('ext', 'http://www.metaregistrar.com/epp/ext-1.0');
+        parent::addExtension('dns-ext', 'http://www.metaregistrar.com/epp/dns-ext-1.0');
+        parent::addCommandResponse('Metaregistrar\EPP\metaregInfoDnsRequest', 'Metaregistrar\EPP\metaregInfoDnsResponse');
         $this->enableDnssec();
         $this->enableRgp();
         //parent::enableLaunchphase('claims');

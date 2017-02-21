@@ -3,7 +3,7 @@ include_once(dirname(__FILE__).'/eppTestCase.php');
 
 class eppInfoDomainTest extends eppTestCase {
     /**
-     * Test succesful contact info
+     * Test succesful domain info
      * @throws \Metaregistrar\EPP\eppException
      */
     public function testInfoDomainSuccess() {
