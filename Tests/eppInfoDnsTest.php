@@ -14,8 +14,8 @@ class eppInfoDnsTest extends eppTestCase {
         $this->assertInstanceOf('Metaregistrar\EPP\metaregInfoDnsResponse', $response);
         /* @var $response Metaregistrar\EPP\metaregInfoDnsResponse */
         $this->assertTrue($response->Success());
-        //$this->assertEquals('Command completed successfully', $response->getResultMessage());
-        //$this->assertEquals(1000, $response->getResultCode());
+        $this->assertEquals('Command completed successfully', $response->getResultMessage());
+        $this->assertEquals(1000, $response->getResultCode());
         $content = $response->getContent();
         foreach ($content as $record) {
             $this->assertEquals($record['name'], $domainname);
@@ -37,9 +37,9 @@ class eppInfoDnsTest extends eppTestCase {
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $info = new Metaregistrar\EPP\metaregInfoDnsRequest($domain);
         $response = $this->conn->writeandread($info);
-        $this->setExpectedException('Metaregistrar\EPP\eppException','The domain '.$domainname.' does not have a zone.');
         $this->assertInstanceOf('Metaregistrar\EPP\metaregInfoDnsResponse', $response);
         /* @var $response Metaregistrar\EPP\metaregInfoDnsResponse */
+        $this->setExpectedException('Metaregistrar\EPP\eppException','The domain '.$domainname.' does not have a zone.');
         $this->assertTrue($response->Success());
     }
 }

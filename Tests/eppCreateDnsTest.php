@@ -16,8 +16,8 @@ class eppCreateDnsTest extends eppTestCase
         $this->assertInstanceOf('Metaregistrar\EPP\metaregCreateDnsResponse', $response);
         /* @var $response Metaregistrar\EPP\metaregCreateDnsResponse */
         $this->assertTrue($response->Success());
-        //$this->assertEquals('Command completed successfully', $response->getResultMessage());
-        //$this->assertEquals(1000, $response->getResultCode());
+        $this->assertEquals('Command completed successfully', $response->getResultMessage());
+        $this->assertEquals(1000, $response->getResultCode());
         $content = $response->getContent();
         foreach ($content as $record) {
             $this->assertEquals($record['name'], $domainname);

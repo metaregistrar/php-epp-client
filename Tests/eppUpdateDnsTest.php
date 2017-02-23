@@ -32,6 +32,28 @@ class eppUpdateDnsTest extends eppTestCase
                 $this->assertEquals($record['content'], '2001:828:12ed:3:3c44:a46a:727:6684');
             }
         }
+    }
 
+    /**
+     * Test successful dns update
+     */
+    public function testSignDnsSuccess() {
+        $domainname = $this->createDns();
+        $domain = new Metaregistrar\EPP\eppDomain($domainname);
+        $update= new Metaregistrar\EPP\metaregUpdateDnsRequest($domain,null,null,true);
+        $response = $this->conn->writeandread($update);
+        $this->assertInstanceOf('Metaregistrar\EPP\metaregUpdateDnsResponse', $response);
+        /* @var $response Metaregistrar\EPP\metaregDeleteDnsResponse */
+        $this->assertTrue($response->Success());
+        $this->assertEquals('Command completed successfully;sign pending', $response->getResultMessage());
+        $this->assertEquals(1001, $response->getResultCode());
+        echo "Test is sleeping 5 minutes until the signing process is complete\n";
+        // Sleep until the domain name has been signed
+        sleep(300);
+        $domain = new Metaregistrar\EPP\eppDomain($domainname);
+        $info = new Metaregistrar\EPP\metaregInfoDnsRequest($domain);
+        $response = $this->conn->writeandread($info);
+        /* @var $response Metaregistrar\EPP\metaregInfoDnsResponse */
+        echo $response->saveXML();
     }
 }
