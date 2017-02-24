@@ -12,7 +12,7 @@ use Metaregistrar\EPP\eppInfoDomainResponse;
 try {
     $domainname = 'portugalvakanties.nl';
     // Please enter your own settings file here under before using this example
-    if ($conn = eppConnection::create('sidn.ini')) {
+    if ($conn = eppConnection::create('')) {
         $conn->enableDnssec();
         if ($conn->login()) {
             $dnssec = infodomain($conn, $domainname);
