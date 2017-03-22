@@ -43,11 +43,10 @@ class atEppUpdateDomainRequest extends eppUpdateDomainRequest
                     }
                     $dsdata->appendChild($this->createElement('secDNS:digestType', $dnssec->getDigestType()));
                     $dsdata->appendChild($this->createElement('secDNS:digest', $dnssec->getDigest()));
-
+                    $rem->appendChild($dsdata);
                 }
-                $secdns->appendChild($rem);
             }
-            $rem->appendChild($dsdata);
+            $secdns->appendChild($rem);
         }
         if ($addinfo instanceof eppDomain) {
             $dnssecs = $addinfo->getSecdns();
