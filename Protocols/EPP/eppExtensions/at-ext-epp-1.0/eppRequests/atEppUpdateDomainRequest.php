@@ -18,9 +18,9 @@ class atEppUpdateDomainRequest extends eppUpdateDomainRequest
     function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false,atEppExtensionChain $atEppExtensionChain=null) {
         $this->atEppExtensionChain = $atEppExtensionChain;
         parent::__construct($objectname, $addinfo , $removeinfo , $updateinfo , $forcehostattr);
-
         $secdns = $this->createElement('secDNS:update');
         $secdns->setAttribute('xmlns:secDNS', 'urn:ietf:params:xml:ns:secDNS-1.1');
+        $secdns->setAttribute('xsi:schemaLocation', 'urn:ietf:params:xml:ns:secDNS-1.1 secDNS-1.1.xsd');
         if ($removeinfo instanceof eppDomain) {
             $dnssecs = $removeinfo->getSecdns();
             foreach ($dnssecs as $dnssec) {
@@ -43,10 +43,11 @@ class atEppUpdateDomainRequest extends eppUpdateDomainRequest
                     }
                     $dsdata->appendChild($this->createElement('secDNS:digestType', $dnssec->getDigestType()));
                     $dsdata->appendChild($this->createElement('secDNS:digest', $dnssec->getDigest()));
-                    $rem->appendChild($dsdata);
+
                 }
                 $secdns->appendChild($rem);
             }
+            $rem->appendChild($dsdata);
         }
         if ($addinfo instanceof eppDomain) {
             $dnssecs = $addinfo->getSecdns();
@@ -70,18 +71,22 @@ class atEppUpdateDomainRequest extends eppUpdateDomainRequest
                     }
                     $dsdata->appendChild($this->createElement('secDNS:digestType', $dnssec->getDigestType()));
                     $dsdata->appendChild($this->createElement('secDNS:digest', $dnssec->getDigest()));
+
                     $add->appendChild($dsdata);
                 }
-                $secdns->appendChild($add);
+
             }
+            $secdns->appendChild($add);
         }
         $this->getExtension()->appendchild($secdns);
+
         $this->addSessionId();
 
     }
 
     public function updateDomain($domainname, $addInfo, $removeInfo, $updateInfo) {
         parent::updateDomain($domainname, $addInfo, $removeInfo, $updateInfo);
+
         $this->setAtExtensions();
     }
 }
