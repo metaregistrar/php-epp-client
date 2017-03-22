@@ -23,9 +23,10 @@ class atEppUpdateDomainRequest extends eppUpdateDomainRequest
         $secdns->setAttribute('xsi:schemaLocation', 'urn:ietf:params:xml:ns:secDNS-1.1 secDNS-1.1.xsd');
         if ($removeinfo instanceof eppDomain) {
             $dnssecs = $removeinfo->getSecdns();
+            $rem = $this->createElement('secDNS:rem');
             foreach ($dnssecs as $dnssec) {
                 /* @var $dnssec eppSecdns */
-                $rem = $this->createElement('secDNS:rem');
+
                 if (strlen($dnssec->getPubkey()) > 0) {
                     $keydata = $this->createElement('secDNS:keyData');
                     $keydata->appendChild($this->createElement('secDNS:flags', $dnssec->getFlags()));
@@ -46,13 +47,16 @@ class atEppUpdateDomainRequest extends eppUpdateDomainRequest
                     $rem->appendChild($dsdata);
                 }
             }
-            $secdns->appendChild($rem);
+            if(count($dnssecs) > 0) {
+                $secdns->appendChild($rem);
+            }
         }
         if ($addinfo instanceof eppDomain) {
             $dnssecs = $addinfo->getSecdns();
+            $add = $this->createElement('secDNS:add');
             foreach ($dnssecs as $dnssec) {
                 /* @var $dnssec eppSecdns */
-                $add = $this->createElement('secDNS:add');
+
                 if (strlen($dnssec->getPubkey()) > 0) {
                     $keydata = $this->createElement('secDNS:keyData');
                     $keydata->appendChild($this->createElement('secDNS:flags', $dnssec->getFlags()));
@@ -75,9 +79,13 @@ class atEppUpdateDomainRequest extends eppUpdateDomainRequest
                 }
 
             }
-            $secdns->appendChild($add);
+            if(count($dnssecs) > 0) {
+                $secdns->appendChild($add);
+            }
         }
-        $this->getExtension()->appendchild($secdns);
+
+            $this->getExtension()->appendchild($secdns);
+
 
         $this->addSessionId();
 
