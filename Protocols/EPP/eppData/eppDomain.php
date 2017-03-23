@@ -65,7 +65,7 @@ class eppDomain {
      *
      * @var string
      */
-    private $authorisationCode = '';
+    private $authorisationCode = null;
     /**
      *
      * @var integer
