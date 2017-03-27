@@ -48,9 +48,19 @@ class atEppCreateContactRequest extends eppCreateContactRequest {
             }
         }
         $postalinfo->setAttribute('type', $postal->getType());
-        $postalinfo->appendChild($this->createElement('contact:name', $postal->getName()));
-        if ($postal->getOrganisationName()) {
-            $postalinfo->appendChild($this->createElement('contact:org', $postal->getOrganisationName()));
+
+        $organisation = $postal->getOrganisationName();
+        $name = $postal->getName();
+        if(!empty($organisation) && empty($name)){
+            $name =  $organisation;
+            $organisation="";
+        }
+
+
+       $postalinfo->appendChild($this->createElement('contact:name', $name));
+
+        if (!empty($organisation)) {
+            $postalinfo->appendChild($this->createElement('contact:org', $organisation));
         }
         $postaladdr = $this->createElement('contact:addr');
         $count = $postal->getStreetCount();
