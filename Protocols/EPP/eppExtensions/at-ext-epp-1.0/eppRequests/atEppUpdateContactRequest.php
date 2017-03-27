@@ -96,12 +96,16 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
                 }
             }
             $postalinfo->setAttribute('type', $postal->getType());
-            if (strlen($postal->getName())) {
-                $postalinfo->appendChild($this->createElement('contact:name', $postal->getName()));
+            $organisation = $postal->getOrganisationName();
+            $name = $postal->getName();
+            if(!empty($organisation) && empty($name)){
+                $name =  $organisation;
+                $organisation="";
             }
-            if (strlen($postal->getOrganisationName())) {
-                $postalinfo->appendChild($this->createElement('contact:org', $postal->getOrganisationName()));
-            }
+
+            $postalinfo->appendChild($this->createElement('contact:name', $name));
+            $postalinfo->appendChild($this->createElement('contact:org', $organisation));
+
             if ((($postal->getStreetCount()) > 0) || strlen($postal->getCity()) || strlen($postal->getProvince()) || strlen($postal->getZipcode()) || strlen($postal->getCountrycode())) {
                 $postaladdr = $this->createElement('contact:addr');
                 if (($count = $postal->getStreetCount()) > 0) {
@@ -125,12 +129,12 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
             }
             $element->appendChild($postalinfo);
         }
-        if (strlen($contact->getVoice())) {
+
             $element->appendChild($this->createElement('contact:voice', $contact->getVoice()));
-        }
-        if (strlen($contact->getFax())) {
+
+
             $element->appendChild($this->createElement('contact:fax', $contact->getFax()));
-        }
+
         if (strlen($contact->getEmail())) {
             $element->appendChild($this->createElement('contact:email', $contact->getEmail()));
         }
