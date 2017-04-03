@@ -233,8 +233,12 @@ class eppInfoDomainResponse extends eppInfoResponse {
     public function getDomainNameserversCSV() {
         $nameservers = [];
         $ns = $this->getDomainNameservers();
-        foreach ($ns as $n) {
-            $nameservers[] = $n->getHostname();
+        if (is_array($ns)) {
+            foreach ($ns as $n) {
+                $nameservers[] = $n->getHostname();
+            }
+        } else {
+            $nameservers = '';
         }
         return parent::arrayToCSV($nameservers);
     }
