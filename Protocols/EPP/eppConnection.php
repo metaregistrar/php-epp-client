@@ -139,6 +139,11 @@ class eppConnection {
     protected $loggedin = false;
 
     /**
+     * @var null|string
+     */
+    protected $connectionComment = null;
+
+    /**
      * @param string $configfile
      * @param bool|false $debug
      * @return mixed
@@ -596,6 +601,11 @@ class eppConnection {
                 $content->addExtension($id, $namespace);
             }
         }
+        // add the connectionComment to the request's epp element
+        if(is_string($this->connectionComment))
+        {
+            $content->epp->appendChild($content->createComment($this->connectionComment));
+        }
         /*
          * $content->login is only set if this is an instance or a sub-instance of an eppLoginRequest
          */
@@ -709,6 +719,11 @@ class eppConnection {
             foreach ($namespaces as $id => $namespace) {
                 $content->addExtension($id, $namespace);
             }
+        }
+        // add the connectionComment to the request's epp element
+        if(is_string($this->connectionComment))
+        {
+            $content->epp->appendChild($content->createComment($this->connectionComment));
         }
         /*
          * $content->login is only set if this is an instance or a sub-instance of an eppLoginRequest
@@ -1073,5 +1088,15 @@ class eppConnection {
             //echo "-----".date("Y-m-d H:i:s")."-----".$text."-----end-----\n";
             $this->logentries[] = "-----" . $action . "-----" . date("Y-m-d H:i:s") . "-----\n" . $text . "\n-----END-----" . date("Y-m-d H:i:s") . "-----\n";
         }
+    }
+
+    /**
+     * @param null|string $connectionComment
+     * @return eppConnection
+     */
+    public function setConnectionComment($connectionComment)
+    {
+        $this->connectionComment = $connectionComment;
+        return $this;
     }
 }
