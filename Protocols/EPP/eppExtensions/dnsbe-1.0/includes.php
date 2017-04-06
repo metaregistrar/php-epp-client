@@ -12,6 +12,7 @@ include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppUpdateContactRequest.php'
 include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppDeleteDomainRequest.php');
 
 include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppCreateResponse.php');
+include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppCreateDomainResponse.php');
 include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppCreateContactResponse.php');
 include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppInfoDomainResponse.php');
 include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppCreateNsgroupResponse.php');
