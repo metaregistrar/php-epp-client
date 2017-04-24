@@ -288,6 +288,7 @@ class eppConnection {
     public function enableDnssec() {
         $this->addExtension('secDNS','urn:ietf:params:xml:ns:secDNS-1.1');
         $this->responses['Metaregistrar\\EPP\\eppDnssecUpdateDomainRequest'] = 'Metaregistrar\\EPP\\eppUpdateDomainResponse';
+        $this->responses['Metaregistrar\\EPP\\eppInfoDomainRequest'] = 'Metaregistrar\\EPP\\eppDnssecInfoDomainResponse';
     }
 
     public function enableRgp() {
