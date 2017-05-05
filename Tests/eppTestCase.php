@@ -114,9 +114,11 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
     protected function createDns($domainname = null) {
         $domainname = $this->createDomain($domainname);
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
-        $records[] = ['type' => 'A', 'name' => $domainname, 'content' => '127.0.0.1', 'ttl' => 3600];
+        $records[] = ['name' => $domainname, 'type' => 'A', 'content' => '127.0.0.1', 'ttl' => 3600];
         $create = new Metaregistrar\EPP\metaregCreateDnsRequest($domain, $records);
+        //echo $create->saveXML();
         $response = $this->conn->writeandread($create);
+        //echo $response->saveXML();
         $this->assertInstanceOf('Metaregistrar\EPP\metaregCreateDnsResponse', $response);
         /* @var $response Metaregistrar\EPP\metaregCreateDnsResponse */
         return $domainname;

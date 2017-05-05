@@ -31,10 +31,10 @@ class metaregCreateDnsRequest extends metaregDnsRequest {
         $this->records = $records;
         foreach ($records as $record) {
             $recordElem = $this->createElement('dns-ext:content');
-            $recordElem->appendChild($this->createElement('dns-ext:type', $record['type']));
             $recordElem->appendChild($this->createElement('dns-ext:name', $record['name']));
-            $recordElem->appendChild($this->createElement('dns-ext:content', $record['content']));
+            $recordElem->appendChild($this->createElement('dns-ext:type', $record['type']));
             $recordElem->appendChild($this->createElement('dns-ext:ttl', $record['ttl']));
+            $recordElem->appendChild($this->createElement('dns-ext:content', $record['content']));
             if (isset($record['priority'])) {
                 $recordElem->appendChild($this->createElement('dns-ext:priority', $record['priority']));
             }
