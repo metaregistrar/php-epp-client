@@ -24,11 +24,9 @@ namespace Metaregistrar\EPP;
  */
 
 
-class metaregEppAuthcodeRequest extends eppInfoDomainRequest
-{
+class metaregEppAuthcodeRequest extends eppInfoDomainRequest {
 
-    function __construct(eppDomain $domain)
-    {
+    function __construct(eppDomain $domain) {
         parent::__construct($domain);
         $this->addAuthcodeRequest();
         $this->addSessionId();

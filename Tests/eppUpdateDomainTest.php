@@ -1,14 +1,12 @@
 <?php
 include_once(dirname(__FILE__).'/eppTestCase.php');
 
-class eppUpdateDomainTest extends eppTestCase
-{
+class eppUpdateDomainTest extends eppTestCase {
     /**
      * Test update of hosts on a domain name
      * Expects a standard result for a free domainname
      */
-    public function testUpdateDomainHostAttr()
-    {
+    public function testUpdateDomainHostAttr() {
         $domainname = self::randomstring(30) . '.frl';
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $add = null;
@@ -27,5 +25,25 @@ class eppUpdateDomainTest extends eppTestCase
         $this->setExpectedException('Metaregistrar\EPP\eppException',"Error 2001: Command syntax error; value:line: 2 column: 851 cvc-complex-type.2.4.a: Invalid content was found starting with element 'domain:ns'. One of '{\"urn:ietf:params:xml:ns:domain-1.0\":registrant, \"urn:ietf:params:xml:ns:domain-1.0\":authInfo}' is expected.");
         $response = $this->conn->writeandread($update);
         $this->assertFalse($response->Success());
+    }
+
+    public function testUpdateDomainAddPrivacy() {
+        $domainname = $this->createDomain();
+        $update = new \Metaregistrar\EPP\metaregEppPrivacyRequest(new \Metaregistrar\EPP\eppDomain($domainname), true);
+        $response = $this->conn->writeandread($update);
+        $this->assertTrue($response->Success());
+        $this->assertEquals(1000,$response->getResultCode());
+        $this->assertEquals('Command completed succesfully',$response->getResultMessage());
+        //echo $response->saveXML();
+    }
+
+    public function testUpdateDomainRemoveAutorenew() {
+        $domainname = $this->createDomain();
+        $update = new \Metaregistrar\EPP\metaregEppAutorenewRequest(new \Metaregistrar\EPP\eppDomain($domainname), false);
+        $response = $this->conn->writeandread($update);
+        $this->assertTrue($response->Success());
+        $this->assertEquals(1000,$response->getResultCode());
+        $this->assertEquals('Command completed succesfully',$response->getResultMessage());
+        //echo $response->saveXML();
     }
 }

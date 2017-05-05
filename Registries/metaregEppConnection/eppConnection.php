@@ -10,7 +10,8 @@ class metaregEppConnection extends eppConnection {
         // Default server configuration stuff - this varies per connected registry
         // Check the greeting of the server to see which of these values you need to add
         parent::addCommandResponse('Metaregistrar\EPP\eppPollRequest', 'Metaregistrar\EPP\metaregEppPollResponse');
-        parent::addCommandResponse('Metaregistrar\EPP\metaregSudoRequest', 'Metaregistrar\EPP\metaregSudoResponse');
+        parent::addCommandResponse('Metaregistrar\EPP\metaregEppPrivacyRequest', 'Metaregistrar\EPP\eppUpdateDomainResponse');
+        parent::addCommandResponse('Metaregistrar\EPP\metaregEppAutorenewRequest', 'Metaregistrar\EPP\eppUpdateDomainResponse');
         parent::addCommandResponse('Metaregistrar\EPP\metaregInfoDomainRequest', 'Metaregistrar\EPP\eppInfoDomainResponse');
         parent::addCommandResponse('Metaregistrar\EPP\metaregEppAuthcodeRequest', 'Metaregistrar\EPP\eppInfoDomainResponse');
         parent::addCommandResponse('Metaregistrar\EPP\metaregEppTransferExtendedRequest', 'Metaregistrar\EPP\eppTransferResponse');
