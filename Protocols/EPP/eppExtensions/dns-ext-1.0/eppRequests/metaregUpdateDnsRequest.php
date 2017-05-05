@@ -5,8 +5,7 @@ namespace Metaregistrar\EPP;
  * Class metaregUpdateDnsRequest
  * @package Metaregistrar\EPP
  */
-class metaregUpdateDnsRequest extends metaregDnsRequest
-{
+class metaregUpdateDnsRequest extends metaregDnsRequest {
     /**
      * @var array
      */
@@ -26,8 +25,7 @@ class metaregUpdateDnsRequest extends metaregDnsRequest
      * @param null|boolean $sign
      * @throws eppException
      */
-    public function __construct(eppDomain $domain, $addRecords = null, $remRecords = null, $sign = null)
-    {
+    public function __construct(eppDomain $domain, $addRecords = null, $remRecords = null, $sign = null) {
         parent::__construct(eppRequest::TYPE_UPDATE);
         if (!strlen($domain->getDomainname())) {
             throw new eppException('Domain object does not contain a valid domain name');
@@ -70,8 +68,7 @@ class metaregUpdateDnsRequest extends metaregDnsRequest
      * @param array $addRecords
      * @return void
      */
-    protected function handleAdd(array $addRecords)
-    {
+    protected function handleAdd(array $addRecords) {
         if (count($addRecords) == 0) {
             return;
         }
@@ -96,8 +93,7 @@ class metaregUpdateDnsRequest extends metaregDnsRequest
      * @param array $remRecords
      * @return void
      */
-    protected function handleRemove(array $remRecords)
-    {
+    protected function handleRemove(array $remRecords) {
         if (count($remRecords) == 0) {
             return;
         }

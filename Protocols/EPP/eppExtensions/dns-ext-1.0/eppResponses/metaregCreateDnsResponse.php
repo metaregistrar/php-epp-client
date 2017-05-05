@@ -13,8 +13,7 @@ class metaregCreateDnsResponse extends eppResponse
     /**
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         $xpath = $this->xPath();
         return $xpath->query(self::RESPONSE_BASEXPATH . '/dns-ext:name');
     }
@@ -22,8 +21,7 @@ class metaregCreateDnsResponse extends eppResponse
     /**
      * @return array
      */
-    public function getKeyData()
-    {
+    public function getKeyData() {
         $xpath = $this->xPath();
         $keydata = $xpath->query(self::RESPONSE_BASEXPATH . '/dns-ext:keyData');
         $response = [];
@@ -45,8 +43,7 @@ class metaregCreateDnsResponse extends eppResponse
     /**
      * @return array
      */
-    public function getContent()
-    {
+    public function getContent() {
         $xpath = $this->xPath();
         $content = $xpath->query(self::RESPONSE_BASEXPATH . '/dns-ext:content');
         $response = [];
@@ -75,8 +72,7 @@ class metaregCreateDnsResponse extends eppResponse
      * @param \DOMElement $item
      * @return string
      */
-    private function getValueForTag($tag, \DOMElement $item)
-    {
+    private function getValueForTag($tag, \DOMElement $item) {
         $items = $item->getElementsByTagName($tag);
         if ($items->length == 0) {
             return '';

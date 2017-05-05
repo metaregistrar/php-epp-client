@@ -1,8 +1,7 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class metaregDnsRequest extends eppRequest
-{
+class metaregDnsRequest extends eppRequest {
     public $dnsObject = null;
 
     const NS = 'http://www.metaregistrar.com/epp/dns-ext-1.0';
@@ -12,8 +11,7 @@ class metaregDnsRequest extends eppRequest
      *
      * @param string $type
      */
-    public function __construct($type)
-    {
+    public function __construct($type) {
         parent::__construct();
         $check = $this->createElement($type);
         $this->dnsObject = $this->createElement('dns-ext:' . $type);

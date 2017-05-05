@@ -2,8 +2,7 @@
 namespace Metaregistrar\EPP;
 
 
-class metaregInfoDnsResponse extends eppResponse
-{
+class metaregInfoDnsResponse extends eppResponse {
     const RESPONSE_BASEXPATH = '/epp:epp/epp:response/epp:resData/dns-ext:infData';
 
     /**

@@ -5,16 +5,14 @@ namespace Metaregistrar\EPP;
  * Class metaregDeleteDnsRequest
  * @package Metaregistrar\EPP
  */
-class metaregDeleteDnsRequest extends metaregDnsRequest
-{
+class metaregDeleteDnsRequest extends metaregDnsRequest {
     /**
      * EppDeleteDnsRequest constructor.
      *
      * @param eppDomain $domain
      * @throws eppException
      */
-    public function __construct(eppDomain $domain)
-    {
+    public function __construct(eppDomain $domain) {
         parent::__construct(eppRequest::TYPE_DELETE);
         if (!strlen($domain->getDomainname())) {
             throw new eppException('Domain object does not contain a valid domain name');

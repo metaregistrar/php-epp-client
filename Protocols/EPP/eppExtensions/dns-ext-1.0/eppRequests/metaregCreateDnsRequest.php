@@ -7,8 +7,7 @@ namespace Metaregistrar\EPP;
  *
  * format of dns records: array with keys type, name, content, ttl, priority
  */
-class metaregCreateDnsRequest extends metaregDnsRequest
-{
+class metaregCreateDnsRequest extends metaregDnsRequest {
     /**
      * @var array
      */
@@ -22,8 +21,7 @@ class metaregCreateDnsRequest extends metaregDnsRequest
      *
      * format of dns records: array with keys type, name, content, ttl, priority
      */
-    public function __construct(eppDomain $domain, array $records)
-    {
+    public function __construct(eppDomain $domain, array $records) {
         parent::__construct(eppRequest::TYPE_CREATE);
         if (!strlen($domain->getDomainname())) {
             throw new eppException('Domain object does not contain a valid domain name');
@@ -47,8 +45,7 @@ class metaregCreateDnsRequest extends metaregDnsRequest
     /**
      * @return array
      */
-    public function getRecords()
-    {
+    public function getRecords() {
         return $this->records;
     }
 
@@ -56,8 +53,7 @@ class metaregCreateDnsRequest extends metaregDnsRequest
      * @param array $records
      * @return metaregCreateDnsRequest
      */
-    public function setRecords(array $records)
-    {
+    public function setRecords(array $records) {
         $this->records = $records;
         return $this;
     }
