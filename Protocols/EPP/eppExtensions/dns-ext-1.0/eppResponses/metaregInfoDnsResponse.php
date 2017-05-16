@@ -11,7 +11,11 @@ class metaregInfoDnsResponse extends eppResponse {
     public function getName()
     {
         $xpath = $this->xPath();
-        return $xpath->query(self::RESPONSE_BASEXPATH . '/dns-ext:name');
+        $test= $xpath->query(self::RESPONSE_BASEXPATH . '/dns-ext:name');
+        if ($test->length>0) {
+            return $test->item(0)->textContent;
+        }
+        return null;
     }
 
     /**

@@ -10,9 +10,9 @@ class eppInfoDnsTest extends eppTestCase {
         $domainname = $this->createDns();
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $info = new Metaregistrar\EPP\metaregInfoDnsRequest($domain);
-        echo $info->saveXML();
+        #echo $info->saveXML();
         $response = $this->conn->writeandread($info);
-        echo $response->saveXML();
+        #echo $response->saveXML();
         $this->assertInstanceOf('Metaregistrar\EPP\metaregInfoDnsResponse', $response);
         /* @var $response Metaregistrar\EPP\metaregInfoDnsResponse */
         $this->assertTrue($response->Success());
