@@ -18,6 +18,7 @@ class atEppUpdateDomainRequest extends eppUpdateDomainRequest
     function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false,atEppExtensionChain $atEppExtensionChain=null) {
         $this->atEppExtensionChain = $atEppExtensionChain;
         parent::__construct($objectname, $addinfo , $removeinfo , $updateinfo , $forcehostattr);
+        $this->epp->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
         $secdns = $this->createElement('secDNS:update');
         $secdns->setAttribute('xmlns:secDNS', 'urn:ietf:params:xml:ns:secDNS-1.1');
         $secdns->setAttribute('xsi:schemaLocation', 'urn:ietf:params:xml:ns:secDNS-1.1 secDNS-1.1.xsd');
@@ -90,6 +91,7 @@ class atEppUpdateDomainRequest extends eppUpdateDomainRequest
         $this->addSessionId();
 
     }
+
 
     public function updateDomain($domainname, $addInfo, $removeInfo, $updateInfo) {
         parent::updateDomain($domainname, $addInfo, $removeInfo, $updateInfo);

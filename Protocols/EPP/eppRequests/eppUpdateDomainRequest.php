@@ -37,7 +37,7 @@ class eppUpdateDomainRequest extends eppRequest {
         $this->forcehostattr = $forcehostattr;
     }
 
-        /**
+    /**
      *
      * @param string $domainname
      * @param eppDomain $addInfo

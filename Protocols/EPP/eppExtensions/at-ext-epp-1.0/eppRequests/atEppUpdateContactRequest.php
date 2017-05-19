@@ -36,7 +36,7 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
         # Object create structure
         #
         $update = $this->createElement('update');
-        $this->contactobject = $this->createElement('contact:update');
+          $this->contactobject = $this->createElement('contact:update');
         $this->contactobject->appendChild($this->createElement('contact:id', $contactid));
         if ($updateInfo instanceof eppContact) {
             $chgcmd = $this->createElement('contact:chg');
@@ -56,6 +56,7 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
         $update->appendChild($this->contactobject);
         $this->getCommand()->appendChild($update);
         $this->setAtExtensions();
+        $this->epp->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
     }
 
     /**
