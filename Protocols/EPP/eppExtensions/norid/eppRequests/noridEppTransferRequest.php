@@ -15,7 +15,7 @@ class noridEppTransferRequest extends eppTransferRequest {
         parent::__construct($operation, $object);
         if ($operation == self::OPERATION_EXECUTE) {
             if ($object instanceof noridEppDomain) {
-                $this->setDomainExecute($object);
+                $this->setExtDomainExecute($object);
             } else {
                 throw new eppException('Object parameter should be an instance of noridEppDomain when operation is EXECUTE');
             }
