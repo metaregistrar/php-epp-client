@@ -13,23 +13,25 @@ class noridEppTransferRequest extends eppTransferRequest {
 
     function __construct($operation, $object) {
         parent::__construct($operation, $object);
+        $remove = $this->getElementsByTagName('command');
+        foreach ($remove as $node) {
+            $node->parentNode->removeChild($node);
+        }
         if ($operation == self::OPERATION_EXECUTE) {
             if ($object instanceof noridEppDomain) {
-                $this->setDomainExecute($object);
+                $this->setExtDomainExecute($object);
             } else {
                 throw new eppException('Object parameter should be an instance of noridEppDomain when operation is EXECUTE');
             }
         }
-        $this->addSessionId();
+        $this->addExtSessionId();
     }
 
     public function setExtDomainExecute(noridEppDomain $domain) {
         $transfer = $this->createElement('transfer');
         $transfer->setAttribute('op', self::OPERATION_EXECUTE);
         $this->domainobject = $this->createElement('domain:transfer');
-        if (!$this->rootNamespaces()) {
-            $this->domainobject->setAttribute('xmlns:domain', 'urn:ietf:params:xml:ns:domain-1.0');
-        }
+        $this->domainobject->setAttribute('xmlns:domain', 'urn:ietf:params:xml:ns:domain-1.0');
         $this->domainobject->appendChild($this->createElement('domain:name', $domain->getDomainname()));
         if (strlen($domain->getAuthorisationCode())) {
             $authinfo = $this->createElement('domain:authInfo');

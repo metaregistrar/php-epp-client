@@ -16,6 +16,11 @@ trait noridEppDomainRequestTrait {
     protected $extcommand = null;
     /**
      * Extension for Norid-specific command types
+     * @var \DOMElement $exteppextension
+     */
+    protected $exteppextension = null;
+    /**
+     * Extension for Norid-specific command types
      * @var \DOMElement $extcommandextension
      */
     protected $extcommandextension = null;
@@ -25,7 +30,7 @@ trait noridEppDomainRequestTrait {
      */
     protected $extcommanddomainextension = null;
 
-    protected function getDomainExtension($type) {
+    protected function getExtDomainExtension($type) {
         if (is_null($this->domainextension)) {
             $this->domainextension = $this->createElement('no-ext-domain:'.$type);
             if (!$this->rootNamespaces()) {
@@ -45,10 +50,8 @@ trait noridEppDomainRequestTrait {
     protected function getExtCommand() {
         if (is_null($this->extcommand)) {
             $this->extcommand = $this->createElement('command');
-            if (!$this->rootNamespaces()) {
-                $this->extcommand->setAttribute('xmlns', 'http://www.norid.no/xsd/no-ext-epp-1.0');
-            }
-            $ext = $this->getExtension();
+            $this->extcommand->setAttribute('xmlns', 'http://www.norid.no/xsd/no-ext-epp-1.0');
+            $ext = $this->getExtEppExtension();
             /* @var \DOMElement $ext */
             $ext->appendChild($this->extcommand);
 
@@ -65,6 +68,23 @@ trait noridEppDomainRequestTrait {
         }
         
         return $this->extcommandextension;
+    }
+
+    protected function getExtEppExtension() {
+        if (is_null($this->exteppextension)) {
+            $this->exteppextension = $this->createElement('extension');
+            $this->getEpp()->appendChild($this->exteppextension);
+        }
+
+        return $this->exteppextension;
+    }
+
+    protected function addExtSessionId() {
+        $remove = $this->getElementsByTagName('clTRID');
+        foreach ($remove as $node) {
+            $node->parentNode->removeChild($node);
+        }
+        $this->getExtCommand()->appendChild($this->createElement('clTRID', $this->sessionid));
     }
 
     /**
