@@ -12,8 +12,12 @@ class noridEppWithdrawContactRequest extends eppRequest {
     function __construct(noridEppDomain $domain, $namespacesinroot = true) {
         $this->setNamespacesinroot($namespacesinroot);
         parent::__construct();
+        $remove = $this->getElementsByTagName('command');
+        foreach ($remove as $node) {
+            $node->parentNode->removeChild($node);
+        }
         $this->setDomain($domain);
-        $this->addSessionId();
+        $this->addExtSessionId();
     }
 
     public function setDomain(noridEppDomain $domain) {
