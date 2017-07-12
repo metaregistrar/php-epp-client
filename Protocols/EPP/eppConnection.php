@@ -407,13 +407,13 @@ class eppConnection {
      * Performs an EPP login request and checks the result
      * @return bool
      */
-    public function login() {
+    public function login($usecdata = true) {
         if (!$this->connected) {
             if (!$this->connect()) {
                 return false;
             }
         }
-        $login = new eppLoginRequest;
+        $login = new eppLoginRequest(null,$usecdata);
         if ((($response = $this->writeandread($login)) instanceof eppLoginResponse) && ($response->Success())) {
             $this->writeLog("Logged in","LOGIN");
             $this->loggedin = true;
