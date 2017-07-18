@@ -40,7 +40,7 @@ try {
             if (!checkhosts($conn, array('ns1.metaregistrar.nl'))) {
                 createhost($conn, 'ns1.metaregistrar.nl');
             }
-            if (!checkhosts($conn, array('ns5.metaregistrar.nl'))) {
+            if (!checkhosts($conn, array('ns2.metaregistrar.nl'))) {
                 createhost($conn, 'ns2.metaregistrar.nl');
             }
             $nameservers = array('ns1.metaregistrar.nl','ns2.metaregistrar.nl');
