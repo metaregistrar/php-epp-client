@@ -15,15 +15,27 @@ namespace Metaregistrar\EPP;
 
 class rrpproxyEppWhoisPrivacyRequest extends eppUpdateDomainRequest {
 
-
+    /**
+     * rrpproxyEppWhoisPrivacyRequest constructor.
+     * @param eppDomain $domain
+     * @param boolean $enableprivacy
+     */
     function __construct(eppDomain $domain, $enableprivacy) {
         $upd = new eppDomain($domain->getDomainname());
         parent::__construct($domain, null, null, $upd);
-        $this->addPrivacy($enableprivacy);
+        if ($enableprivacy) {
+            $this->addPrivacy('1');
+        } else {
+            $this->addPrivacy('0');
+        }
+
         parent::addSessionId();
 
     }
 
+    /**
+     * @param string $enableprivacy
+     */
     private function addPrivacy($enableprivacy) {
         $ext = $this->createElement('extension');
         $infdata = $this->createElement('keysys:update');

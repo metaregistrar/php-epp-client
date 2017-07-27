@@ -15,15 +15,27 @@ namespace Metaregistrar\EPP;
 
 class rrpproxyEppTrusteeRequest extends eppUpdateDomainRequest {
 
-
+    /**
+     * rrpproxyEppTrusteeRequest constructor.
+     * @param eppDomain $domain
+     * @param boolean $accepttrustee
+     */
     function __construct(eppDomain $domain, $accepttrustee) {
         $upd = new eppDomain($domain->getDomainname());
         parent::__construct($domain, null, null, $upd);
-        $this->addTrustee($accepttrustee);
+        if ($accepttrustee) {
+            $this->addTrustee('1');
+        } else {
+            $this->addTrustee('0');
+        }
+
         parent::addSessionId();
 
     }
 
+    /**
+     * @param string $accepttrustee
+     */
     private function addTrustee($accepttrustee) {
         $ext = $this->createElement('extension');
         $infdata = $this->createElement('keysys:update');
