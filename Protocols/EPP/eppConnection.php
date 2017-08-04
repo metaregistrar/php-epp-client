@@ -1086,6 +1086,24 @@ class eppConnection {
 
     protected function writeLog($text,$action) {
         if ($this->logging) {
+            // Hiding userid in the logging
+            if (($start = strpos($text,'<clID>')) !== false) {
+                if (($end = strpos($text,'</clID>')) !== false) {
+                    $text = substr($text,0,$start+6).'XXXXXXXXXXXXXXXX'.substr($text,$end,99999);
+                }
+            }
+            // Hiding password in the logging
+            if (($start = strpos($text,'<pw><![CDATA[')) !== false) {
+                if (($end = strpos($text,']]></pw>')) !== false) {
+                    $text = substr($text,0,$start+4).'XXXXXXXXXXXXXXXX'.substr($text,$end+3,99999);
+                }
+            }
+            // Hiding password in the logging
+            if (($start = strpos($text,'<pw>')) !== false) {
+                if (($end = strpos($text,'</pw>')) !== false) {
+                    $text = substr($text,0,$start+4).'XXXXXXXXXXXXXXXX'.substr($text,$end,99999);
+                }
+            }
             //echo "-----".date("Y-m-d H:i:s")."-----".$text."-----end-----\n";
             $this->logentries[] = "-----" . $action . "-----" . date("Y-m-d H:i:s") . "-----\n" . $text . "\n-----END-----" . date("Y-m-d H:i:s") . "-----\n";
         }
