@@ -38,6 +38,7 @@ class eppPollResponse extends eppResponse {
     const TYPE_PAN = 'pan';
     const TYPE_CHECK = 'chk';
     const TYPE_RENEW = 'ren';
+    const TYPE_UNKNOWN = 'unkown';
 
     private $messageType = null;
 
@@ -123,7 +124,7 @@ class eppPollResponse extends eppResponse {
             if ((is_object($result)) && ($result->length>0)) {
                 return self::TYPE_RENEW;
             }
-            throw new eppException("Type of message cannot be determined on EPP poll message");
+            return self::TYPE_UNKNOWN;
         }
     }
 
