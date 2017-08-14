@@ -7,7 +7,7 @@ class eppInfoContactTest extends eppTestCase {
      * @throws \Metaregistrar\EPP\eppException
      */
     public function testInfoContactSuccess() {
-        $contactid = 100;
+        $contactid = parent::createContact();
         $contact = new Metaregistrar\EPP\eppContactHandle($contactid);
         $info = new Metaregistrar\EPP\eppInfoContactRequest($contact);
         $response = $this->conn->writeandread($info);
@@ -23,7 +23,7 @@ class eppInfoContactTest extends eppTestCase {
      * @throws \Metaregistrar\EPP\eppException
      */
     public function testInfoContactWithAuthcode() {
-        $contactid = 100;
+        $contactid = parent::createContact();
         $contact = new Metaregistrar\EPP\eppContactHandle($contactid);
         $contact->setPassword('foobar');
         $info = new Metaregistrar\EPP\eppInfoContactRequest($contact);
