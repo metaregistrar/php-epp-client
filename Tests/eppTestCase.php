@@ -21,10 +21,10 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
 
     private static function setupConnection($configfile) {
         try {
-            if ($conn = Metaregistrar\EPP\metaregEppConnection::create($configfile)) {
+            if ($conn = Metaregistrar\EPP\metaregEppConnection::create($configfile,true)) {
                 /* @var $conn Metaregistrar\EPP\eppConnection */
                 //$conn->enableRgp();
-                if ($conn->login()) {
+                if ($conn->login(false)) {
                     return $conn;
                 }
             }
