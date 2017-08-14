@@ -72,6 +72,7 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
      */
     protected function createHost($hostname) {
         $host = new Metaregistrar\EPP\eppHost($hostname);
+        $host->setIpAddress('81.4.97.247');
         $create = new Metaregistrar\EPP\eppCreateHostRequest($host);
         if ($response = $this->conn->request($create)) {
             /* @var $response Metaregistrar\EPP\eppCreateHostResponse */
