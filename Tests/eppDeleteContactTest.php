@@ -36,7 +36,7 @@ class eppDeleteContactTest extends eppTestCase {
         } catch (Metaregistrar\EPP\eppException $e) {
             $message = $e->getMessage();
         }
-        $this->assertEquals('Error 2303: Object does not exist; contactid:'.$contacthandle.' (Contact could not be found)',$message);
+        $this->assertEquals('Error 2303: Object does not exist; the contact '.$contacthandle.' does not exist',$message);
     }
 
     /**
@@ -56,6 +56,6 @@ class eppDeleteContactTest extends eppTestCase {
         } catch (Metaregistrar\EPP\eppException $e) {
             $message = $e->getMessage();
         }
-        $this->assertEquals('Error 2005: Parameter value syntax error; contactid:'.$contacthandle.' (Contact id should be an integer)',$message);
+        $this->assertEquals('Error 2303: Object does not exist; the contact '.$contacthandle.' does not exist',$message);
     }
 }

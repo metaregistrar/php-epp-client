@@ -148,7 +148,7 @@ public function testPollFailedResponse() {
     $this->assertSame($pollResponse->getMessageId(),'8034');
     $this->assertSame($pollResponse->getMessageDate(),'2016-12-07T13:13:51.000000+0100');
     $this->setExpectedException('Metaregistrar\EPP\eppException','Type of message cannot be determined on EPP poll message');
-    $this->assertSame($pollResponse->getMessageType(),'ren');
+    $this->assertSame($pollResponse->getMessageType(),'unknown');
 
     }
 
