@@ -381,13 +381,18 @@ class eppConnection {
             stream_context_set_option($context, 'ssl','verify_peer',false);
             stream_context_set_option($context, 'ssl','verify_peer_name',false);
             $this->connection = stream_socket_client($this->hostname.':'.$this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context);
-            $meta = stream_get_meta_data($this->connection);
+
 
             if (is_resource($this->connection)) {
                 stream_set_blocking($this->connection, false);
                 stream_set_timeout($this->connection, $this->timeout);
                 if ($errno == 0) {
-                    $this->writeLog("Stream opened with protocol ".$meta['crypto']['protocol'].", cipher ".$meta['crypto']['cipher_name'].", ".$meta['crypto']['cipher_bits']." bits ".$meta['crypto']['cipher_version'],"Connection made");
+                    $meta = stream_get_meta_data($this->connection);
+                    if (isset($meta['crypto'])) {
+                        $this->writeLog("Stream opened with protocol ".$meta['crypto']['protocol'].", cipher ".$meta['crypto']['cipher_name'].", ".$meta['crypto']['cipher_bits']." bits ".$meta['crypto']['cipher_version'],"Connection made");
+                    } else {
+                        $this->writeLog("Stream opened","Connection made");
+                    }
                     $this->connected = true;
                     $this->read();
                     return true;
