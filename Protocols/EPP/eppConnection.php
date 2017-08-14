@@ -330,7 +330,7 @@ class eppConnection {
      */
     public function disconnect() {
         if (is_resource($this->connection)) {
-            //echo "Fclosing $this->hostname\n";
+            //echo "fclosing $this->hostname\n";
             //@ob_flush();
             fclose($this->connection);
             $this->writeLog("Disconnected","DISCONNECT");
@@ -376,20 +376,18 @@ class eppConnection {
                 throw new eppException("Error connecting to $target: $errstr (code $errno)",$errno,null,$errstr);
             }
         } else {
-            //We don't want our error handler to kick in at this point...
-            //putenv('SURPRESS_ERROR_HANDLER=1');
-            #echo "Connecting: $this->hostname:$this->port\n";
             #$this->writeLog("Connecting: $this->hostname:$this->port");
             $context = stream_context_create();
             stream_context_set_option($context, 'ssl','verify_peer',false);
             stream_context_set_option($context, 'ssl','verify_peer_name',false);
             $this->connection = stream_socket_client($this->hostname.':'.$this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context);
-            //putenv('SURPRESS_ERROR_HANDLER=0');
+            $meta = stream_get_meta_data($this->connection);
+
             if (is_resource($this->connection)) {
                 stream_set_blocking($this->connection, false);
                 stream_set_timeout($this->connection, $this->timeout);
                 if ($errno == 0) {
-                    $this->writeLog("Connection made","CONNECT");
+                    $this->writeLog("Stream opened with protocol ".$meta['crypto']['protocol'].", cipher ".$meta['crypto']['cipher_name'].", ".$meta['crypto']['cipher_bits']." bits ".$meta['crypto']['cipher_version'],"Connection made");
                     $this->connected = true;
                     $this->read();
                     return true;
@@ -467,20 +465,17 @@ class eppConnection {
      * @throws eppException
      */
     public function read($nonBlocking=false) {
-        //putenv('SURPRESS_ERROR_HANDLER=1');
         $content = '';
         $time = time() + $this->timeout;
         $read = "";
         while ((!isset ($length)) || ($length > 0)) {
             if (feof($this->connection)) {
-                //putenv('SURPRESS_ERROR_HANDLER=0');
                 $this->loggedin = false;
                 $this->connected = false;
                 throw new eppException ('Unexpected closed connection by remote host...',0,null,null,$read);
             }
             //Check if timeout occured
             if (time() >= $time) {
-                //putenv('SURPRESS_ERROR_HANDLER=0');
                 return false;
             }
             //If we dont know how much to read we read the first few bytes first, these contain the content-length
@@ -497,7 +492,6 @@ class eppConnection {
                     }
                     //Check if timeout occured
                     if (time() >= $time) {
-                        //putenv('SURPRESS_ERROR_HANDLER=0');
                         return false;
                     }
                 }
@@ -533,7 +527,6 @@ class eppConnection {
             }
 
         }
-        //putenv('SURPRESS_ERROR_HANDLER=0');
         #ob_flush();
         return $content;
     }
@@ -575,14 +568,11 @@ class eppConnection {
             throw new eppException ('Writing while no connection is made is not supported.');
         }
 
-        //putenv('SURPRESS_ERROR_HANDLER=1');
         #ob_flush();
         if (fwrite($this->connection, $content)) {
             //fpassthru($this->connection);
-            //putenv('SURPRESS_ERROR_HANDLER=0');
             return true;
         }
-        //putenv('SURPRESS_ERROR_HANDLER=0');
         return false;
     }
 
@@ -660,15 +650,11 @@ class eppConnection {
     {
         $response = new eppResponse();
         $xml = $this->read(true);
-
         if (strlen($xml)) {
-
             if ($response->loadXML($xml)) {
-
 
                 //$response = $response->instantiateProperResponse();
                 $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG), "READ");
-
 
                 //$clienttransid = $response->getClientTransactionId();
                 $response->setXpath($this->getServices());
@@ -679,7 +665,6 @@ class eppConnection {
                 }
                 return $response;
             }
-
         }
         return null;
     }
@@ -695,8 +680,7 @@ class eppConnection {
      */
     function HandleXmlError($errno, $errstr, $errfile, $errline)
     {
-        if ($errno==E_WARNING && (substr_count($errstr,"DOMDocument::loadXML()")>0))
-        {
+        if ($errno==E_WARNING && (substr_count($errstr,"DOMDocument::loadXML()")>0)) {
             throw new eppException('ERROR reading EPP message: '.str_replace('DOMDocument::loadXML(): ','',$errstr),$errno, null, $errfile.'('.$errline.')');
         }
         else
