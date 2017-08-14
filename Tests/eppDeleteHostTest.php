@@ -28,7 +28,7 @@ class eppDeleteHostTest extends eppTestCase {
      */
     public function testDeleteNonexistentHost() {
         $message = null;
-        $domainname = self::randomstring(8).'.frl';
+        $domainname = self::randomstring(8).'.frl';
         $hostname = 'ns1.'.$domainname;
         $host = new Metaregistrar\EPP\eppHost($hostname);
         $delete = new Metaregistrar\EPP\eppDeleteHostRequest($host);

@@ -7,11 +7,11 @@ class eppCreateTest extends eppTestCase {
      * Tests the class factory
      */
     public function testCreateInterface() {
-        $conn = Metaregistrar\EPP\eppConnection::create('Tests/testsetup.ini');
+        $conn = Metaregistrar\EPP\eppConnection::create(dirname(__FILE__).'/testsetup.ini');
         $this->assertInstanceOf('Metaregistrar\EPP\metaregEppConnection',$conn);
         /* @var $conn Metaregistrar\EPP\metaregEppConnection */
         $this->assertEquals($conn->getHostname(),'eppltest1.metaregistrar.com');
-        $this->assertEquals($conn->getPort(),7443);
+        $this->assertEquals($conn->getPort(),7000);
     }
 
     public function testCreateInterfaceFileNotFound() {

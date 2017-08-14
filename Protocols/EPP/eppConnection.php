@@ -766,12 +766,9 @@ class eppConnection {
                 set_error_handler(array($this,'HandleXmlError'));
                 if ($response->loadXML($xml)) {
                     restore_error_handler();
-                    $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG),"READ");
-                    /*
-                    ob_flush();
-                    */
+                    $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG), "READ");
                     $clienttransid = $response->getClientTransactionId();
-                    if (($this->checktransactionids) && ($clienttransid) && ($clienttransid != $requestsessionid)) {
+                    if (($this->checktransactionids) && ($clienttransid) && ($clienttransid != $requestsessionid) && ($clienttransid!='{{clTRID}}')) {
                         throw new eppException("Client transaction id $requestsessionid does not match returned $clienttransid",0,null,null,$xml);
                     }
                     $response->setXpath($this->getServices());

@@ -134,7 +134,7 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
         $domain = new \Metaregistrar\EPP\eppDomain($domainname);
         $domain->setPeriod(1);
         $domain->setRegistrant($contactid);
-        $domain->setAuthorisationCode('fubar');
+        $domain->setAuthorisationCode('fubar01');
         $domain->addContact(new \Metaregistrar\EPP\eppContactHandle($contactid, \Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_ADMIN));
         $domain->addContact(new \Metaregistrar\EPP\eppContactHandle($contactid, \Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_TECH));
         $domain->addContact(new \Metaregistrar\EPP\eppContactHandle($contactid, \Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_BILLING));
