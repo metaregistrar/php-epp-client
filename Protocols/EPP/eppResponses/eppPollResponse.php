@@ -38,7 +38,7 @@ class eppPollResponse extends eppResponse {
     const TYPE_PAN = 'pan';
     const TYPE_CHECK = 'chk';
     const TYPE_RENEW = 'ren';
-    const TYPE_UNKNOWN = 'unkown';
+    const TYPE_UNKNOWN = 'unknown';
 
     private $messageType = null;
 
