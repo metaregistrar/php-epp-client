@@ -408,6 +408,7 @@ class eppConnection {
 
     /**
      * Performs an EPP login request and checks the result
+     * @param bool $usecdata Enclose the password field with [[CDATA]]
      * @return bool
      */
     public function login($usecdata = false) {
