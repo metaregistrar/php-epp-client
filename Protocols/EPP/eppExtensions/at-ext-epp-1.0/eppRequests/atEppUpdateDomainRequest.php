@@ -95,7 +95,28 @@ class atEppUpdateDomainRequest extends eppUpdateDomainRequest
 
     public function updateDomain($domainname, $addInfo, $removeInfo, $updateInfo) {
         parent::updateDomain($domainname, $addInfo, $removeInfo, $updateInfo);
-
+        $this->rewriteAuthorisationCode($updateInfo);
         $this->setAtExtensions();
+    }
+
+    /**
+     * rewrite the authinfo element if existent
+     * authinfo is specialchar encoded and surrounded by a CDATA Tag by metaregistrar
+     * decode the authinfo before it is put into a CDATA Tag
+     *
+     * @param $updateInfo
+     */
+    protected function rewriteAuthorisationCode($updateInfo){
+        if (strlen($updateInfo->getAuthorisationCode())) {
+            $authInfoList_ = $this->getElementsByTagName("update")->item(0)->getElementsByTagName("domain:authInfo");
+            $pwdList = $authInfoList_->item(0)->getElementsByTagName("domain:pw");
+
+            $pw = $this->createElement('domain:pw');
+            $pw->appendChild($this->createCDATASection(htmlspecialchars_decode($updateInfo->getAuthorisationCode())));
+
+            $authInfoList_->item(0)->removeChild($pwdList->item(0));
+            $authInfoList_->item(0)->appendChild($pw);
+
+        }
     }
 }
