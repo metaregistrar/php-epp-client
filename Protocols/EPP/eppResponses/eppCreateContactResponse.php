@@ -19,13 +19,7 @@ class eppCreateContactResponse extends eppResponse {
      * @return string contact_id
      */
     public function getContactId() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:creData/contact:id');
-        if (is_object($result) && ($result->length > 0)) {
-            return trim($result->item(0)->nodeValue);
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/contact:creData/contact:id');
     }
 
     /**
@@ -33,13 +27,7 @@ class eppCreateContactResponse extends eppResponse {
      * @return string create_date
      */
     public function getContactCreateDate() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:creData/contact:crDate');
-        if (is_object($result) && ($result->length > 0)) {
-            return trim($result->item(0)->nodeValue);
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/contact:creData/contact:crDate');
     }
 
     /**
@@ -47,10 +35,11 @@ class eppCreateContactResponse extends eppResponse {
      * @return eppContactHandle contacthandle
      */
     public function getContactHandle() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/contact:creData/contact:id');
-        $contacthandle = new eppContactHandle($result->item(0)->nodeValue);
-        return $contacthandle;
+        if ($handle = $this->queryPath('/epp:epp/epp:response/epp:resData/contact:creData/contact:id')) {
+            return new eppContactHandle($handle);
+        } else {
+            return null;
+        }
     }
 
 }

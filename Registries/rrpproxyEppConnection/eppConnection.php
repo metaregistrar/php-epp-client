@@ -10,6 +10,8 @@ class rrpproxyEppConnection extends eppConnection {
         parent::addExtension('keysys','http://www.key-systems.net/epp/keysys-1.0');
         parent::enableDnssec();
         parent::addCommandResponse('Metaregistrar\EPP\rrpproxyEppUpdateDomainRequest', 'Metaregistrar\EPP\eppUpdateDomainResponse');
+        parent::addCommandResponse('Metaregistrar\EPP\rrpproxyEppWhoisPrivacyRequest', 'Metaregistrar\EPP\eppUpdateDomainResponse');
+        parent::addCommandResponse('Metaregistrar\EPP\rrpproxyEppTrusteeRequest', 'Metaregistrar\EPP\eppUpdateDomainResponse');
     }
 
 }

@@ -26,7 +26,7 @@ class sidnEppRenewRequest extends eppRenewRequest {
     }
 
     private function addSidnExtension($period) {
-        $renew = $this->command->getElementsByTagName('domain:renew')->item(0);
+        $renew = $this->getCommand()->getElementsByTagName('domain:renew')->item(0);
         $period = $this->createElement('domain:period', $period);
         $period->setAttribute("unit", "m");
         $renew->appendChild($period);

@@ -1,26 +1,26 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppCheckDomainRequest extends eppRequest {
+class eppCheckDomainRequest extends eppDomainRequest {
 
-    function __construct($checkrequest) {
-        parent::__construct();
-
+    function __construct($checkrequest, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
+        parent::__construct(eppRequest::TYPE_CHECK);
         if ($checkrequest instanceof eppDomain) {
             $this->setDomainNames(array($checkrequest));
         } else {
             if (is_array($checkrequest)) {
                 if ($checkrequest[0] instanceof eppDomain) {
                     $this->setDomainNames($checkrequest);
+                } else {
+                   if (is_string($checkrequest[0])) {
+                       $this->setDomainNames($checkrequest);
+                   }
                 }
             }
         }
+        $this->addSessionId();
     }
-
-    function __destruct() {
-        parent::__destruct();
-    }
-
 
     /**
      *
@@ -30,17 +30,14 @@ class eppCheckDomainRequest extends eppRequest {
         #
         # Domain check structure
         #
-        $check = $this->createElement('check');
-        $this->domainobject = $this->createElement('domain:check');
         foreach ($domains as $domain) {
             if ($domain instanceof eppDomain) {
-                $this->domainobject->appendChild($this->createElement('domain:name', $domain->getDomainName()));
+                $this->domainobject->appendChild($this->createElement('domain:name', $domain->getDomainname()));
             } else {
                 $this->domainobject->appendChild($this->createElement('domain:name', $domain));
             }
         }
-        $check->appendChild($this->domainobject);
-        $this->getCommand()->appendChild($check);
+
     }
 
 

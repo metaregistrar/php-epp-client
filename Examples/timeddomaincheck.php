@@ -1,6 +1,12 @@
 <?php
 require('../autoloader.php');
 
+
+use Metaregistrar\EPP\eppConnection;
+use Metaregistrar\EPP\eppException;
+use Metaregistrar\EPP\eppCheckDomainRequest;
+use Metaregistrar\EPP\eppCheckDomainResponse;
+
 /*
  * This script checks for the availability of domain names
  *
@@ -12,7 +18,6 @@ function GeneratePassword($crypt = false, $len = 8, $regexp = '/^[a-z]{1}[a-z0-9
     $testpass = null;
     $pass = null;
     while (strlen($pass) < $len) {
-
         $testpass .= chr(rand(48, 122));
         if (preg_match($regexp, $testpass)) {
             $pass = $testpass;
@@ -51,13 +56,12 @@ for ($i = 0; $i < 1500; $i++) {
 
 echo "Checking " . count($domains) . " domain names\n";
 try {
-    $conn = new Metaregistrar\EPP\metaregEppConnection();
-    $conn->setConnectionDetails('');
-    // Connect to the EPP server
-    $mtime = microtime();
-    $mtime = explode(" ", $mtime);
-    $starttime = $mtime[1] + $mtime[0];
-    if ($conn->connect()) {
+    // Please enter your own settings file here under before using this example
+    if ($conn = eppConnection::create('')) {
+        // Connect to the EPP server
+        $mtime = microtime();
+        $mtime = explode(" ", $mtime);
+        $starttime = $mtime[1] + $mtime[0];
         if ($conn->login()) {
             $counter = 0;
             while ($counter < count($domains)) {
@@ -79,15 +83,13 @@ try {
             }
             $conn->logout();
         }
-    } else {
-        echo "ERROR CONNECTING\n";
+        $mtime = microtime();
+        $mtime = explode(" ", $mtime);
+        $endtime = $mtime[1] + $mtime[0];
+        $totaltime = ($endtime - $starttime);
+        echo "Checks performed in " . $totaltime . " seconds\n\n";
     }
-    $mtime = microtime();
-    $mtime = explode(" ", $mtime);
-    $endtime = $mtime[1] + $mtime[0];
-    $totaltime = ($endtime - $starttime);
-    echo "Checks performed in " . $totaltime . " seconds\n\n";
-} catch (Metaregistrar\EPP\eppException $e) {
+} catch (eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";
 }
 
@@ -97,9 +99,9 @@ try {
  */
 function checkdomains($conn, $domains) {
     try {
-        $check = new Metaregistrar\EPP\eppCheckRequest($domains);
-        if ((($response = $conn->writeandread($check)) instanceof Metaregistrar\EPP\eppCheckResponse) && ($response->Success())) {
-            /* @var $response Metaregistrar\EPP\eppCheckResponse */
+        $check = new eppCheckDomainRequest($domains);
+        if ($response = $conn->request($check)) {
+            /* @var $response eppCheckDomainResponse */
             $checks = $response->getCheckedDomains();
             foreach ($checks as $check) {
                 echo $check['domainname']." is ".($check['available'] ? 'free' : 'taken')." (".$check['reason'].")\n";
@@ -107,7 +109,7 @@ function checkdomains($conn, $domains) {
         } else {
             echo "ERROR2\n";
         }
-    } catch (Metaregistrar\EPP\eppException $e) {
+    } catch (eppException $e) {
         echo 'ERROR1';
         echo $e->getMessage() . "\n";
     }

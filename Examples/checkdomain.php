@@ -1,11 +1,16 @@
 <?php
 require('../autoloader.php');
 
+use Metaregistrar\EPP\eppConnection;
+use Metaregistrar\EPP\eppException;
+use Metaregistrar\EPP\eppCheckDomainRequest;
+use Metaregistrar\EPP\eppCheckDomainResponse;
+
+
 /*
  * This script checks for the availability of domain names
  * You can specify multiple domain names to be checked
  */
-
 
 if ($argc <= 1) {
     echo "Usage: checkdomain.php <domainnames>\n";
@@ -19,50 +24,43 @@ for ($i = 1; $i < $argc; $i++) {
 
 echo "Checking " . count($domains) . " domain names\n";
 try {
-    $conn = new Metaregistrar\EPP\metaregEppConnection(true);
     // Set login details for the service in the form of
+    // interface=metaregEppConnection
     // hostname=ssl://epp.test2.metaregistrar.com
     // port=7443
     // userid=xxxxxxxx
     // password=xxxxxxxxx
-    $conn->setConnectionDetails('');
-    // Connect and login to the EPP server
-    if ($conn->connect()) {
+    // Please enter the location of the file with these settings in the string location here under
+    if ($conn = eppConnection::create('')) {
+        // Connect and login to the EPP server
         if ($conn->login()) {
             // Check domain names
             checkdomains($conn, $domains);
             $conn->logout();
         }
-    } else {
-        echo "ERROR CONNECTING\n";
     }
-} catch (Metaregistrar\EPP\eppException $e) {
+} catch (eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";
 }
 
 /**
- * @param $conn Metaregistrar\EPP\eppConnection
- * @param $domains array
+ * @param $conn eppConnection
+ * @param $domains array of domain names
  */
 function checkdomains($conn, $domains) {
-    try {
-        // Create request to be sent to EPP service
-        $check = new Metaregistrar\EPP\eppCheckRequest($domains);
-        // Write request to EPP service, read and check the results
-        if ((($response = $conn->writeandread($check)) instanceof Metaregistrar\EPP\eppCheckResponse) && ($response->Success())) {
-            /* @var $response Metaregistrar\EPP\eppCheckResponse */
-            // Walk through the results
-            $checks = $response->getCheckedDomains();
-            foreach ($checks as $check) {
-                echo $check['domainname'] . " is " . ($check['available'] ? 'free' : 'taken') . " (" . $check['reason'] . ")\n";
+    // Create request to be sent to EPP service
+    $check = new eppCheckDomainRequest($domains);
+    // Write request to EPP service, read and check the results
+    if ($response = $conn->request($check)) {
+        /* @var $response eppCheckDomainResponse */
+        // Walk through the results
+        $checks = $response->getCheckedDomains();
+        foreach ($checks as $check) {
+            echo $check['domainname'] . " is " . ($check['available'] ? 'free' : 'taken');
+            if ($check['available']) {
+                echo ' (' . $check['reason'] .')';
             }
-        } else {
-            // No valid response received from EPP service
-            echo "ERROR2\n";
+            echo "\n";
         }
-    } catch (Metaregistrar\EPP\eppException $e) {
-        // Well-formatted error received from EPP service
-        echo 'ERROR1';
-        echo $e->getMessage() . "\n";
     }
 }

@@ -1,9 +1,10 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppRenewRequest extends eppRequest {
-    function __construct($domain, $expdate = null) {
-        parent::__construct();
+class eppRenewRequest extends eppDomainRequest {
+    function __construct($domain, $expdate = null, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
+        parent::__construct(eppRequest::TYPE_RENEW);
 
         #
         # Sanity checks
@@ -23,8 +24,6 @@ class eppRenewRequest extends eppRequest {
         #
         # Object create structure
         #
-        $renew = $this->createElement('renew');
-        $this->domainobject = $this->createElement('domain:renew');
         $this->domainobject->appendChild($this->createElement('domain:name', $domain->getDomainname()));
         if ($expdate) {
             $this->domainobject->appendChild($this->createElement('domain:curExpDate', $expdate));
@@ -34,7 +33,5 @@ class eppRenewRequest extends eppRequest {
             $domainperiod->setAttribute('unit', $domain->getPeriodUnit());
             $this->domainobject->appendChild($domainperiod);
         }
-        $renew->appendChild($this->domainobject);
-        $this->getCommand()->appendChild($renew);
     }
 }

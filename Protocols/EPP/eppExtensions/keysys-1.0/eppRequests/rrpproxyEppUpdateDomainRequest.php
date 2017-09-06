@@ -10,11 +10,20 @@ namespace Metaregistrar\EPP;
      </keysys:update>
    </extension>
  */
+/*
+     <extension>
+      <keysys:update xmlns:keysys="http://www.key-systems.net/epp/keysys-1.0">
+        <keysys:domain>
+          <keysys:whois-privacy>1</keysys:whois-privacy>
+        </keysys:domain>
+      </keysys:update>
+    </extension>
+*/
 
 
 class rrpproxyEppUpdateDomainRequest extends eppUpdateDomainRequest {
     function __construct(eppDomain $domain, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false) {
-        $upd = new eppDomain($domain->getDomainName());
+        $upd = new eppDomain($domain->getDomainname());
         parent::__construct($domain, null, null, $upd);
         $this->addTrustee();
         parent::addSessionId();
@@ -29,7 +38,7 @@ class rrpproxyEppUpdateDomainRequest extends eppUpdateDomainRequest {
         $domdata->appendChild($cd);
         $infdata->appendChild($domdata);
         $ext->appendChild($infdata);
-        $this->command->appendChild($ext);
+        $this->getCommand()->appendChild($ext);
     }
 
 

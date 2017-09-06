@@ -32,6 +32,7 @@ abstract class nicatEppConnection extends eppConnection
     {
         $login = new eppLoginRequest;
         if ((($response = $this->writeandread($login)) instanceof eppLoginResponse) && ($response->Success())) {
+            $this->loggedin = true;
             return true;
         }
         return false;
@@ -82,6 +83,7 @@ abstract class nicatEppConnection extends eppConnection
                 stream_set_blocking($this->connection, false);
                 stream_set_timeout($this->connection, $this->timeout);
                 if ($errno == 0) {
+                    $this->connected = true;
                     $this->read();
                     return true;
                 } else {
@@ -92,5 +94,7 @@ abstract class nicatEppConnection extends eppConnection
                 return false;
             }
         }
+        return false;
     }
+
 }

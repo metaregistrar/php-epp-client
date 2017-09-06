@@ -65,7 +65,7 @@ class eppDomain {
      *
      * @var string
      */
-    private $authorisationCode = '';
+    private $authorisationCode = null;
     /**
      *
      * @var integer
@@ -150,7 +150,7 @@ class eppDomain {
         if (($periodunit == eppDomain::DOMAIN_PERIOD_UNIT_Y) || ($periodunit == eppDomain::DOMAIN_PERIOD_UNIT_M)) {
             $this->periodunit = $periodunit;
         } else {
-            throw new eppException("Domain period unit " . $periodunit . " is invalid, only d or m allowed");
+            throw new eppException("Domain period unit " . $periodunit . " is invalid, only m or y allowed");
         }
     }
 
@@ -305,7 +305,7 @@ class eppDomain {
 
     /**
      * @param integer $row
-     * @return eppSecdns|null
+     * @return eppSecdns|null|array
      */
     public function getSecdns($row = null) {
         if (!is_null($row)) {
@@ -326,7 +326,12 @@ class eppDomain {
      * @return void
      */
     public function setAuthorisationCode($authorisationCode) {
-        $this->authorisationCode = htmlspecialchars($authorisationCode, ENT_COMPAT, "UTF-8");
+        if ($authorisationCode) {
+            $this->authorisationCode = htmlspecialchars($authorisationCode, ENT_COMPAT, "UTF-8");
+        } else {
+            $this->authorisationCode = $authorisationCode;
+        }
+
     }
 
     /**
@@ -337,6 +342,23 @@ class eppDomain {
         return $this->authorisationCode;
     }
 
+    /**
+     *
+     * @param string $authorisationCode
+     * @return void
+     */
+    public function setPassword($password) {
+        $this->authorisationCode = htmlspecialchars($password, ENT_COMPAT, "UTF-8");
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getPassword() {
+        return $this->authorisationCode;
+    }    
+    
     /**
      *
      * @param string $status

@@ -1,9 +1,15 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppUpdateHostRequest extends eppRequest {
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null) {
-        parent::__construct();
+class eppUpdateHostRequest extends eppHostRequest {
+    /**
+     * @var \DOMElement
+     */
+    public $hostobject;
+
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
+        parent::__construct(eppRequest::TYPE_UPDATE);
 
         if ($objectname instanceof eppHost) {
             $hostname = $objectname->getHostname();
@@ -33,14 +39,13 @@ class eppUpdateHostRequest extends eppRequest {
      * @param eppHost $addInfo
      * @param eppHost $removeInfo
      * @param eppHost $updateInfo
-     * @return \domElement
+     * @return \DOMElement
+     * @throws eppException
      */
     public function updateHost($hostname, $addInfo, $removeInfo, $updateInfo) {
         #
         # Object create structure
         #
-        $update = $this->createElement('update');
-        $this->hostobject = $this->createElement('host:update');
         $this->hostobject->appendChild($this->createElement('host:name', $hostname));
         if ($addInfo instanceof eppHost) {
             $addcmd = $this->createElement('host:add');
@@ -61,16 +66,14 @@ class eppUpdateHostRequest extends eppRequest {
                 } else {
                     throw new eppException('New hostname must be specified on host:update command');
                 }
+                $this->hostobject->appendChild($chgcmd);
             }
-            $this->hostobject->appendChild($chgcmd);
         }
-        $update->appendChild($this->hostobject);
-        $this->getCommand()->appendChild($update);
     }
 
     /**
      *
-     * @param \domElement $element
+     * @param \DOMElement $element
      * @param eppHost $host
      */
     private function addHostChanges($element, eppHost $host) {

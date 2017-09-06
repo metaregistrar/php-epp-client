@@ -30,7 +30,7 @@ S:  </response>
 S:</epp>
  */
 
-class eppLaunchCreateDomainResponse extends eppCreateResponse {
+class eppLaunchCreateDomainResponse extends eppCreateDomainResponse {
 
     public function getLaunchApplicationID() {
         $xpath = $this->xPath();

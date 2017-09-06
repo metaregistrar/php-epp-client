@@ -6,7 +6,7 @@ namespace Metaregistrar\EPP;
  */
 
 
-class eppResponse extends \DomDocument {
+class eppResponse extends \DOMDocument {
     const RESULT_SUCCESS = '1000';
     const RESULT_SUCCESS_ACTION_PENDING = '1001';
     const RESULT_NO_MESSAGES = '1300';
@@ -117,15 +117,17 @@ class eppResponse extends \DomDocument {
      */
     public $version;
 
+    public $originalrequest;
     /**
      *
      * @var string $defaultnamespace
      */
     public $defaultnamespace;
 
-    public function __construct() {
+    public function __construct($originalrequest = null) {
         parent::__construct();
         $this->formatOutput = true;
+        $this->originalrequest = $originalrequest;
         #$this->validateOnParse = true;
     }
 
@@ -147,6 +149,10 @@ class eppResponse extends \DomDocument {
         return str_replace("\t", '  ', parent::saveXML($node, LIBXML_NOEMPTYTAG));
     }
 
+    public function dumpContents() {
+        echo $this->saveXML();
+    }
+
     //public function setParameters($language,$version,$objuri,$exturi,$xpathuri)
     //{
     //    $this->language = $language;
@@ -157,7 +163,8 @@ class eppResponse extends \DomDocument {
     //}
 
     /**
-     * @return boolean
+     * @return bool
+     * @throws eppException
      */
     public function Success() {
         $resultcode = $this->getResultCode();
@@ -218,7 +225,7 @@ class eppResponse extends \DomDocument {
             if (strlen($resultreason)) {
                 $errorstring .= ' (' . $resultreason . ')';
             }
-            throw new eppException($errorstring, $resultcode, null, $resultreason, $id);
+            throw new eppException($errorstring, $resultcode, null, $resultreason, $this->saveXML());
         } else {
             return true;
         }
@@ -461,18 +468,17 @@ class eppResponse extends \DomDocument {
 
 
     /**
-     *
-     * @param \domDocument $document
      * @return \DOMXpath
      */
     public function xPath() {
         $xpath = new \DOMXpath($this);
-        $this->defaultnamespace = $this->documentElement->lookupNamespaceURI(NULL);
+        $this->defaultnamespace = $this->documentElement->lookupNamespaceUri(NULL);
         $xpath->registerNamespace('epp', $this->defaultnamespace);
         if (is_array($this->xpathuri)) {
             foreach ($this->xpathuri as $uri => $namespace) {
-                #echo "RegisterNamespace xpathuri $namespace $uri\n";
-                $xpath->registerNamespace($namespace, $uri);
+                if ($namespace != 'epp') { // epp was already registered as default namespace, see above
+                    $xpath->registerNamespace($namespace, $uri);
+                }
             }
         }
 #        if (is_array($this->exturi))
@@ -484,5 +490,20 @@ class eppResponse extends \DomDocument {
 #            }
 #        }
         return $xpath;
+    }
+
+    /**
+     * Make an xpath query and return the results if applicable
+     * @param string $path
+     * @return null|string
+     */
+    protected function queryPath($path) {
+        $xpath = $this->xPath();
+        $result = $xpath->query($path);
+        if (is_object($result) && ($result->length > 0)) {
+            return trim($result->item(0)->nodeValue);
+        } else {
+            return null;
+        }
     }
 }

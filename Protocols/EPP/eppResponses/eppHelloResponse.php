@@ -10,7 +10,7 @@ class eppHelloResponse extends eppResponse {
         parent::__destruct();
     }
 
-    public function validateServices($language, $version, $services, $extensions) {
+    public function validateServices($language, $version) {
         $resultcode = $this->getResultCode();
         if ($resultcode != 1000) {
             $errormessage = $this->getResultMessage();
@@ -87,9 +87,7 @@ class eppHelloResponse extends eppResponse {
      * @return string
      */
     public function getServerName() {
-        $xpath = $this->xPath();
-        $servername = $xpath->query('/epp:epp/epp:greeting/epp:svID');
-        return $servername->item(0)->nodeValue;
+        return $this->queryPath('/epp:epp/epp:greeting/epp:svID');
     }
 
     /**
@@ -97,9 +95,7 @@ class eppHelloResponse extends eppResponse {
      * @return string
      */
     public function getServerDate() {
-        $xpath = $this->xPath();
-        $serverdate = $xpath->query('/epp:epp/epp:greeting/epp:svDate');
-        return $serverdate->item(0)->nodeValue;
+        return $this->queryPath('/epp:epp/epp:greeting/epp:svDate');
     }
 
     /**
@@ -109,6 +105,7 @@ class eppHelloResponse extends eppResponse {
     public function getLanguages() {
         $xpath = $this->xPath();
         $languages = $xpath->query('/epp:epp/epp:greeting/epp:svcMenu/epp:lang');
+        $lang = [];
         foreach ($languages as $language) {
             $lang[] = $language->nodeValue;
         }
@@ -122,6 +119,7 @@ class eppHelloResponse extends eppResponse {
     public function getServices() {
         $xpath = $this->xPath();
         $services = $xpath->query('/epp:epp/epp:greeting/epp:svcMenu/epp:objURI');
+        $svcs = [];
         foreach ($services as $service) {
             $svcs[] = $service->nodeValue;
         }
@@ -135,6 +133,7 @@ class eppHelloResponse extends eppResponse {
     public function getExtensions() {
         $xpath = $this->xPath();
         $extensions = $xpath->query('/epp:epp/epp:greeting/epp:svcMenu/epp:svcExtension/epp:extURI');
+        $exts = [];
         foreach ($extensions as $extension) {
             $exts[] = $extension->nodeValue;
         }
@@ -148,6 +147,7 @@ class eppHelloResponse extends eppResponse {
     public function getVersions() {
         $xpath = $this->xPath();
         $versions = $xpath->query('/epp:epp/epp:greeting/epp:svcMenu/epp:version');
+        $vers = [];
         foreach ($versions as $version) {
             $vers[] = $version->nodeValue;
         }

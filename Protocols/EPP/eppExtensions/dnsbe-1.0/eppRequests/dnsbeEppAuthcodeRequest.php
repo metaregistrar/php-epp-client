@@ -41,7 +41,7 @@ class dnsbeEppAuthcodeRequest extends eppRequest {
         $command = $this->createElement('dnsbe:command');
         $authcode = $this->createElement('dnsbe:requestAuthCode');
         $authcode->appendChild($this->createElement('dnsbe:domainName', $domainname));
-        $authcode->appendChild($this->createElement('dnsbe:url', 'http://www.metaregistrar.com/tranfer?domainname=' . $domainname));
+        $authcode->appendChild($this->createElement('dnsbe:url', 'http://www.metaregistrar.com/transfer?domainname=' . $domainname));
         $command->appendChild($authcode);
         $dnsext->appendChild($command);
         $ext->appendChild($dnsext);

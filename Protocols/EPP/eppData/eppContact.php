@@ -37,7 +37,7 @@ class eppContact {
     const TYPE_INT = 'int';
     const TYPE_AUTO = 'auto';
 
-
+    private $id = null;
     private $postalInfo = array();
     private $voice=null;
     private $fax=null;
@@ -56,7 +56,6 @@ class eppContact {
      * @param string $fax
      * @param string $password
      * @param string $status
-     * @return void
      */
     public function __construct($postalInfo = null, $email = null, $voice = null, $fax = null, $password = null, $status = null) {
         if ($postalInfo instanceof eppContactPostalInfo) {
@@ -70,11 +69,13 @@ class eppContact {
                 }
             }
         }
+        $this->setId($this->generateContactId());
         $this->setEmail($email);
         $this->setPassword($password);
         $this->setVoice($voice);
         $this->setFax($fax);
         $this->setStatus($status);
+        $this->setPassword(self::generateRandomString(10));
     }
 
     public function setDisclose($disclose) {
@@ -97,7 +98,7 @@ class eppContact {
     /**
      * Add postal info to this contact
      * @param eppContactPostalInfo $postalInfo
-     * @return void
+     * @throws eppException
      */
     public function addPostalInfo(eppContactPostalInfo $postalInfo) {
         if (count($this->postalInfo) < 2) {
@@ -171,13 +172,18 @@ class eppContact {
     /**
      * Sets the password
      *
-     * **NOTE** This is not used by at the moment, but they do require it to be given
+     * **NOTE** This is not used by most registries at the moment, but they do require it to be given
      * @param string $password
      * @return void
      */
 
     public function setPassword($password) {
-        $this->password = $password;
+        if ($password) {
+            $this->password = htmlspecialchars($password, ENT_COMPAT, "UTF-8");
+        } else {
+            $this->password = null;
+        }
+
     }
 
     /**
@@ -226,8 +232,9 @@ class eppContact {
      * Formats the phone number according to SIDN formatting rules
      * @param int $number
      * @return string
+     * @throws eppException
      */
-    private function validatePhoneNumber($number) {
+    protected function validatePhoneNumber($number) {
         //Format the phone number according to EPP formatting rules.
         if (!strlen($number)) {
             return null;
@@ -242,10 +249,38 @@ class eppContact {
     }
 
     /**
+     * @return null
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param null $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+
+
+    /**
      *
      * @return string ContactId
      */
     public function generateContactId() {
         return uniqid('MRG');
+    }
+
+    public static function generateRandomString($length = 10) {
+        $characters = '123456789ABCDEFGHIJKLMNPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }

@@ -1,10 +1,16 @@
 <?php
 require('../autoloader.php');
 
+use Metaregistrar\EPP\eppConnection;
+use Metaregistrar\EPP\eppException;
+use Metaregistrar\EPP\eppDomain;
+use Metaregistrar\EPP\eppInfoDomainRequest;
+use Metaregistrar\EPP\eppContactHandle;
+use Metaregistrar\EPP\eppHost;
+
+
 /*
- * This script checks for the availability of domain names
- *
- * You can specify multiple domain names to be checked
+ * This script retrieves all information for a specific domain name
  */
 
 
@@ -13,21 +19,19 @@ if ($argc <= 1) {
     echo "Please enter a domain name retrieve\n\n";
     die();
 }
+$domainname = $argv[1];
 
 echo "Retrieving info on " . $domainname . "\n";
 try {
-    $conn = new Metaregistrar\EPP\metaregEppConnection();
-    $conn->setConnectionDetails('');
-    // Connect to the EPP server
-    if ($conn->connect()) {
+    // Please enter your own settings file here under before using this example
+    if ($conn = eppConnection::create('')) {
+        // Connect to the EPP server
         if ($conn->login()) {
             $result = infodomain($conn, $domainname);
             $conn->logout();
         }
-    } else {
-        echo "ERROR CONNECTING\n";
     }
-} catch (Metaregistrar\EPP\eppException $e) {
+} catch (eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";
 }
 
@@ -38,9 +42,8 @@ try {
  */
 function infodomain($conn, $domainname) {
     try {
-        $epp = new Metaregistrar\EPP\eppDomain($domainname);
-        $info = new Metaregistrar\EPP\eppInfoDomainRequest($epp);
-        if ((($response = $conn->writeandread($info)) instanceof Metaregistrar\EPP\eppInfoDomainResponse) && ($response->Success())) {
+        $info = new eppInfoDomainRequest(new eppDomain($domainname));
+        if ($response = $conn->request($info)) {
             /* @var $response Metaregistrar\EPP\eppInfoDomainResponse */
             $d = $response->getDomain();
             echo "Info domain for " . $d->getDomainname() . ":\n";
@@ -49,18 +52,18 @@ function infodomain($conn, $domainname) {
             echo "Registrant " . $d->getRegistrant() . "\n";
             echo "Contact info:\n";
             foreach ($d->getContacts() as $contact) {
-                /* @var $contact Metaregistrar\EPP\eppContactHandle */
+                /* @var $contact eppContactHandle */
                 echo "  " . $contact->getContactType() . ": " . $contact->getContactHandle() . "\n";
             }
             echo "Nameserver info:\n";
             foreach ($d->getHosts() as $nameserver) {
-                /* @var $nameserver Metaregistrar\EPP\eppHost */
+                /* @var $nameserver eppHost */
                 echo "  " . $nameserver->getHostname() . "\n";
             }
         } else {
             echo "ERROR2\n";
         }
-    } catch (Metaregistrar\EPP\eppException $e) {
+    } catch (eppException $e) {
         return $e->getMessage();
     }
     return null;

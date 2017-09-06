@@ -11,7 +11,7 @@ namespace Metaregistrar\EPP;
 
 class atEppDeleteRequest extends eppDeleteRequest
 {
-    use \Metaregistrar\EPP\atEppCommandTrait;
+    use atEppCommandTrait;
 
     protected $atEppExtensionChain = null;
 

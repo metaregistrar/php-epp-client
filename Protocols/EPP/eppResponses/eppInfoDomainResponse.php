@@ -55,13 +55,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string domainname
      */
     public function getDomainName() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:name');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:name');
     }
 
     /**
@@ -91,13 +85,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string roid
      */
     public function getDomainRoid() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:roid');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:roid');
     }
 
     /**
@@ -105,27 +93,16 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string registrant id
      */
     public function getDomainRegistrant() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:registrant');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:registrant');
     }
 
     /**
-     *
-     * @return string registrant id
+     * 
+     * @param string $contacttype Type of contact
+     * @return string
      */
     public function getDomainContact($contacttype) {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:contact[@type=\'' . $contacttype . '\']');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:contact[@type=\'' . $contacttype . '\']');
     }
 
     /**
@@ -137,13 +114,16 @@ class eppInfoDomainResponse extends eppInfoResponse {
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:contact');
         $cont = null;
         foreach ($result as $contact) {
-            $contacttype = $contact->getAttribute('type');
-            if ($contacttype) {
-                // DNSBE specific, but too much hassle to create an override for this
-                if ($contacttype == 'onsite') {
-                    $contacttype = 'admin';
+            /* @var $contact \DOMElement */
+            if (($contact->nodeValue) && (strlen($contact->nodeValue) > 0)) {
+                $contacttype = $contact->getAttribute('type');
+                if ($contacttype) {
+                    // DNSBE specific, but too much hassle to create an override for this
+                    if ($contacttype == 'onsite') {
+                        $contacttype = 'admin';
+                    }
+                    $cont[] = new eppContactHandle($contact->nodeValue, $contacttype);
                 }
-                $cont[] = new eppContactHandle($contact->nodeValue, $contacttype);
             }
         }
         return $cont;
@@ -171,13 +151,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string create_date
      */
     public function getDomainCreateDate() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:crDate');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:crDate');
     }
 
     /**
@@ -185,13 +159,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string update_date
      */
     public function getDomainUpdateDate() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:upDate');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:upDate');
     }
 
     /**
@@ -200,13 +168,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      */
     public function getDomainExpirationDate() {
         date_default_timezone_set("UTC");
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:exDate');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:exDate');
     }
 
     /**
@@ -214,13 +176,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string client id
      */
     public function getDomainClientId() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:clID');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:clID');
     }
 
     /**
@@ -228,13 +184,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string client id
      */
     public function getDomainCreateClientId() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:crID');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:crID');
     }
 
     /**
@@ -242,13 +192,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string client id
      */
     public function getDomainUpdateClientId() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:upID');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:upID');
     }
 
     /**
@@ -262,6 +206,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
         if ($result->length > 0) {
             $ns = null;
             foreach ($result as $nameserver) {
+                /* @var $nameserver \DOMElement */
                 if (strstr($nameserver->tagName, ":hostObj")) {
                     $ns[] = new eppHost(trim($nameserver->nodeValue));
                 }
@@ -286,9 +231,14 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string nameservers
      */
     public function getDomainNameserversCSV() {
+        $nameservers = [];
         $ns = $this->getDomainNameservers();
-        foreach ($ns as $n) {
-            $nameservers[] = $n->getHostname();
+        if (is_array($ns)) {
+            foreach ($ns as $n) {
+                $nameservers[] = $n->getHostname();
+            }
+        } else {
+            $nameservers = '';
         }
         return parent::arrayToCSV($nameservers);
     }
@@ -299,13 +249,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string authcode
      */
     public function getDomainAuthInfo() {
-        $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:authInfo/domain:pw');
-        if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
-        } else {
-            return null;
-        }
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:authInfo/domain:pw');
     }
 
     public function getKeydata() {
@@ -314,13 +258,14 @@ class eppInfoDomainResponse extends eppInfoResponse {
             $xpath = $this->xPath();
             $result = $xpath->query('/epp:epp/epp:response/epp:extension/secDNS:infData/*');
             $keys = array();
-            if (count($result) > 0) {
+            if ($result->length > 0) {
                 foreach ($result as $keydata) {
+                    /* @var $keydata \DOMElement */
                     $secdns = new eppSecdns();
-                    $secdns->setFlags($result->item(0)->getElementsByTagName('flags')->item(0)->nodeValue);
-                    $secdns->setAlgorithm($result->item(0)->getElementsByTagName('alg')->item(0)->nodeValue);
-                    $secdns->setProtocol($result->item(0)->getElementsByTagName('protocol')->item(0)->nodeValue);
-                    $secdns->setPubkey($result->item(0)->getElementsByTagName('pubKey')->item(0)->nodeValue);
+                    $secdns->setFlags($keydata->getElementsByTagName('flags')->item(0)->nodeValue);
+                    $secdns->setAlgorithm($keydata->getElementsByTagName('alg')->item(0)->nodeValue);
+                    $secdns->setProtocol($keydata->getElementsByTagName('protocol')->item(0)->nodeValue);
+                    $secdns->setPubkey($keydata->getElementsByTagName('pubKey')->item(0)->nodeValue);
                     $keys[] = $secdns;
                 }
             }

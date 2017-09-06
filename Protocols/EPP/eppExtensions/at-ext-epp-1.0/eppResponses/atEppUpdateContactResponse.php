@@ -11,5 +11,5 @@ namespace Metaregistrar\EPP;
 
 class atEppUpdateContactResponse extends eppUpdateContactResponse
 {
-    use \Metaregistrar\EPP\atEppResponseTrait;
+    use atEppResponseTrait;
 }

@@ -1,10 +1,11 @@
 <?php
 require('../autoloader.php');
 
+use Metaregistrar\EPP\eppConnection;
+use Metaregistrar\EPP\eppException;
+
 /*
- * This script checks for the availability of domain names
- *
- * You can specify multiple domain names to be checked
+ * This script uses the login epp command to perform a password change on EPP
  */
 
 
@@ -18,15 +19,14 @@ $newpassword = $argv[1];
 
 echo "Changing password\n";
 try {
-    $conn = new Metaregistrar\EPP\metaregEppConnection();
-    $conn->setConnectionDetails('');
-    $conn->setNewPassword($newpassword);
-    // Connect to the EPP server
-    if ($conn->connect()) {
+    // Please enter your own settings file here under before using this example
+    if ($conn = eppConnection::create('')) {
+        $conn->setNewPassword($newpassword);
+        // Connect and login to the EPP server
         if ($conn->login()) {
             echo "Password was changed, you are logged-out automatically\n";
         }
     }
-} catch (Metaregistrar\EPP\eppException $e) {
+} catch (eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";
 }

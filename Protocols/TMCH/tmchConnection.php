@@ -14,7 +14,7 @@ class tmchConnection {
      * Port of the connection
      * @var string
      */
-    protected $port = 700;
+    protected $port = 143;
 
     /**
      * Time-out value for the server connection
@@ -33,6 +33,8 @@ class tmchConnection {
      * @var string
      */
     protected $password = '';
+
+    protected $logging = false;
 
     public function getTimeout() {
         return $this->timeout;
@@ -77,7 +79,7 @@ class tmchConnection {
     /**
      * @param null $lastinfo
      */
-    public function setLastinfo($lastinfo) {
+    public function setLastInfo($lastinfo) {
         $this->lastinfo = $lastinfo;
     }
 
@@ -89,6 +91,7 @@ class tmchConnection {
     }
 
     public function __construct($logging = false, $settingsfile = null) {
+        $this->logging = $logging;
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             $path = str_replace('Metaregistrar\TMCH\\',dirname(__FILE__).'\..\..\Registries\\',get_called_class());
         } else {
@@ -102,13 +105,7 @@ class tmchConnection {
             $this->setUsername($settings['userid']);
             $this->setPassword($settings['password']);
             $this->setPort($settings['port']);
-        } else {
-            $this->setHostname('tmcnis.org/cnis');
-            $this->setPort(143);
-            $this->setUsername('cnis143');
-            $this->setPassword('kf96kjFdoajij!y');
         }
-
     }
 
 

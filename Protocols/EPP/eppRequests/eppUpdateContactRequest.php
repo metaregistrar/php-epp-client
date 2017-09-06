@@ -1,9 +1,10 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppUpdateContactRequest extends eppRequest {
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null) {
-        parent::__construct();
+class eppUpdateContactRequest extends eppContactRequest {
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
+        parent::__construct(eppRequest::TYPE_UPDATE);
 
         if ($objectname instanceof eppContactHandle) {
             $contacthandle = $objectname->getContactHandle();
@@ -33,14 +34,11 @@ class eppUpdateContactRequest extends eppRequest {
      * @param eppContact $addInfo
      * @param eppContact $removeInfo
      * @param eppContact $updateInfo
-     * @return \domElement
      */
     public function updateContact($contactid, $addInfo, $removeInfo, $updateInfo) {
         #
         # Object create structure
         #
-        $update = $this->createElement('update');
-        $this->contactobject = $this->createElement('contact:update');
         $this->contactobject->appendChild($this->createElement('contact:id', $contactid));
         if ($updateInfo instanceof eppContact) {
             $chgcmd = $this->createElement('contact:chg');
@@ -57,16 +55,14 @@ class eppUpdateContactRequest extends eppRequest {
             $this->addContactStatus($addcmd, $addInfo);
             $this->contactobject->appendChild($addcmd);
         }
-        $update->appendChild($this->contactobject);
-        $this->getCommand()->appendChild($update);
     }
 
     /**
      *
-     * @param \domElement $element
+     * @param \DOMElement $element
      * @param eppContact $contact
      */
-    private function addContactStatus(\domElement $element, eppContact $contact) {
+    private function addContactStatus(\DOMElement $element, eppContact $contact) {
         if ((is_array($contact->getStatus())) && (count($contact->getStatus()) > 0)) {
             $statuses = $contact->getStatus();
             if (is_array($statuses)) {
@@ -82,7 +78,7 @@ class eppUpdateContactRequest extends eppRequest {
 
     /**
      *
-     * @param \domElement $element
+     * @param \DOMElement $element
      * @param eppContact $contact
      */
     private function addContactChanges($element, eppContact $contact) {
@@ -92,17 +88,17 @@ class eppUpdateContactRequest extends eppRequest {
             $postalinfo = $this->createElement('contact:postalInfo');
             if ($postal->getType()==eppContact::TYPE_AUTO) {
                 // If all fields are ascii, type = int (international) else type = loc (localization)
-                if (($this->isAscii($postal->getName())) && ($this->isAscii($postal->getOrganisationName())) && ($this->isAscii($postal->getStreet(0)))) {
+                if ((self::isAscii($postal->getName())) && (self::isAscii($postal->getOrganisationName())) && (self::isAscii($postal->getStreet(0)))) {
                     $postal->setType(eppContact::TYPE_INT);
                 } else {
                     $postal->setType(eppContact::TYPE_LOC);
                 }
             }
             $postalinfo->setAttribute('type', $postal->getType());
-            if (strlen($postal->getName())) {
+            if (!$postal->getName()=='') {
                 $postalinfo->appendChild($this->createElement('contact:name', $postal->getName()));
             }
-            if (strlen($postal->getOrganisationName())) {
+            if (!$postal->getOrganisationName()=='') {
                 $postalinfo->appendChild($this->createElement('contact:org', $postal->getOrganisationName()));
             }
             if ((($postal->getStreetCount()) > 0) || strlen($postal->getCity()) || strlen($postal->getProvince()) || strlen($postal->getZipcode()) || strlen($postal->getCountrycode())) {
@@ -143,21 +139,26 @@ class eppUpdateContactRequest extends eppRequest {
             $element->appendChild($authinfo);
         }
         if (!is_null($contact->getDisclose())) {
+            $type = $contact->getType();
+            if ($type == $contact::TYPE_AUTO) {
+                $type = $contact::TYPE_LOC;
+            }
             $disclose = $this->createElement('contact:disclose');
             $disclose->setAttribute('flag',$contact->getDisclose());
             $name = $this->createElement('contact:name');
             if ($contact->getDisclose()==1) {
-                $name->setAttribute('type','loc');
+
+                $name->setAttribute('type',$type);
             }
             $disclose->appendChild($name);
             $org = $this->createElement('contact:org');
             if ($contact->getDisclose()==1) {
-                $org->setAttribute('type','loc');
+                $org->setAttribute('type',$type);
             }
             $disclose->appendChild($org);
             $addr = $this->createElement('contact:addr');
             if ($contact->getDisclose()==1) {
-                $addr->setAttribute('type','loc');
+                $addr->setAttribute('type',$type);
             }
             $disclose->appendChild($addr);
             $disclose->appendChild($this->createElement('contact:voice'));

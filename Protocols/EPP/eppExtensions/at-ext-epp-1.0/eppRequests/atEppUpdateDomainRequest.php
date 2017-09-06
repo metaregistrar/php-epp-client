@@ -11,7 +11,7 @@ namespace Metaregistrar\EPP;
 
 class atEppUpdateDomainRequest extends eppUpdateDomainRequest
 {
-    use \Metaregistrar\EPP\atEppCommandTrait;
+    use atEppCommandTrait;
 
     protected $atEppExtensionChain = null;
 

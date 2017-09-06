@@ -1,15 +1,16 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppUpdateDomainRequest extends eppRequest {
-    private $forcehostattr = false;
+class eppUpdateDomainRequest extends eppDomainRequest {
 
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false) {
-        parent::__construct();
 
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false, $namespacesinroot=true) {
+
+        $this->setNamespacesinroot($namespacesinroot);
         $this->setForcehostattr($forcehostattr);
+        parent::__construct(eppRequest::TYPE_UPDATE);
         if ($objectname instanceof eppDomain) {
-            $domainname = $objectname->getDomainName();
+            $domainname = $objectname->getDomainname();
         } else {
             if (strlen($objectname)) {
                 $domainname = $objectname;
@@ -29,13 +30,6 @@ class eppUpdateDomainRequest extends eppRequest {
         parent::__destruct();
     }
 
-    public function getForcehostattr() {
-        return $this->forcehostattr;
-    }
-
-    public function setForcehostattr($forcehostattr) {
-        $this->forcehostattr = $forcehostattr;
-    }
 
     /**
      *
@@ -49,8 +43,6 @@ class eppUpdateDomainRequest extends eppRequest {
         #
         # Object create structure
         #
-        $update = $this->createElement('update');
-        $this->domainobject = $this->createElement('domain:update');
         $this->domainobject->appendChild($this->createElement('domain:name', $domainname));
         if ($addInfo instanceof eppDomain) {
             $addcmd = $this->createElement('domain:add');
@@ -67,8 +59,6 @@ class eppUpdateDomainRequest extends eppRequest {
             $this->addDomainChanges($chgcmd, $updateInfo);
             $this->domainobject->appendChild($chgcmd);
         }
-        $update->appendChild($this->domainobject);
-        $this->getCommand()->appendChild($update);
     }
 
     /**
@@ -76,7 +66,7 @@ class eppUpdateDomainRequest extends eppRequest {
      * @param \domElement $element
      * @param eppDomain $domain
      */
-    private function addDomainChanges($element, eppDomain $domain) {
+    protected function addDomainChanges($element, eppDomain $domain) {
         if ($domain->getRegistrant()) {
             $element->appendChild($this->createElement('domain:registrant', $domain->getRegistrant()));
         }
@@ -85,7 +75,7 @@ class eppUpdateDomainRequest extends eppRequest {
             $nameservers = $this->createElement('domain:ns');
             foreach ($hosts as $host) {
                 /* @var eppHost $host */
-                if (($this->forcehostattr) ||  (is_array($host->getIpAddresses()))) {
+                if (($this->getForcehostattr()) ||  (is_array($host->getIpAddresses()))) {
                     $nameservers->appendChild($this->addDomainHostAttr($host));
                 } else {
                     $nameservers->appendChild($this->addDomainHostObj($host));
@@ -121,7 +111,7 @@ class eppUpdateDomainRequest extends eppRequest {
      * @param \domElement $element
      * @param string $status
      */
-    private function addDomainStatus($element, $status) {
+    protected function addDomainStatus($element, $status) {
         $stat = $this->createElement('domain:status');
         $stat->setAttribute('s', $status);
         $element->appendChild($stat);
@@ -134,7 +124,7 @@ class eppUpdateDomainRequest extends eppRequest {
      * @param string $contactid
      * @param string $contacttype
      */
-    private function addDomainContact($domain, $contactid, $contacttype) {
+    protected function addDomainContact($domain, $contactid, $contacttype) {
         $domaincontact = $this->createElement('domain:contact', $contactid);
         $domaincontact->setAttribute('type', $contacttype);
         $domain->appendChild($domaincontact);
@@ -146,7 +136,7 @@ class eppUpdateDomainRequest extends eppRequest {
      * @param eppHost $host
      * @return \domElement
      */
-    private function addDomainHostAttr(eppHost $host) {
+    protected function addDomainHostAttr(eppHost $host) {
 
         $ns = $this->createElement('domain:hostAttr');
         $ns->appendChild($this->createElement('domain:hostName', $host->getHostname()));
@@ -166,7 +156,7 @@ class eppUpdateDomainRequest extends eppRequest {
      * @param eppHost $host
      * @return \domElement
      */
-    private function addDomainHostObj(eppHost $host) {
+    protected function addDomainHostObj(eppHost $host) {
         $ns = $this->createElement('domain:hostObj', $host->getHostname());
         return $ns;
     }

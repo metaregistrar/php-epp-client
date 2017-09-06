@@ -11,6 +11,9 @@ class cnisTmchConnection extends tmchConnection {
             throw new tmchException("Hostname must be set when requesting CNIS information");
         }
         $url = "https://" . parent::getHostname() . "/" . $key . ".xml";
+        if ($this->logging) {
+            echo "Calling interface $url\n\n";
+        }
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -21,6 +24,9 @@ class cnisTmchConnection extends tmchConnection {
             throw new tmchException(curl_error($ch));
         }
         $output = curl_exec($ch);
+        if ($this->logging) {
+            echo "Interface returned response:\n$output\n\n";
+        }
         if (strlen($output)==0) {
             throw new tmchException("Empty output received from CNIS service");
         }
@@ -77,7 +83,7 @@ class cnisTmchConnection extends tmchConnection {
         }
         $result .= $breakchar;
         //echo "This domain name label has previously been found to be used or registered abusively against the following trademarks accoring to the referenced decisions:\n";
-        $result .= "For more information concerning the records in this notice, contact mijndomein.nl".$breakchar;
+        $result .= "For more information concerning the records in this notice, contact your domain name registrar".$breakchar;
         return $result;
     }
 

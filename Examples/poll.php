@@ -1,6 +1,9 @@
 <?php
 require('../autoloader.php');
-
+use Metaregistrar\EPP\eppConnection;
+use Metaregistrar\EPP\eppException;
+use Metaregistrar\EPP\eppPollRequest;
+use Metaregistrar\EPP\eppResponse;
 /*
  * This script polls for new messages in the EPP system
  * The messages tell you if a domain name was transferred away to another provider
@@ -11,10 +14,9 @@ require('../autoloader.php');
 
 try {
     echo "Polling for messages\n";
-    $conn = new Metaregistrar\EPP\metaregEppConnection();
-    $conn->setConnectionDetails('');
-// Connect to the EPP server
-    if ($conn->connect()) {
+    // Please enter your own settings file here under before using this example
+    if ($conn = eppConnection::create('')) {
+        // Connect and login to the EPP server
         if ($conn->login()) {
             $messageid = poll($conn);
             if ($messageid) {
@@ -23,7 +25,7 @@ try {
             $conn->logout();
         }
     }
-} catch (Metaregistrar\EPP\eppException $e) {
+} catch (eppException $e) {
     echo "ERROR: " . $e->getMessage() . "\n\n";
 }
 
@@ -33,10 +35,10 @@ try {
  */
 function poll($conn) {
     try {
-        $poll = new Metaregistrar\EPP\eppPollRequest(Metaregistrar\EPP\eppPollRequest::POLL_REQ, 0);
-        if ((($response = $conn->writeandread($poll)) instanceof Metaregistrar\EPP\eppPollResponse) && ($response->Success())) {
+        $poll = new eppPollRequest(eppPollRequest::POLL_REQ, 0);
+        if ($response = $conn->request($poll)) {
             /* @var $response Metaregistrar\EPP\eppPollResponse */
-            if ($response->getResultCode() == Metaregistrar\EPP\eppResponse::RESULT_MESSAGE_ACK) {
+            if ($response->getResultCode() == eppResponse::RESULT_MESSAGE_ACK) {
                 echo $response->saveXML();
                 echo $response->getMessageCount() . " messages waiting in the queue\n";
                 echo "Picked up message " . $response->getMessageId() . ': ' . $response->getMessage() . "\n";
@@ -45,24 +47,24 @@ function poll($conn) {
                 echo $response->getResultMessage() . "\n";
             }
         }
-    } catch (Metaregistrar\EPP\eppException $e) {
+    } catch (eppException $e) {
         echo $e->getMessage() . "\n";
     }
     return null;
 }
 
 /**
- * @param $conn Metaregistrar\EPP\eppConnection
+ * @param $conn eppConnection
  * @param $messageid string
  */
 function pollack($conn, $messageid) {
     try {
-        $poll = new Metaregistrar\EPP\eppPollRequest(Metaregistrar\EPP\eppPollRequest::POLL_ACK, $messageid);
-        if ((($response = $conn->writeandread($poll)) instanceof Metaregistrar\EPP\eppPollResponse) && ($response->Success())) {
+        $poll = new eppPollRequest(eppPollRequest::POLL_ACK, $messageid);
+        if ($response = $conn->request($poll)) {
             /* @var $response Metaregistrar\EPP\eppPollResponse */
             echo "Message $messageid is acknowledged\n";
         }
-    } catch (Metaregistrar\EPP\eppException $e) {
+    } catch (eppException $e) {
         echo $e->getMessage() . "\n";
     }
 }

@@ -17,6 +17,11 @@ class iisEppCreateContactRequest extends eppCreateContactRequest {
 
     function __construct($createinfo, $orgno = null, $vatno = null) {
         parent::__construct($createinfo);
+        $contactname = $createinfo->getPostalInfo(0)->getOrganisationName();
+        if ((!$contactname) || (strlen($contactname)==0)) {
+            $contactname = $createinfo->getPostalInfo(0)->getName();
+        }
+        $this->contactobject->getElementsByTagName('contact:id')->item(0)->nodeValue=$this->createContactId($contactname);
         $this->addExtension('xmlns:iis', 'urn:se:iis:xml:epp:iis-1.2');
         if ($orgno) {
             $this->addIISOrganization($orgno);
@@ -33,7 +38,7 @@ class iisEppCreateContactRequest extends eppCreateContactRequest {
             $this->extension = $this->createElement('extension');
             $this->create = $this->createElement('iis:create');
             $this->extension->appendChild($this->create);
-            $this->command->appendChild($this->extension);
+            $this->getCommand()->appendChild($this->extension);
         }
         $this->create->appendChild($this->createElement('iis:orgno', $organizationnumber));
 
@@ -44,9 +49,20 @@ class iisEppCreateContactRequest extends eppCreateContactRequest {
             $this->extension = $this->createElement('extension');
             $this->create = $this->createElement('iis:create');
             $this->extension->appendChild($this->create);
-            $this->command->appendChild($this->extension);
+            $this->getCommand()->appendChild($this->extension);
         }
         $this->create->appendChild($this->createElement('iis:vatno', $vatnumber));
+    }
+
+    private function createContactId($name = null) {
+        if ((!$name) || (strlen($name)==0)) {
+            $charset = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
+            $contact_id = substr(str_shuffle($charset), 0, 6);
+        } else {
+            $contact_id = str_pad(substr(str_replace(' ','',strtolower(iconv('utf-8', 'us-ascii//IGNORE', $name))),0,6),6,'zzzzz');
+        }
+        $contact_id .= date("ym") . "-" . str_pad((time() - strtotime("today")), 5, '0', STR_PAD_LEFT);
+        return $contact_id;
     }
 
 }

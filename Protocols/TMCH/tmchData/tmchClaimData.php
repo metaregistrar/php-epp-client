@@ -43,7 +43,7 @@ namespace Metaregistrar\TMCH;
  *
  */
 
-class tmchClaim extends \DomDocument {
+class tmchClaim extends \DOMDocument {
     private $markName = '';
     private $jurisdiction = '';
     private $goodsAndServices = '';
@@ -51,6 +51,9 @@ class tmchClaim extends \DomDocument {
     private $holder = null;
     private $contact = null;
 
+    /**
+     * @param \DOMElement $claim
+     */
     public function setClaimData($claim) {
         $this->markName = $this->getValue($claim, 'markName');
         $this->jurisdiction = $this->getValue($claim, 'jurDesc');
@@ -58,6 +61,7 @@ class tmchClaim extends \DomDocument {
         $result = $claim->getElementsByTagName('classDesc');
         if (is_object($result) && ($result->length > 0)) {
             foreach ($result as $class) {
+                /* @var \DOMElement $class */
                 $classid = $class->getAttribute('classNum');
                 $this->classes[$classid] = $class->nodeValue;
             }
@@ -65,6 +69,7 @@ class tmchClaim extends \DomDocument {
         $result = $claim->getElementsByTagName('holder');
         if (is_object($result) && ($result->length > 0)) {
             $h = $result->item(0);
+            /* @var \DOMElement $h */
             $this->holder['entitlement'] = $h->getAttribute('entitlement');
             $this->holder['name'] = $this->getValue($h, 'name');
             $this->holder['organization'] = $this->getValue($h, 'org');
@@ -77,6 +82,7 @@ class tmchClaim extends \DomDocument {
         $result = $claim->getElementsByTagName('contact');
         if (is_object($result) && ($result->length > 0)) {
             $c = $result->item(0);
+            /* @var \DOMElement $c */
             $this->contact['type'] = $c->getAttribute('type');
             $this->contact['name'] = $this->getValue($c, 'name');
             $this->contact['organization'] = $this->getValue($c, 'org');
@@ -90,18 +96,16 @@ class tmchClaim extends \DomDocument {
 
     }
 
-    private function getAttribute($node, $tagname, $attributename) {
-        $result = $node->getElementsByTagName($tagname);
-        if (is_object($result) && ($result->length > 0)) {
-            return $result->getAttribute($attributename);
-        }
-        return null;
 
-    }
-
+    /**
+     * @param \DOMElement $node
+     * @param string $tagname
+     * @return null|string
+     */
     private function getValue($node, $tagname) {
         $result = $node->getElementsByTagName($tagname);
         if (is_object($result) && ($result->length > 0)) {
+            /* @var \DOMNodeList $result */
             return $result->item(0)->nodeValue;
         }
         return null;
@@ -134,7 +138,7 @@ class tmchClaim extends \DomDocument {
 }
 
 
-class tmchClaimData extends \DomDocument {
+class tmchClaimData extends \DOMDocument {
 
     /**
      * @var array tmchClaim $claim
@@ -158,25 +162,23 @@ class tmchClaimData extends \DomDocument {
     public function __destruct() {
     }
 
-    public function saveXML(\DOMNode $node = NULL, $options = NULL) {
+    /**
+     * @param \DOMNode|null $node
+     * @param null $options
+     * @return mixed
+     */
+    public function saveXML(\DOMNode $node = null, $options = null) {
         return str_replace("\t", '  ', parent::saveXML($node, LIBXML_NOEMPTYTAG));
     }
 
 
     public function xPath() {
         $xpath = new \DOMXpath($this);
-        $this->publicnamespace = $this->documentElement->lookupNamespaceURI(NULL);
+        $this->publicnamespace = $this->documentElement->lookupNamespaceUri(NULL);
         $xpath->registerNamespace('tmNotice', $this->publicnamespace);
         return $xpath;
     }
 
-    private function getValue($node, $tagname) {
-        $result = $node->getElementsByTagName($tagname);
-        if (is_object($result) && ($result->length > 0)) {
-            return $result->item(0)->nodeValue;
-        }
-        return null;
-    }
 
     public function getClaimCount() {
         return $this->claimCount;
@@ -188,9 +190,8 @@ class tmchClaimData extends \DomDocument {
 
     public function setClaims() {
         $xpath = $this->xPath();
-
         $result = $xpath->query('/tmNotice:notice/tmNotice:claim');
-        $this->claimCount = count($result);
+        $this->claimCount = $result->length;
         foreach ($result as $claim) {
             $c = new tmchClaim();
             $this->claims[] = $c;

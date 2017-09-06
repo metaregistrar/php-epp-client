@@ -1,9 +1,10 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class eppCheckContactRequest extends eppRequest {
-    function __construct($checkrequest) {
-        parent::__construct();
+class eppCheckContactRequest extends eppContactRequest {
+    function __construct($checkrequest, $namespacesinroot = true) {
+        $this->setNamespacesinroot($namespacesinroot);
+        parent::__construct(eppRequest::TYPE_CHECK);
 
         if ($checkrequest instanceof eppContactHandle) {
             $this->setContactHandles(array($checkrequest));
@@ -14,18 +15,17 @@ class eppCheckContactRequest extends eppRequest {
                 }
             }
         }
+        $this->addSessionId();
     }
 
     function __destruct() {
         parent::__destruct();
     }
-
+    
     public function setContactHandles($contacthandles) {
         #
         # Domain check structure
         #
-        $check = $this->createElement('check');
-        $this->contactobject = $this->createElement('contact:check');
         foreach ($contacthandles as $contacthandle) {
             if ($contacthandle instanceof eppContactHandle) {
                 $this->contactobject->appendChild($this->createElement('contact:id', $contacthandle->getContactHandle()));
@@ -33,8 +33,6 @@ class eppCheckContactRequest extends eppRequest {
                 $this->contactobject->appendChild($this->createElement('contact:id', $contacthandle));
             }
         }
-        $check->appendChild($this->contactobject);
-        $this->getCommand()->appendChild($check);
     }
 
 
