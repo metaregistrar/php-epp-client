@@ -16,32 +16,58 @@ class atEppCreateContactRequest extends eppCreateContactRequest {
     }
 
 
-
-
-    private function checkEncoding($str) {
-        return mb_check_encoding($str, 'ASCII');
+    /**
+     * handle`s at-specifics,
+     * please note $contact must be an instance of atEppContact::class
+     *
+     * @param eppContact $contact
+     * @throws eppException
+     */
+    public function setContact(eppContact $contact) {
+        if (!$contact instanceof atEppContact) {
+            throw new eppException('contact must be an atEppContact instance');
+        }
+        $this->setContactId($contact->getId());
+        $this->setPostalInfo($contact->getPostalInfo(0));
+        $this->setVoice($contact->getVoice());
+        $this->setFax($contact->getFax());
+        $this->setEmail($contact->getEmail());
+        $this->setPassword($contact->getPassword());
+        $this->setAtContactDisclosure($contact->getDisclose(), $contact);
+        $this->setAtExtensions();
     }
 
-    public function setContact(atEppContact $contact) {
-        #
-        # Object create structure
-        #
+    /**
+     * @param $password
+     */
+    public function setPassword($password)
+    {
+        if (is_null($password)) {
+            $password = "";
+        }
+        $authinfo = $this->createElement('contact:authInfo');
+        $authinfo->appendChild($this->createElement('contact:pw', $password));
+        $this->contactobject->appendChild($authinfo);
 
-        $create = $this->createElement('create');
+    }
 
 
-        $this->contactobject = $this->createElement('contact:create');
-        $this->contactobject->setAttribute('xmlns:contact',atEppConstants::namespaceContact);
-        $this->contactobject->setAttribute('xsi:schemaLocation', atEppConstants::schemaLocationContact);
-        $this->contactobject->appendChild($this->createElement('contact:id', atEppConstants::autoHandle));
+    /**
+     * Set the postalinfo information in the contact, overwritten due to at-perontypes it might be possible
+     * that the name field has been left emtpy and organisation has been set instead
+     * in this case organisation value will be submitted as contact:name
+     *
+     * @param eppContactPostalInfo $postal
+     * @throws eppException
+     */
+    public function setPostalInfo(eppContactPostalInfo $postal) {
         $postalinfo = $this->createElement('contact:postalInfo');
-        $postal = $contact->getPostalInfo(0);
         if (!$postal instanceof eppContactPostalInfo) {
             throw new eppException('PostalInfo must be filled on eppCreateContact request');
         }
         if ($postal->getType()==eppContact::TYPE_AUTO) {
             // If all fields are ascii, type = int (international) else type = loc (localization)
-            if (($this->checkEncoding($postal->getName())) && ($this->checkEncoding($postal->getOrganisationName())) && ($this->checkEncoding($postal->getStreet(0)))) {
+            if ((self::isAscii($postal->getName())) && (self::isAscii($postal->getOrganisationName())) && (self::isAscii($postal->getStreet(0)))) {
                 $postal->setType(eppContact::TYPE_INT);
             } else {
                 $postal->setType(eppContact::TYPE_LOC);
@@ -49,6 +75,11 @@ class atEppCreateContactRequest extends eppCreateContactRequest {
         }
         $postalinfo->setAttribute('type', $postal->getType());
 
+        //.at version requires a $name
+        //if only $organisation has been set
+        //due to persontype organisation
+        //leave organisation field empty and
+        //write the organisation value into contact:name
         $organisation = $postal->getOrganisationName();
         $name = $postal->getName();
         if(!empty($organisation) && empty($name)){
@@ -57,11 +88,12 @@ class atEppCreateContactRequest extends eppCreateContactRequest {
         }
 
 
-       $postalinfo->appendChild($this->createElement('contact:name', $name));
+        $postalinfo->appendChild($this->createElement('contact:name', $name));
 
         if (!empty($organisation)) {
             $postalinfo->appendChild($this->createElement('contact:org', $organisation));
         }
+
         $postaladdr = $this->createElement('contact:addr');
         $count = $postal->getStreetCount();
         for ($i = 0; $i < $count; $i++) {
@@ -75,55 +107,45 @@ class atEppCreateContactRequest extends eppCreateContactRequest {
         $postaladdr->appendChild($this->createElement('contact:cc', $postal->getCountrycode()));
         $postalinfo->appendChild($postaladdr);
         $this->contactobject->appendChild($postalinfo);
-        $this->contactobject->appendChild($this->createElement('contact:voice', $contact->getVoice()));
-        if ($contact->getFax()) {
-            $this->contactobject->appendChild($this->createElement('contact:fax', $contact->getFax()));
-        }
-        $this->contactobject->appendChild($this->createElement('contact:email', $contact->getEmail()));
-        if (!is_null($contact->getPassword()))
-        {
-            $authinfo = $this->createElement('contact:authInfo');
-            $authinfo->appendChild($this->createElement('contact:pw', $contact->getPassword()));
-            $this->contactobject->appendChild($authinfo);
-        }
-        $this->setAtContactDisclosure($contact);
-        $create->appendChild($this->contactobject);
-        $this->getCommand()->appendChild($create);
-        $this->setAtExtensions();
     }
 
-    protected function setAtContactDisclosure(atEppContact $contact)
-    {
 
-        if (!is_null($contact->getDisclose())) {
+
+    /**
+     * at  voice-, fax-, email disclosure
+     *
+     * @param $contactdisclose
+     * @param atEppContact $contact
+     */
+    protected function setAtContactDisclosure($contactdisclose,atEppContact $contact)
+    {
+        if (!is_null($contactdisclose)) {
             $disclose = $this->createElement('contact:disclose');
-            $disclose->setAttribute('flag',$contact->getDisclose());
+            $disclose->setAttribute('flag', $contactdisclose);
 
             $disclPhone = $this->createElement('contact:voice');
-            if ($contact->getDisclose()==1) {
-                $disclPhone->setAttribute('type',eppContact::TYPE_LOC);
+            if ($contactdisclose == 1) {
+                $disclPhone->setAttribute('type', eppContact::TYPE_LOC);
             }
-            if($contact->getDisclose() != $contact->getWhoisHidePhone()) {
+            if ($contactdisclose != $contact->getWhoisHidePhone()) {
                 $disclose->appendChild($disclPhone);
             }
             $disclFax = $this->createElement('contact:fax');
-            if ($contact->getDisclose()==1) {
-                $disclFax->setAttribute('type',eppContact::TYPE_LOC);
+            if ($contactdisclose == 1) {
+                $disclFax->setAttribute('type', eppContact::TYPE_LOC);
             }
-            if($contact->getWhoisHideFax() != $contact->getDisclose()) {
+            if ($contact->getWhoisHideFax() != $contactdisclose) {
                 $disclose->appendChild($disclFax);
             }
             $disclEmail = $this->createElement('contact:email');
-            if ($contact->getDisclose()==1) {
-                $disclEmail->setAttribute('type',eppContact::TYPE_LOC);
+            if ($contactdisclose == 1) {
+                $disclEmail->setAttribute('type', eppContact::TYPE_LOC);
             }
-            if($contact->getWhoisHideEmail() != $contact->getDisclose()) {
+            if ($contact->getWhoisHideEmail() != $contactdisclose) {
                 $disclose->appendChild($disclEmail);
             }
             $this->contactobject->appendChild($disclose);
         }
-
-
     }
 
 

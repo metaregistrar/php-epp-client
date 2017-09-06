@@ -31,12 +31,11 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
      * @param atEppContact $updateInfo
      * @return \domElement
      */
-    public function updateContact($contactid,atEppContact $addInfo,atEppContact $removeInfo,atEppContact $updateInfo) {
+    public function updateContact($contactid, $addInfo, $removeInfo, $updateInfo) {
         #
         # Object create structure
         #
-        $update = $this->createElement('update');
-          $this->contactobject = $this->createElement('contact:update');
+
         $this->contactobject->appendChild($this->createElement('contact:id', $contactid));
         if ($updateInfo instanceof eppContact) {
             $chgcmd = $this->createElement('contact:chg');
@@ -53,8 +52,7 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
             $this->addContactStatus($addcmd, $addInfo);
             $this->contactobject->appendChild($addcmd);
         }
-        $update->appendChild($this->contactobject);
-        $this->getCommand()->appendChild($update);
+
         $this->setAtExtensions();
         $this->epp->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
     }
@@ -103,13 +101,10 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
                 $name =  $organisation;
                 $organisation="";
             }
-
-            $ignoreNameOrg=false;
-            if(empty($organisation) && empty($name)){
-                $ignoreNameOrg=true;
-            }
-            if(!$ignoreNameOrg) {
+            if(!empty($name)) {
                 $postalinfo->appendChild($this->createElement('contact:name', $name));
+            }
+            if(!empty($organisation)) {
                 $postalinfo->appendChild($this->createElement('contact:org', $organisation));
             }
             if ((($postal->getStreetCount()) > 0) || strlen($postal->getCity()) || strlen($postal->getProvince()) || strlen($postal->getZipcode()) || strlen($postal->getCountrycode())) {
