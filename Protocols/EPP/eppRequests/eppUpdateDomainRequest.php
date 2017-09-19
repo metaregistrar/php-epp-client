@@ -31,7 +31,7 @@ class eppUpdateDomainRequest extends eppDomainRequest {
     }
 
 
-        /**
+    /**
      *
      * @param string $domainname
      * @param eppDomain $addInfo
