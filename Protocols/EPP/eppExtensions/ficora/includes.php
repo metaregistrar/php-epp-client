@@ -16,7 +16,6 @@ include_once(dirname(__FILE__) . '/eppResponses/ficoraEppInfoContactResponse.php
 $this->addCommandResponse('Metaregistrar\EPP\ficoraEppInfoContactRequest', 'Metaregistrar\EPP\ficoraEppInfoContactResponse');
 
 include_once(dirname(__FILE__) . '/eppRequests/ficoraEppUpdateContactRequest.php');
-include_once(dirname(__FILE__) . '/eppRequests/ficoraEppCreateContactRequest.php');
 $this->addCommandResponse('Metaregistrar\EPP\ficoraEppUpdateContactRequest', 'Metaregistrar\EPP\eppUpdateContactResponse');
 
 include_once(dirname(__FILE__) . '/eppRequests/ficoraEppCheckBalanceRequest.php');

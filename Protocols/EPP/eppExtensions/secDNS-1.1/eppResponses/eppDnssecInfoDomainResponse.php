@@ -27,4 +27,28 @@ class eppDnssecInfoDomainResponse extends eppInfoDomainResponse
         }
         return null;
     }
+
+    public function getKeys() {
+        // Check if dnssec is enabled on this interface
+
+        if ($this->findNamespace('secDNS')) {
+            $xpath = $this->xPath();
+            $result = $xpath->query('/epp:epp/epp:response/epp:extension/secDNS:infData/*');
+            $keys = array();
+
+            if (count($result) > 0) {
+                foreach ($result as $keydata) {
+                    /* @var $keydata \DOMElement */
+                    $secdns = new eppSecdns();
+                    $flags = $keydata->getElementsByTagName('flags')->item(0)->nodeValue;
+                    $algorithm = $keydata->getElementsByTagName('alg')->item(0)->nodeValue;
+                    $pubkey = $keydata->getElementsByTagName('pubKey')->item(0)->nodeValue;
+                    $secdns->setKey($flags, $algorithm, $pubkey);
+                    $keys[] = $secdns;
+                }
+            }
+            return $keys;
+        }
+        return null;
+    }
 }
