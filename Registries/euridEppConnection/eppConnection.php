@@ -8,8 +8,10 @@ class euridEppConnection extends eppConnection {
         //parent::enableDnssec();
         parent::setServices(array('urn:ietf:params:xml:ns:domain-1.0' => 'domain', 'urn:ietf:params:xml:ns:contact-1.0' => 'contact'));
         //parent::addExtension('nsgroup','http://www.eurid.eu/xml/epp/nsgroup-1.1');
-        parent::addService('http://www.eurid.eu/xml/epp/registrar-1.0', 'registrar');
-        //parent::addExtension('authInfo','http://www.eurid.eu/xml/epp/authInfo-1.0');
+        //parent::addService('http://www.eurid.eu/xml/epp/registrar-1.0', 'registrar');
+        parent::addExtension('authInfo','http://www.eurid.eu/xml/epp/authInfo-1.1');
+        parent::addExtension('domain-ext','http://www.eurid.eu/xml/epp/domain-ext-2.1');
+
         #parent::addCommandResponse('euridEppCreateNsgroupRequest', 'euridEppCreateNsgroupResponse');
         #parent::addCommandResponse('euridEppCreateRequest', 'euridEppCreateResponse');
         #parent::addCommandResponse('euridEppAuthcodeRequest', 'eppResponse');

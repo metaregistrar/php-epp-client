@@ -121,7 +121,24 @@ class eppRequest extends \DOMDocument {
             throw new eppException('Cannot set attribute on an empty epp element');
         }
     }
-    
+
+    /**
+     * Adds the namespace to the EPP root element or to the applicable element, depending on the setting
+     * @param string $xmlns
+     * @param string $namespace
+     * @param \DOMElement $object
+     */
+    protected function setNamespace($xmlns, $namespace, $object = null) {
+        $xmlns = str_replace('xmlns:','',$xmlns);
+        if ($this->rootNamespaces()) {
+            $this->getEpp()->setAttribute('xmlns:'.$xmlns,$namespace);
+        } else {
+            if ($object) {
+                $object->setAttribute('xmlns:'.$xmlns,$namespace);
+            }
+        }
+    }
+
     public function addSessionId() {
         #
         # Remove earlier session id's to make sure session id is at the end

@@ -41,7 +41,14 @@ function transferdomain($conn, $domainname, $authcode) {
     try {
         $domain = new eppDomain($domainname);
         $domain->setAuthorisationCode($authcode);
-        $transfer = new eppTransferRequest(eppTransferRequest::OPERATION_REQUEST,$domain);
+        $domain->setRegistrant(new \Metaregistrar\EPP\eppContactHandle('registrant handle'));
+        $domain->addContact(new \Metaregistrar\EPP\eppContactHandle('admin handle', \Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_ADMIN));
+        $domain->addContact(new \Metaregistrar\EPP\eppContactHandle('tech handle', \Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_TECH));
+        $domain->addContact(new \Metaregistrar\EPP\eppContactHandle('billing handle', \Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_BILLING));
+        $domain->addHost(new \Metaregistrar\EPP\eppHost('ns1.yourdomainprovider.net'));
+        $domain->addHost(new \Metaregistrar\EPP\eppHost('ns2.yourdomainprovider.net'));
+        $domain->addHost(new \Metaregistrar\EPP\eppHost('ns3.yourdomainprovider.net'));
+        $transfer = new \Metaregistrar\EPP\metaregEppTransferExtendedRequest(eppTransferRequest::OPERATION_REQUEST,$domain);
         if ($response = $conn->request($transfer)) {
             /* @var $response Metaregistrar\EPP\eppTransferResponse */
             echo $response->getDomainName()," transfer request was succesful\n";
