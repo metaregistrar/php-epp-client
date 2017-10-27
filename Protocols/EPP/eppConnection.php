@@ -939,6 +939,25 @@ class eppConnection {
         $this->exturi = $extensions;
     }
 
+
+    /**
+     * Indicate a connection is going to use a specific extension and load the includes
+     * @param string $namespace
+     * @throws eppException
+     */
+    public function useExtension($namespace) {
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $includepath = dirname(__FILE__).'\\eppExtensions\\'.$namespace.'\\includes.php';
+        } else {
+            $includepath = dirname(__FILE__).'/eppExtensions/'.$namespace.'/includes.php';
+        }
+        if (is_file($includepath)) {
+            include($includepath);
+        } else {
+            throw new eppException("Unable to use extension $namespace because extension files cannot be located");
+        }
+    }
+
     /**
      * @param string $xmlns
      * @param string $namespace
@@ -946,6 +965,7 @@ class eppConnection {
     public function addExtension($xmlns, $namespace) {
         $this->exturi[$namespace] = $xmlns;
         // Include the extension data, request and response files
+        /*
         $pos = strrpos($namespace,'/');
         if ($pos!==false) {
             $path = substr($namespace,$pos+1,999);
@@ -976,7 +996,7 @@ class eppConnection {
         }
         if (is_file($includepath)) {
             include_once($includepath);
-        }
+        } */
     }
 
     public function removeExtension($namespace) {

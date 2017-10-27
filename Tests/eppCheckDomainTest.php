@@ -2,13 +2,14 @@
 include_once(dirname(__FILE__).'/eppTestCase.php');
 
 class eppCheckDomainTest extends eppTestCase {
+    private $extension = '.frl';
 
     /**
      * Test if random domain name is available
      * Expects a standard result for a free domainname
      */
     public function testCheckDomainAvailable() {
-        $domainname = self::randomstring(30).'.frl';
+        $domainname = self::randomstring(30).$this->extension;
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppDomain',$domain);
         $check = new Metaregistrar\EPP\eppCheckDomainRequest($domain);
@@ -36,7 +37,7 @@ class eppCheckDomainTest extends eppTestCase {
      * Expects a standard result for a taken domain name
      */
     public function testCheckDomainTaken() {
-        $domainname = 'nic.frl';
+        $domainname = 'nic'.$this->extension;
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppDomain',$domain);
         $check = new Metaregistrar\EPP\eppCheckRequest($domain);
@@ -64,7 +65,7 @@ class eppCheckDomainTest extends eppTestCase {
      * Expects a standard result for a taken domain name
      */
     public function testCheckDomainReserved() {
-        $domainname = 'test.frl';
+        $domainname = 'test'.$this->extension;
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppDomain',$domain);
         $check = new Metaregistrar\EPP\eppCheckRequest($domain);
@@ -92,7 +93,7 @@ class eppCheckDomainTest extends eppTestCase {
      * Expects an error result domainname is invalid
      */
     public function testCheckDomainIllegalChars() {
-        $domainname = 'test%test.frl';
+        $domainname = 'test%test'.$this->extension;
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppDomain',$domain);
         $check = new Metaregistrar\EPP\eppCheckRequest($domain);

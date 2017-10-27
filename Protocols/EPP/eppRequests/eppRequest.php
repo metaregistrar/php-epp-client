@@ -73,12 +73,19 @@ class eppRequest extends \DOMDocument {
     public function setNamespacesinroot($setting) {
         $this->namespacesinroot = $setting;
     }
-    
+
+    /**
+     * @return bool
+     */
     public function rootNamespaces() {
         return $this->namespacesinroot;
     }
-    
-    protected function getEpp() {
+
+    /**
+     * Get the epp element of the epp structure
+     * @return \DomElement
+     */
+    public function getEpp() {
         if (!$this->epp) {
             #
             # if its not there, then create base epp structure
@@ -89,6 +96,10 @@ class eppRequest extends \DOMDocument {
         return $this->epp;
     }
 
+    /**
+     * Get the command element of the epp structure
+     * @return \DomElement
+     */
     protected function getCommand() {
         if (!$this->command) {
             #
