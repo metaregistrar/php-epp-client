@@ -22,7 +22,8 @@ include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppInfoDomainResponse.php')
 $this->addCommandResponse('Metaregistrar\EPP\dnsbeEppInfoDomainRequest', 'Metaregistrar\EPP\dnsbeEppInfoDomainResponse');
 
 include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppTransferRequest.php');
-$this->addCommandResponse('Metaregistrar\EPP\dnsbeEppTransferRequest', 'Metaregistrar\EPP\eppTransferResponse');
+include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppTransferResponse.php');
+$this->addCommandResponse('Metaregistrar\EPP\dnsbeEppTransferRequest', 'Metaregistrar\EPP\dnsbeEppTransferResponse');
 
 include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppUpdateContactRequest.php');
 include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppUpdateContactResponse.php');
