@@ -144,6 +144,11 @@ class eppConnection {
     protected $connectionComment = null;
 
     /**
+     * @var null|string
+     */
+    protected $logFile = null;
+
+    /**
      * @param string $configfile
      * @param bool|false $debug
      * @return mixed
@@ -270,7 +275,9 @@ class eppConnection {
             $this->disconnect();
         }
         if ($this->logging) {
-            $this->showLog();
+            if(!$this->logFile) {
+                $this->showLog();
+            }
         }
     }
 
@@ -432,14 +439,14 @@ class eppConnection {
      * @throws eppException
      */
     public function logout() {
-            $logout = new eppLogoutRequest();
-            if ($response = $this->request($logout)) {
-                $this->writeLog("Logged out","LOGOUT");
-                $this->loggedin = false;
-                return true;
-            } else {
-                throw new eppException("Logout failed: ".$response->getResultMessage(),0,null,null,$logout->saveXML());
-            }
+        $logout = new eppLogoutRequest();
+        if ($response = $this->request($logout)) {
+            $this->writeLog("Logged out","LOGOUT");
+            $this->loggedin = false;
+            return true;
+        } else {
+            throw new eppException("Logout failed: ".$response->getResultMessage(),0,null,null,$logout->saveXML());
+        }
     }
 
     /**
@@ -859,6 +866,10 @@ class eppConnection {
         $this->hostname = $hostname;
     }
 
+    public function setLogFile($filename) {
+        $this->logFile = $filename;
+    }
+
     public function getPort() {
         return $this->port;
     }
@@ -1042,7 +1053,7 @@ class eppConnection {
                 // Enter the path to your certificate and the password here
                 $this->enableCertification($result['certificatefile'], $result['certificatepassword']);
             } elseif (array_key_exists('certificatefile',$result)) {
-		// Enter the path to your certificate without password
+                // Enter the path to your certificate without password
                 $this->enableCertification($result['certificatefile'], null);
             }
             return true;
@@ -1112,7 +1123,11 @@ class eppConnection {
                 }
             }
             //echo "-----".date("Y-m-d H:i:s")."-----".$text."-----end-----\n";
-            $this->logentries[] = "-----" . $action . "-----" . date("Y-m-d H:i:s") . "-----\n" . $text . "\n-----END-----" . date("Y-m-d H:i:s") . "-----\n";
+            $log = "-----" . $action . "-----" . date("Y-m-d H:i:s") . "-----\n" . $text . "\n-----END-----" . date("Y-m-d H:i:s") . "-----\n";
+            $this->logentries[] = $log;
+            if($this->logFile) {
+                file_put_contents($this->logFile, "\n".$log, FILE_APPEND);
+            }
         }
     }
 
