@@ -100,7 +100,7 @@ class eppUpdateContactRequest extends eppContactRequest {
                 $postalinfo->appendChild($this->createElement('contact:name', $postal->getName()));
             }
             // Optional field
-            if ($postal->getOrganisationName()) {
+            if (!is_null($postal->getOrganisationName())) {
                 $postalinfo->appendChild($this->createElement('contact:org', $postal->getOrganisationName()));
             }
             if ((($postal->getStreetCount()) > 0) || strlen($postal->getCity()) || strlen($postal->getProvince()) || strlen($postal->getZipcode()) || strlen($postal->getCountrycode())) {
@@ -131,18 +131,20 @@ class eppUpdateContactRequest extends eppContactRequest {
             $element->appendChild($this->createElement('contact:voice', $contact->getVoice()));
         }
         // Optional field, may be empty
-        if ($contact->getFax()) {
+        if (!is_null($contact->getFax())) {
             $element->appendChild($this->createElement('contact:fax', $contact->getFax()));
         }
         // Mandatory field
         if (strlen($contact->getEmail())) {
             $element->appendChild($this->createElement('contact:email', $contact->getEmail()));
         }
-        if ($contact->getPassword()) {
+        // Optional field, may be empty
+        if (!is_null($contact->getPassword())) {
             $authinfo = $this->createElement('contact:authInfo');
             $authinfo->appendChild($this->createElement('contact:pw', $contact->getPassword()));
             $element->appendChild($authinfo);
         }
+        // Optional field, may be empty
         if (!is_null($contact->getDisclose())) {
             $type = $contact->getType();
             if ($type == $contact::TYPE_AUTO) {
