@@ -95,10 +95,12 @@ class eppUpdateContactRequest extends eppContactRequest {
                 }
             }
             $postalinfo->setAttribute('type', $postal->getType());
-            if ($postal->getName()!==null) {
+            // Mandatory field
+            if (strlen($postal->getName())>0) {
                 $postalinfo->appendChild($this->createElement('contact:name', $postal->getName()));
             }
-            if ($postal->getOrganisationName()!==null) {
+            // Optional field
+            if ($postal->getOrganisationName()) {
                 $postalinfo->appendChild($this->createElement('contact:org', $postal->getOrganisationName()));
             }
             if ((($postal->getStreetCount()) > 0) || strlen($postal->getCity()) || strlen($postal->getProvince()) || strlen($postal->getZipcode()) || strlen($postal->getCountrycode())) {
@@ -124,12 +126,15 @@ class eppUpdateContactRequest extends eppContactRequest {
             }
             $element->appendChild($postalinfo);
         }
+        // Mandatory field
         if (strlen($contact->getVoice())) {
             $element->appendChild($this->createElement('contact:voice', $contact->getVoice()));
         }
-        if (strlen($contact->getFax())) {
+        // Optional field, may be empty
+        if ($contact->getFax()) {
             $element->appendChild($this->createElement('contact:fax', $contact->getFax()));
         }
+        // Mandatory field
         if (strlen($contact->getEmail())) {
             $element->appendChild($this->createElement('contact:email', $contact->getEmail()));
         }
