@@ -95,10 +95,10 @@ class eppUpdateContactRequest extends eppContactRequest {
                 }
             }
             $postalinfo->setAttribute('type', $postal->getType());
-            if (!$postal->getName()=='') {
+            if ($postal->getName()!==null) {
                 $postalinfo->appendChild($this->createElement('contact:name', $postal->getName()));
             }
-            if (!$postal->getOrganisationName()=='') {
+            if ($postal->getOrganisationName()!==null) {
                 $postalinfo->appendChild($this->createElement('contact:org', $postal->getOrganisationName()));
             }
             if ((($postal->getStreetCount()) > 0) || strlen($postal->getCity()) || strlen($postal->getProvince()) || strlen($postal->getZipcode()) || strlen($postal->getCountrycode())) {
