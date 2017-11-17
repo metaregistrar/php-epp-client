@@ -193,11 +193,11 @@ class eppTransferRequest extends eppRequest {
         $transfer->setAttribute('op', self::OPERATION_REQUEST);
         $this->contactobject = $this->createElement('contact:transfer');
         $this->contactobject->appendChild($this->createElement('contact:id', $contact->getContactHandle()));
-	    if (strlen($contact->getPassword())) {
-		    $authinfo = $this->createElement('contact:authInfo');
-		    $authinfo->appendChild($this->createElement('contact:pw', $contact->getPassword()));
-		    $this->contactobject->appendChild($authinfo);
-	    }
+	if (strlen($contact->getPassword())) {
+	    $authinfo = $this->createElement('contact:authInfo');
+	    $authinfo->appendChild($this->createElement('contact:pw', $contact->getPassword()));
+	    $this->contactobject->appendChild($authinfo);
+	}
         $transfer->appendChild($this->contactobject);
         $this->getCommand()->appendChild($transfer);
     }
