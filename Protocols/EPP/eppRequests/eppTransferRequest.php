@@ -32,7 +32,7 @@ class eppTransferRequest extends eppRequest {
                     }
                     $this->setDomainRequest($object);
                 } elseif ($object instanceof eppContactHandle) {
-                    $this->setContactQuery($object);
+                    $this->setContactRequest($object);
                 }
                 break;
             case self::OPERATION_CANCEL:
