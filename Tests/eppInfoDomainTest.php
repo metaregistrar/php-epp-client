@@ -2,12 +2,16 @@
 include_once(dirname(__FILE__).'/eppTestCase.php');
 
 class eppInfoDomainTest extends eppTestCase {
+
+    private $extension = '.frl';
+
     /**
      * Test succesful domain info
      * @throws \Metaregistrar\EPP\eppException
      */
     public function testInfoDomainSuccess() {
-        $domainname = $this->createDomain();
+        //$domainname = $this->createDomain(null,$this->extension);
+        $domainname = 'adfdefwerg.eu';
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $info = new Metaregistrar\EPP\eppInfoDomainRequest($domain);
         $response = $this->conn->writeandread($info);
@@ -23,7 +27,7 @@ class eppInfoDomainTest extends eppTestCase {
      * @throws \Metaregistrar\EPP\eppException
      */
     public function testInfoDomainWithAuthcode() {
-        $domainname = $this->createDomain();
+        $domainname = $this->createDomain(null,$this->extension);
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $domain->setAuthorisationCode('foorbar');
         $info = new Metaregistrar\EPP\eppInfoDomainRequest($domain);
@@ -42,7 +46,7 @@ class eppInfoDomainTest extends eppTestCase {
      * @throws \Metaregistrar\EPP\eppException
      */
     public function testInfoDomainWithoutAuthcode() {
-        $domainname = $this->createDomain($this->randomstring(20).'.be');
+        $domainname = $this->createDomain($this->randomstring(20).$this->extension);
         $info = new Metaregistrar\EPP\metaregEppAuthcodeRequest(new Metaregistrar\EPP\eppDomain($domainname));
         $response = $this->conn->writeandread($info);
         $this->assertInstanceOf('Metaregistrar\EPP\eppInfoDomainResponse',$response);

@@ -746,7 +746,7 @@ class eppConnection {
         /*
          * $content->hello is only set if this is an instance or a sub-instance of an eppHelloRequest
          */
-        if (!($content->hello)) {
+        if ((!($content->hello)) && (!($content->login))) {
             /**
              * Add used namespaces to the correct places in the XML
              */

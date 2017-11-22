@@ -125,10 +125,10 @@ class eppTestCase extends PHPUnit_Framework_TestCase {
         return $domainname;
     }
 
-    protected function createDomain($domainname = null) {
+    protected function createDomain($domainname = null, $extension='.frl') {
         // If no domain name was given, test with a random .FRL domain name
         if (!$domainname) {
-            $domainname = $this->randomstring(20).'.frl';
+            $domainname = $this->randomstring(20).$extension;
         }
         $contactid = $this->createContact();
         $domain = new \Metaregistrar\EPP\eppDomain($domainname);
