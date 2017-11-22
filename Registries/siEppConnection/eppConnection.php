@@ -18,7 +18,6 @@ class siEppConnection extends eppConnection
         parent::useExtension('registrar-1.0');
 
         // These extensions are not supported yet but will be sent to the registry
-        parent::addExtension("registrar", "http://www.arnes.si/xml/epp/registrar-1.0");
         parent::addExtension("DNScheck", "http://www.arnes.si/xml/epp/DNScheck-1.0");
 
     }
