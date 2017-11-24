@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/eppResponses/sidnEppResponse.php');
 
 // Create contact with additional parameters
 include_once(dirname(__FILE__) . '/eppRequests/sidnEppCreateContactRequest.php');
-$this->addCommandResponse('Metaregistrar\EPP\sidnEppCreateContactRequest', 'Metaregistrar\EPP\sidnEppResponse');
+$this->addCommandResponse('Metaregistrar\EPP\sidnEppCreateContactRequest', 'Metaregistrar\EPP\eppCreateContactResponse');
 
 // Renew domain name with renew extension (this is not an extension????)
 include_once(dirname(__FILE__) . '/eppRequests/sidnEppRenewRequest.php');
