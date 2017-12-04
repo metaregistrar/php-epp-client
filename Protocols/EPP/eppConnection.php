@@ -760,6 +760,9 @@ class eppConnection {
         }
         $content->formatOutput = true;
         $this->writeLog($content->saveXML(null, LIBXML_NOEMPTYTAG),"WRITE");
+
+        //print_r($content->saveXML(null, LIBXML_NOEMPTYTAG)); #XML Debug Output
+
         $content->formatOutput = false;
         if ($this->write($content->saveXML(null, LIBXML_NOEMPTYTAG))) {
             $readcounter = 0;
@@ -976,6 +979,13 @@ class eppConnection {
     public function addExtension($xmlns, $namespace) {
         $this->exturi[$namespace] = $xmlns;
         // Include the extension data, request and response files
+        $pos = strrpos($namespace,'/');
+        if ($pos==false) {
+            $pos = strrpos($namespace,':');
+            $path = substr($namespace,$pos+1,999);
+            $this->useExtension($path);
+        }
+
         /*
         $pos = strrpos($namespace,'/');
         if ($pos!==false) {

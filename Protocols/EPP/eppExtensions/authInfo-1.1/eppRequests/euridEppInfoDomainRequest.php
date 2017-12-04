@@ -19,9 +19,11 @@ namespace Metaregistrar\EPP;
 
 */
 class euridEppInfoDomainRequest extends eppInfoDomainRequest {
-    function __construct($infodomain, $hosts = null) {
+    function __construct($infodomain, $hosts = null, $authcode = null) {
         parent::__construct($infodomain, $hosts);
-        $this->addEURIDExtension();
+        if($authcode == true) {
+            $this->addEURIDExtension();
+        }
         $this->addSessionId();
     }
 

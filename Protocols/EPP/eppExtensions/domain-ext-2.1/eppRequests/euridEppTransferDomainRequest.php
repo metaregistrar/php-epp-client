@@ -39,12 +39,34 @@ class euridEppTransferDomainRequest extends eppTransferRequest {
         $this->setNamespace('xmlns:domain','urn:ietf:params:xml:ns:domain-1.0',$transfer);
         $this->setNamespace('xmlns:domain-ext','http://www.eurid.eu/xml/epp/domain-ext-2.1',$transfer);
         $request = $this->createElement('domain-ext:request');
+
+        if($domain->getRegistrant() != "") {
+            $c = $this->createElement('domain-ext:registrant', $domain->getRegistrant());
+            $request->appendChild($c);
+        }
+
         foreach ($domain->getContacts() as $contact) {
             /* @var $contact \Metaregistrar\EPP\eppContactHandle */
             $c = $this->createElement('domain-ext:contact',$contact->getContactHandle());
             $c->setAttribute('type',$contact->getContactType());
             $request->appendChild($c);
         }
+
+        // Set Nameserver at Transfer if needed
+        /*$nsobjects = $domain->getHosts();
+        if ($domain->getHostLength() > 0) {
+            $nameservers = $this->createElement('domain-ext:ns');
+            foreach ($nsobjects as $nsobject) {
+                print_r($nsobject);
+                $attr = $this->createElement('domain:hostAttr');
+                $c = $this->createElement('domain:hostName', $nsobject->getHostname());
+                $attr->appendChild($c);
+
+                $nameservers->appendChild($attr);
+            }
+            $request->appendChild($nameservers);
+        }*/
+
         $transfer->appendChild($request);
         $this->getExtension()->appendChild($transfer);
     }
