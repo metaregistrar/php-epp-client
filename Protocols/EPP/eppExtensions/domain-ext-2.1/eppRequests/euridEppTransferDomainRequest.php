@@ -52,8 +52,8 @@ class euridEppTransferDomainRequest extends eppTransferRequest {
             $request->appendChild($c);
         }
 
-        // Set Nameserver at Transfer if needed
-        /*$nsobjects = $domain->getHosts();
+        // Set Nameservers at Transfer if needed
+        $nsobjects = $domain->getHosts();
         if ($domain->getHostLength() > 0) {
             $nameservers = $this->createElement('domain-ext:ns');
             foreach ($nsobjects as $nsobject) {
@@ -65,7 +65,7 @@ class euridEppTransferDomainRequest extends eppTransferRequest {
                 $nameservers->appendChild($attr);
             }
             $request->appendChild($nameservers);
-        }*/
+        }
 
         $transfer->appendChild($request);
         $this->getExtension()->appendChild($transfer);

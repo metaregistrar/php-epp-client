@@ -979,13 +979,6 @@ class eppConnection {
     public function addExtension($xmlns, $namespace) {
         $this->exturi[$namespace] = $xmlns;
         // Include the extension data, request and response files
-        $pos = strrpos($namespace,'/');
-        if ($pos==false) {
-            $pos = strrpos($namespace,':');
-            $path = substr($namespace,$pos+1,999);
-            $this->useExtension($path);
-        }
-
         /*
         $pos = strrpos($namespace,'/');
         if ($pos!==false) {
