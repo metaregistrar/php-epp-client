@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: thomasm
- * Date: 17.09.2015
- * Time: 09:06
- */
-
 namespace Metaregistrar\EPP;
 
 

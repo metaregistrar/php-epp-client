@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: thomasm
- * Date: 14.09.2015
- * Time: 14:03
- */
-
 namespace Metaregistrar\EPP;
-
 
 class atEppConstants
 {
