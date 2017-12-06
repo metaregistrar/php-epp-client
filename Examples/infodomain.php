@@ -41,30 +41,26 @@ try {
  * @return string
  */
 function infodomain($conn, $domainname) {
-    try {
-        $info = new eppInfoDomainRequest(new eppDomain($domainname));
-        if ($response = $conn->request($info)) {
-            /* @var $response Metaregistrar\EPP\eppInfoDomainResponse */
-            $d = $response->getDomain();
-            echo "Info domain for " . $d->getDomainname() . ":\n";
-            echo "Created on " . $response->getDomainCreateDate() . "\n";
-            echo "Last update on ".$response->getDomainUpdateDate()."\n";
-            echo "Registrant " . $d->getRegistrant() . "\n";
-            echo "Contact info:\n";
-            foreach ($d->getContacts() as $contact) {
-                /* @var $contact eppContactHandle */
-                echo "  " . $contact->getContactType() . ": " . $contact->getContactHandle() . "\n";
-            }
-            echo "Nameserver info:\n";
-            foreach ($d->getHosts() as $nameserver) {
-                /* @var $nameserver eppHost */
-                echo "  " . $nameserver->getHostname() . "\n";
-            }
-        } else {
-            echo "ERROR2\n";
+    $info = new eppInfoDomainRequest(new eppDomain($domainname));
+    if ($response = $conn->request($info)) {
+        /* @var $response Metaregistrar\EPP\eppInfoDomainResponse */
+        $d = $response->getDomain();
+        echo "Info domain for " . $d->getDomainname() . ":\n";
+        echo "Created on " . $response->getDomainCreateDate() . "\n";
+        echo "Last update on ".$response->getDomainUpdateDate()."\n";
+        echo "Registrant " . $d->getRegistrant() . "\n";
+        echo "Contact info:\n";
+        foreach ($d->getContacts() as $contact) {
+            /* @var $contact eppContactHandle */
+            echo "  " . $contact->getContactType() . ": " . $contact->getContactHandle() . "\n";
         }
-    } catch (eppException $e) {
-        return $e->getMessage();
+        echo "Nameserver info:\n";
+        foreach ($d->getHosts() as $nameserver) {
+            /* @var $nameserver eppHost */
+            echo "  " . $nameserver->getHostname() . "\n";
+        }
+    } else {
+        echo "ERROR2\n";
     }
     return null;
 }
