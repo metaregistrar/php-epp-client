@@ -252,6 +252,12 @@ class eppInfoDomainResponse extends eppInfoResponse {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:authInfo/domain:pw');
     }
 
+    /**
+     * OBSOLETE, DO NOT USE THIS FUNCTION
+     * If you need DNSSEC KeyData or DSData, see the extension SecDNS-1.1
+     * ALL DNSSEC FUNCTION ARE IN THERE
+     * @return array|null
+     */
     public function getKeydata() {
         // Check if dnssec is enabled on this interface
         if ($this->findNamespace('secDNS')) {
