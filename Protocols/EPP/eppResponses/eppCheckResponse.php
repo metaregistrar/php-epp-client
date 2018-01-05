@@ -60,7 +60,7 @@ class eppCheckResponse extends eppResponse {
             $xpath = $this->xPath();
             $hosts = $xpath->query('/epp:epp/epp:response/epp:resData/host:chkData/host:cd/host:name');
             $checks = $xpath->query('/epp:epp/epp:response/epp:resData/host:chkData/host:cd/host:name/@avail');
-            $reasons = $xpath->query('/epp:epp/epp:response/epp:resData/host:chkData/host:cd/host:reason');
+            //$reasons = $xpath->query('/epp:epp/epp:response/epp:resData/host:chkData/host:cd/host:reason');
             $avail = false;
             foreach ($hosts as $idx => $host) {
                 $available = $checks->item($idx)->nodeValue;
@@ -77,7 +77,6 @@ class eppCheckResponse extends eppResponse {
                 $result[$host->nodeValue] = $avail;
             }
         }
-        var_dump($result);
         return ($result);
     }
 
