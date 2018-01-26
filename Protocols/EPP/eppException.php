@@ -27,7 +27,10 @@ class eppException extends \Exception {
     public function __construct($message = "", $code = 0, \Exception $previous = null, $reason = null, $command = null) {
         $this->reason = $reason;
         $trace = $this->getTrace();
-        $this->class = $trace[0]['class'];
+        $this->class = null;
+        if (isset($trace[0]['class'])) {
+            $this->class = $trace[0]['class'];
+        }
         if ($command) {
             /* @var $class \Metaregistrar\EPP\eppRequest */
             $this->lastcommand = $command;
