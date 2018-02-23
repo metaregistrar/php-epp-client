@@ -24,6 +24,14 @@ class noridEppContact extends eppContact {
 
     function __construct($postalInfo = null, $email = null, $voice = null, $fax = null, $password = null, $status = null, $extType = null, $extIdentityType = null, $extIdentity = null, $extMobilePhone = null, $extEmails = null, $extOrganizations = null, $extRoleContacts = null) {
         parent::__construct($postalInfo, $email, $voice, $fax, $password, $status);
+
+        // Norid requires id to be auto
+        $this->setId('auto');
+
+        // Norid requires empty [authInfo/pw] set, but does not support values yet. Pass value ' ' to this class
+        // override eppContact constructor
+        $this->setPassword($password);
+
         $this->setExtType($extType);
         $this->setExtIdentity($extIdentityType, $extIdentity);
         $this->setExtMobilePhone($extMobilePhone);
