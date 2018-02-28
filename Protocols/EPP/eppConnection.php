@@ -756,6 +756,9 @@ class eppConnection {
         }
         $content->formatOutput = true;
         $this->writeLog($content->saveXML(null, LIBXML_NOEMPTYTAG),"WRITE");
+
+        //print_r($content->saveXML(null, LIBXML_NOEMPTYTAG)); #XML Debug Output
+
         $content->formatOutput = false;
         if ($this->write($content->saveXML(null, LIBXML_NOEMPTYTAG))) {
             $readcounter = 0;
