@@ -27,7 +27,7 @@ class noridEppCreateDomainRequest extends eppCreateDomainRequest {
         $datasetElement->appendChild($this->createElement('no-ext-domain:versionNumber', $dataset['versionNumber']));
         $datasetElement->appendChild($this->createElement('no-ext-domain:acceptName', $dataset['acceptName']));
         $datasetElement->appendChild($this->createElement('no-ext-domain:acceptDate', $dataset['acceptDate']));
-        $this->getDomainExtension('create')->appendChild($datasetElement);
+        $this->getExtDomainExtension('create')->appendChild($datasetElement);
     }
 
 }

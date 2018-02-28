@@ -8,7 +8,7 @@ include_once(dirname(__FILE__) . '/eppResponses/noridEppResponseTrait.php');
 
 // Domain Create/Withdraw
 include_once(dirname(__FILE__) . '/eppRequests/noridEppCreateDomainRequest.php');
-include_once(dirname(__FILE__) . '/eppRequests/noridEppCreateDomainResponse.php');
+include_once(dirname(__FILE__) . '/eppResponses/noridEppCreateDomainResponse.php');
 $this->addCommandResponse('Metaregistrar\\EPP\\noridEppCreateDomainRequest', 'Metaregistrar\\EPP\\noridEppCreateDomainResponse');
 
 include_once(dirname(__FILE__) . '/eppRequests/noridEppWithdrawDomainRequest.php');
