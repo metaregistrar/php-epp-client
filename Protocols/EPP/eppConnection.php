@@ -924,15 +924,6 @@ class eppConnection {
     }
 
     /**
-     * Add a service to the list of services
-     * @param string $xmlns
-     * @param string $namespace
-     */
-    public function addService($xmlns, $namespace) {
-        $this->objuri[$xmlns] = $namespace;
-    }
-
-    /**
      * Get all supported services
      * @return array
      */
@@ -969,44 +960,21 @@ class eppConnection {
     }
 
     /**
+     * Add a Service (OBJuri)
+     * @param $xmlns
+     * @param $namespace
+     */
+    public function addService($xmlns, $namespace) {
+        $this->objuri[$namespace] = $xmlns;
+    }
+
+    /**
+     * Add an extension (EXTuri)
      * @param string $xmlns
      * @param string $namespace
      */
     public function addExtension($xmlns, $namespace) {
         $this->exturi[$namespace] = $xmlns;
-        // Include the extension data, request and response files
-        /*
-        $pos = strrpos($namespace,'/');
-        if ($pos!==false) {
-            $path = substr($namespace,$pos+1,999);
-            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                $includepath = dirname(__FILE__).'\\eppExtensions\\'.$path.'\\includes.php';
-            } else {
-                $includepath = dirname(__FILE__).'/eppExtensions/'.$path.'/includes.php';
-            }
-
-        } else {
-            $pos = strrpos($namespace,':');
-            if ($pos!==false) {
-                $path = substr($namespace,$pos+1,999);
-                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                    $includepath = dirname(__FILE__).'\\eppExtensions\\'.$path.'\\includes.php';
-                } else {
-                    $includepath = dirname(__FILE__).'/eppExtensions/'.$path.'/includes.php';
-                }
-
-            } else {
-                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                    $includepath = dirname(__FILE__).'\\eppExtensions\\'.$namespace.'\\includes.php';
-                } else {
-                    $includepath = dirname(__FILE__).'/eppExtensions/'.$namespace.'/includes.php';
-                }
-
-            }
-        }
-        if (is_file($includepath)) {
-            include_once($includepath);
-        } */
     }
 
     public function removeExtension($namespace) {
