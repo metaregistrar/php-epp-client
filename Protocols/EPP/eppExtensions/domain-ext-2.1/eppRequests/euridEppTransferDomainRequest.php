@@ -57,6 +57,7 @@ class euridEppTransferDomainRequest extends eppTransferRequest {
         if ($domain->getHostLength() > 0) {
             $nameservers = $this->createElement('domain-ext:ns');
             foreach ($nsobjects as $nsobject) {
+                /* @var $nsobject \Metaregistrar\EPP\eppHost */
                 $attr = $this->createElement('domain:hostAttr');
                 $c = $this->createElement('domain:hostName', $nsobject->getHostname());
                 $attr->appendChild($c);
