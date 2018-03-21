@@ -30,34 +30,46 @@ class noridEppTransferRequest extends eppTransferRequest {
     public function setExtDomainExecute(noridEppDomain $domain) {
         $transfer = $this->createElement('transfer');
         $transfer->setAttribute('op', self::OPERATION_EXECUTE);
+
         $this->domainobject = $this->createElement('domain:transfer');
-        $this->domainobject->setAttribute('xmlns:domain', 'urn:ietf:params:xml:ns:domain-1.0');
+        if (!$this->rootNamespaces()) {
+            $this->domainobject->setAttribute('xmlns:domain', 'urn:ietf:params:xml:ns:domain-1.0');
+        }
+
         $this->domainobject->appendChild($this->createElement('domain:name', $domain->getDomainname()));
+
         if (strlen($domain->getAuthorisationCode())) {
             $authinfo = $this->createElement('domain:authInfo');
             $authinfo->appendChild($this->createElement('domain:pw', $domain->getAuthorisationCode()));
             $this->domainobject->appendChild($authinfo);
         }
+
         if ($domain->getPeriod()) {
             $domainperiod = $this->createElement('domain:period', $domain->getPeriod());
             $domainperiod->setAttribute('unit', eppDomain::DOMAIN_PERIOD_UNIT_Y);
             $this->domainobject->appendChild($domainperiod);
         }
+
+        $transfer->appendChild($this->domainobject);
+        $this->getExtCommand()->appendChild($transfer);
+
         if (strlen($domain->getExtToken())) {
             $this->getExtCommandDomainExtension('transfer')->appendChild($this->createElement('no-ext-domain:token', $domain->getExtToken()));
         }
+
         if (strlen($domain->getExtNotifyMobilePhone()) || strlen($domain->getExtNotifyEmail())) {
             $notify = $this->createElement('no-ext-domain:notify');
+
             if (strlen($domain->getExtNotifyMobilePhone())) {
                 $notify->appendChild($this->createElement('no-ext-domain:mobilePhone', $domain->getExtNotifyMobilePhone()));
             }
+
             if (strlen($domain->getExtNotifyEmail())) {
                 $notify->appendChild($this->createElement('no-ext-domain:email', $domain->getExtNotifyEmail()));
             }
+
             $this->getExtCommandDomainExtension('transfer')->appendChild($notify);
         }
-        $transfer->appendChild($this->domainobject);
-        $this->getExtCommand()->appendChild($transfer);
     }
 
 }

@@ -22,14 +22,14 @@ class noridEppDeleteDomainRequest extends eppDeleteDomainRequest {
     private function setExtDomainDeleteFromDNS(noridEppDomain $domain) {
         if ($date = $domain->getExtDeleteFromDNS()) {
             $dateElement = $this->createElement('no-ext-domain:deleteFromDNS', date('Y-m-d', $date));
-            $this->getDomainExtension('delete')->appendChild($dateElement);
+            $this->getExtDomainExtension('delete')->appendChild($dateElement);
         }
     }
 
     private function setExtDomainDeleteFromRegistry(noridEppDomain $domain) {
         if ($date = $domain->getExtDeleteFromRegistry()) {
             $dateElement = $this->createElement('no-ext-domain:deleteFromRegistry', date('Y-m-d', $date));
-            $this->getDomainExtension('delete')->appendChild($dateElement);
+            $this->getExtDomainExtension('delete')->appendChild($dateElement);
         }
     }
 
