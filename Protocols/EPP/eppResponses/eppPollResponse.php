@@ -38,6 +38,7 @@ class eppPollResponse extends eppResponse {
     const TYPE_PAN = 'pan';
     const TYPE_CHECK = 'chk';
     const TYPE_RENEW = 'ren';
+    const TYPE_UNKNOWN = 'unknown';
 
     private $messageType = null;
 
@@ -123,40 +124,95 @@ class eppPollResponse extends eppResponse {
             if ((is_object($result)) && ($result->length>0)) {
                 return self::TYPE_RENEW;
             }
-            throw new eppException("Type of message cannot be determined on EPP poll message");
+            return self::TYPE_UNKNOWN;
         }
     }
 
+    /**
+     * Retrieve the domain name in this poll message
+     * @return null|string
+     */
     public function getDomainName() {
         $this->messageType = $this->getMessageType();
         return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:name');
     }
 
+    /**
+     * If present, retrieve the current status of the domain name in question
+     * @return string|null
+     */
+    public function getDomainStatus() {
+        $this->messageType = $this->getMessageType();
+        $xpath = $this->xPath();
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:status');
+        if ($result->length>0) {
+            $object = $result[0];
+            /* @var $object \domElement */
+            return $object->getAttribute('s');
+        }
+        return null;
+    }
+
+    /**
+     * Retrieve the plain-text status message of the domain status
+     * @return null|string
+     */
+    public function getDomainStatusText() {
+        $this->messageType = $this->getMessageType();
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:status');
+    }
+
+
+    /**
+     * Get the field trStatus, only present in TRANSFER messages
+     * @return null|string
+     */
     public function getDomainTrStatus() {
         $this->messageType = $this->getMessageType();
         return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:trStatus');
     }
 
+    /**
+     * Get client transaction id
+     * @return null|string
+     */
     public function getDomainRequestClientId() {
         $this->messageType = $this->getMessageType();
         return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:reID');
     }
 
+    /**
+     * Get date of the request
+     * @return null|string
+     */
     public function getDomainRequestDate() {
         $this->messageType = $this->getMessageType();
         return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:reDate');
     }
 
+
+    /**
+     * Get expiration date of the domain name
+     * @return null|string
+     */
     public function getDomainExpirationDate() {
         $this->messageType = $this->getMessageType();
         return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:exDate');
     }
 
+    /**
+     * Get date and time this action happened
+     * @return null|string
+     */
     public function getDomainActionDate() {
         $this->messageType = $this->getMessageType();
         return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:acDate');
     }
 
+    /**
+     * Retrieve the client that performed the action
+     * @return null|string
+     */
     public function getDomainActionClientId() {
         $this->messageType = $this->getMessageType();
         return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:acID');

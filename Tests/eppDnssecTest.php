@@ -11,6 +11,9 @@ class eppDnssecTest extends eppTestCase {
         $domain->setAuthorisationCode('fubar');
         $domain->addHost(new \Metaregistrar\EPP\eppHost('ns1.metaregistrar.com'));
         $domain->addHost(new \Metaregistrar\EPP\eppHost('ns2.metaregistrar.com'));
+        $domain->addContact(new \Metaregistrar\EPP\eppContactHandle($contactid,\Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_ADMIN));
+        $domain->addContact(new \Metaregistrar\EPP\eppContactHandle($contactid,\Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_TECH));
+        $domain->addContact(new \Metaregistrar\EPP\eppContactHandle($contactid,\Metaregistrar\EPP\eppContactHandle::CONTACT_TYPE_BILLING));
         $secdns = new \Metaregistrar\EPP\eppSecdns();
         $secdns->setKey('256', '8', 'AwEAAbWM8nWQZbDZgJjyq+tLZwPLEXfZZjfvlRcmoAVZHgZJCPn/Ytu/iOsgci+yWgDT28ENzREAoAbKMflFFdhc5DNV27TZxhv8nMo9n2f+cyyRKbQ6oIAvMl7siT6WxrLxEBIMyoyFgDMbqGScn9k19Ppa8fwnpJgv0VUemfxGqHH9');
         $domain->addSecdns($secdns);
@@ -19,8 +22,8 @@ class eppDnssecTest extends eppTestCase {
         $this->assertInstanceOf('Metaregistrar\EPP\eppCreateDomainResponse',$response);
         /* @var $response Metaregistrar\EPP\eppCreateDomainResponse */
         $this->assertTrue($response->Success());
-        $this->assertEquals('Command completed successfully',$response->getResultMessage());
-        $this->assertEquals(1000,$response->getResultCode());
+        $this->assertEquals('Command completed successfully; action pending: contact validation',$response->getResultMessage());
+        $this->assertEquals(1001,$response->getResultCode());
     }
 
 

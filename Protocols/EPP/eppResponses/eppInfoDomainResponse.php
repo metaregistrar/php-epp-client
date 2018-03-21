@@ -37,6 +37,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
 
 
     /**
+     * Get the domain in the response as eppDomain object
      *
      * @return eppDomain
      */
@@ -51,6 +52,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
+     * Get the domain name in the response
      *
      * @return string domainname
      */
@@ -59,6 +61,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
+     * Receive an array of statuses
      *
      * @return string status
      */
@@ -73,6 +76,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
+     * Receive statuses as CSV string
      *
      * @return string statuses
      */
@@ -81,6 +85,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
+     * Get the unique domain identifier (roid) for the domainname
      *
      * @return string roid
      */
@@ -89,6 +94,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
+     * Get the contact handle of the registrant
      *
      * @return string registrant id
      */
@@ -97,7 +103,8 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
-     * 
+     * Get the contact information for a specific contact type (type may be: admin, tech, billing)
+     *
      * @param string $contacttype Type of contact
      * @return string
      */
@@ -106,6 +113,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
+     * Get the contacts associated with the domain name as eppContactHandle objects
      *
      * @return array eppContactHandles
      */
@@ -147,6 +155,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
+     * Get the create date of this domain name
      *
      * @return string create_date
      */
@@ -155,6 +164,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
+     * Get the update date of this domain name
      *
      * @return string update_date
      */
@@ -163,6 +173,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
+     * Get the expiration date of this domain name
      *
      * @return string expiration_date
      */
@@ -172,6 +183,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
+     * Get the sponsoring client id (registrar id) of this domain name
      *
      * @return string client id
      */
@@ -180,6 +192,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
+     * Get the creating client id (registrar id) of this domain name
      *
      * @return string client id
      */
@@ -188,6 +201,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
+     * Get the client id (registrar id) that last updated the domain name
      *
      * @return string client id
      */
@@ -198,6 +212,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
     /**
      * This function returns the associated nameservers from a domain object
      * Please do not confuse this with getDomainHosts(), which is used for subordinate host objects
+     *
      * @return array of strings
      */
     public function getDomainNameservers() {
@@ -227,6 +242,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
+     * Get nameservers associated with this domain name as CSV string
      *
      * @return string nameservers
      */
@@ -245,6 +261,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
 
 
     /**
+     * Get the authorization code (transfer token) of this domain name
      *
      * @return string authcode
      */
@@ -252,6 +269,12 @@ class eppInfoDomainResponse extends eppInfoResponse {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:authInfo/domain:pw');
     }
 
+    /**
+     * OBSOLETE, DO NOT USE THIS FUNCTION
+     * If you need DNSSEC KeyData or DSData, see the extension SecDNS-1.1
+     * ALL DNSSEC FUNCTION ARE IN THERE
+     * @return array|null
+     */
     public function getKeydata() {
         // Check if dnssec is enabled on this interface
         if ($this->findNamespace('secDNS')) {

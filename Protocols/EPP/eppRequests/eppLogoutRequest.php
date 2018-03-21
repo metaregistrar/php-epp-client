@@ -13,6 +13,7 @@ class eppLogoutRequest extends eppRequest {
         #
         $logout = $this->createElement('logout');
         $this->getCommand()->appendChild($logout);
+        $this->addSessionId();
     }
 
     function __destruct() {

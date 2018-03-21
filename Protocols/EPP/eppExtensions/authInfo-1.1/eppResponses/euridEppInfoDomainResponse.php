@@ -17,6 +17,7 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
         $cont = null;
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:contact');
         foreach ($result as $contact) {
+            /* @var $contact \DOMElement */
             $contacttype = $contact->getAttribute('type');
             if ($contacttype) {
                 $cont[] = new eppContactHandle($contact->nodeValue, $contacttype);
@@ -24,6 +25,7 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
         }
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/domain-ext:infData/domain-ext:contact');
         foreach ($result as $contact) {
+            /* @var $contact \DOMElement */
             $contacttype = $contact->getAttribute('type');
             if ($contacttype) {
                 // EURID specific
@@ -34,6 +36,20 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
             }
         }
         return $cont;
+    }
+
+    /**
+     * Get the date until the auth code is valie
+     * @return null|string
+     */
+    public function getAuthorisationCodeValidDate() {
+        $xpath = $this->xPath();
+        $result = $xpath->query('/epp:epp/epp:response/epp:extension/authInfo:infData/authInfo:validUntil');
+        if ($result->length > 0) {
+            return $result->item(0)->nodeValue;
+        } else {
+            return null;
+        }
     }
 
 

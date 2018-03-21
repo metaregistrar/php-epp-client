@@ -6,8 +6,8 @@ class eppCommandWithoutLoginTest extends eppTestCase {
     public function testCommandWithoutLogin()
     {
         $conn = new Metaregistrar\EPP\metaregEppConnection(false);
-        $conn->setHostname('ssl://epp.test2.metaregistrar.com');
-        $conn->setPort(7443);
+        $conn->setHostname('eppltest1.metaregistrar.com');
+        $conn->setPort(7000);
         if ($conn->connect()) {
             $domain = new Metaregistrar\EPP\eppDomain('fasfasfasfashfgaf.guru');
             $info = new Metaregistrar\EPP\eppInfoDomainRequest($domain);

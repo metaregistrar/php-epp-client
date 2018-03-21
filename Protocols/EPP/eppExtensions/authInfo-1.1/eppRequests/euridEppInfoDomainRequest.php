@@ -19,20 +19,20 @@ namespace Metaregistrar\EPP;
 
 */
 class euridEppInfoDomainRequest extends eppInfoDomainRequest {
-    function __construct($infodomain, $hosts = null) {
+    function __construct($infodomain, $hosts = null, $withAuthcode = false) {
         parent::__construct($infodomain, $hosts);
-        $this->addEURIDExtension();
+        if($withAuthcode == true) {
+            $this->addEURIDExtension();
+        }
         $this->addSessionId();
     }
 
 
     public function addEURIDExtension() {
-        $ext = $this->createElement('extension');
         $authext = $this->createElement('authInfo:info');
-        $authext->setAttribute('xmlns:authInfo', 'http://www.eurid.eu/xml/epp/authInfo-1.0');
+        $authext->setAttribute('xmlns:authInfo', 'http://www.eurid.eu/xml/epp/authInfo-1.1');
         $authext->appendChild($this->createElement('authInfo:request'));
-        $ext->appendChild($authext);
-        $this->getCommand()->appendChild($ext);
+        $this->getExtension()->appendChild($authext);
     }
 
 }

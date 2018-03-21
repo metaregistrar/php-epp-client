@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: thomasm
- * Date: 17.09.2015
- * Time: 14:15
- */
-
 namespace Metaregistrar\EPP;
 
 
@@ -31,12 +24,11 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
      * @param atEppContact $updateInfo
      * @return \domElement
      */
-    public function updateContact($contactid,atEppContact $addInfo,atEppContact $removeInfo,atEppContact $updateInfo) {
+    public function updateContact($contactid, $addInfo, $removeInfo, $updateInfo) {
         #
         # Object create structure
         #
-        $update = $this->createElement('update');
-        $this->contactobject = $this->createElement('contact:update');
+
         $this->contactobject->appendChild($this->createElement('contact:id', $contactid));
         if ($updateInfo instanceof eppContact) {
             $chgcmd = $this->createElement('contact:chg');
@@ -53,9 +45,9 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
             $this->addContactStatus($addcmd, $addInfo);
             $this->contactobject->appendChild($addcmd);
         }
-        $update->appendChild($this->contactobject);
-        $this->getCommand()->appendChild($update);
+
         $this->setAtExtensions();
+        $this->epp->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
     }
 
     /**
@@ -96,11 +88,17 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
                 }
             }
             $postalinfo->setAttribute('type', $postal->getType());
-            if (strlen($postal->getName())) {
-                $postalinfo->appendChild($this->createElement('contact:name', $postal->getName()));
+            $organisation = $postal->getOrganisationName();
+            $name = $postal->getName();
+            if(!empty($organisation) && empty($name)){
+                $name =  $organisation;
+                $organisation="";
             }
-            if (strlen($postal->getOrganisationName())) {
-                $postalinfo->appendChild($this->createElement('contact:org', $postal->getOrganisationName()));
+            if(!empty($name)) {
+                $postalinfo->appendChild($this->createElement('contact:name', $name));
+            }
+            if(!empty($organisation)) {
+                $postalinfo->appendChild($this->createElement('contact:org', $organisation));
             }
             if ((($postal->getStreetCount()) > 0) || strlen($postal->getCity()) || strlen($postal->getProvince()) || strlen($postal->getZipcode()) || strlen($postal->getCountrycode())) {
                 $postaladdr = $this->createElement('contact:addr');
@@ -125,12 +123,12 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
             }
             $element->appendChild($postalinfo);
         }
-        if (strlen($contact->getVoice())) {
+
             $element->appendChild($this->createElement('contact:voice', $contact->getVoice()));
-        }
-        if (strlen($contact->getFax())) {
+
+
             $element->appendChild($this->createElement('contact:fax', $contact->getFax()));
-        }
+
         if (strlen($contact->getEmail())) {
             $element->appendChild($this->createElement('contact:email', $contact->getEmail()));
         }

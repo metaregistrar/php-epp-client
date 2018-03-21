@@ -2,12 +2,15 @@
 include_once(dirname(__FILE__).'/eppTestCase.php');
 
 class eppInfoDomainTest extends eppTestCase {
+
+    private $extension = '.nl';
+
     /**
      * Test succesful domain info
      * @throws \Metaregistrar\EPP\eppException
      */
     public function testInfoDomainSuccess() {
-        $domainname = $this->createDomain();
+        $domainname = $this->createDomain(null,$this->extension);
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $info = new Metaregistrar\EPP\eppInfoDomainRequest($domain);
         $response = $this->conn->writeandread($info);
@@ -23,7 +26,7 @@ class eppInfoDomainTest extends eppTestCase {
      * @throws \Metaregistrar\EPP\eppException
      */
     public function testInfoDomainWithAuthcode() {
-        $domainname = $this->createDomain();
+        $domainname = $this->createDomain(null,$this->extension);
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $domain->setAuthorisationCode('foorbar');
         $info = new Metaregistrar\EPP\eppInfoDomainRequest($domain);
@@ -42,7 +45,7 @@ class eppInfoDomainTest extends eppTestCase {
      * @throws \Metaregistrar\EPP\eppException
      */
     public function testInfoDomainWithoutAuthcode() {
-        $domainname = $this->createDomain($this->randomstring(20).'.be');
+        $domainname = $this->createDomain($this->randomstring(20).$this->extension);
         $info = new Metaregistrar\EPP\metaregEppAuthcodeRequest(new Metaregistrar\EPP\eppDomain($domainname));
         $response = $this->conn->writeandread($info);
         $this->assertInstanceOf('Metaregistrar\EPP\eppInfoDomainResponse',$response);
@@ -52,6 +55,28 @@ class eppInfoDomainTest extends eppTestCase {
         $this->assertEquals(1000,$response->getResultCode());
     }
 
+
+    function testInfoDomainDnssec() {
+        $domainname = $this->createDomain(null,$this->extension);
+        $add = new \Metaregistrar\EPP\eppDomain($domainname);
+        $sec = new \Metaregistrar\EPP\eppSecdns();
+        $sec->setKey('256', '8', 'AwEAAbWM8nWQZbDZgJjyq+tLZwPLEXfZZjfvlRcmoAVZHgZJCPn/Ytu/iOsgci+yWgDT28ENzREAoAbKMflFFdhc5DNV27TZxhv8nMo9n2f+cyyRKbQ6oIAvMl7siT6WxrLxEBIMyoyFgDMbqGScn9k19Ppa8fwnpJgv0VUemfxGqHH9');
+        $add->addSecdns($sec);
+        $update = new \Metaregistrar\EPP\eppDnssecUpdateDomainRequest($domainname, $add);
+        $this->conn->request($update);
+        $domain = new Metaregistrar\EPP\eppDomain($domainname);
+        $info = new Metaregistrar\EPP\eppInfoDomainRequest($domain);
+        $response = $this->conn->writeandread($info);
+        $this->assertInstanceOf('Metaregistrar\EPP\eppInfoDomainResponse',$response);
+        /* @var $response Metaregistrar\EPP\eppDnssecInfoDomainResponse */
+        //$keys = $response->getKeys();
+        //var_dump($keys);
+        //$data = $response->getKeydata();
+        //var_dump($data);
+        $this->assertTrue($response->Success());
+        $this->assertEquals('Command completed successfully',$response->getResultMessage());
+        $this->assertEquals(1000,$response->getResultCode());
+    }
 
     /**
      * Test that cannot be performed using the EPP client, because the client will not allow this

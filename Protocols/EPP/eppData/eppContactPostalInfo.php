@@ -17,6 +17,9 @@ class eppContactPostalInfo {
     private $countrycode;
     private $type;
 
+    const POSTAL_TYPE_LOC = 'loc';
+    const POSTAL_TYPE_INT = 'int';
+
 
     /**
      *

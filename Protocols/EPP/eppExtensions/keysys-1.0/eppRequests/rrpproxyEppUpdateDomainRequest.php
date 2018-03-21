@@ -10,6 +10,15 @@ namespace Metaregistrar\EPP;
      </keysys:update>
    </extension>
  */
+/*
+     <extension>
+      <keysys:update xmlns:keysys="http://www.key-systems.net/epp/keysys-1.0">
+        <keysys:domain>
+          <keysys:whois-privacy>1</keysys:whois-privacy>
+        </keysys:domain>
+      </keysys:update>
+    </extension>
+*/
 
 
 class rrpproxyEppUpdateDomainRequest extends eppUpdateDomainRequest {

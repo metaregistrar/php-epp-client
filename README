@@ -28,16 +28,22 @@ Currently supported registries:
 - dotAmsterdam
 - Donuts
 - EurID (.eu)
+- DNS Belgium (.be .vlaanderen .brussels)
+- .CO.NL
 - dotFRL
+- IIS (.nu and .se)
 - CarDNS (.hr)
 - IIS (.se and .nu)
 - Metaregistrar
 - Nic.AT (.at)
 - Key Systems RRPPROXY
+- .PT
+- Switch (.ch)
 - Openprovider
 - Ficora (.fi)
 - DNS.PT (.pt)
 - Norid (.no)
+- Arnes (.si)
 
 
 All code changes are tested automatically with the phpunit tests in the Tests directory
