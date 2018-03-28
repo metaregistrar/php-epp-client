@@ -21,35 +21,61 @@ namespace Metaregistrar\EPP;
 </extension>
 */
 class dnsbeEppTransferRequest extends eppTransferRequest {
+
+    private $transfer = null;
+    private $domain = null;
+    
     function __construct($operation, $object, $tech = null, $billing = null, $onsite = null, $registrant = null) {
         parent::__construct($operation, $object);
+        $this->addExtension('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
+        $ext = $this->createElement('extension');
+        $dnsbeext = $this->createElement('dnsbe:ext');
+        $this->transfer = $this->createElement('dnsbe:transfer');
+        $this->domain = $this->createElement('dnsbe:domain');
         $this->addDnsbeExtension($tech, $billing, $onsite, $registrant);
+        $this->addDnsbeNameservers($object);
+        $this->transfer->appendChild($this->domain);
+        $dnsbeext->appendChild($this->transfer);
+        $ext->appendChild($dnsbeext);
+        $this->getCommand()->appendChild($ext);
         $this->addSessionId();
+    }
+    
+    public function addDnsbeNameservers(eppDomain $domain) {
+        if ($this->domain) {
+            // Set Nameservers at Transfer if needed
+            $nsobjects = $domain->getHosts();
+            if ($domain->getHostLength() > 0) {
+                $nameservers = $this->createElement('domain-ext:ns');
+                foreach ($nsobjects as $nsobject) {
+                    /* @var $nsobject \Metaregistrar\EPP\eppHost */
+                    $attr = $this->createElement('domain:hostAttr');
+                    $c = $this->createElement('domain:hostName', $nsobject->getHostname());
+                    $attr->appendChild($c);
+
+                    $nameservers->appendChild($attr);
+                }
+                $this->domain->appendChild($nameservers);
+            }
+        }
+
     }
 
     public function addDnsbeExtension($tech = null, $billing = null, $onsite=null, $registrant=null) {
-        $this->addExtension('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
-        $ext = $this->createElement('extension');
-        $sidnext = $this->createElement('dnsbe:ext');
-        $create = $this->createElement('dnsbe:transfer');
-        $contact = $this->createElement('dnsbe:domain');
         if ($registrant) {
-            $contact->appendChild($this->createElement('dnsbe:registrant', $registrant));
+            $this->domain->appendChild($this->createElement('dnsbe:registrant', $registrant));
         } else {
-            $contact->appendChild($this->createElement('dnsbe:registrant', '#AUTO#'));
+            $this->domain->appendChild($this->createElement('dnsbe:registrant', '#AUTO#'));
         }
         if ($billing) {
-            $contact->appendChild($this->createElement('dnsbe:billing', $billing));
+            $this->domain->appendChild($this->createElement('dnsbe:billing', $billing));
         }
         if ($tech) {
-            $contact->appendChild($this->createElement('dnsbe:tech', $tech));
+            $this->domain->appendChild($this->createElement('dnsbe:tech', $tech));
         }
         if ($onsite) {
-            $contact->appendChild($this->createElement('dnsbe:onsite', $onsite));
+            $this->domain->appendChild($this->createElement('dnsbe:onsite', $onsite));
         }
-        $create->appendChild($contact);
-        $sidnext->appendChild($create);
-        $ext->appendChild($sidnext);
-        $this->getCommand()->appendChild($ext);
+;
     }
 }
