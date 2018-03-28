@@ -46,7 +46,7 @@ class dnsbeEppTransferRequest extends eppTransferRequest {
             // Set Nameservers at Transfer if needed
             $nsobjects = $domain->getHosts();
             if ($domain->getHostLength() > 0) {
-                $nameservers = $this->createElement('domain-ext:ns');
+                $nameservers = $this->createElement('dnsbe:ns');
                 foreach ($nsobjects as $nsobject) {
                     /* @var $nsobject \Metaregistrar\EPP\eppHost */
                     $attr = $this->createElement('domain:hostAttr');
