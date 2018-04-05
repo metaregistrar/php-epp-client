@@ -33,7 +33,6 @@ Currently supported registries:
 - dotFRL
 - IIS (.nu and .se)
 - CarDNS (.hr)
-- IIS (.se and .nu)
 - Metaregistrar
 - Nic.AT (.at)
 - Key Systems RRPPROXY
