@@ -1,0 +1,21 @@
+<schema targetNamespace="http://www.metaregistrar.com/epp/command-ext-host-1.0"
+        xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <!-- Import common element types. -->
+    <import namespace="urn:ietf:params:xml:ns:epp-1.0" schemaLocation="../base/epp-1.0.xsd"/>
+    <import namespace="urn:ietf:params:xml:ns:eppcom-1.0" schemaLocation="../base/eppcom-1.0.xsd"/>
+
+    <annotation>
+        <documentation>
+            Metaregistrar EPP Command host extensions
+        </documentation>
+    </annotation>
+
+    <element name="host">
+        <complexType>
+            <sequence>
+
+            </sequence>
+        </complexType>
+    </element>
+</schema>

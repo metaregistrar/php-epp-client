@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schema targetNamespace="http://www.metaregistrar.com/epp/polldata-1.0"
+        xmlns:polldata="http://www.metaregistrar.com/epp/polldata-1.0"
+        xmlns:common="http://www.metaregistrar.com/epp/common-1.0"
+        xmlns:epp="urn:ietf:params:xml:ns:epp-1.0"
+        xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
+        xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <!-- Import common element types. -->
+    <import namespace="urn:ietf:params:xml:ns:epp-1.0" schemaLocation="../base/epp-1.0.xsd"/>
+    <import namespace="urn:ietf:params:xml:ns:eppcom-1.0" schemaLocation="../base/eppcom-1.0.xsd"/>
+    <import namespace="http://www.metaregistrar.com/epp/common-1.0" schemaLocation="common-1.0.xsd"/>
+
+    <annotation>
+        <documentation>
+            Metaregistrar EPP Poll response data
+        </documentation>
+    </annotation>
+
+    <!-- Every Poll XML instance must begin with this element. -->
+
+
+    <element name="polldata">
+        <!-- An EPP XML instance must contain a greeting, hello, command, response,
+            or extension. -->
+        <complexType>
+            <choice>
+                <sequence>
+                    <element name="command" type="epp:commandType"/>
+                    <element name="result" type="epp:resultType" maxOccurs="unbounded"/>
+                    <element name="resData" type="epp:extAnyType" minOccurs="0"/>
+                    <element name="trID" type="epp:trIDType" minOccurs="0" maxOccurs="unbounded"/>
+                    <element name="extension" type="epp:extAnyType" minOccurs="0" maxOccurs="unbounded"/>
+                </sequence>
+                <sequence>
+                    <element name="result" type="epp:resultType"/>
+                    <element name="resData" type="epp:extAnyType" minOccurs="0"/>
+                    <element name="extension" type="epp:extAnyType" minOccurs="0" maxOccurs="unbounded"/>
+                </sequence>
+                <sequence>
+                    <element name="creditCheck" type="polldata:creditCheckType"/>
+                </sequence>
+            </choice>
+        </complexType>
+    </element>
+    <!--<complexType name="commandType">
+        <sequence>
+            <choice>
+                <element name="check" type="epp:readWriteType" />
+                <element name="create" type="epp:readWriteType" />
+                <element name="delete" type="epp:readWriteType" />
+                <element name="info" type="epp:readWriteType" />
+                <element name="renew" type="epp:readWriteType" />
+                <element name="transfer" type="epp:transferType" />
+                <element name="update" type="epp:readWriteType" />
+            </choice>
+        </sequence>
+    </complexType>-->
+
+    <complexType name="creditCheckType">
+        <sequence>
+            <element name="message" type="epp:msgType"/>
+            <element name="currentBalance" type="common:currencyType"/>
+            <element name="limit" type="common:currencyType"/>
+        </sequence>
+    </complexType>
+
+
+    <element name="delData" type="polldata:delDataType"/>
+    <complexType name="delDataType">
+        <sequence>
+            <element name="name" type="eppcom:labelType"/>
+        </sequence>
+    </complexType>
+    <!-- End of schema. -->
+</schema>

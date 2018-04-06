@@ -1,0 +1,46 @@
+<schema targetNamespace="http://www.metaregistrar.com/epp/command-ext-contact-1.0"
+        xmlns:command-ext-contact="http://www.metaregistrar.com/epp/command-ext-contact-1.0"
+        xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <!-- Import common element types. -->
+    <import namespace="urn:ietf:params:xml:ns:epp-1.0" schemaLocation="../base/epp-1.0.xsd"/>
+    <import namespace="urn:ietf:params:xml:ns:eppcom-1.0" schemaLocation="../base/eppcom-1.0.xsd"/>
+
+    <annotation>
+        <documentation>
+            Metaregistrar EPP Command contact extensions
+        </documentation>
+    </annotation>
+
+    <element name="contact" type="command-ext-contact:commandContactExtType">
+
+    </element>
+    <complexType name="commandContactExtType">
+        <sequence>
+            <element name="update" type="command-ext-contact:update" minOccurs="0" maxOccurs="1"/>
+        </sequence>
+    </complexType>
+    <element name="extContactInfData" type="command-ext-contact:extInfData"/>
+
+    <complexType name="extInfData">
+        <sequence>
+            <element name="property" type="command-ext-contact:propertyType" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="propertyType">
+        <sequence>
+            <element name="registry" type="string" minOccurs="1" maxOccurs="1"/>
+            <element name="name" type="string" minOccurs="1" maxOccurs="1"/>
+            <element name="value" type="string" minOccurs="1" maxOccurs="1"/>
+        </sequence>
+    </complexType>
+    <complexType name="update">
+        <sequence>
+            <element name="property" type="command-ext-contact:propertyType" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+</schema>
+        Git repository management for enterprise teams powered by Atlassian Stash
+        Atlassian Stash v3.3.0DocumentationContact SupportRequest a featureAboutContact Atlassian
+        Atlassian

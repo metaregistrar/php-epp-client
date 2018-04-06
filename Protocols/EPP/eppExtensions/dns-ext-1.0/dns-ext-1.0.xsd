@@ -1,0 +1,172 @@
+<schema targetNamespace="http://www.metaregistrar.com/epp/dns-ext-1.0"
+        xmlns:dns-ext="http://www.metaregistrar.com/epp/dns-ext-1.0"
+        xmlns:epp="urn:ietf:params:xml:ns:epp-1.0"
+        xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
+        xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"
+        xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <!-- Import common element types. -->
+    <import namespace="urn:ietf:params:xml:ns:epp-1.0" schemaLocation="../base/epp-1.0.xsd"/>
+    <import namespace="urn:ietf:params:xml:ns:eppcom-1.0" schemaLocation="../base/eppcom-1.0.xsd"/>
+    <import namespace="urn:ietf:params:xml:ns:domain-1.0" schemaLocation="../metaregistrar/ext-1.0.xsd"/>
+
+    <annotation>
+        <documentation>
+            Metaregistrar EPP: DNS extension
+        </documentation>
+    </annotation>
+    <element name="creData" type="dns-ext:infDataType"/>
+    <element name="infData" type="dns-ext:infDataType"/>
+
+    <element name="create" type="dns-ext:sCreateType"/>
+    <element name="sign" type="dns-ext:sSignType"/>
+    <element name="delete" type="dns-ext:sNameType"/>
+    <element name="info" type="dns-ext:sNameType"/>
+    <element name="update" type="dns-ext:updateType"/>
+    <!--<element name="sign" type="dns-ext:signType"/>-->
+    <complexType name="sNameType">
+        <sequence>
+            <element name="name" type="eppcom:labelType" minOccurs="1" maxOccurs="1"/>
+        </sequence>
+    </complexType>
+    <complexType name="sCreateType">
+        <sequence>
+            <element name="name" type="eppcom:labelType" minOccurs="1" maxOccurs="1"/>
+            <element name="content" type="dns-ext:contentType" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="sSignType">
+        <sequence>
+            <element name="name" type="eppcom:labelType" minOccurs="1" maxOccurs="1"/>
+            <element name="privateKey" type="eppcom:labelType" minOccurs="1" maxOccurs="1"/>
+            <element name="publicKey" type="eppcom:labelType" minOccurs="1" maxOccurs="1"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="keyDataType">
+        <sequence>
+            <element name="flags" type="unsignedShort"/>
+            <element name="protocol" type="unsignedByte"/>
+            <element name="alg" type="unsignedByte"/>
+            <element name="pubKey" type="dns-ext:keyType"/>
+        </sequence>
+    </complexType>
+    <complexType name="dsDataType">
+        <sequence>
+            <element name="keyTag" type="unsignedShort"/>
+            <element name="alg" type="unsignedByte"/>
+            <element name="digestType" type="unsignedByte"/>
+            <element name="digest" type="hexBinary"/>
+            <element name="keyData" type="dns-ext:keyDataType" minOccurs="0"/>
+        </sequence>
+    </complexType>
+
+
+    <simpleType name="keyType">
+        <restriction base="base64Binary">
+            <minLength value="1"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="updateType">
+        <sequence>
+            <element name="name" type="eppcom:labelType"/>
+            <element name="chg" type="dns-ext:chgType" minOccurs="0"/>
+            <element name="add" type="dns-ext:addRemType" minOccurs="0"/>
+            <element name="rem" type="dns-ext:addRemType" minOccurs="0"/>
+        </sequence>
+    </complexType>
+
+    <!-- Data elements that can be added or removed. -->
+    <complexType name="addRemType">
+        <sequence>
+            <element name="content" type="dns-ext:contentType" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="contentType">
+        <sequence>
+            <element name="name" type="string" minOccurs="1" maxOccurs="1"/>
+            <element name="type" type="dns-ext:typeType" minOccurs="1" maxOccurs="1"/>
+            <element name="ttl" type="string" minOccurs="1" maxOccurs="1"/>
+            <element name="content" type="string" minOccurs="1" maxOccurs="1"/>
+            <element name="priority" type="integer" minOccurs="0" maxOccurs="1"/>
+            <element name="disabled" type="dns-ext:disabledType" minOccurs="0" maxOccurs="1"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="infDataType">
+        <sequence>
+            <element name="name" type="eppcom:labelType"/>
+            <element name="content" type="dns-ext:contentType" minOccurs="0" maxOccurs="unbounded"/>
+            <element name="keyData" type="dns-ext:keyDataType" minOccurs="0" maxOccurs="unbounded"/>
+            <element name="dsData" type="dns-ext:keyDataType" minOccurs="0" maxOccurs="unbounded"/>
+
+        </sequence>
+    </complexType>
+    <simpleType name="typeType">
+        <restriction base="token">
+            <enumeration value="A"/>
+            <enumeration value="AAAA"/>
+            <enumeration value="CNAME"/>
+            <enumeration value="MX"/>
+            <enumeration value="NS"/>
+            <enumeration value="SOA"/>
+            <enumeration value="SPF"/>
+            <enumeration value="TXT"/>
+            <enumeration value="SRV"/>
+            <enumeration value="DNAME"/>
+            <enumeration value="CAA"/>
+            <!--
+            <enumeration value="AFSDB"/>
+            <enumeration value="ALIAS"/>
+            <enumeration value="CAA"/>
+            <enumeration value="CERT"/>
+            <enumeration value="CDNSKEY"/>
+            <enumeration value="CDS"/>
+            <enumeration value="URI"/>
+            <enumeration value="SSHFP"/>
+            <enumeration value="TKEY"/>
+            <enumeration value="TSIG"/>
+            <enumeration value="NSEC"/>
+            <enumeration value="NSEC"/>
+            <enumeration value="NSEC3"/>
+            <enumeration value="NSEC3PARAM"/>
+            <enumeration value="OPENPGPKEY"/>
+            <enumeration value="PTR"/>
+            <enumeration value="RP"/>
+            <enumeration value="RRSIG"/>
+            <enumeration value="NAPTR"/>
+            <enumeration value="DNSKEY"/>
+
+            <enumeration value="DS"/>
+            <enumeration value="HINFO"/>
+            <enumeration value="KEY"/>
+            <enumeration value="LOC"/>
+            <enumeration value="TLSA"/>
+            -->
+
+        </restriction>
+    </simpleType>
+    <simpleType name="disabledType">
+        <restriction base="token">
+            <enumeration value="true"/>
+            <enumeration value="false"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="enabledType">
+        <restriction base="token">
+            <enumeration value="true"/>
+            <enumeration value="false"/>
+        </restriction>
+    </simpleType>
+
+    <!-- Data elements that can be changed. -->
+    <complexType name="chgType">
+        <sequence>
+            <element name="signed" type="dns-ext:enabledType" minOccurs="0" maxOccurs="1"/>
+        </sequence>
+    </complexType>
+
+
+</schema>

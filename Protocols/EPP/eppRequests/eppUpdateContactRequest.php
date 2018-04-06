@@ -15,11 +15,7 @@ class eppUpdateContactRequest extends eppContactRequest {
                 throw new eppException("Object name must be valid string on eppUpdateContactRequest");
             }
         }
-        if (($addinfo instanceof eppContact) || ($removeinfo instanceof eppContact) || ($updateinfo instanceof eppContact)) {
-            $this->updateContact($contacthandle, $addinfo, $removeinfo, $updateinfo);
-        } else {
-            throw new eppException('addinfo, removeinfo and updateinfo needs to be eppContact object on eppUpdateContactRequest');
-        }
+        $this->updateContact($contacthandle, $addinfo, $removeinfo, $updateinfo);
         $this->addSessionId();
     }
 

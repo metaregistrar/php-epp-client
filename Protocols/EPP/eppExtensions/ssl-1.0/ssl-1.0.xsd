@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schema targetNamespace="http://www.metaregistrar.com/epp/ssl-1.0"
+        xmlns:ssl="http://www.metaregistrar.com/epp/ssl-1.0"
+        xmlns:epp="urn:ietf:params:xml:ns:epp-1.0" xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
+        xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <!-- Import common element types. -->
+    <import namespace="urn:ietf:params:xml:ns:eppcom-1.0" schemaLocation="../base/eppcom-1.0.xsd"/>
+    <import namespace="urn:ietf:params:xml:ns:epp-1.0" schemaLocation="../base/epp-1.0.xsd"/>
+
+    <annotation>
+        <documentation>
+            Extensible Provisioning Protocol v1.0
+            ssl
+            provisioning schema.
+        </documentation>
+    </annotation>
+
+    <!-- Child elements found in EPP commands. -->
+    <element name="create" type="ssl:createType"/>
+    <!--<element name="delete" type="ssl:deleteType"/>-->
+    <element name="info" type="ssl:infoType"/>
+    <!--<element name="renew" type="ssl:renewType"/>-->
+    <!--<element name="update" type="ssl:updateType"/>-->
+    <!-- Child elements of the <create> command. -->
+    <element name="creData" type="ssl:infDataType"/>
+    <complexType name="infDataType">
+        <sequence>
+            <element name="certificateId" type="eppcom:labelType"/>
+            <element name="provisionId" type="eppcom:labelType"/>
+            <element name="commonName" type="eppcom:labelType"/>
+            <element name="status" type="ssl:statusType"/>
+            <element name="created" type="dateTime" minOccurs="0"/>
+            <element name="modified" type="dateTime" minOccurs="0"/>
+            <element name="downloadLink" type="string" minOccurs="0"/>
+            <element name="validation" type="ssl:validationType" minOccurs="0"/>
+            <element name="update" type="ssl:updateType" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="updateType">
+        <sequence>
+            <element name="step" type="eppcom:labelType"/>
+            <element name="message" type="string" minOccurs="0"/>
+            <element name="subUpdate" type="ssl:subUpdateType" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="subUpdateType">
+        <sequence>
+            <element name="messageCode" type="eppcom:labelType"/>
+            <element name="message" type="string" minOccurs="0"/>
+            <element name="type" type="eppcom:labelType" minOccurs="0"/>
+            <element name="name" type="eppcom:labelType" minOccurs="0"/>
+            <element name="dcvType" type="eppcom:labelType" minOccurs="0"/>
+            <element name="dnsRecord" type="string" minOccurs="0"/>
+            <element name="dnsCnameValue" type="string" minOccurs="0"/>
+            <element name="fileLocation" type="string" minOccurs="0"/>
+            <element name="fileContents" type="string" minOccurs="0"/>
+            <element name="dcvEmail" type="string" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="validationType">
+        <sequence>
+            <element name="type" type="eppcom:labelType"/>
+            <element name="status" type="ssl:validationStatusType"/>
+            <element name="statusMessage" type="eppcom:labelType"/>
+            <element name="host" type="ssl:hostValidationType" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="hostValidationType">
+        <sequence>
+            <element name="name" type="eppcom:labelType"/>
+            <element name="dcvType" type="ssl:dvValidationType"/>
+            <element name="status" type="ssl:validationStatusType"/>
+            <element name="statusMessage" type="eppcom:labelType"/>
+            <element name="dcvEmail" type="eppcom:minTokenType" minOccurs="0"/>
+            <element name="dnsRecord" type="eppcom:labelType" minOccurs="0"/>
+            <element name="dnsCnameValue" type="eppcom:labelType" minOccurs="0"/>
+            <element name="fileLocation" type="eppcom:labelType" minOccurs="0"/>
+            <element name="fileContents" type="eppcom:labelType" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="infoType">
+        <sequence>
+            <element name="certificateId" type="eppcom:labelType"/>
+        </sequence>
+    </complexType>
+    <complexType name="renewType">
+        <sequence>
+            <element name="certificateId" type="string"/>
+            <element name="type" type="ssl:renewTypeOption"/>
+            <element name="csr" type="string"/>
+            <element name="product" type="string"/>
+            <element name="years" type="integer" minOccurs="0"/>
+            <element name="hosts" type="ssl:hostsType"/>
+            <element name="approver" type="ssl:approverType"/>
+            <element name="language" type="ssl:language"/>
+        </sequence>
+    </complexType>
+    <complexType name="createType">
+        <sequence>
+            <element name="csr" type="string"/>
+            <element name="product" type="string"/>
+            <element name="years" type="integer"/>
+            <element name="hosts" type="ssl:hostsType"/>
+            <element name="approver" type="ssl:approverType"/>
+            <element name="language" type="ssl:language"/>
+        </sequence>
+    </complexType>
+    <complexType name="approverType">
+        <sequence>
+            <element name="email" type="eppcom:minTokenType"/>
+            <element name="saEmail" type="eppcom:minTokenType" minOccurs="0"/>
+            <element name="phone" type="ssl:e164Type"/>
+            <element name="firstName" type="eppcom:minTokenType"/>
+            <element name="lastName" type="eppcom:minTokenType"/>
+            <element name="company" type="string" minOccurs="0"/>
+            <element name="department" type="string" minOccurs="0"/>
+            <element name="companyRegistration" type="string" minOccurs="0"/>
+            <element name="street" type="string" maxOccurs="3"/>
+            <element name="postalCode" type="ssl:pcType"/>
+            <element name="city" type="ssl:postalLineType"/>
+
+        </sequence>
+    </complexType>
+
+    <complexType name="hostsType">
+        <sequence>
+            <element name="host" type="ssl:hostType" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="hostType">
+        <sequence>
+            <element name="name" type="string"/>
+            <element name="validation" type="ssl:dvValidationType"/>
+            <element name="email" type="eppcom:minTokenType" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <simpleType name="renewTypeOption">
+        <restriction base="token">
+            <enumeration value="renew"/>
+            <enumeration value="reissue"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="language">
+        <restriction base="token">
+            <enumeration value="en"/>
+            <enumeration value="nl"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="validationStatusType">
+        <restriction base="token">
+            <enumeration value="pending"/>
+            <enumeration value="rejected"/>
+            <enumeration value="approved"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="statusType">
+        <restriction base="token">
+            <enumeration value="new"/>
+            <enumeration value="active"/>
+            <enumeration value="expired"/>
+            <enumeration value="provisioning"/>
+            <enumeration value="requested"/>
+            <enumeration value="revoked"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="dvValidationType">
+        <restriction base="token">
+            <enumeration value="DNS"/>
+            <enumeration value="FILE"/>
+            <enumeration value="EMAIL"/>
+        </restriction>
+    </simpleType>
+    <complexType name="e164Type">
+        <simpleContent>
+            <extension base="ssl:e164StringType">
+                <attribute name="x" type="token"/>
+            </extension>
+        </simpleContent>
+    </complexType>
+    <simpleType name="e164StringType">
+        <restriction base="token">
+            <pattern value="(\+[0-9]{1,3}\.[0-9]{1,14})?"/>
+            <maxLength value="17"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="ccType">
+        <restriction base="token">
+            <length value="2"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="pcType">
+        <restriction base="token">
+            <maxLength value="16"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="postalLineType">
+        <restriction base="normalizedString">
+            <minLength value="1"/>
+            <maxLength value="255"/>
+        </restriction>
+    </simpleType>
+    <!--<complexType name="renewType">-->
+    <!--<sequence>-->
+    <!--<element name="cid" type="integer"/>-->
+    <!--<element name="csr" type="string"/>-->
+    <!--</sequence>-->
+    <!--</complexType>-->
+</schema>

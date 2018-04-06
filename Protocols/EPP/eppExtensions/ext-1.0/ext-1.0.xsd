@@ -1,0 +1,77 @@
+<schema targetNamespace="http://www.metaregistrar.com/epp/ext-1.0"
+        xmlns:ext="http://www.metaregistrar.com/epp/ext-1.0"
+        xmlns:epp="urn:ietf:params:xml:ns:epp-1.0"
+        xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
+        xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"
+
+        xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <!-- Import common element types. -->
+    <import namespace="urn:ietf:params:xml:ns:epp-1.0" schemaLocation="../base/epp-1.0.xsd"/>
+    <import namespace="urn:ietf:params:xml:ns:eppcom-1.0" schemaLocation="../base/eppcom-1.0.xsd"/>
+    <import namespace="urn:ietf:params:xml:ns:domain-1.0" schemaLocation="../base/domain-1.0.xsd"/>
+
+    <annotation>
+        <documentation>
+            Metaregistrar EPP extensions
+        </documentation>
+    </annotation>
+
+    <element name="command" type="ext:commandType"/>
+    <element name="sudo" type="ext:sudoType" />
+
+    <element name="meshCommand" type="ext:meshCommandType"/>
+    <element name="meshResponse" type="ext:meshResponseType"/>
+    <complexType name="commandType">
+        <sequence>
+            <choice>
+                <element name="undelete" type="domain:sNameType"/>
+                <element name="resendConfirmation" type="ext:resendConfimationType"/>
+            </choice>
+            <element name="clTRID" type="epp:trIDStringType" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="sudoType">
+        <sequence>
+            <element name="clID" type="eppcom:clIDType" />
+            <choice>
+                <element name="command" type="epp:commandType" />
+                <element name="extCommand" type="ext:commandType" />
+            </choice>
+        </sequence>
+    </complexType>
+    <complexType name="resendConfimationType">
+        <choice>
+            <element name="contact" type="eppcom:clIDType" />
+            <element name="domain" type="domain:sNameType" />
+        </choice>
+    </complexType>
+
+    <complexType name="meshCommandType">
+        <sequence>
+            <element name="clTRID" type="string"/>
+            <element name="command" type="string"/>
+            <element name="message" type="string"/>
+        </sequence>
+    </complexType>
+    <complexType name="meshResponseType">
+        <sequence>
+            <element name="clTRID" type="string"/>
+            <element name="svTRID" type="string"/>
+            <element name="type" type="string"/>
+            <element name="message" type="string"/>
+        </sequence>
+    </complexType>
+    <complexType name="dnsRequest">
+        <attribute name="op" type="ext:dnsOpType" use="required"/>
+
+    </complexType>
+
+    <simpleType name="dnsOpType">
+        <restriction base="token">
+            <enumeration value="create"/>
+            <enumeration value="get"/>
+        </restriction>
+    </simpleType>
+
+</schema>

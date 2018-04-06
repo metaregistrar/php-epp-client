@@ -1,0 +1,120 @@
+<schema targetNamespace="http://www.metaregistrar.com/epp/command-ext-domain-1.0"
+        xmlns:command-ext-domain="http://www.metaregistrar.com/epp/command-ext-domain-1.0"
+        xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <!-- Import common element types. -->
+    <import namespace="urn:ietf:params:xml:ns:epp-1.0" schemaLocation="../base/epp-1.0.xsd"/>
+    <import namespace="urn:ietf:params:xml:ns:eppcom-1.0" schemaLocation="../base/eppcom-1.0.xsd"/>
+
+    <annotation>
+        <documentation>
+            Metaregistrar EPP Command domain extensions
+        </documentation>
+    </annotation>
+    <element name="domain" type="command-ext-domain:commandDomainExtType">
+
+    </element>
+    <element name="extInfData" type="command-ext-domain:extInfData">
+
+    </element>
+    <complexType name="extInfData">
+        <sequence>
+            <element name="autoRenew" type="command-ext-domain:autoRenewOptions" minOccurs="1" maxOccurs="1"/>
+            <element name="autoRenewPeriod" type="integer" minOccurs="1" maxOccurs="1"/>
+            <element name="privacy" type="command-ext-domain:privacyOptions" minOccurs="1" maxOccurs="1"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="commandDomainExtType">
+        <sequence>
+            <element name="info" type="command-ext-domain:info" minOccurs="0" maxOccurs="1"/>
+            <element name="create" type="command-ext-domain:create" minOccurs="0" maxOccurs="1"/>
+            <element name="update" type="command-ext-domain:update" minOccurs="0" maxOccurs="1"/>
+            <element name="transfer" type="command-ext-domain:transfer" minOccurs="0" maxOccurs="1"/>
+            <element name="transferOp" type="command-ext-domain:transferOpType" minOccurs="0" maxOccurs="1"/>
+        </sequence>
+
+    </complexType>
+
+    <complexType name="transfer">
+        <sequence>
+            <element name="ns" type="command-ext-domain:nsType" minOccurs="0"/>
+            <element name="registrant" type="command-ext-domain:clIDType" minOccurs="0"/>
+            <element name="contact" type="command-ext-domain:contactType" minOccurs="0"
+                     maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <simpleType name="transferOpType">
+        <restriction base="token">
+            <enumeration value="resendFOA"/>
+        </restriction>
+    </simpleType>
+    <complexType name="nsType">
+        <sequence>
+            <element name="hostObj" type="command-ext-domain:labelType" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <simpleType name="labelType">
+        <restriction base="token">
+            <minLength value="1"/>
+            <maxLength value="255"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="clIDType">
+        <restriction base="token">
+            <minLength value="3"/>
+            <maxLength value="64"/>
+        </restriction>
+    </simpleType>
+    <complexType name="contactType">
+        <simpleContent>
+            <extension base="command-ext-domain:clIDType">
+                <attribute name="type" type="command-ext-domain:contactAttrType"/>
+            </extension>
+        </simpleContent>
+    </complexType>
+    <simpleType name="contactAttrType">
+        <restriction base="token">
+            <enumeration value="admin"/>
+            <enumeration value="billing"/>
+            <enumeration value="tech"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="infoDomainOptions">
+        <restriction base="token">
+            <enumeration value="dnsbe-request-authcode"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="autoRenewOptions">
+        <restriction base="token">
+            <enumeration value="true"/>
+            <enumeration value="false"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="privacyOptions">
+        <restriction base="token">
+            <enumeration value="true"/>
+            <enumeration value="false"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="info">
+        <sequence>
+            <element name="option" type="command-ext-domain:infoDomainOptions" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="create">
+        <sequence>
+            <element name="autoRenew" type="command-ext-domain:autoRenewOptions" minOccurs="0" maxOccurs="1"/>
+            <element name="privacy" type="command-ext-domain:privacyOptions" minOccurs="0" maxOccurs="1"/>
+        </sequence>
+    </complexType>
+    <complexType name="update">
+        <sequence>
+            <element name="autoRenew" type="command-ext-domain:autoRenewOptions" minOccurs="0" maxOccurs="1"/>
+            <element name="autoRenewPeriod" type="integer" minOccurs="0" maxOccurs="1"/>
+            <element name="privacy" type="command-ext-domain:privacyOptions" minOccurs="0" maxOccurs="1"/>
+        </sequence>
+    </complexType>
+</schema>
