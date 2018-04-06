@@ -2,4 +2,5 @@ vendor/*
 !vendor/composer/
 .idea
 .ini
+.pem
 Tests/testsetup*
