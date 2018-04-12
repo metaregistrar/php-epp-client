@@ -1,6 +1,7 @@
 <?php
 $this->addExtension('ssl','http://www.metaregistrar.com/epp/ssl-1.0');
 
+include_once(dirname(__FILE__) . '/eppData/metaregSslValidation.php');
 
 include_once(dirname(__FILE__) . '/eppRequests/metaregSslCreateRequest.php');
 include_once(dirname(__FILE__) . '/eppResponses/metaregSslCreateResponse.php');

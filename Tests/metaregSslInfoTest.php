@@ -7,11 +7,10 @@ class metaregSslInfoTest extends eppTestCase {
      */
 
     public function testInfoSslCert() {
-        $info = new \Metaregistrar\EPP\metaregSslInfoRequest(2);
+        $info = new \Metaregistrar\EPP\metaregSslInfoRequest(11);
         //echo $info->saveXML();
         if ($response = $this->conn->request($info)) {
             /* @var $response \Metaregistrar\EPP\metaregSslInfoResponse */
-            //echo $response->saveXML();
             $this->assertEquals('1000',$response->getResultCode());
             $this->assertGreaterThan(0,$response->getCertificateId());
             $this->assertStringMatchesFormat('%d_%s',$response->getProvisioningId());

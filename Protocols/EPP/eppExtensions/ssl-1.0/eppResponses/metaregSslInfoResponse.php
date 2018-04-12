@@ -75,4 +75,47 @@ class metaregSslInfoResponse extends eppResponse {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/ssl:infData/ssl:modified');
     }
 
+    /**
+     * @return null|string
+     */
+    function getDownloadLink() {
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/ssl:infData/ssl:downloadLink');
+    }
+
+
+    /**
+     * @return array|null
+     */
+    function getValidations() {
+        $xpath = $this->xPath();
+        $validations = $xpath->query('/epp:epp/epp:response/epp:resData/ssl:infData/ssl:validation');
+        if ($validations->length == 0) {
+            $result = null;
+        } else {
+            $result = [];
+            foreach ($validations as $validation) {
+                /* @var $validation \DOMElement */
+                $valresult = new metaregSslValidation();
+                $valresult->setType($this->queryPath('type',$validation));
+                $valresult->setStatus($this->queryPath('status',$validation));
+                $valresult->setStatusMessage($this->queryPath('statusMessage',$validation));
+                $host = $validation->getElementsByTagName('host');
+                if ($host->length>0) {
+                    $host = $host->item(0);
+                    if ($valresult->getType()=='dcv') {
+                        $valresult->setHostName($this->queryPath('name',$host));
+                        $valresult->setValidationType($this->queryPath('dcvType',$host));
+                        $valresult->setHostStatus($this->queryPath('status',$host));
+                        $valresult->setHostStatusMessage($this->queryPath('statusMessage',$host));
+                        $valresult->setFileLocation($this->queryPath('fileLocation',$host));
+                        $valresult->setFileContents($this->queryPath('fileContents',$host));
+
+                    }
+                }
+                $result[] = $valresult;
+            }
+
+        }
+        return $result;
+    }
 }
