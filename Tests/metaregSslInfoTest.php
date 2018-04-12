@@ -7,7 +7,7 @@ class metaregSslInfoTest extends eppTestCase {
      */
 
     public function testInfoSslCert() {
-        $info = new \Metaregistrar\EPP\metaregSslInfoRequest(11);
+        $info = new \Metaregistrar\EPP\metaregSslInfoRequest(1);
         //echo $info->saveXML();
         if ($response = $this->conn->request($info)) {
             /* @var $response \Metaregistrar\EPP\metaregSslInfoResponse */
