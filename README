@@ -76,6 +76,9 @@ How to use this repository
         port=7000
         userid=xxxxxxxx
         password=xxxxxxxxx
+        certificatefile=/home/xxxxxxx/xxxxxx.pem
+        certificatepassword=xxxxxxxx
+
 - Now, checkdomain.php should be functioning and checking domains.
 
 If you do not want to use settings.ini files in the Registries directory, you can create a connection as follows:
