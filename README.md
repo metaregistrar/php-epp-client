@@ -89,6 +89,8 @@ How to use this repository
         port=7000
         userid=xxxxxxxx
         password=xxxxxxxxx
+        certificatefile=/home/xxxxxx/xxxxxxx.pem
+        certificatepassword=xxxxxxx
 ```
 4. Now, `checkdomain.php` should be functioning and checking domains.
 
