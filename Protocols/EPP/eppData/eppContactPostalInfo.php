@@ -61,7 +61,7 @@ class eppContactPostalInfo {
      */
     public function addStreet($street) {
         if ((is_string($street)) && (strlen($street) > 0)) {
-            if (count($this->street) < 3) {
+            if ((is_array($this->street)) && (count($this->street) < 3)) {
                 $this->street[count($this->street)] = htmlspecialchars($street, ENT_COMPAT, "UTF-8");
             } else {
                 throw new eppException('Cannot add more then 3 street names to postal info');

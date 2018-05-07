@@ -83,11 +83,18 @@ class eppHost {
     }
 
     public function getIpAddressCount() {
-        return count($this->ipaddresses);
+        if (is_array($this->ipaddresses)) {
+            return count($this->ipaddresses);
+        }
+        return 0;
+
     }
 
     public function getHostStatusCount() {
-        return count($this->hoststatus);
+        if (is_array($this->hoststatus)) {
+            return count($this->hoststatus);
+        }
+        return 0;
     }
 
     public function getHostStatuses() {

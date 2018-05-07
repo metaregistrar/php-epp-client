@@ -246,7 +246,10 @@ class eppDomain {
      * @return int
      */
     public function getContactLength() {
-        return count($this->contacts);
+        if (is_array($this->contacts)) {
+            return count($this->contacts);
+        }
+        return 0;
     }
 
     /**
@@ -255,10 +258,12 @@ class eppDomain {
      * @return void
      */
     public function addHost(eppHost $host) {
-        if (count($this->hosts) < 13) {
-            $this->hosts[] = $host;
-        } else {
-            throw new eppException('Cannot set more then 13 hosts on object');
+        if (is_array($this->hosts)) {
+            if (count($this->hosts) < 13) {
+                $this->hosts[] = $host;
+            } else {
+                throw new eppException('Cannot set more then 13 hosts on object');
+            }
         }
     }
 
