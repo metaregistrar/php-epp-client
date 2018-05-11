@@ -10,7 +10,7 @@ namespace Metaregistrar\EPP;
 class eppContactPostalInfo {
     private $name;
     private $organisationName;
-    private $street;
+    private $street = array();
     private $city;
     private $province;
     private $zipcode;
