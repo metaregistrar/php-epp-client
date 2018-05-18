@@ -19,5 +19,6 @@ $this->addCommandResponse('Metaregistrar\EPP\sidnEppPollRequest', 'Metaregistrar
 include_once(dirname(__FILE__) . '/eppResponses/sidnEppCheckResponse.php');
 $this->addCommandResponse('Metaregistrar\EPP\eppCheckRequest', 'Metaregistrar\EPP\sidnEppCheckResponse');
 
+include_once(dirname(__FILE__) . '/eppRequests/sidnEppInfoDomainRequest.php');
 include_once(dirname(__FILE__) . '/eppResponses/sidnEppInfoDomainResponse.php');
-$this->addCommandResponse('Metaregistrar\EPP\eppInfoDomainRequest', 'Metaregistrar\EPP\sidnEppInfoDomainResponse');
+$this->addCommandResponse('Metaregistrar\EPP\sidnEppInfoDomainRequest', 'Metaregistrar\EPP\sidnEppInfoDomainResponse');
