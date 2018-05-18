@@ -1,7 +1,7 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class feeEppCheckDomainRequest extends eppCheckDomainRequest {
+class fee0EppCheckDomainRequest extends eppCheckDomainRequest {
     function __construct($checkrequest, $namespacesinroot) {
         parent::__construct($checkrequest, $namespacesinroot);
         $this->addFee(null,null);
