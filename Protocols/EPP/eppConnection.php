@@ -63,6 +63,12 @@ class eppConnection {
     protected $exturi;
 
     /**
+     * Exception extensions
+     * @var array of exception handlers
+     */
+    protected $exceptions = null;
+
+    /**
      * Base objects
      * @var array of accepted URI's for xpath
      */
@@ -459,6 +465,11 @@ class eppConnection {
         }
         if (($response = $this->writeandread($eppRequest)) instanceof $check) {
             // $response->Success() will trigger an eppException when fails have occurred
+            if ((is_array($this->exceptions)) && (count($this->exceptions)>0)) {
+                foreach($this->exceptions as $exceptionhandler) {
+                    $response->addException($exceptionhandler);
+                }
+            }
             $response->Success();
             return $response;
         } else {
@@ -975,6 +986,10 @@ class eppConnection {
      */
     public function addExtension($xmlns, $namespace) {
         $this->exturi[$namespace] = $xmlns;
+    }
+
+    public function addException($exceptionhandler) {
+        $this->exceptions[] = $exceptionhandler;
     }
 
     public function removeExtension($namespace) {
