@@ -18,6 +18,26 @@ class euridEppRegistrarInfoResponse extends eppResponse {
     function __construct() {
         parent::__construct();
     }
+    
+    public function getPaymentMode() {
+        $xpath = $this->xPath();
+        $result = $xpath->query('//registrarFinance:paymentMode');
+        if ($result->length > 0) {
+            return $result->item(0)->nodeValue;
+        } else {
+            return null;
+        } 
+    }
+
+    public function getAmount() {
+        $xpath = $this->xPath();
+        $result = $xpath->query('//registrarFinance:availableAmount');
+        if ($result->length > 0) {
+            return $result->item(0)->nodeValue;
+        } else {
+            return null;
+        } 
+    }
 
     public function getBalance() {
         $xpath = $this->xPath();
