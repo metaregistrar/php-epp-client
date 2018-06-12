@@ -14,6 +14,7 @@ class eppContactHandle {
     const CONTACT_TYPE_ADMIN = 'admin';
     const CONTACT_TYPE_TECH = 'tech';
     const CONTACT_TYPE_BILLING = 'billing';
+    const CONTACT_TYPE_ONSITE = 'onsite'; //USED FOR .EU AND .BE ONLY
     /**
      * Registry handle of contact
      * @var string
@@ -41,7 +42,7 @@ class eppContactHandle {
         if ($contactType) {
             $this->setContactType($contactType);
         }
-        if (($contactType != null) && ($contactType != self::CONTACT_TYPE_ADMIN) && ($contactType != self::CONTACT_TYPE_REGISTRANT) && ($contactType != self::CONTACT_TYPE_BILLING) && ($contactType != self::CONTACT_TYPE_TECH)) {
+        if (($contactType != null) && ($contactType != self::CONTACT_TYPE_ADMIN) && ($contactType != self::CONTACT_TYPE_REGISTRANT) && ($contactType != self::CONTACT_TYPE_BILLING) && ($contactType != self::CONTACT_TYPE_TECH) && ($contactType != self::CONTACT_TYPE_ONSITE)) {
             throw new eppException('Invalid contact type: ' . $contactType);
         }
     }
