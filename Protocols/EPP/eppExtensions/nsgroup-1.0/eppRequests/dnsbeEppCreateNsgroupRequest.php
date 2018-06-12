@@ -15,32 +15,68 @@ namespace Metaregistrar\EPP;
 </epp>
  */
 class dnsbeEppCreateNsgroupRequest extends eppRequest {
+    /**
+     * @var \DOMElement
+     */
+    private $hostobject=null;
 
-    private $hostobject;
-
-    function __construct($createinfo) {
+    /**
+     * dnsbeEppCreateNsgroupRequest constructor.
+     * @param $groupname
+     * @param $hosts
+     * @throws eppException
+     */
+    function __construct($groupname, $hosts) {
         parent::__construct();
-
-        if ($createinfo instanceof eppHost) {
-            $this->addExtension('xmlns:nsgroup', 'http://www.dns.be/xml/epp/nsgroup-1.0');
-            $this->addNsGroup($createinfo);
+        $this->addExtension('xmlns:nsgroup', 'http://www.dns.be/xml/epp/nsgroup-1.0');
+        if (is_string($groupname)) {
+            if (strlen($groupname) > 0) {
+                $this->addNsGroup($groupname);
+                if (is_array($hosts)) {
+                    foreach ($hosts as $host) {
+                        if ($host instanceof eppHost) {
+                            $this->addHost($host);
+                        }
+                    }
+                } else {
+                    // If you do not add an array of hosts, but just one
+                    if ($hosts instanceof eppHost) {
+                        $this->addHost($hosts);
+                    }
+                }
+            } else {
+                throw new eppException("Groupname must be a valid name on dnsbeEppCreateNsgroupRequest");
+            }
+        } else {
+            throw new eppException("Groupname must be a string on dnsbeEppCreateNsgroupRequest");
         }
+
+
         $this->addSessionId();
     }
 
-    private function addNsGroup(eppHost $host) {
+    /**
+     * @param $groupname
+     */
+    private function addNsGroup($groupname) {
+        $create = $this->createElement('create');
+        $this->hostobject = $this->createElement('nsgroup:create');
+        $this->hostobject->appendChild($this->createElement('nsgroup:name', $groupname));
+        $create->appendChild($this->hostobject);
+        $this->getCommand()->appendChild($create);
+    }
+
+    /**
+     * @param eppHost $host
+     * @throws eppException
+     */
+    private function addHost(eppHost $host) {
         if (!strlen($host->getHostname())) {
             throw new eppException('No valid hostname in create host request');
         }
-        #
-        # Object create structure
-        #
-        $create = $this->createElement('create');
-        $this->hostobject = $this->createElement('nsgroup:create');
-        $this->hostobject->appendChild($this->createElement('nsgroup:name', $host->getHostname()));
-        $this->hostobject->appendChild($this->createElement('nsgroup:ns', $host->getHostname()));
-        $create->appendChild($this->hostobject);
-        $this->getCommand()->appendChild($create);
+        if (isset($this->hostobject)) {
+            $this->hostobject->appendChild($this->createElement('nsgroup:ns', $host->getHostname()));
+        }
         return;
     }
 }

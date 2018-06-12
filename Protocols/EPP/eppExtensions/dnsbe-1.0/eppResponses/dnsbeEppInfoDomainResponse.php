@@ -1,5 +1,10 @@
 <?php
 namespace Metaregistrar\EPP;
+
+/**
+ * Class dnsbeEppInfoDomainResponse
+ * @package Metaregistrar\EPP
+ */
 class dnsbeEppInfoDomainResponse extends eppInfoDomainResponse {
     function __construct() {
         parent::__construct();
