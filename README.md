@@ -65,7 +65,7 @@ Example scipts in the main directory:
 |modifydomain.php        | Update a domain name with new info.                                                                                         |
 |createcontact.php       | Create a contact object.                                                                                                    |
 |updatecontact.php       | Update contact details of a created contact object.                                                                         |
-|registerdomain.php      | Register a domain name in general availability phase.                                                                       |
+|createdomain.php        | Register a domain name in general availability phase.                                                                       |
 |signdomain.php          | DNSSEC sign a domain name.                                                                                                  |
 |poll.php                | List registry poll messages and confirm a message.                                                                          |
 |checklaunchdomain.php   | Check domain name in 'claims' phase of draft-ietf-eppext-launchphase and check if the domain is free.                       |
