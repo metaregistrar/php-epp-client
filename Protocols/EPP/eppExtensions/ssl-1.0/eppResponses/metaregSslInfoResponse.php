@@ -111,12 +111,10 @@ class metaregSslInfoResponse extends eppResponse {
                         $valresult->setCnameValue($this->queryPath('dnsCnameValue',$host));
                         $valresult->setFileLocation($this->queryPath('fileLocation',$host));
                         $valresult->setFileContents($this->queryPath('fileContents',$host));
-
                     }
                 }
                 $result[] = $valresult;
             }
-
         }
         return $result;
     }
