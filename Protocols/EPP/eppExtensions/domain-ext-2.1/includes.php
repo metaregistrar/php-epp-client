@@ -6,3 +6,6 @@ $this->addCommandResponse('Metaregistrar\EPP\euridEppTransferDomainRequest', 'Me
 
 include_once(dirname(__FILE__) . '/eppRequests/euridEppCreateDomainRequest.php');
 $this->addCommandResponse('Metaregistrar\EPP\euridEppCreateDomainRequest', 'Metaregistrar\EPP\eppCreateResponse');
+
+include_once(dirname(__FILE__) . '/eppRequests/euridEppDeleteDomainRequest.php');
+$this->addCommandResponse('Metaregistrar\EPP\euridEppDeleteDomainRequest', 'Metaregistrar\EPP\eppDeleteResponse');

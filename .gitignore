@@ -4,3 +4,4 @@ vendor/*
 .ini
 .pem
 Tests/testsetup*
+.DS_Store
