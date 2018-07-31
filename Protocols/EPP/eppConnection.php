@@ -1031,6 +1031,12 @@ class eppConnection {
             } else {
                 $this->setPort(700);
             }
+            if (array_key_exists('timeout',$result)) {
+                $this->setTimeout($result['timeout']);
+            } else {
+                $this->setTimeout(10);
+            }
+
             if (array_key_exists('certificatefile',$result) && array_key_exists('certificatepassword',$result)) {
                 // Enter the path to your certificate and the password here
                 $this->enableCertification($result['certificatefile'], $result['certificatepassword']);
