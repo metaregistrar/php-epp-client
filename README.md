@@ -91,6 +91,8 @@ How to use this repository
         password=xxxxxxxxx
         certificatefile=/home/xxxxxx/xxxxxxx.pem
         certificatepassword=xxxxxxx
+        ;logging=1
+        ;logfile=debug.log
 ```
 4. Now, `checkdomain.php` should be functioning and checking domains.
 
