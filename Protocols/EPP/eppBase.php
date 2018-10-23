@@ -62,7 +62,7 @@ class eppBase {
             $classname = 'Metaregistrar\\EPP\\'.$result['interface'];
             $c = new $classname($debug);
             /* @var $c eppConnection */
-            $c->setConnectionDetails($configfile);
+            $c->setConnectionDetails($result);
             return $c;
         }
         return null;
