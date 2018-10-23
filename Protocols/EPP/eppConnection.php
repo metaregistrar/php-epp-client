@@ -1045,7 +1045,7 @@ class eppConnection {
             }
             return true;
         } else {
-            throw new eppException("Settings file $settingsfile could not be opened");
+            throw new eppException("Settings file was empty?!");
         }
     }
 
