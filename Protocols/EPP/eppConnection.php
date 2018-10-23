@@ -181,7 +181,7 @@ class eppConnection {
             $classname = 'Metaregistrar\\EPP\\'.$result['interface'];
             $c = new $classname($debug);
             /* @var $c eppConnection */
-            $c->setConnectionDetails($configfile);
+            $c->setConnectionDetails($result);
             return $c;
         }
         return null;
@@ -1013,16 +1013,8 @@ class eppConnection {
         $this->logging = true;
     }
 
-    public function setConnectionDetails($settingsfile) {
-        $result = array();
-        if (is_readable($settingsfile)) {
-            $settings = file($settingsfile, FILE_IGNORE_NEW_LINES);
-            foreach ($settings as $setting) {
-                list($param, $value) = explode('=', $setting, 2);
-                $param = trim($param);
-                $value = trim($value);
-                $result[$param] = $value;
-            }
+    public function setConnectionDetails($result=array()) {
+        if (count($result)) {
             $this->setHostname($result['hostname']);
             $this->setUsername($result['userid']);
             $this->setPassword($result['password']);
@@ -1035,6 +1027,13 @@ class eppConnection {
                 $this->setTimeout($result['timeout']);
             } else {
                 $this->setTimeout(10);
+            }
+            if (array_key_exists('logging',$result)
+             && ($result['logging'] == 1 || $result['logging'] == 'true') {
+                $this->enableLogging();
+            }
+            if (array_key_exists('logfile',$result) ) {
+                $this->setLogFile($result['logfile']);
             }
 
             if (array_key_exists('certificatefile',$result) && array_key_exists('certificatepassword',$result)) {
