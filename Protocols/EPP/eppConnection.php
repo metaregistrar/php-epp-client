@@ -196,7 +196,7 @@ class eppConnection {
 
     }
 
-    function __construct($logging = false, $settingsfile) {
+    function __construct($logging = false, $settingsfile = null) {
         if ($logging) {
             $this->enableLogging();
         }
