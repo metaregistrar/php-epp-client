@@ -84,13 +84,41 @@ How to use this repository
 2. Use the `Examples/checkdomain.php` and create a connection to your favorite registry (for example `new Metaregistrar\EPP\metaregEppConnection()`).
 3. Create a `settings.ini` in with the following contents:
 ```
-        interface=eppConnection
-        hostname=ssl://eppltest1.metaregistrar.com
-        port=7000
-        userid=xxxxxxxx
-        password=xxxxxxxxx
-        certificatefile=/home/xxxxxx/xxxxxxx.pem
-        certificatepassword=xxxxxxx
+interface=eppConnection
+port=7000
+;logging=1
+;logfile=debug.log
+
+; Enter the path to your certificate and optional password here
+;certificatefile=/home/xxxxxx/xxxxxxx.pem
+;certificatepassword=xxxxxxx
+;allowselfsigned=1
+
+; test account
+hostname=ssl://eppltest1.metaregistrar.com
+userid=xxxxxxxx
+password=xxxxxxxxx
+        
+; live account
+;hostname=ssl://eppl.metaregistrar.com       
+;userid=xxxxxxxx
+;password=xxxxxxxxx
+        
+; (general) vars you can use in your programming (i.e. $conn->settings['handle_admin'])
+        
+; default registrant handle (be carefull with this one!)
+handle_reg=
+; admin handle
+handle_admin=
+; tech handle
+handle_tech=
+; default billing handle
+handle_bill=
+        
+; default nameservers (see transferdomain for example)
+nameserver=ns1.yourdomainprovider.net
+nameserver=ns2.yourdomainprovider.net
+nameserver=ns3.yourdomainprovider.net
 ```
 4. Now, `checkdomain.php` should be functioning and checking domains.
 
