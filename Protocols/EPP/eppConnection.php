@@ -172,12 +172,12 @@ class eppConnection {
             if (is_readable($settingsfile)) {
                 $settingsArr = file($settingsfile, FILE_IGNORE_NEW_LINES);
                 foreach ($settingsArr as $setting) {
-										if (strpos($setting,'interface') === 0 ) {
-												list($param, $value) = explode('=', $setting, 2);
-												$value = trim($value);
-												$interface = $value;
-//												break; // commented out (backwards compatibility what if a settingsfile has multiple 'interface' )
-										}
+			if (strpos($setting,'interface') === 0 ) {
+				list($param, $value) = explode('=', $setting, 2);
+				$value = trim($value);
+				$interface = $value;
+//				break; // commented out (backwards compatibility what if a settingsfile has multiple 'interface' )
+			}
                 }
             } else {
                 throw new eppException('File not found: '.$settingsfile);
@@ -403,11 +403,11 @@ class eppConnection {
      */
     public function login($usecdata = false) {
         if (!$this->connected) {
-						$this->writeLog("NOT Connected","LOGIN");
-            if (!$this->connect()) {
-								$this->writeLog("Cannot connect","LOGIN");
-                return false;
-            }
+		$this->writeLog("NOT Connected","LOGIN");
+		if (!$this->connect()) {
+			$this->writeLog("Cannot connect","LOGIN");
+                	return false;
+		}
         }
         $login = new eppLoginRequest(null,$usecdata);
         if ($response = $this->request($login)) {
@@ -1043,32 +1043,32 @@ class eppConnection {
     }
 
     protected function loadSettings($settingsfile) {
-				// already got the settings?
-				if (!empty($this->settings)
-				 && $this->settings['settingsfile'] == $settingsfile) {
-					return $this->settings;
-				}
+	// already got the settings?
+	if (!empty($this->settings)
+	 && $this->settings['settingsfile'] == $settingsfile) {
+		return $this->settings;
+	}
         $settings = array('settingsfile' => $settingsfile);
         if (is_readable($settingsfile)) {
-						$settingsArr = file($settingsfile, FILE_IGNORE_NEW_LINES);
-						foreach ($settingsArr as $setting) {
-								if (strpos($setting,';') === 0 || !strpos($setting,'=') ) { continue; }
-								list($param, $value) = explode('=', $setting, 2);
-								$param = trim($param);
-								$value = trim($value);
-								if (array_key_exists($param,$settings)
-								 // (backwards compatibility what if a settingsfile has multiple .. )
-								 && !in_array($param,array('interface','port','certificatefile','certificatepassword','allowselfsigned','hostname','userid','password')
-								) {
-									if ( is_array($settings[$param])) {
-										array_push($settings[$param],$value);
-									} else {
-										$settings[$param] = array($settings[$param],$value);
-									}
-								} else {
-									$settings[$param] = $value;
-								}
-						}
+		$settingsArr = file($settingsfile, FILE_IGNORE_NEW_LINES);
+		foreach ($settingsArr as $setting) {
+			if (strpos($setting,';') === 0 || !strpos($setting,'=') ) { continue; }
+			list($param, $value) = explode('=', $setting, 2);
+			$param = trim($param);
+			$value = trim($value);
+			if (array_key_exists($param,$settings)
+			 // (backwards compatibility what if a settingsfile has multiple .. )
+			 && !in_array($param,array('interface','port','certificatefile','certificatepassword','allowselfsigned','hostname','userid','password')
+			) {
+				if ( is_array($settings[$param])) {
+					array_push($settings[$param],$value);
+				} else {
+					$settings[$param] = array($settings[$param],$value);
+				}
+			} else {
+				$settings[$param] = $value;
+			}
+		}
             return $settings;
         }
         return null;
