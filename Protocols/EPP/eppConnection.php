@@ -191,7 +191,7 @@ class eppConnection {
             return $c;
         } else {
             throw new eppException('setting \'interface\' not set in: '.$settingsfile);
-				}
+	}
         return null;
 
     }
@@ -249,7 +249,7 @@ class eppConnection {
             $settingsfile = 'settings.ini';
         }
         if ($this->settings = $this->loadSettings($settingsfile)) {
-						$this->setConnectionDetails($settingsfile);
+		$this->setConnectionDetails($settingsfile);
         }
     }
 
@@ -411,10 +411,10 @@ class eppConnection {
         }
         $login = new eppLoginRequest(null,$usecdata);
         if ($response = $this->request($login)) {
-            $this->writeLog("Logged in","LOGIN");
-            $this->loggedin = true;
-            return true;
-				}
+		$this->writeLog("Logged in","LOGIN");
+		$this->loggedin = true;
+		return true;
+	}
         $this->writeLog("NOT Logged in","LOGIN");
         return false;
     }
@@ -872,7 +872,7 @@ class eppConnection {
         $this->port = $port;
     }
 
-    public function getRetry(){
+    public function getRetry() {
         return $this->retry;
     }
 
