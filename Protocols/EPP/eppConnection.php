@@ -3,7 +3,7 @@ namespace Metaregistrar\EPP;
 
 class eppConnection {
 	/**
-	 * Ini settings
+	 * settings
 	 * @var array of variables in the ini file
 	 */
 	public $settings = array();
