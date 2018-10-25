@@ -1058,7 +1058,7 @@ class eppConnection {
 			$value = trim($value);
 			if (array_key_exists($param,$settings)
 			 // (backwards compatibility what if a settingsfile has multiple .. )
-			 && !in_array($param,array('interface','port','certificatefile','certificatepassword','allowselfsigned','hostname','userid','password')
+			 && !in_array($param,array('interface','port','certificatefile','certificatepassword','allowselfsigned','hostname','userid','password'))
 			) {
 				if ( is_array($settings[$param])) {
 					array_push($settings[$param],$value);
