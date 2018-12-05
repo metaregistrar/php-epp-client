@@ -75,7 +75,7 @@ class eppContactPostalInfo {
      * @return string
      */
     public function getStreet($line) {
-        if ($this->street[$line]) {
+        if (isset($this->street[$line])) {
             return $this->street[$line];
         }
         return null;
