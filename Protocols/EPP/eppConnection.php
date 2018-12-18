@@ -130,6 +130,18 @@ class eppConnection {
      */
     protected $allow_self_signed = null;
 
+    /**
+     * Require verification of SSL certificate used
+     * @var boolean
+     */
+    protected $verify_peer = true;
+
+    /**
+     * Require verification of peer name
+     * @var boolean
+     */
+    protected $verify_peer_name = true;
+
     protected $logentries = array();
 
     protected $checktransactionids = true;
@@ -375,7 +387,11 @@ class eppConnection {
             }
             if (isset($this->allow_self_signed)) {
                 stream_context_set_option($context, 'ssl', 'allow_self_signed', $this->allow_self_signed);
+                stream_context_set_option($context, 'ssl', 'verify_peer', false);
+            } else {
+                stream_context_set_option($context, 'ssl', 'verify_peer', $this->verify_peer);
             }
+            stream_context_set_option($context, 'ssl', 'verify_peer_name', $this->verify_peer_name);
             if ($this->connection = stream_socket_client($target, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context)) {
                 $this->writeLog("Connection made","CONNECT");
                 $this->connected = true;
@@ -886,6 +902,14 @@ class eppConnection {
 
     public function setPort($port) {
         $this->port = $port;
+    }
+
+    public function setVerifyPeer($verify_peer) {
+        $this->verify_peer = $verify_peer;
+    }
+
+    public function setVerifyPeerName($verify_peer_name) {
+        $this->verify_peer_name = $verify_peer_name;
     }
 
     public function getRetry()
