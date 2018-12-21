@@ -65,7 +65,7 @@ class eppCheckDomainTest extends eppTestCase {
      * Expects a standard result for a taken domain name
      */
     public function testCheckDomainReserved() {
-        $domainname = 'test'.$this->extension;
+        $domainname = 'nic'.$this->extension;
         $domain = new Metaregistrar\EPP\eppDomain($domainname);
         $this->assertInstanceOf('Metaregistrar\EPP\eppDomain',$domain);
         $check = new Metaregistrar\EPP\eppCheckRequest($domain);

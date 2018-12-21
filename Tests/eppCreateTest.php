@@ -10,7 +10,7 @@ class eppCreateTest extends eppTestCase {
         $conn = Metaregistrar\EPP\eppConnection::create(dirname(__FILE__).'/testsetup.ini');
         $this->assertInstanceOf('Metaregistrar\EPP\metaregEppConnection',$conn);
         /* @var $conn Metaregistrar\EPP\metaregEppConnection */
-        $this->assertEquals($conn->getHostname(),'eppltest1.metaregistrar.com');
+        $this->assertEquals($conn->getHostname(),'eppltest2.metaregistrar.com');
         $this->assertEquals($conn->getPort(),7000);
     }
 

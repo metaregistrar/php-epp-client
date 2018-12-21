@@ -41,7 +41,7 @@ class eppCreateDnsTest extends eppTestCase
         $records[] = ['type' => 'GARBAGE', 'name' => $domainname, 'content' => '127.0.0.1', 'ttl' => 3600];
         $create = new Metaregistrar\EPP\metaregCreateDnsRequest($domain, $records);
         $response = $this->conn->writeandread($create);
-        $this->setExpectedException('Metaregistrar\EPP\eppException', 'Error 2001: Command syntax error; Element \'{http://www.metaregistrar.com/epp/dns-ext-1.0}type\': [facet \'enumeration\'] The value \'GARBAGE\' is not an element of the set {\'A\', \'AAAA\', \'CNAME\', \'MX\', \'NS\', \'SOA\', \'SPF\', \'TXT\', \'SRV\', \'DNAME\', \'CAA\'}.');
+        $this->setExpectedException('Metaregistrar\EPP\eppException', 'Error 2001: Command syntax error; Element \'{http://www.metaregistrar.com/epp/dns-ext-1.0}type\': [facet \'enumeration\'] The value \'GARBAGE\' is not an element of the set {\'A\', \'AAAA\', \'ALIAS\', \'CNAME\', \'MX\', \'NS\', \'SOA\', \'SPF\', \'TXT\', \'SRV\', \'DNAME\', \'CAA\', \'TLSA\'}.');
         $this->assertFalse($response->Success());
     }
 
@@ -56,7 +56,7 @@ class eppCreateDnsTest extends eppTestCase
         $records[] = ['type' => 'A', 'name' => $domainname, 'content' => 'GARBAGE', 'ttl' => 3600];
         $create = new Metaregistrar\EPP\metaregCreateDnsRequest($domain, $records);
         $response = $this->conn->writeandread($create);
-        $this->setExpectedException('Metaregistrar\EPP\eppException', 'Error 2004: Parameter value range error; Ip \'GARBAGE\' is not a valid IPV4 address for an A record');
+        $this->setExpectedException('Metaregistrar\EPP\eppException', 'Error 2004: Parameter value range error; Invalid IPV4 address "GARBAGE" for A record '.$domainname);
         $this->assertFalse($response->Success());
     }
 
@@ -70,7 +70,7 @@ class eppCreateDnsTest extends eppTestCase
         $records[] = ['type' => 'A', 'name' => 'wrongdomainname.frl', 'content' => '127.0.0.1', 'ttl' => 3600];
         $create = new Metaregistrar\EPP\metaregCreateDnsRequest($domain, $records);
         $response = $this->conn->writeandread($create);
-        $this->setExpectedException('Metaregistrar\EPP\eppException', 'Error 2004: Parameter value range error; Name field wrongdomainname.frl is not a valid name in an A type record');
+        $this->setExpectedException('Metaregistrar\EPP\eppException', 'Error 2004: Parameter value range error; Invalid name for A record wrongdomainname.frl does not belong with '.$domainname);
         $this->assertFalse($response->Success());
     }
 }
