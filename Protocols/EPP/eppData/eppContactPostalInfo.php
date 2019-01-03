@@ -61,6 +61,9 @@ class eppContactPostalInfo {
      */
     public function addStreet($street) {
         if ((is_string($street)) && (strlen($street) > 0)) {
+            if (!is_array($this->street)) {
+                $this->street = [];
+            }
             if (count($this->street) < 3) {
                 $this->street[count($this->street)] = htmlspecialchars($street, ENT_COMPAT, "UTF-8");
             } else {
@@ -75,14 +78,14 @@ class eppContactPostalInfo {
      * @return string
      */
     public function getStreet($line) {
-        if ($this->street[$line]) {
+        if (is_array($this->street) && array_key_exists($line, $this->street)) {
             return $this->street[$line];
         }
         return null;
     }
 
     public function getStreetCount() {
-        return count($this->street);
+        return is_array($this->street ? count($this->street) : 0);
     }
 
     public function getStreets() {
