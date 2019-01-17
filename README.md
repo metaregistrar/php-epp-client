@@ -99,7 +99,7 @@ How to use this repository
 
 Or set all parameters individually:
 ```
-$conn = Metaregistrar\EPP\eppConnection();
+$conn = new Metaregistrar\EPP\eppConnection();
 $conn->setHostname('ssl://eppltest1.metaregistrar.com'); // Hostname may vary depending on the registry selected
 $conn->setPort(7000); // Port may vary depending on the registry selected
 $conn->setUsername('xxxxxxxx');
