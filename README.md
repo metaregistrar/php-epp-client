@@ -89,6 +89,7 @@ How to use this repository
         port=7000
         userid=xxxxxxxx
         password=xxxxxxxxx
+        logging=true
         certificatefile=/home/xxxxxx/xxxxxxx.pem
         certificatepassword=xxxxxxx
 ```

@@ -167,36 +167,25 @@ class eppConnection {
     protected $logFile = null;
 
     /**
-     * @param string $configfile
+     * @param string $settingsfile
      * @param bool|false $debug
      * @return mixed
      * @throws eppException
      */
-    static function create($configfile,$debug=false) {
-        if ($configfile) {
-            if (is_readable($configfile)) {
-                $settings = file($configfile, FILE_IGNORE_NEW_LINES);
-                foreach ($settings as $setting) {
-                    list($param, $value) = explode('=', $setting, 2);
-                    $param = trim($param);
-                    $value = trim($value);
-                    $result[$param] = $value;
-                }
-
-            } else {
-                throw new eppException('File not found: '.$configfile);
+    static function create($settingsfile, $debug=false) {
+        $result = self::loadSettings(null,$settingsfile);
+        if ($result) {
+            if (isset($result['interface'])) {
+                $classname = 'Metaregistrar\\EPP\\'.$result['interface'];
+                $c = new $classname($debug);
+                /* @var $c eppConnection */
+                $c->setConnectionDetails($result);
+                return $c;
             }
+            return null;
         } else {
-            throw new eppException('Configuration file not specified on eppConnection:create');
+            throw new eppException("Settingsfile could not be loaded on create function");
         }
-        if (isset($result['interface'])) {
-            $classname = 'Metaregistrar\\EPP\\'.$result['interface'];
-            $c = new $classname($debug);
-            /* @var $c eppConnection */
-            $c->setConnectionDetails($configfile);
-            return $c;
-        }
-        return null;
 
     }
 
@@ -240,47 +229,6 @@ class eppConnection {
         $this->responses['Metaregistrar\\EPP\\eppCreateRequest'] = 'Metaregistrar\\EPP\\eppCreateResponse';
         $this->responses['Metaregistrar\\EPP\\eppUpdateRequest'] = 'Metaregistrar\\EPP\\eppUpdateResponse';
         $this->responses['Metaregistrar\\EPP\\eppDeleteRequest'] = 'Metaregistrar\\EPP\\eppDeleteResponse';
-
-        #
-        # Read settings.ini or specified settings file
-        #
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            $path = str_replace('Metaregistrar\EPP\\',dirname(__FILE__).'\..\..\Registries\\',get_called_class());
-        } else {
-            $path = str_replace('Metaregistrar\EPP\\',dirname(__FILE__).'/../../Registries/',get_called_class());
-        }
-        if (!$settingsfile) {
-            $settingsfile = 'settings.ini';
-        }
-        $test = pathinfo($settingsfile);
-        if ($test['dirname']!='.') {
-            $path = $test['dirname'];
-            $settingsfile=$test['basename'];
-        }
-        if ($settings = $this->loadSettings($path,$settingsfile)) {
-            $this->setHostname($settings['hostname']);
-            $this->setUsername($settings['userid']);
-            $this->setPassword($settings['password']);
-            if (array_key_exists('port',$settings)) {
-                $this->setPort($settings['port']);
-            } else {
-                $this->setPort(700);
-            }
-            if (array_key_exists('certificatefile',$settings) && array_key_exists('certificatepassword',$settings)) {
-                if ((strpos($settings['certificatefile'],'\\')===false) && (strpos($settings['certificatefile'],'/')===false)) {
-                    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                        $settings['certificatefile'] = $path . '\\' . $settings['certificatefile'];
-                    } else {
-                        $settings['certificatefile'] = $path . '/' . $settings['certificatefile'];
-                    }
-                }
-                if (isset($settings['allowselfsigned'])) {
-                    $this->enableCertification($settings['certificatefile'], $settings['certificatepassword'], $settings['allowselfsigned']);
-                } else {
-                    $this->enableCertification($settings['certificatefile'], $settings['certificatepassword']);
-                }
-            }
-        }
     }
 
     function __destruct() {
@@ -375,12 +323,10 @@ class eppConnection {
         if ($port) {
             $this->port = $port;
         }
+        $context = stream_context_create();
+        stream_context_set_option($context, 'ssl','verify_peer', $this->verify_peer);
+        stream_context_set_option($context, 'ssl', 'verify_peer_name', $this->verify_peer_name);
         if ($this->local_cert_path) {
-            $ssl = true;
-            $target = sprintf('%s://%s:%d', ($ssl === true ? 'ssl' : 'tcp'), $this->hostname, $this->port);
-            $errno = '';
-            $errstr = '';
-            $context = stream_context_create();
             stream_context_set_option($context, 'ssl', 'local_cert', $this->local_cert_path);
             if (isset($this->local_cert_pwd) && (strlen($this->local_cert_pwd)>0)) {
                 stream_context_set_option($context, 'ssl', 'passphrase', $this->local_cert_pwd);
@@ -391,44 +337,27 @@ class eppConnection {
             } else {
                 stream_context_set_option($context, 'ssl', 'verify_peer', $this->verify_peer);
             }
-            stream_context_set_option($context, 'ssl', 'verify_peer_name', $this->verify_peer_name);
-            if ($this->connection = stream_socket_client($target, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context)) {
-                $this->writeLog("Connection made","CONNECT");
+        }
+        $this->connection = stream_socket_client($this->hostname.':'.$this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context);
+        if (is_resource($this->connection)) {
+            stream_set_blocking($this->connection, false);
+            stream_set_timeout($this->connection, $this->timeout);
+            if ($errno == 0) {
+                $meta = stream_get_meta_data($this->connection);
+                if (isset($meta['crypto'])) {
+                    $this->writeLog("Stream opened with protocol ".$meta['crypto']['protocol'].", cipher ".$meta['crypto']['cipher_name'].", ".$meta['crypto']['cipher_bits']." bits ".$meta['crypto']['cipher_version'],"Connection made");
+                } else {
+                    $this->writeLog("Stream opened","Connection made");
+                }
                 $this->connected = true;
                 $this->read();
-                return true;
-            } else {
-                throw new eppException("Error connecting to $target: $errstr (code $errno)",$errno,null,$errstr);
             }
+            return $this->connected;
         } else {
-            #$this->writeLog("Connecting: $this->hostname:$this->port");
-            $context = stream_context_create();
-            stream_context_set_option($context, 'ssl','verify_peer',false);
-            stream_context_set_option($context, 'ssl','verify_peer_name',false);
-            $this->connection = stream_socket_client($this->hostname.':'.$this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context);
-
-
-            if (is_resource($this->connection)) {
-                stream_set_blocking($this->connection, false);
-                stream_set_timeout($this->connection, $this->timeout);
-                if ($errno == 0) {
-                    $meta = stream_get_meta_data($this->connection);
-                    if (isset($meta['crypto'])) {
-                        $this->writeLog("Stream opened with protocol ".$meta['crypto']['protocol'].", cipher ".$meta['crypto']['cipher_name'].", ".$meta['crypto']['cipher_bits']." bits ".$meta['crypto']['cipher_version'],"Connection made");
-                    } else {
-                        $this->writeLog("Stream opened","Connection made");
-                    }
-                    $this->connected = true;
-                    $this->read();
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                $this->writeLog("Connection could not be opened: $errno $errstr","ERROR");
-                return false;
-            }
+            $this->writeLog("Connection could not be opened: $errno $errstr","ERROR");
+            return false;
         }
+
     }
 
     /**
@@ -1032,52 +961,67 @@ class eppConnection {
         return $this->xpathuri;
     }
 
+    /**
+     * Enables logging
+     */
     private function enableLogging() {
         date_default_timezone_set("Europe/Amsterdam");
         $this->logging = true;
     }
 
-    public function setConnectionDetails($settingsfile) {
-        $result = array();
-        if (is_readable($settingsfile)) {
-            $settings = file($settingsfile, FILE_IGNORE_NEW_LINES);
-            foreach ($settings as $setting) {
-                list($param, $value) = explode('=', $setting, 2);
-                $param = trim($param);
-                $value = trim($value);
-                $result[$param] = $value;
-            }
-            $this->setHostname($result['hostname']);
-            $this->setUsername($result['userid']);
-            $this->setPassword($result['password']);
-            if (array_key_exists('port',$result)) {
-                $this->setPort($result['port']);
-            } else {
-                $this->setPort(700);
-            }
-            if (array_key_exists('timeout',$result)) {
-                $this->setTimeout($result['timeout']);
-            } else {
-                $this->setTimeout(10);
-            }
+    /**
+     * Store the settings details ($result) in local variables for later use
+     * @param array $result
+     * @return bool
+     */
+    public function setConnectionDetails($result) {
+        $this->setHostname($result['hostname']);
+        $this->setUsername($result['userid']);
+        $this->setPassword($result['password']);
 
-            if (array_key_exists('certificatefile',$result) && array_key_exists('certificatepassword',$result)) {
-                // Enter the path to your certificate and the password here
-                $this->enableCertification($result['certificatefile'], $result['certificatepassword']);
-            } elseif (array_key_exists('certificatefile',$result)) {
-                // Enter the path to your certificate without password
-                $this->enableCertification($result['certificatefile'], null);
-            }
-            return true;
+        if (array_key_exists('port',$result)) {
+            $this->setPort($result['port']);
         } else {
-            throw new eppException("Settings file $settingsfile could not be opened");
+            $this->setPort(700);
         }
+
+        if (array_key_exists('timeout',$result)) {
+            $this->setTimeout($result['timeout']);
+        } else {
+            $this->setTimeout(10);
+        }
+
+        if (array_key_exists('logging',$result)) {
+            if (($result['logging']=='true') || ($result['logging']=='yes') || ($result['logging']=='1')) {
+                $this->enableLogging();
+            }
+        }
+
+        if (array_key_exists('certificatefile',$result) && array_key_exists('certificatepassword',$result)) {
+            // Enter the path to your certificate and the password here
+            $this->enableCertification($result['certificatefile'], $result['certificatepassword']);
+        } elseif (array_key_exists('certificatefile',$result)) {
+            // Enter the path to your certificate without password
+            $this->enableCertification($result['certificatefile'], null);
+        }
+        return true;
     }
 
-    protected function loadSettings($directory, $settingsfile) {
-        $result = array();
-        if (is_readable($directory . '/'.$settingsfile)) {
-            $settings = file($directory . '/' . $settingsfile, FILE_IGNORE_NEW_LINES);
+    /**
+     * @param null|string $directory
+     * @param string $settingsfile
+     * @return array
+     * @throws eppException
+     */
+    static function loadSettings($directory = null, $settingsfile) {
+        if ($directory) {
+            $path = $directory . '/' . $settingsfile;
+        } else {
+            $path = $settingsfile;
+        }
+        if (is_readable($path)) {
+            $result = [];
+            $settings = file($path, FILE_IGNORE_NEW_LINES);
             foreach ($settings as $setting) {
                 list($param, $value) = explode('=', $setting, 2);
                 $param = trim($param);
@@ -1085,8 +1029,9 @@ class eppConnection {
                 $result[$param] = $value;
             }
             return $result;
+        } else {
+            throw new eppException("$settingsfile Settings file not readable on loadSettings function");
         }
-        return null;
     }
 
     /**
