@@ -1061,24 +1061,16 @@ class eppConnection {
 
     protected function writeLog($text,$action) {
         if ($this->logging) {
-            // Hiding userid in the logging
-            if (($start = strpos($text,'<clID>')) !== false) {
-                if (($end = strpos($text,'</clID>')) !== false) {
-                    $text = substr($text,0,$start+6).'XXXXXXXXXXXXXXXX'.substr($text,$end,99999);
-                }
-            }
-            // Hiding password in the logging
-            if (($start = strpos($text,'<pw><![CDATA[')) !== false) {
-                if (($end = strpos($text,']]></pw>')) !== false) {
-                    $text = substr($text,0,$start+4).'XXXXXXXXXXXXXXXX'.substr($text,$end+3,99999);
-                }
-            }
-            // Hiding password in the logging
-            if (($start = strpos($text,'<pw>')) !== false) {
-                if (($end = strpos($text,'</pw>')) !== false) {
-                    $text = substr($text,0,$start+4).'XXXXXXXXXXXXXXXX'.substr($text,$end,99999);
-                }
-            }
+            // Hide userid in the logging
+            $text = $this->hideTextBetween($text,'<clID>','</clID>');
+            // Hide password in the logging
+            $text = $this->hideTextBetween($text,'<pw>','</pw>');
+            // Hide password in the logging
+            $text = $this->hideTextBetween($text,'<pw><![CDATA[',']]></pw>');
+            // Hide new password in the logging
+            $text = $this->hideTextBetween($text,'<newPW>','</newPW>');
+            // Hide new password in the logging
+            $text = $this->hideTextBetween($text,'<newPW><![CDATA[',']]></newPW>');
             //echo "-----".date("Y-m-d H:i:s")."-----".$text."-----end-----\n";
             $log = "-----" . $action . "-----" . date("Y-m-d H:i:s") . "-----\n" . $text . "\n-----END-----" . date("Y-m-d H:i:s") . "-----\n";
             $this->logentries[] = $log;
@@ -1086,6 +1078,21 @@ class eppConnection {
                 file_put_contents($this->logFile, "\n".$log, FILE_APPEND);
             }
         }
+    }
+
+    /**
+     * @param $text
+     * @param $start
+     * @param $end
+     * @return string
+     */
+    protected function hideTextBetween($text, $start, $end) {
+        if (($startpos = strpos(strtolower($text),strtolower($start))) !== false) {
+            if (($endpos = strpos(strtolower($text),strtolower($end))) !== false) {
+                $text = substr($text,0,$startpos+strlen($start)).'XXXXXXXXXXXXXXXX'.substr($text,$endpos,99999);
+            }
+        }
+        return $text;
     }
 
     /**
