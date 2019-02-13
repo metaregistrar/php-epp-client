@@ -7,20 +7,19 @@ xmlns:cozacontact="http://co.za/epp/extensions/cozacontact-1-0">
   <epp:command>
     <epp:info>
       <contact:info>
-        <contact:id>contactID</contact:id>
+        <contact:id>RegistrarID</contact:id>
       </contact:info>
     </epp:info>
     <epp:extension>
       <cozacontact:info>
-        <cozacontact:domainListing>true</cozacontact:domainListing>
-      </cozacontact:info>
+      <cozacontact:balance>true</cozacontact:balance></cozacontact:info>
     </epp:extension>
   </epp:command>
 </epp:epp>
 
 
 */
-class cozaEppInfoContactRequest extends eppInfoContactRequest {
+class cozaEppBalanceCheckRequest extends eppInfoContactRequest {
     function __construct($inforequest) {
         parent::__construct($inforequest);
         $this->addCozaExtension();
@@ -31,7 +30,7 @@ class cozaEppInfoContactRequest extends eppInfoContactRequest {
     public function addCozaExtension() {
         $this->addExtension('xmlns:cozacontact', 'http://co.za/epp/extensions/cozacontact-1-0');
         $info = $this->createElement('cozacontact:info');
-        $infocontact = $this->createElement('cozacontact:domainListing','true');
+        $infocontact = $this->createElement('cozacontact:balance','true');
         $info->appendChild($infocontact);
         $this->getExtension()->appendChild($info);
     }
