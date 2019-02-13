@@ -27,6 +27,11 @@ class chargeEppCheckDomainResponse extends eppCheckDomainResponse {
     function __construct() {
         parent::__construct();
     }
+
+    /**
+     * Get the domain name for which premium prices are set
+     * @return null|string
+     */
     public function getChargeDomainName() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/charge:chkData/charge:cd/charge:name');
@@ -36,6 +41,11 @@ class chargeEppCheckDomainResponse extends eppCheckDomainResponse {
             return null;
         }
     }
+
+    /**
+     * Get the description of pricing category
+     * @return null|string
+     */
     public function getChargeCategory() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/charge:chkData/charge:cd/charge:set/charge:category');
@@ -45,6 +55,11 @@ class chargeEppCheckDomainResponse extends eppCheckDomainResponse {
             return null;
         }
     }
+
+    /**
+     * Get the name of the pricing category
+     * @return null|string
+     */
     public function getChargeCategoryName() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/charge:chkData/charge:cd/charge:set/charge:category');
@@ -56,6 +71,12 @@ class chargeEppCheckDomainResponse extends eppCheckDomainResponse {
             return null;
         }
     }
+
+
+    /**
+     * Get the pricing type
+     * @return null|string
+     */
     public function getChargeCategoryType() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/charge:chkData/charge:cd/charge:set/charge:type');
@@ -65,6 +86,11 @@ class chargeEppCheckDomainResponse extends eppCheckDomainResponse {
             return null;
         }
     }
+
+    /**
+     * Get the prices of the various domain commands
+     * @return array|null
+     */
     public function getChargePrices() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/charge:chkData/charge:cd/charge:set/charge:amount');
