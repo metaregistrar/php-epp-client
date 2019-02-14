@@ -33,7 +33,7 @@ class chargeEppDomain {
     /**
      * @param string $categoryname
      */
-    public function setCategoryname(string $categoryname) {
+    public function setCategoryname($categoryname) {
         $this->categoryname = $categoryname;
     }
 
@@ -47,7 +47,7 @@ class chargeEppDomain {
     /**
      * @param string $categoryid
      */
-    public function setCategoryid(string $categoryid) {
+    public function setCategoryid($categoryid) {
         $this->categoryid = $categoryid;
     }
 
@@ -61,7 +61,7 @@ class chargeEppDomain {
     /**
      * @param string $chargetype
      */
-    public function setChargetype(string $chargetype) {
+    public function setChargetype($chargetype) {
         $this->chargetype = $chargetype;
     }
 
@@ -75,7 +75,7 @@ class chargeEppDomain {
     /**
      * @param array $charges
      */
-    public function setCharges(array $charges) {
+    public function setCharges($charges) {
         $this->charges = $charges;
     }
 
