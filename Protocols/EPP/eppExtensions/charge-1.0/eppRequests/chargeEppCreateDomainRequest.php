@@ -23,7 +23,7 @@ class chargeEppCreateDomainRequest extends eppCreateDomainRequest {
      * @param bool $forcehostattr
      * @param bool $namespacesinroot
      */
-    function __construct($createinfo, $forcehostattr, $namespacesinroot) {
+    function __construct($createinfo,  $forcehostattr = false, $namespacesinroot = true) {
         parent::__construct($createinfo, $forcehostattr, $namespacesinroot);
     }
 
