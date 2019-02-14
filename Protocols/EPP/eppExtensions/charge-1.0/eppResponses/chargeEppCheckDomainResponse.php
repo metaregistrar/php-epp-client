@@ -41,20 +41,7 @@ class chargeEppCheckDomainResponse extends eppCheckDomainResponse {
 
     /**
      * Get all charges for all domain names
-     * Return is in an array of domain names
-     * ["test.gtld"]=>
-    {
-    ["categoryname"]=>"premium"
-    ["categoryid"]=>""
-    ["chargetype"]=>"price"
-    ["charges"]=>
-    {
-    ["transfer"]=>"20.0000"
-    ["create"]=>"20.0000"
-    ["renew"]=>"20.0000"
-    ["update"]=>"20.0000"
-    }
-    }
+     * Return is in an array of chargeEppDomain objects
      * @return array|null
      */
     public function getCharges() {
@@ -65,12 +52,14 @@ class chargeEppCheckDomainResponse extends eppCheckDomainResponse {
             foreach ($result as $record) {
                 /* @var \DOMElement $record */
                 $domainname = $record->getElementsByTagName('name')->item(0)->nodeValue;
+                $thischarge = new chargeEppDomain();
+
                 $category = $record->getElementsByTagName('category')->item(0);
                 /* @var \DOMElement $category */
-                $categoryname = $category->nodeValue;
-                $categoryid = $category->getAttribute('name');
+                $thischarge->setCategoryname($category->nodeValue);
+                $thischarge->setCategoryid($category->getAttribute('name'));
+                $thischarge->setChargetype($record->getElementsByTagName('type')->item(0)->nodeValue);
                 $charges = $record->getElementsByTagName('amount');
-                $chargetype = $record->getElementsByTagName('type')->item(0)->nodeValue;
                 $c = [];
                 foreach ($charges as $charge) {
                     /* @var \DOMElement $charge */
@@ -78,7 +67,8 @@ class chargeEppCheckDomainResponse extends eppCheckDomainResponse {
                     $command = $charge->getAttribute('command');
                     $c[$command]=$amount;
                 }
-                $response[$domainname]=['categoryname'=>$categoryname,'categoryid'=>$categoryid,'chargetype'=>$chargetype,'charges'=>$c];
+                $thischarge->setCharges($c);
+                $response[$domainname] = $thischarge;
             }
             return $response;
         } else {
