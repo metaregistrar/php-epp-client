@@ -6,3 +6,6 @@ $this->addExtension('charge', 'http://www.unitedtld.com/epp/charge-1.0');
 #
 include_once(dirname(__FILE__) . '/eppResponses/chargeEppCheckDomainResponse.php');
 $this->addCommandResponse('Metaregistrar\EPP\eppCheckDomainRequest', 'Metaregistrar\EPP\chargeEppCheckDomainResponse');
+
+include_once(dirname(__FILE__) . '/eppResponses/chargeEppInfoDomainResponse.php');
+$this->addCommandResponse('Metaregistrar\EPP\eppInfoDomainRequest', 'Metaregistrar\EPP\chargeEppInfoDomainResponse');
