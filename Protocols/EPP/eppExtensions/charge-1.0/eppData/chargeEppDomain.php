@@ -26,7 +26,7 @@ class chargeEppDomain {
     /**
      * @return string
      */
-    public function getCategoryname(): string {
+    public function getCategoryname() {
         return $this->categoryname;
     }
 
@@ -40,7 +40,7 @@ class chargeEppDomain {
     /**
      * @return string
      */
-    public function getCategoryid(): string {
+    public function getCategoryid() {
         return $this->categoryid;
     }
 
@@ -54,7 +54,7 @@ class chargeEppDomain {
     /**
      * @return string
      */
-    public function getChargetype(): string {
+    public function getChargetype() {
         return $this->chargetype;
     }
 
@@ -68,7 +68,7 @@ class chargeEppDomain {
     /**
      * @return array
      */
-    public function getCharges(): array {
+    public function getCharges() {
         return $this->charges;
     }
 
