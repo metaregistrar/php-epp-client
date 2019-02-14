@@ -9,3 +9,7 @@ $this->addCommandResponse('Metaregistrar\EPP\eppCheckDomainRequest', 'Metaregist
 
 include_once(dirname(__FILE__) . '/eppResponses/chargeEppInfoDomainResponse.php');
 $this->addCommandResponse('Metaregistrar\EPP\eppInfoDomainRequest', 'Metaregistrar\EPP\chargeEppInfoDomainResponse');
+
+include_once(dirname(__FILE__) . '/eppRequests/chargeEppCreateDomainRequest.php');
+include_once(dirname(__FILE__) . '/eppResponses/chargeEppCreateDomainResponse.php');
+$this->addCommandResponse('Metaregistrar\EPP\chargeEppCreateDomainRequest', 'Metaregistrar\EPP\chargeEppCreateDomainResponse');
