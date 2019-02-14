@@ -44,5 +44,6 @@ class chargeEppCreateDomainRequest extends eppCreateDomainRequest {
         $set->appendChild($amount);
         $agreement->appendChild($set);
         $this->getExtension()->appendChild($agreement);
+        $this->addSessionId();
     }
 }
