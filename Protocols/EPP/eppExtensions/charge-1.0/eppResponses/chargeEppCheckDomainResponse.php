@@ -79,7 +79,7 @@ class chargeEppCheckDomainResponse extends eppCheckDomainResponse {
     /**
      * Get the premium prices for a specific domain name
      * @param string $domainname
-     * @return null|array
+     * @return null|chargeEppDomain
      */
     public function getChargeForDomainName($domainname) {
         $response = $this->getCharges();
