@@ -2,6 +2,13 @@
 namespace Metaregistrar\EPP;
 
 class eppConnection {
+
+    /**
+     * Prevents loading the settings more then once
+     * @var bool
+     */
+    protected $settingsloaded = false;
+
     /**
      * Hostname of this connection
      * @var string
@@ -192,6 +199,12 @@ class eppConnection {
     function __construct($logging = false, $settingsfile = null) {
         if ($logging) {
             $this->enableLogging();
+        }
+        if ($settingsfile) {
+            if (!$this->settingsloaded) {
+                $this->setConnectionDetails($this->loadSettings(null,$settingsfile));
+            }
+
         }
         #
         # Initialize default values for config parameters
@@ -1004,6 +1017,7 @@ class eppConnection {
             // Enter the path to your certificate without password
             $this->enableCertification($result['certificatefile'], null);
         }
+        $this->settingsloaded = true;
         return true;
     }
 
