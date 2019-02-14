@@ -27,15 +27,19 @@ class chargeEppCreateDomainRequest extends eppCreateDomainRequest {
         parent::__construct($createinfo, $forcehostattr, $namespacesinroot);
     }
 
-    function addDomainCharge($categoryid, $categoryname, $chargetype, $price) {
+    /**
+     * Add the necessary charges to the created domain name
+     * @param chargeEppDomain $charge
+     */
+    function addDomainCharge(chargeEppDomain $charge) {
         $agreement = $this->createElement('charge:agreement');
         //$this->setNamespace('charge', 'http://www.unitedtld.com/epp/charge-1.0',$agreement);
         $set = $this->createElement('charge:set');
-        $category = $this->createElement('charge:category',$categoryname);
-        $category->setAttribute('name',$categoryid);
+        $category = $this->createElement('charge:category',$charge->getCategoryname());
+        $category->setAttribute('name',$charge->getCategoryid());
         $set->appendChild($category);
-        $set->appendChild($this->createElement('charge:type',$chargetype));
-        $amount = $this->createElement('charge:amount',$price);
+        $set->appendChild($this->createElement('charge:type',$charge->getChargetype()));
+        $amount = $this->createElement('charge:amount',$charge->getCharge('create'));
         $amount->setAttribute('command','create');
         $set->appendChild($amount);
         $agreement->appendChild($set);
