@@ -8,8 +8,7 @@ class metaregInfoDnsResponse extends eppResponse {
     /**
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         $xpath = $this->xPath();
         $test= $xpath->query(self::RESPONSE_BASEXPATH . '/dns-ext:name');
         if ($test->length>0) {
@@ -21,8 +20,7 @@ class metaregInfoDnsResponse extends eppResponse {
     /**
      * @return array
      */
-    public function getKeyData()
-    {
+    public function getKeyData() {
         $xpath = $this->xPath();
         $keydata = $xpath->query(self::RESPONSE_BASEXPATH . '/dns-ext:keyData');
         $response = [];
@@ -42,10 +40,30 @@ class metaregInfoDnsResponse extends eppResponse {
     }
 
     /**
+     * @return array of eppSecdns records
+     */
+    public function getKeys() {
+        $xpath = $this->xPath();
+        $keydata = $xpath->query(self::RESPONSE_BASEXPATH . '/dns-ext:keyData');
+        $response = [];
+        for ($i = 0; $i < $keydata->length; $i++) {
+            $item = $keydata->item($i);
+            /* @var $item \DOMElement */
+            $secdns = new eppSecdns();
+            $secdns->setFlags($this->getValueForTag('flags', $item));
+            $secdns->setProtocol($this->getValueForTag('protocol', $item));
+            $secdns->setAlgorithm($this->getValueForTag('alg', $item));
+            $secdns->setPubkey($this->getValueForTag('pubKey', $item));
+            $response[] = $secdns;
+        }
+        return $response;
+
+    }
+
+    /**
      * @return array
      */
-    public function getContent()
-    {
+    public function getContent() {
         $xpath = $this->xPath();
         $content = $xpath->query(self::RESPONSE_BASEXPATH . '/dns-ext:content');
         $response = [];
@@ -74,8 +92,7 @@ class metaregInfoDnsResponse extends eppResponse {
      * @param \DOMElement $item
      * @return string
      */
-    private function getValueForTag($tag, \DOMElement $item)
-    {
+    private function getValueForTag($tag, \DOMElement $item) {
         $items = $item->getElementsByTagName($tag);
         if ($items->length == 0) {
             return '';
