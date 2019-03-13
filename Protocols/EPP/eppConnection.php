@@ -1037,10 +1037,12 @@ class eppConnection {
             $result = [];
             $settings = file($path, FILE_IGNORE_NEW_LINES);
             foreach ($settings as $setting) {
-                list($param, $value) = explode('=', $setting, 2);
-                $param = trim($param);
-                $value = trim($value);
-                $result[$param] = $value;
+                if (strlen(trim($setting))>0) {
+                    list($param, $value) = explode('=', $setting, 2);
+                    $param = trim($param);
+                    $value = trim($value);
+                    $result[$param] = $value;
+                }
             }
             return $result;
         } else {
