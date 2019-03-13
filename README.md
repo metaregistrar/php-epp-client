@@ -92,6 +92,9 @@ How to use this repository
         logging=true
         certificatefile=/home/xxxxxx/xxxxxxx.pem
         certificatepassword=xxxxxxx
+        verifypeer=true/false
+        verifypeername=true/false
+        allowselfsigned=true/false
 ```
 4. Now, `checkdomain.php` should be functioning and checking domains.
 

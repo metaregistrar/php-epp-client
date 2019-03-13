@@ -854,6 +854,13 @@ class eppConnection {
         $this->verify_peer_name = $verify_peer_name;
     }
 
+    /**
+     * @param boolean $allow_self_signed
+     */
+    public function setAllowSelfSigned(bool $allow_self_signed) {
+        $this->allow_self_signed = $allow_self_signed;
+    }
+
     public function getRetry()
     {
         return $this->retry;
@@ -1017,6 +1024,28 @@ class eppConnection {
             // Enter the path to your certificate without password
             $this->enableCertification($result['certificatefile'], null);
         }
+        if (array_key_exists('verifypeer',$result)) {
+            if (($result['verifypeer']=='true') || ($result['verifypeer']=='yes') || ($result['verifypeer']=='1')) {
+                $this->verify_peer = true;
+            } else {
+                $this->verify_peer = false;
+            }
+        }
+        if (array_key_exists('verifypeername',$result)) {
+            if (($result['verifypeername']=='true') || ($result['verifypeername']=='yes') || ($result['verifypeername']=='1')) {
+                $this->verify_peer_name = true;
+            } else {
+                $this->verify_peer_name = false;
+            }
+        }
+        if (array_key_exists('allowselfsigned',$result)) {
+            if (($result['allowselfsigned']=='true') || ($result['allowselfsigned']=='yes') || ($result['allowselfsigned']=='1')) {
+                $this->allow_self_signed = true;
+            } else {
+                $this->allow_self_signed = false;
+            }
+        }
+
         $this->settingsloaded = true;
         return true;
     }
@@ -1115,9 +1144,12 @@ class eppConnection {
      * @param null|string $connectionComment
      * @return eppConnection
      */
-    public function setConnectionComment($connectionComment)
-    {
+    public function setConnectionComment($connectionComment) {
         $this->connectionComment = $connectionComment;
         return $this;
     }
+
+
+
+
 }
