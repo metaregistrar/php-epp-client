@@ -7,10 +7,9 @@ use Metaregistrar\EPP\eppSecdns;
 use Metaregistrar\EPP\eppDnssecUpdateDomainRequest;
 use Metaregistrar\EPP\eppException;
 use Metaregistrar\EPP\eppInfoDomainRequest;
-use Metaregistrar\EPP\eppInfoDomainResponse;
 
 try {
-    $domainname = 'portugalvakanties.nl';
+    $domainname = '';
     // Please enter your own settings file here under before using this example
     if ($conn = eppConnection::create('')) {
         $conn->enableDnssec();
@@ -55,9 +54,8 @@ function infodomain(eppConnection $conn, $domainname) {
 
     $info = new eppInfoDomainRequest(new eppDomain($domainname));
     if ($response = $conn->request($info)) {
-        /* @var $response Metaregistrar\EPP\eppInfoDomainResponse */
+        /* @var $response Metaregistrar\EPP\eppDnssecInfoDomainResponse */
         return $response->getKeydata();
-
     } else {
         echo "ERROR retrieving domain info for $domainname\n";
     }
