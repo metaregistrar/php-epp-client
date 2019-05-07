@@ -1,7 +1,6 @@
 <?php
 $this->addExtension('no-ext-contact', 'http://www.norid.no/xsd/no-ext-contact-1.0');
 
-include_once(dirname(__FILE__) . '/../no-ext-domain-1.1/eppResponses/noridEppResponseTrait.php');
 include_once(dirname(__FILE__) . '/eppRequests/noridEppContactRequestTrait.php');
 
 // Contact
