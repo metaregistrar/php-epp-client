@@ -16,9 +16,11 @@ include_once(dirname(__FILE__) . '/eppRequests/noridEppUpdateContactRequest.php'
 include_once(dirname(__FILE__) . '/eppResponses/noridEppUpdateContactResponse.php');
 $this->addCommandResponse('Metaregistrar\\EPP\\noridEppUpdateContactRequest', 'Metaregistrar\\EPP\\noridEppUpdateContactResponse');
 
+include_once(dirname(__FILE__) . '/eppRequests/noridEppInfoContactRequest.php');
 include_once(dirname(__FILE__) . '/eppResponses/noridEppInfoContactResponse.php');
-$this->addCommandResponse('Metaregistrar\\EPP\\eppInfoContactRequest', 'Metaregistrar\\EPP\\noridEppInfoContactResponse');
+$this->addCommandResponse('Metaregistrar\\EPP\\noridEppInfoContactRequest', 'Metaregistrar\\EPP\\noridEppInfoContactResponse');
 
+include_once(dirname(__FILE__) . '/eppRequests/noridEppCheckContactRequest.php');
 include_once(dirname(__FILE__) . '/eppResponses/noridEppCheckContactResponse.php');
-$this->addCommandResponse('Metaregistrar\\EPP\\eppCheckContactRequest', 'Metaregistrar\\EPP\\noridEppCheckContactResponse');
+$this->addCommandResponse('Metaregistrar\\EPP\\noridEppCheckContactRequest', 'Metaregistrar\\EPP\\noridEppCheckContactResponse');
 
