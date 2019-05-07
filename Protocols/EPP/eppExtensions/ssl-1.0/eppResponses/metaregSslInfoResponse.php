@@ -107,14 +107,14 @@ class metaregSslInfoResponse extends eppResponse {
                         $valresult->setValidationType($this->queryPath('dcvType',$host));
                         $valresult->setHostStatus($this->queryPath('status',$host));
                         $valresult->setHostStatusMessage($this->queryPath('statusMessage',$host));
+                        $valresult->setDnsRecord($this->queryPath('dnsRecord',$host));
+                        $valresult->setCnameValue($this->queryPath('dnsCnameValue',$host));
                         $valresult->setFileLocation($this->queryPath('fileLocation',$host));
                         $valresult->setFileContents($this->queryPath('fileContents',$host));
-
                     }
                 }
                 $result[] = $valresult;
             }
-
         }
         return $result;
     }

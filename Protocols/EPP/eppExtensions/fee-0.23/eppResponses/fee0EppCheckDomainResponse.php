@@ -1,7 +1,7 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class feeEppCheckdomainResponse extends eppCheckDomainResponse {
+class fee0EppCheckdomainResponse extends eppCheckDomainResponse {
     function __construct() {
         parent::__construct();
     }

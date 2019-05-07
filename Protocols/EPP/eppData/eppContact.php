@@ -101,7 +101,7 @@ class eppContact {
      * @throws eppException
      */
     public function addPostalInfo(eppContactPostalInfo $postalInfo) {
-        if (count($this->postalInfo) < 2) {
+        if ((is_array($this->postalInfo)) && (count($this->postalInfo) < 2)) {
             $this->postalInfo[count($this->postalInfo)] = $postalInfo;
         } else {
             throw new eppException('Cannot add more than 3 postal information blocks to a contact');

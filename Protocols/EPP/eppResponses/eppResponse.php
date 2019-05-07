@@ -52,43 +52,7 @@ class eppResponse extends \DOMDocument {
      *
      * @var array
      */
-    /*private $matcher = [
-        'Metaregistrar\\EPP\\eppCheckResponse' => [
-            '/epp:epp/epp:response/epp:resData/domain:chkData',
-            '/epp:epp/epp:response/epp:resData/host:chkData',
-            '/epp:epp/epp:response/epp:resData/contact:chkData/contact:cd'
-        ],
-        'Metaregistrar\\EPP\\eppLaunchCheckResponse' => [
-            '/epp:epp/epp:response/epp:extension/launch:chkData'
-        ],
-        'Metaregistrar\\EPP\\eppHelloResponse' => [
-            '/epp:epp/epp:greeting/epp:svID'
-        ],
-        'Metaregistrar\\EPP\\eppPollResponse' => [
-            '/epp:epp/epp:response/epp:msgQ'
-        ],
-        'Metaregistrar\\EPP\\eppInfoContactResponse' => [
-            '/epp:epp/epp:response/epp:resData/contact:infData'
-        ],
-        'Metaregistrar\\EPP\\eppInfoDomainResponse' => [
-            '/epp:epp/epp:response/epp:resData/domain:infData'
-        ],
-        'Metaregistrar\\EPP\\eppCreateResponse' => [
-            '/epp:epp/epp:response/epp:resData/host:creData',
-            '/epp:epp/epp:response/epp:resData/domain:creData',
-            '/epp:epp/epp:response/epp:resData/contact:creData'
-        ],
-        'Metaregistrar\\EPP\\eppRenewResponse' => [
-            '/epp:epp/epp:response/epp:resData/domain:renData'
-        ],
-        'Metaregistrar\\EPP\\eppTransferResponse' => [
-            '/epp:epp/epp:response/epp:resData/domain:trnData'
-        ],
-        'Metaregistrar\\EPP\\eppLaunchCreateDomainResponse' => [
-            '/epp:epp/epp:response/epp:extension/launch:creData'
-        ]
-    ];*/
-
+    private $exceptions = null;
     /**
      *
      * @var string Category of problem
@@ -153,15 +117,6 @@ class eppResponse extends \DOMDocument {
         echo $this->saveXML();
     }
 
-    //public function setParameters($language,$version,$objuri,$exturi,$xpathuri)
-    //{
-    //    $this->language = $language;
-    //    $this->version = $version;
-    //    $this->objuri = $objuri;
-    //    $this->exturi = $exturi;
-    //    $this->xpathuri = $xpathuri;
-    //}
-
     /**
      * @return bool
      * @throws eppException
@@ -225,10 +180,18 @@ class eppResponse extends \DOMDocument {
             if (strlen($resultreason)) {
                 $errorstring .= ' (' . $resultreason . ')';
             }
-            throw new eppException($errorstring, $resultcode, null, $resultreason, $this->saveXML());
+            if ((is_array($this->exceptions)) && (count($this->exceptions)>0)) {
+                foreach ($this->exceptions as $exceptionhandler) {
+                    throw new $exceptionhandler($errorstring, $resultcode, null, $resultreason, $this->saveXML());
+                }
+            } else {
+                throw new eppException($errorstring, $resultcode, null, $resultreason, $this->saveXML());
+            }
+
         } else {
             return true;
         }
+        return false;
     }
 
     /**
@@ -357,24 +320,6 @@ class eppResponse extends \DOMDocument {
         }
     }
 
-    /**
-     * Makes the proper response object based on the input xml
-     *
-     * @return eppResponse
-     */
-    /*public function instantiateProperResponse()
-    {
-        foreach ($this->matcher as $type=>$matches)
-        {
-            if($this->hasElement($matches))
-            {
-                $response = new $type();
-                $response->loadXML($this->saveXML(null, LIBXML_NOEMPTYTAG));
-                return $response;
-            }
-        }
-        return $this;
-    }*/
 
     /**
      * Checks and sees if an element is present using xpath
@@ -431,7 +376,7 @@ class eppResponse extends \DOMDocument {
      * @param null|\DOMElement $object
      * @return null|string
      */
-    protected function queryPath($path, $object = null) {
+    public function queryPath($path, $object = null) {
         if ($object) {
             $result = $object->getElementsByTagName($path);
         } else {
@@ -443,6 +388,10 @@ class eppResponse extends \DOMDocument {
         } else {
             return null;
         }
+    }
+
+    public function addException($exceptionhandler) {
+        $this->exceptions[] = $exceptionhandler;
     }
 
 }

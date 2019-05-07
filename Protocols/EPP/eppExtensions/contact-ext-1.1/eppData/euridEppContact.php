@@ -16,7 +16,10 @@ class euridEppContact extends eppContact {
     #
 
     const CONTACT_EXT_TYPES = ['registrant', 'tech', 'onsite', 'reseller'];
-
+    const EURID_EXT_CONTACT_REGISTRANT = 'registrant';
+    const EURID_EXT_CONTACT_TECH = 'tech';
+    const EURID_EXT_CONTACT_ONSITE = 'onsite';
+    const EURID_EXT_CONTACT_RESELLER = 'reseller';
 
     private $contactExtType;
     private $contactExtLang = 'en';

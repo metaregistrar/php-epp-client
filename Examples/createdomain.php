@@ -24,7 +24,7 @@ use Metaregistrar\EPP\eppCreateDomainRequest;
 
 if ($argc <= 1)
 {
-    echo "Usage: registerdomain.php <domainname>\n";
+    echo "Usage: createdomain.php <domainname>\n";
 	echo "Please enter the domain name to be created\n\n";
 	die();
 }

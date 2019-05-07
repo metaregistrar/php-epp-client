@@ -3,6 +3,20 @@ include_once(dirname(__FILE__).'/eppTestCase.php');
 
 class eppCreateContactTest extends eppTestCase {
 
+    public function testClientCreateContact() {
+        $name = 'jay';
+        $city = 'Amsterdam';
+        $country = 'NL';
+        $organization = null;
+        $address= 'Pomme1';
+        $postcode = '7905BA';
+        $telephone = '+31.612413333';
+        $email = 'jjay@gmail.com';
+        $contactinfo = new Metaregistrar\EPP\eppContact(new Metaregistrar\EPP\EppContactPostalInfo($name, $city, $country, $organization, $address, null, $postcode, Metaregistrar\EPP\eppContact::TYPE_LOC), $email, $telephone);
+        $response = $this->conn->request(new \Metaregistrar\EPP\eppCreateContactRequest($contactinfo));
+        $this->assertEquals('1000',$response->getResultCode());
+    }
+
     public function testCreateContact() {
         $name = 'Test name';
         $city = 'Test city';

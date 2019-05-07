@@ -8,10 +8,8 @@ use Metaregistrar\TMCH\tmchException;
 $domain = 'nike';
 $domainkey = null;
 try {
-    $dnl = new dnlTmchConnection();
-    $dnl->setConnectionDetails('.');
-    $cnis = new cnisTmchConnection();
-    $cnis->setConnectionDetails('');
+    $dnl = new dnlTmchConnection(true,'');
+    $cnis = new cnisTmchConnection(true,'');
     $list = $dnl->getDnl();
     if (count($list)==1) {
         echo "empty list received\n";

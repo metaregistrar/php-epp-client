@@ -22,19 +22,18 @@ namespace Metaregistrar\EPP;
 
 
 class rrpproxyEppUpdateDomainRequest extends eppUpdateDomainRequest {
-    function __construct(eppDomain $domain, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false) {
+    function __construct(eppDomain $domain, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false, $trustee = true) {
         $upd = new eppDomain($domain->getDomainname());
-        parent::__construct($domain, null, null, $upd);
-        $this->addTrustee();
+        parent::__construct($domain, $addinfo, $removeinfo, $upd);
+        $this->addTrustee($trustee);
         parent::addSessionId();
-
     }
 
-    private function addTrustee() {
+    private function addTrustee($trustee) {
         $ext = $this->createElement('extension');
         $infdata = $this->createElement('keysys:update');
         $domdata = $this->createElement('keysys:domain');
-        $cd = $this->createElement('keysys:de-accept-trustee-tac', '1');
+        $cd = $this->createElement('keysys:de-accept-trustee-tac', $trustee);
         $domdata->appendChild($cd);
         $infdata->appendChild($domdata);
         $ext->appendChild($infdata);

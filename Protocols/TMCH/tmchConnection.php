@@ -97,40 +97,22 @@ class tmchConnection {
         } else {
             $path = str_replace('Metaregistrar\TMCH\\',dirname(__FILE__).'/../../Registries/',get_called_class());
         }
-        if (!$settingsfile) {
-            $settingsfile = 'settings.ini';
-        }
         if ($settings = $this->loadSettings($path,$settingsfile)) {
-            $this->setHostname($settings['hostname']);
-            $this->setUsername($settings['userid']);
-            $this->setPassword($settings['password']);
-            $this->setPort($settings['port']);
+            $this->setConnectionDetails($settings);
         }
     }
 
 
-    public function setConnectionDetails($settingsfile) {
-        $result = array();
-        if (is_readable($settingsfile)) {
-            $settings = file($settingsfile, FILE_IGNORE_NEW_LINES);
-            foreach ($settings as $setting) {
-                list($param, $value) = explode('=', $setting);
-                $param = trim($param);
-                $value = trim($value);
-                $result[$param] = $value;
-            }
-            $this->setHostname($result['hostname']);
-            $this->setUsername($result['userid']);
-            $this->setPassword($result['password']);
-            if (array_key_exists('port',$result)) {
-                $this->setPort($result['port']);
-            } else {
-                $this->setPort(700);
-            }
-            return true;
-        }else {
-            throw new tmchException("Settings file $settingsfile could not be opened");
+    public function setConnectionDetails($result) {
+        $this->setHostname($result['hostname']);
+        $this->setUsername($result['userid']);
+        $this->setPassword($result['password']);
+        if (array_key_exists('port',$result)) {
+            $this->setPort($result['port']);
+        } else {
+            $this->setPort(700);
         }
+        return true;
     }
 
 

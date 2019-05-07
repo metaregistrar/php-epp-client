@@ -65,7 +65,7 @@ Example scipts in the main directory:
 |modifydomain.php        | Update a domain name with new info.                                                                                         |
 |createcontact.php       | Create a contact object.                                                                                                    |
 |updatecontact.php       | Update contact details of a created contact object.                                                                         |
-|registerdomain.php      | Register a domain name in general availability phase.                                                                       |
+|createdomain.php        | Register a domain name in general availability phase.                                                                       |
 |signdomain.php          | DNSSEC sign a domain name.                                                                                                  |
 |poll.php                | List registry poll messages and confirm a message.                                                                          |
 |checklaunchdomain.php   | Check domain name in 'claims' phase of draft-ietf-eppext-launchphase and check if the domain is free.                       |
@@ -89,8 +89,12 @@ How to use this repository
         port=7000
         userid=xxxxxxxx
         password=xxxxxxxxx
+        logging=true
         certificatefile=/home/xxxxxx/xxxxxxx.pem
         certificatepassword=xxxxxxx
+        verifypeer=true/false
+        verifypeername=true/false
+        allowselfsigned=true/false
 ```
 4. Now, `checkdomain.php` should be functioning and checking domains.
 
@@ -99,7 +103,7 @@ How to use this repository
 
 Or set all parameters individually:
 ```
-$conn = Metaregistrar\EPP\eppConnection();
+$conn = new Metaregistrar\EPP\eppConnection();
 $conn->setHostname('ssl://eppltest1.metaregistrar.com'); // Hostname may vary depending on the registry selected
 $conn->setPort(7000); // Port may vary depending on the registry selected
 $conn->setUsername('xxxxxxxx');

@@ -19,7 +19,7 @@ class euridEppCreateContactRequest extends eppCreateContactRequest {
      * @param string $language
      * @throws eppException
      */
-    function __construct($createinfo) {
+    function __construct(euridEppContact $createinfo) {
         parent::__construct($createinfo);
         $this->addContactExtension($createinfo);
         $this->addSessionId();
@@ -28,7 +28,7 @@ class euridEppCreateContactRequest extends eppCreateContactRequest {
     /**
      * @param object eppContact
      */
-    public function addContactExtension(eppContact $createinfo) {
+    public function addContactExtension(euridEppContact $createinfo) {
         $this->addExtension('xmlns:contact-ext', 'http://www.eurid.eu/xml/epp/contact-ext-1.1');
         $create = $this->createElement('contact-ext:create');
         if(!empty($createinfo->getContactExtType())) {

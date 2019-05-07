@@ -6,6 +6,7 @@ namespace Metaregistrar\EPP;
  * @package Metaregistrar\EPP
  *
  * format of dns records: array with keys type, name, content, ttl, priority
+ * $records[] = ['type'=>'','name'=>'', 'content=>'', 'ttl'=>'', 'priority=>''];
  */
 class metaregCreateDnsRequest extends metaregDnsRequest {
     /**

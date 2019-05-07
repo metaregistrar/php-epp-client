@@ -1,7 +1,8 @@
 <?php
 require(dirname(__FILE__).'/../autoloader.php');
+use PHPUnit\Framework\TestCase;
 
-class eppTestCase extends PHPUnit_Framework_TestCase {
+class eppTestCase extends TestCase {
     /**
      * @var Metaregistrar\EPP\eppConnection
      *
