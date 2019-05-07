@@ -19,10 +19,10 @@ class noridEppConnection extends eppConnection {
 
         // Add registry-specific EPP extensions
         parent::useExtension('no-ext-epp-1.0');
+        parent::useExtension('no-ext-result-1.0');
         parent::useExtension('no-ext-domain-1.1');
         parent::useExtension('no-ext-contact-1.0');
         parent::useExtension('no-ext-host-1.0');
-        parent::useExtension('no-ext-result-1.0');
 
 
 

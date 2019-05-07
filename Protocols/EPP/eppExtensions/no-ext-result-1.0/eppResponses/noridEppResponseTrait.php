@@ -4,11 +4,10 @@ namespace Metaregistrar\EPP;
 trait noridEppResponseTrait {
 
     /**
-     * @param \DOMXpath $xpath
      * @return array|null
      */
-    public function getExtConditions(\DOMXPath $xpath) {
-        $result = $xpath->query('/epp:epp/epp:response/epp:extension/no-ext-result:conditions/no-ext-result:condition');
+    public function getExtConditions() {
+        $result = $this->xPath()->query('/epp:epp/epp:response/epp:extension/no-ext-result:conditions/no-ext-result:condition');
         if (is_object($result) && ($result->length > 0)) {
             $conditions = array();
             foreach ($result as $element) {
@@ -26,11 +25,10 @@ trait noridEppResponseTrait {
     }
 
     /**
-     * @param \DOMXpath $xpath
      * @return array|null
      */
-    public function getExtServiceMessages(\DOMXPath $xpath) {
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/no-ext-result:message');
+    public function getExtServiceMessages() {
+        $result = $this->xPath()->query('/epp:epp/epp:response/epp:resData/no-ext-result:message');
         if (is_object($result) && ($result->length > 0)) {
             $service_messages = array();
             foreach ($result as $element) {

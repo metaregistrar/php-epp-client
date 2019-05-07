@@ -4,7 +4,6 @@ $this->addExtension('no-ext-domain', 'http://www.norid.no/xsd/no-ext-domain-1.1'
 // Domain
 include_once(dirname(__FILE__) . '/eppData/noridEppDomain.php');
 include_once(dirname(__FILE__) . '/eppRequests/noridEppDomainRequestTrait.php');
-include_once(dirname(__FILE__) . '/eppResponses/noridEppResponseTrait.php');
 
 // Domain Create/Withdraw
 include_once(dirname(__FILE__) . '/eppRequests/noridEppCreateDomainRequest.php');
@@ -18,6 +17,13 @@ $this->addCommandResponse('Metaregistrar\\EPP\\noridEppWithdrawDomainRequest', '
 include_once(dirname(__FILE__) . '/eppRequests/noridEppTransferRequest.php');
 include_once(dirname(__FILE__) . '/eppResponses/noridEppTransferResponse.php');
 $this->addCommandResponse('Metaregistrar\\EPP\\noridEppTransferRequest', 'Metaregistrar\\EPP\\noridEppTransferResponse');
+
+include_once(dirname(__FILE__) . '/eppRequests/noridEppDeleteDomainRequest.php');
+$this->addCommandResponse('Metaregistrar\\EPP\\noridEppDeleteDomainRequest', 'Metaregistrar\\EPP\\noridEppDeleteResponse');
+
+include_once(dirname(__FILE__) . '/eppRequests/noridEppInfoDomainRequest.php');
+include_once(dirname(__FILE__) . '/eppResponses/noridEppInfoDomainResponse.php');
+$this->addCommandResponse('Metaregistrar\\EPP\\noridEppInfoDomainRequest', 'Metaregistrar\\EPP\\noridEppInfoDomainResponse');
 
 
 
