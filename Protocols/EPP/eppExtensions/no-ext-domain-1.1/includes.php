@@ -25,6 +25,10 @@ include_once(dirname(__FILE__) . '/eppRequests/noridEppInfoDomainRequest.php');
 include_once(dirname(__FILE__) . '/eppResponses/noridEppInfoDomainResponse.php');
 $this->addCommandResponse('Metaregistrar\\EPP\\noridEppInfoDomainRequest', 'Metaregistrar\\EPP\\noridEppInfoDomainResponse');
 
+include_once(dirname(__FILE__) . '/eppRequests/noridEppUpdateDomainRequest.php');
+include_once(dirname(__FILE__) . '/eppResponses/noridEppUpdateDomainResponse.php');
+$this->addCommandResponse('Metaregistrar\\EPP\\noridEppUpdateDomainRequest', 'Metaregistrar\\EPP\\noridEppUpdateDomainResponse');
+
 
 
 
