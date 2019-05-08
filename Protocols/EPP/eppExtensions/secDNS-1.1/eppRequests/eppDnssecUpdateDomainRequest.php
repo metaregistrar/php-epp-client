@@ -24,7 +24,7 @@ C:         </secDNS:add>
  */
 
 class eppDnssecUpdateDomainRequest extends eppUpdateDomainRequest {
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null) {
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr = false, $namespacesinroot = true) {
         /* @var $addinfo eppDomain */
         /* @var $removeinfo eppDomain */
         /* @var $updateinfo eppDomain */
@@ -36,7 +36,7 @@ class eppDnssecUpdateDomainRequest extends eppUpdateDomainRequest {
         if ($updateinfo == null) {
             $updateinfo = new eppDomain($domainname);
         }
-        parent::__construct($domainname, $addinfo, $removeinfo, $updateinfo);
+        parent::__construct($domainname, $addinfo, $removeinfo, $updateinfo, $forcehostattr, $namespacesinroot);
         $secdns = $this->createElement('secDNS:update');
         $secdns->setAttribute('xmlns:secDNS', 'urn:ietf:params:xml:ns:secDNS-1.1');
         $secdns_updated = false;
