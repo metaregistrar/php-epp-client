@@ -27,7 +27,9 @@ class noridEppUpdateDomainRequest extends eppDnssecUpdateDomainRequest {
         $datasetElement->appendChild($this->createElement('no-ext-domain:versionNumber', $dataset['versionNumber']));
         $datasetElement->appendChild($this->createElement('no-ext-domain:acceptName', $dataset['acceptName']));
         $datasetElement->appendChild($this->createElement('no-ext-domain:acceptDate', $dataset['acceptDate']));
-        $this->getExtDomainExtension('update')->appendChild($datasetElement);
+        $changeElement = $this->createElement('no-ext-domain:chg');
+        $changeElement->appendChild($datasetElement);
+        $this->getExtDomainExtension('update')->appendChild($changeElement);
     }
 
 }
