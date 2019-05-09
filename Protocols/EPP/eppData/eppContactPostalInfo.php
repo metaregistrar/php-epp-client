@@ -77,7 +77,7 @@ class eppContactPostalInfo {
      * @return string
      */
     public function getStreet($line) {
-        if (is_array($this->street) && array_key_exists($line, $this->street)) {
+        if ((is_array($this->street)) && (array_key_exists($line, $this->street))) {
             return $this->street[$line];
         }
         return null;
@@ -148,8 +148,6 @@ class eppContactPostalInfo {
      * @return void
      */
     public function setZipcode($zipcode) {
-        //DONT Remove garbage from the zipcode, never modify customer input!
-        //$zipcode = preg_replace('/[^a-z\d]/i', '', $zipcode);
         $this->zipcode = $zipcode;
     }
 
