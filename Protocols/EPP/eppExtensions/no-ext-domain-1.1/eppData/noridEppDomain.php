@@ -8,7 +8,7 @@ class noridEppDomain extends eppDomain {
     private $extNotifyEmail = null;
     private $extDeleteFromDNS = null;
     private $extDeleteFromRegistry = null;
-    private $extApplicantDatasetVersionNumber = '2.0';
+    private $extApplicantDatasetVersionNumber = '3.0';
     private $extApplicantDatasetAcceptName = null;
     private $extApplicantDatasetAcceptDate = null;
 
