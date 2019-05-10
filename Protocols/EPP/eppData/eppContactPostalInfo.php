@@ -55,9 +55,8 @@ class eppContactPostalInfo {
     }
 
     /**
-     * Add a street line
-     * @param string $street
-     * @return void
+     * @param $street
+     * @throws eppException
      */
     public function addStreet($street) {
         if ((is_string($street)) && (strlen($street) > 0)) {
@@ -67,7 +66,7 @@ class eppContactPostalInfo {
             if (count($this->street) < 3) {
                 $this->street[count($this->street)] = htmlspecialchars($street, ENT_COMPAT, "UTF-8");
             } else {
-                throw new eppException('Cannot add more then 3 street names to postal info');
+                throw new eppException('Cannot add more than 3 street names to postal info');
             }
         }
     }
@@ -78,14 +77,14 @@ class eppContactPostalInfo {
      * @return string
      */
     public function getStreet($line) {
-        if (is_array($this->street) && array_key_exists($line, $this->street)) {
+        if ((is_array($this->street)) && (array_key_exists($line, $this->street))) {
             return $this->street[$line];
         }
         return null;
     }
 
     public function getStreetCount() {
-        return is_array($this->street ? count($this->street) : 0);
+        return (is_array($this->street) ? count($this->street) : 0);
     }
 
     public function getStreets() {
@@ -149,8 +148,6 @@ class eppContactPostalInfo {
      * @return void
      */
     public function setZipcode($zipcode) {
-        //DONT Remove garbage from the zipcode, never modify customer input!
-        //$zipcode = preg_replace('/[^a-z\d]/i', '', $zipcode);
         $this->zipcode = $zipcode;
     }
 
@@ -207,8 +204,8 @@ class eppContactPostalInfo {
     }
 
     /**
-     *
-     * @param string $type int or loc
+     * @param $type
+     * @throws eppException
      */
     public function setType($type) {
         $type = strtolower($type);
