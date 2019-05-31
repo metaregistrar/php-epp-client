@@ -48,7 +48,7 @@ class dnsbeEppInfoNsgroupResponse extends eppResponse {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/nsgroup:infData/nsgroup:ns');
         if ($result->length > 0) {
-            foreach ($result->item as $item) {
+            foreach ($result as $item) {
                 $return[] = $item->nodeValue;
             }
         }
