@@ -14,6 +14,10 @@ class eppException extends \Exception {
      * @var string
      */
     private $lastcommand = null;
+    /**
+     * @var $response
+     */
+    private $response = null;
 
     /**
      * eppException constructor.
@@ -23,8 +27,9 @@ class eppException extends \Exception {
      * @param string $reason
      * @param int $id
      * @param string $command
+     * @param \Metaregistrar\EPP\eppResponse|null $response
      */
-    public function __construct($message = "", $code = 0, \Exception $previous = null, $reason = null, $command = null) {
+    public function __construct($message = "", $code = 0, \Exception $previous = null, $reason = null, $command = null, $response = null) {
         $this->reason = $reason;
         $trace = $this->getTrace();
         $this->class = null;
@@ -35,6 +40,7 @@ class eppException extends \Exception {
             /* @var $class \Metaregistrar\EPP\eppRequest */
             $this->lastcommand = $command;
         }
+        $this->response = $response;
         parent::__construct($message, $code, $previous);
     }
 
@@ -57,6 +63,13 @@ class eppException extends \Exception {
      */
     public function getReason() {
         return $this->reason;
+    }
+
+    /**
+     * @return \Metaregistrar\EPP\eppResponse|null
+     */
+    public function getResponse() {
+        return $this->response;
     }
 }
 

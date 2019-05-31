@@ -182,10 +182,10 @@ class eppResponse extends \DOMDocument {
             }
             if ((is_array($this->exceptions)) && (count($this->exceptions)>0)) {
                 foreach ($this->exceptions as $exceptionhandler) {
-                    throw new $exceptionhandler($errorstring, $resultcode, null, $resultreason, $this->saveXML());
+                    throw new $exceptionhandler($errorstring, $resultcode, null, $resultreason, $this->saveXML(), $this);
                 }
             } else {
-                throw new eppException($errorstring, $resultcode, null, $resultreason, $this->saveXML());
+                throw new eppException($errorstring, $resultcode, null, $resultreason, $this->saveXML(), $this);
             }
 
         } else {
