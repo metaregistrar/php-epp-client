@@ -13,11 +13,11 @@ class noridEppTransferRequest extends eppTransferRequest {
 
     function __construct($operation, $object) {
         parent::__construct($operation, $object);
-        $remove = $this->getElementsByTagName('command');
-        foreach ($remove as $node) {
-            $node->parentNode->removeChild($node);
-        }
         if ($operation == self::OPERATION_EXECUTE) {
+            $remove = $this->getElementsByTagName('command');
+            foreach ($remove as $node) {
+                $node->parentNode->removeChild($node);
+            }
             if ($object instanceof noridEppDomain) {
                 $this->setExtDomainExecute($object);
             } else {
