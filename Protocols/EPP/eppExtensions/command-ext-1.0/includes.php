@@ -12,7 +12,8 @@ $this->addCommandResponse('Metaregistrar\EPP\metaregEppAutorenewRequest', 'Metar
 
 include_once(dirname(__FILE__) . '/eppData/metaregInfoDomainOptions.php');
 include_once(dirname(__FILE__) . '/eppRequests/metaregInfoDomainRequest.php');
-$this->addCommandResponse('Metaregistrar\EPP\metaregInfoDomainRequest', 'Metaregistrar\EPP\eppInfoDomainResponse');
+include_once(dirname(__FILE__) . '/eppResponses/metaregInfoDomainResponse.php');
+$this->addCommandResponse('Metaregistrar\EPP\metaregInfoDomainRequest', 'Metaregistrar\EPP\metaregInfoDomainResponse');
 
 include_once(dirname(__FILE__) . '/eppRequests/metaregEppAuthcodeRequest.php');
 $this->addCommandResponse('Metaregistrar\EPP\metaregEppAuthcodeRequest', 'Metaregistrar\EPP\eppInfoDomainResponse');
