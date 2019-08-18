@@ -35,7 +35,6 @@ class sidnEppCreateContactRequest extends eppCreateContactRequest {
         $create = $this->createElement('sidn-ext-epp:create');
         $contact = $this->createElement('sidn-ext-epp:contact');
         $contact->appendChild($this->createElement('sidn-ext-epp:legalForm', $legalform));
-        #$contact->appendChild($this->createElement('sidn-ext-epp:legalFormRegNo','8764654.0'));
         $create->appendChild($contact);
         $sidnext->appendChild($create);
         $this->getExtension()->appendChild($sidnext);
