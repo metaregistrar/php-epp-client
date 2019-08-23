@@ -3,7 +3,7 @@ namespace Metaregistrar\EPP;
 
 // See https://www.norid.no/no/registrar/system/dokumentasjon/eksempler/?op=dwit for example request/response
 
-class noridEppWithdrawContactRequest extends eppRequest {
+class noridEppWithdrawDomainRequest extends eppRequest {
 
     use noridEppDomainRequestTrait;
     
