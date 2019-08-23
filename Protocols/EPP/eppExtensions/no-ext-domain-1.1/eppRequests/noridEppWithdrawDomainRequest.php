@@ -22,11 +22,11 @@ class noridEppWithdrawDomainRequest extends eppRequest {
 
     public function setDomain(noridEppDomain $domain) {
         $withdraw = $this->createElement('withdraw');
-        $this->domainobject = $this->createElement('domain:withdraw');
+        $this->domainobject = $this->createElement('no-ext-domain:withdraw');
         if (!$this->rootNamespaces()) {
             $this->domainobject->setAttribute('xmlns:no-ext-domain', 'http://www.norid.no/xsd/no-ext-domain-1.1');
         }
-        $this->domainobject->appendChild($this->createElement('domain:name', $domain->getDomainname()));
+        $this->domainobject->appendChild($this->createElement('no-ext-domain:name', $domain->getDomainname()));
         $withdraw->appendChild($this->domainobject);
         $this->getExtCommand()->appendChild($withdraw);
     }
