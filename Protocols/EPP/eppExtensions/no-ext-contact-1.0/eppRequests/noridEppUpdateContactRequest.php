@@ -11,14 +11,15 @@ class noridEppUpdateContactRequest extends eppUpdateContactRequest {
         parent::__construct($objectname, $addInfo, $removeInfo, $updateInfo, $namespacesinroot);
 
         if (($addInfo instanceof noridEppContact) || ($removeInfo instanceof noridEppContact) || ($updateInfo instanceof noridEppContact)) {
-            $this->updateExtContact($addInfo, $removeInfo, null);
+            $this->updateExtContact($addInfo, $removeInfo, $updateInfo);
         }
 
         $this->addSessionId();
     }
 
     public function updateExtContact($addInfo, $removeInfo, $updateInfo) {
-        if ($updateInfo instanceof noridEppContact) {            // Add Norid EPP extensions
+        // Add Norid EPP extensions
+        if ($updateInfo instanceof noridEppContact) {
             if (!is_null($updateInfo->getExtOrganizations()) || (!is_null($updateInfo->getExtIdentityType()) && !is_null($updateInfo->getExtIdentity())) || !is_null($updateInfo->getExtMobilePhone()) || !is_null($updateInfo->getExtEmails()) || !is_null($updateInfo->getExtRoleContacts())) {
                 $extchgcmd = $this->createElement('no-ext-contact:chg');
                 $this->addContactExtChanges($extchgcmd, $updateInfo);
