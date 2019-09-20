@@ -1110,12 +1110,16 @@ class eppConnection {
             $text = $this->hideTextBetween($text,'<clID>','</clID>');
             // Hide password in the logging
             $text = $this->hideTextBetween($text,'<pw>','</pw>');
-            // Hide password in the logging
             $text = $this->hideTextBetween($text,'<pw><![CDATA[',']]></pw>');
             // Hide new password in the logging
             $text = $this->hideTextBetween($text,'<newPW>','</newPW>');
-            // Hide new password in the logging
             $text = $this->hideTextBetween($text,'<newPW><![CDATA[',']]></newPW>');
+            // Hide domain password in the logging
+            $text = $this->hideTextBetween($text,'<domain:pw>','</domain:pw>');
+            $text = $this->hideTextBetween($text,'<domain:pw><![CDATA[',']]></domain:pw>');
+            // Hide contact password in the logging
+            $text = $this->hideTextBetween($text,'<contact:pw>','</contact:pw>');
+            $text = $this->hideTextBetween($text,'<contact:pw><![CDATA[',']]></contact:pw>');
             //echo "-----".date("Y-m-d H:i:s")."-----".$text."-----end-----\n";
             $log = "-----" . $action . "-----" . date("Y-m-d H:i:s") . "-----\n" . $text . "\n-----END-----" . date("Y-m-d H:i:s") . "-----\n";
             $this->logentries[] = $log;
