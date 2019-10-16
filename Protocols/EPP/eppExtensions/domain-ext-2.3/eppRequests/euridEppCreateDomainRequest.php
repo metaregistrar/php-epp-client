@@ -47,7 +47,7 @@ class euridEppCreateDomainRequest extends eppCreateDomainRequest {
         $created = false;
         $create = $this->createElement('domain-ext:create');
         $this->setNamespace('xmlns:domain','urn:ietf:params:xml:ns:domain-1.0',$create);
-        $this->setNamespace('xmlns:domain-ext','http://www.eurid.eu/xml/epp/domain-ext-2.1',$create);
+        $this->setNamespace('xmlns:domain-ext','http://www.eurid.eu/xml/epp/domain-ext-2.3',$create);
 
         foreach ($domain->getContacts() as $contact) {
             /* @var $contact \Metaregistrar\EPP\eppContactHandle */

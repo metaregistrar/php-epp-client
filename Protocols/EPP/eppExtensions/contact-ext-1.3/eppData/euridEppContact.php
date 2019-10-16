@@ -24,6 +24,7 @@ class euridEppContact extends eppContact {
     private $contactExtType;
     private $contactExtLang = 'en';
     private $contactExtVat  = null;
+    private $countryOfCitizenship = null;
 
 
     public function __construct($postalInfo = null, $email = null, $voice = null, $fax = null, $password = null, $status = null) {
@@ -33,7 +34,6 @@ class euridEppContact extends eppContact {
 
     public function setContactExtType($type)
     {
-
         if(in_array($type, self::CONTACT_EXT_TYPES)) {
             $this->contactExtType =  $type;
         }
@@ -64,4 +64,11 @@ class euridEppContact extends eppContact {
         return $this->contactExtVat;
     }
 
+    public function setContactExtCountryOfCitizenship($country) {
+        $this->countryOfCitizenship = $country;
+    }
+
+    public function getContactExtCountryOfCitizenship() {
+        return $this->countryOfCitizenship;
+    }
 }
