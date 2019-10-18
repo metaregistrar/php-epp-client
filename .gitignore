@@ -1,7 +1,9 @@
 vendor/*
 !vendor/composer/
 .idea
-.ini
-.pem
+*.ini
+*.pem
+*.crt
+*.key
 Tests/testsetup*
 .DS_Store
