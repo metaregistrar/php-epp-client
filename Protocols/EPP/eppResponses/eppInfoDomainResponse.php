@@ -31,6 +31,14 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
+     *
+     * @return string domainid
+     */
+    public function getDomainId() {
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:roid');
+    }
+
+    /**
      * Receive an array of statuses
      *
      * @return string status
