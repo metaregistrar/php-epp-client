@@ -54,6 +54,12 @@ class eppRequest extends \DOMDocument {
      * @var bool
      */
     private $namespacesinroot = true;
+    /**
+     * If true, password are put into CDATA sections
+     * If false, passwords will be in normal XML
+     * @var bool
+     */
+    private $usecdata = false;
 
     function __construct() {
         $this->sessionid = uniqid();
@@ -79,6 +85,17 @@ class eppRequest extends \DOMDocument {
      */
     public function rootNamespaces() {
         return $this->namespacesinroot;
+    }
+
+    /**
+     * @param bool $setting
+     */
+    public function setUseCdata($setting) {
+        $this->usecdata = $setting;
+    }
+
+    public function useCdata() {
+        return $this->usecdata;
     }
 
     /**
