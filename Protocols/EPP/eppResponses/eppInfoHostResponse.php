@@ -16,16 +16,16 @@ class eppInfoHostResponse extends eppInfoResponse {
     }
 
     /**
-     *
-     * @return string hostname
+     * Get the hostname from the server response
+     * @return string
      */
     public function getHostName() {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/host:infData/host:name');
     }
 
     /**
-     *
-     * @return array of host addresses
+     * Get Host IP addresses from the server response
+     * @return array
      */
     public function getHostAddresses() {
         $ip = null;
@@ -39,8 +39,8 @@ class eppInfoHostResponse extends eppInfoResponse {
     }
 
     /**
-     *
-     * @return string status
+     * Get an array of statuses from the server response
+     * @return null|string[]
      */
     public function getHostStatuses() {
         $stat = null;
@@ -53,8 +53,8 @@ class eppInfoHostResponse extends eppInfoResponse {
     }
 
     /**
-     *
-     * @return string statuses
+     * Get statuses as comma-separated values from the server response
+     * @return string
      */
     public function getHostStatusCSV() {
         return parent::arrayToCSV($this->getHostStatuses());
@@ -62,7 +62,7 @@ class eppInfoHostResponse extends eppInfoResponse {
 
     /**
      *
-     * @return string roid
+     * @return string
      */
     public function getHostRoid() {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/host:infData/host:roid');
@@ -70,7 +70,7 @@ class eppInfoHostResponse extends eppInfoResponse {
 
     /**
      *
-     * @return string create_date
+     * @return string
      */
     public function getHostCreateDate() {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/host:infData/host:crDate');
@@ -78,7 +78,7 @@ class eppInfoHostResponse extends eppInfoResponse {
 
     /**
      *
-     * @return string update_date
+     * @return string
      */
     public function getHostUpdateDate() {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/host:infData/host:upDate');
@@ -86,7 +86,7 @@ class eppInfoHostResponse extends eppInfoResponse {
 
     /**
      *
-     * @return string client id
+     * @return string
      */
     public function getHostClientId() {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/host:infData/host:clID');
@@ -94,7 +94,7 @@ class eppInfoHostResponse extends eppInfoResponse {
 
     /**
      *
-     * @return string client id
+     * @return string
      */
     public function getHostCreateClientId() {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/host:infData/host:crID');
@@ -102,7 +102,7 @@ class eppInfoHostResponse extends eppInfoResponse {
 
     /**
      *
-     * @return string client id
+     * @return string
      */
     public function getHostUpdateClientId() {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/host:infData/host:upID');

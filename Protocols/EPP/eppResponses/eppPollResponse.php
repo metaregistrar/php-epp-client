@@ -94,6 +94,7 @@ class eppPollResponse extends eppResponse {
      * TYPE_CREATE
      * TYPE_UPDATE
      * TYPE_DELETE
+     * @return string
      */
     public function getMessageType() {
         if ($this->messageType) {
@@ -139,7 +140,7 @@ class eppPollResponse extends eppResponse {
 
     /**
      * If present, retrieve the current status of the domain name in question
-     * @return string|null
+     * @return null|string
      */
     public function getDomainStatus() {
         $this->messageType = $this->getMessageType();

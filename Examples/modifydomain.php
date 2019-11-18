@@ -67,7 +67,7 @@ function modifydomain($conn, $domainname, $registrant = null, $admincontact = nu
                         $del = new eppDomain($domainname);
                     }
                     foreach ($oldns as $ns) {
-                        $del->addHost($ns);
+                        $del->addHost(new eppHost($ns->getHostname()));
                     }
                 }
             }
