@@ -9,7 +9,7 @@ class dnsbeEppConnection extends eppConnection {
 
         #parent::addExtension('keygroup','http://www.dns.be/xml/epp/keygroup-1.0');
         parent::useExtension('nsgroup-1.0');
-        parent::addExtension('registrar', 'http://www.dns.be/xml/epp/registrar-1.0');
+        parent::useExtension('registrar-1.0');
         parent::useExtension('dnsbe-1.0');
         parent::enableDnssec();
     }
