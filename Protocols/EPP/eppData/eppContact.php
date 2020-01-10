@@ -200,7 +200,7 @@ class eppContact {
      * @return void
      */
     public function setVoice($voice) {
-        $this->voice = $this->validatePhoneNumber($voice);
+        $this->voice = $voice;
     }
 
     /**
