@@ -468,6 +468,9 @@ class eppConnection {
                         $read .= $readbuffer;
                         $time = time() + $this->timeout;
                     }
+                    if (strlen($readbuffer)==0) {
+                        usleep(100);
+                    }
                     //Check if timeout occured
                     if (time() >= $time) {
                         return false;
