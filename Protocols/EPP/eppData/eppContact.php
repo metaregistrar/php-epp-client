@@ -217,7 +217,7 @@ class eppContact {
      * @return void
      */
     public function setFax($fax) {
-        $this->fax = $this->validatePhoneNumber($fax);
+        $this->fax = $fax;
     }
 
     /**
