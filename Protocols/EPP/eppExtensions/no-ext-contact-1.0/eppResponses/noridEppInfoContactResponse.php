@@ -4,7 +4,7 @@ namespace Metaregistrar\EPP;
 // See https://www.norid.no/no/registrar/system/dokumentasjon/eksempler/?op=hdel for example request/response
 
 class noridEppInfoContactResponse extends eppInfoContactResponse {
-    
+
     use noridEppResponseTrait;
 
     public function getExtType() {
@@ -32,6 +32,16 @@ class noridEppInfoContactResponse extends eppInfoContactResponse {
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/no-ext-contact:infData/no-ext-contact:identity');
         if (is_object($result) && ($result->length > 0)) {
             return $result->item(0)->nodeValue;
+        } else {
+            return null;
+        }
+    }
+
+    public function getExtIdentityType() {
+        $xpath = $this->xPath();
+        $result = $xpath->query('/epp:epp/epp:response/epp:extension/no-ext-contact:infData/no-ext-contact:identity');
+        if (is_object($result) && ($result->length > 0)) {
+            return $result->item(0)->getAttribute('type');
         } else {
             return null;
         }
@@ -70,5 +80,5 @@ class noridEppInfoContactResponse extends eppInfoContactResponse {
             return null;
         }
     }
-    
+
 }

@@ -39,17 +39,23 @@ class eppUpdateContactRequest extends eppContactRequest {
         if ($updateInfo instanceof eppContact) {
             $chgcmd = $this->createElement('contact:chg');
             $this->addContactChanges($chgcmd, $updateInfo);
-            $this->contactobject->appendChild($chgcmd);
+            if ($chgcmd->hasChildNodes()) {
+                $this->contactobject->appendChild($chgcmd);
+            }
         }
         if ($removeInfo instanceof eppContact) {
             $remcmd = $this->createElement('contact:rem');
             $this->addContactStatus($remcmd, $removeInfo);
-            $this->contactobject->appendChild($remcmd);
+            if ($remcmd->hasChildNodes()) {
+                $this->contactobject->appendChild($remcmd);
+            }
         }
         if ($addInfo instanceof eppContact) {
             $addcmd = $this->createElement('contact:add');
             $this->addContactStatus($addcmd, $addInfo);
-            $this->contactobject->appendChild($addcmd);
+            if ($addcmd->hasChildNodes()) {
+                $this->contactobject->appendChild($addcmd);
+            }
         }
     }
 
