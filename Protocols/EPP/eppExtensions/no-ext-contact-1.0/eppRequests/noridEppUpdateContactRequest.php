@@ -6,7 +6,7 @@ namespace Metaregistrar\EPP;
 class noridEppUpdateContactRequest extends eppUpdateContactRequest {
 
     use noridEppContactRequestTrait;
-    
+
     function __construct($objectname, $addInfo = null, $removeInfo = null, $updateInfo = null, $namespacesinroot = true) {
         parent::__construct($objectname, $addInfo, $removeInfo, $updateInfo, $namespacesinroot);
 
@@ -26,18 +26,18 @@ class noridEppUpdateContactRequest extends eppUpdateContactRequest {
                 $this->getContactExtension('update')->appendChild($extchgcmd);
             }
         }
-        if ($removeInfo instanceof noridEppContact) {
-            if (!is_null($removeInfo->getExtOrganizations()) || (!is_null($removeInfo->getExtIdentityType()) && !is_null($removeInfo->getExtIdentity())) || !is_null($removeInfo->getExtMobilePhone()) || !is_null($removeInfo->getExtEmails()) || !is_null($removeInfo->getExtRoleContacts())) {
-                $extremcmd = $this->createElement('no-ext-contact:rem');
-                $this->addContactExtChanges($extremcmd, $removeInfo);
-                $this->getContactExtension('update')->appendChild($extremcmd);
-            }
-        }
         if ($addInfo instanceof noridEppContact) {
             if (!is_null($addInfo->getExtOrganizations()) || (!is_null($addInfo->getExtIdentityType()) && !is_null($addInfo->getExtIdentity())) || !is_null($addInfo->getExtMobilePhone()) || !is_null($addInfo->getExtEmails()) || !is_null($addInfo->getExtRoleContacts())) {
                 $extaddcmd = $this->createElement('no-ext-contact:add');
                 $this->addContactExtChanges($extaddcmd, $addInfo);
                 $this->getContactExtension('update')->appendChild($extaddcmd);
+            }
+        }
+        if ($removeInfo instanceof noridEppContact) {
+            if (!is_null($removeInfo->getExtOrganizations()) || (!is_null($removeInfo->getExtIdentityType()) && !is_null($removeInfo->getExtIdentity())) || !is_null($removeInfo->getExtMobilePhone()) || !is_null($removeInfo->getExtEmails()) || !is_null($removeInfo->getExtRoleContacts())) {
+                $extremcmd = $this->createElement('no-ext-contact:rem');
+                $this->addContactExtChanges($extremcmd, $removeInfo);
+                $this->getContactExtension('update')->appendChild($extremcmd);
             }
         }
     }
