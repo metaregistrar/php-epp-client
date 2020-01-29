@@ -1,5 +1,5 @@
 <?php
-$this->addExtension('contact-ext', 'http://www.eurid.eu/xml/epp/contact-ext-1.1');
+$this->addExtension('contact-ext', 'http://www.eurid.eu/xml/epp/contact-ext-1.3');
 
 include_once(dirname(__FILE__) . '/eppData/euridEppContact.php');
 include_once(dirname(__FILE__) . '/eppRequests/euridEppCreateContactRequest.php');

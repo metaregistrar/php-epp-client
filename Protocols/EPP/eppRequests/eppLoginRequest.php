@@ -10,7 +10,7 @@ class eppLoginRequest extends eppRequest {
      * @var \DOMElement
      */
     protected $options = null;
-    protected $usecdata = true;
+
 
     function __construct($newpassword = null, $usecdata = true) {
         parent::__construct();
@@ -19,7 +19,7 @@ class eppLoginRequest extends eppRequest {
         #
         $this->login = $this->createElement('login');
         $this->getCommand()->appendChild($this->login);
-        $this->usecdata = $usecdata;
+        $this->setUseCdata($usecdata);
         #
         # This is only the basic command structure. 
         # Userid, password, version and language info will be added later by the connection object
@@ -41,7 +41,7 @@ class eppLoginRequest extends eppRequest {
         if (!strlen($password)) {
             throw new eppException('No new password specified for password change');
         }
-        if ($this->usecdata) {
+        if ($this->useCdata()) {
             $pw = $this->login->appendChild($this->createElement('newPW'));
             $pw->appendChild($this->createCDATASection($password));
         } else {
@@ -60,7 +60,7 @@ class eppLoginRequest extends eppRequest {
         if (!strlen($password)) {
             throw new eppException('No password specified for login attempt');
         }
-        if ($this->usecdata) {
+        if ($this->useCdata()) {
             $pw = $this->login->appendChild($this->createElement('pw'));
             $pw->appendChild($this->createCDATASection($password));
         } else {

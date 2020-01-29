@@ -28,8 +28,7 @@ class eppCreateDomainResponse extends eppResponse {
     }
 
     public function getDomain() {
-        $return = new eppDomain($this->getDomainName());
-        return $return;
+        return new eppDomain($this->getDomainName());
     }
 
 }

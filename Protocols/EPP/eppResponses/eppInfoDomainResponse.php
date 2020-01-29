@@ -31,9 +31,17 @@ class eppInfoDomainResponse extends eppInfoResponse {
     }
 
     /**
+     *
+     * @return string domainid
+     */
+    public function getDomainId() {
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:roid');
+    }
+
+    /**
      * Receive an array of statuses
      *
-     * @return string status
+     * @return null|string[]
      */
     public function getDomainStatuses() {
         $statuses = null;
@@ -85,7 +93,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
     /**
      * Get the contacts associated with the domain name as eppContactHandle objects
      *
-     * @return array eppContactHandles
+     * @return null|eppContactHandle[]
      */
     public function getDomainContacts() {
         $xpath = $this->xPath();
@@ -183,7 +191,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * This function returns the associated nameservers from a domain object
      * Please do not confuse this with getDomainHosts(), which is used for subordinate host objects
      *
-     * @return array of strings
+     * @return null|eppHost[]
      */
     public function getDomainNameservers() {
         $xpath = $this->xPath();
@@ -206,9 +214,8 @@ class eppInfoDomainResponse extends eppInfoResponse {
                 }
             }
             return $ns;
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**
@@ -243,14 +250,14 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * OBSOLETE, DO NOT USE THIS FUNCTION
      * If you need DNSSEC KeyData or DSData, see the extension SecDNS-1.1
      * ALL DNSSEC FUNCTIONS ARE IN THERE
-     * @return array|null
+     * @return null|eppSecdns[]
      */
     public function getKeydata() {
         // Check if dnssec is enabled on this interface
         if ($this->findNamespace('secDNS')) {
             $xpath = $this->xPath();
             $result = $xpath->query('/epp:epp/epp:response/epp:extension/secDNS:infData/*');
-            $keys = array();
+            $keys = [];
             if ($result->length > 0) {
                 foreach ($result as $keydata) {
                     /* @var $keydata \DOMElement */

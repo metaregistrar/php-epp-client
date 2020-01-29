@@ -9,6 +9,15 @@ namespace Metaregistrar\EPP;
 
 class euridEppContact extends eppContact {
 
+    private $acceptedLangCodes = [
+        'bg','cs','da','de','el','en','es','et','fi','fr','ga','hr',
+        'hu','it','lt','lv','mt','nl','pl','pt','ro','sk','sl','sv'
+    ];
+
+    private $acceptedCitizenshipCodes = [
+        'at','be','bg','cy','cz','de','dk','ee','es','fi','fr','gb','gr','hr',
+        'hu','ie','it','lt','lu','lv','mt','nl','pl','pt','ro','se','si','sk'
+    ];
 
     #
     # These values can be set into the contactExtType field
@@ -24,24 +33,28 @@ class euridEppContact extends eppContact {
     private $contactExtType;
     private $contactExtLang = 'en';
     private $contactExtVat  = null;
-
+    private $countryOfCitizenship = null;
 
     public function __construct($postalInfo = null, $email = null, $voice = null, $fax = null, $password = null, $status = null) {
-       parent::__construct($postalInfo , $email , $voice , $fax , $password , $status );
+        parent::__construct($postalInfo, $email, $voice, $fax, $password, $status );
     }
-
 
     public function setContactExtType($type)
     {
-
         if(in_array($type, self::CONTACT_EXT_TYPES)) {
             $this->contactExtType =  $type;
+        } else {
+            throw new \Exception('Contact ext type not supported.');
         }
     }
 
     public function setContactExtLang($lang)
     {
-        $this->contactExtLang =  $lang;
+        if (in_array($lang, $this->acceptedLangCodes)) {
+            $this->contactExtLang = $lang;
+        } else {
+            throw new \Exception('Contact language code not supported.');
+        }
     }
 
     public function setContactExtVat($vat)
@@ -64,4 +77,15 @@ class euridEppContact extends eppContact {
         return $this->contactExtVat;
     }
 
+    public function setContactExtCountryOfCitizenship($country) {
+        if (in_array($country, $this->acceptedCitizenshipCodes)) {
+            $this->countryOfCitizenship = $country;
+        } else {
+            throw new \Exception('Contact country of citizenship not supported.');
+        }
+    }
+
+    public function getContactExtCountryOfCitizenship() {
+        return $this->countryOfCitizenship;
+    }
 }

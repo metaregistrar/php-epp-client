@@ -10,7 +10,7 @@ namespace Metaregistrar\EPP;
       </domain:delete>
     </delete>
     <extension>
-      <domain-ext:delete xmlns:domain-ext='http://www.eurid.eu/xml/epp/domain-ext-2.1'>
+      <domain-ext:delete xmlns:domain-ext='http://www.eurid.eu/xml/epp/domain-ext-2.3'>
         <domain-ext:schedule>
           <domain-ext:delDate>2018-01-01T00:00:00.0Z</domain-ext:delDate>
         </domain-ext:schedule>
@@ -31,7 +31,7 @@ class euridEppDeleteDomainRequest extends eppDeleteDomainRequest {
 
     public function addEURIDExtension($delDate) {
         $deleteext = $this->createElement('domain-ext:delete');
-        $deleteext->setAttribute('xmlns:domain-ext', 'http://www.eurid.eu/xml/epp/domain-ext-2.1');
+        $deleteext->setAttribute('xmlns:domain-ext', 'http://www.eurid.eu/xml/epp/domain-ext-2.3');
         $scheduleext = $this->createElement('domain-ext:schedule');
         $scheduleext->appendChild($this->createElement('domain-ext:delDate', $delDate));
         $deleteext->appendChild($scheduleext);

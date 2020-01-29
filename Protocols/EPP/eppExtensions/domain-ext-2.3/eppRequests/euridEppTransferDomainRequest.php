@@ -14,7 +14,7 @@ namespace Metaregistrar\EPP;
       </domain:transfer>
     </transfer>
     <extension>
-      <domain-ext:transfer xmlns:domain='urn:ietf:params:xml:ns:domain-1.0' xmlns:domain-ext='http://www.eurid.eu/xml/epp/domain-ext-2.1'>
+      <domain-ext:transfer xmlns:domain='urn:ietf:params:xml:ns:domain-1.0' xmlns:domain-ext='http://www.eurid.eu/xml/epp/domain-ext-2.3'>
         <domain-ext:request>
           <domain-ext:contact type='billing'>c10</domain-ext:contact>
           <domain-ext:contact type='tech'>c159</domain-ext:contact>
@@ -37,7 +37,7 @@ class euridEppTransferDomainRequest extends eppTransferRequest {
     private function addContacts(eppDomain $domain) {
         $transfer = $this->createElement('domain-ext:transfer');
         $this->setNamespace('xmlns:domain','urn:ietf:params:xml:ns:domain-1.0',$transfer);
-        $this->setNamespace('xmlns:domain-ext','http://www.eurid.eu/xml/epp/domain-ext-2.1',$transfer);
+        $this->setNamespace('xmlns:domain-ext','http://www.eurid.eu/xml/epp/domain-ext-2.3',$transfer);
         $request = $this->createElement('domain-ext:request');
 
         if($domain->getRegistrant() != "") {

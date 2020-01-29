@@ -32,7 +32,7 @@ class eppCreateContactResponse extends eppResponse {
 
     /**
      *
-     * @return eppContactHandle contacthandle
+     * @return null|eppContactHandle
      */
     public function getContactHandle() {
         if ($handle = $this->queryPath('/epp:epp/epp:response/epp:resData/contact:creData/contact:id')) {
