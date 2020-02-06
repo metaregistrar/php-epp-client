@@ -24,11 +24,12 @@ class euridEppContact extends eppContact {
     # The type of contact to create. Can be one of: “registrant”, “onsite”, "reseller", “tech”.
     #
 
-    const CONTACT_EXT_TYPES = ['registrant', 'tech', 'onsite', 'reseller'];
+    const CONTACT_EXT_TYPES = ['registrant', 'tech', 'onsite', 'reseller', 'billing'];
     const EURID_EXT_CONTACT_REGISTRANT = 'registrant';
     const EURID_EXT_CONTACT_TECH = 'tech';
     const EURID_EXT_CONTACT_ONSITE = 'onsite';
     const EURID_EXT_CONTACT_RESELLER = 'reseller';
+    const EURID_EXT_CONTACT_BILLING = 'billing';
 
     private $contactExtType;
     private $contactExtLang = 'en';
