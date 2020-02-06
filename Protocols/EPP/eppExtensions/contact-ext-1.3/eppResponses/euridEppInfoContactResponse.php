@@ -8,13 +8,6 @@ class euridEppInfoContactResponse extends eppInfoContactResponse
      * @return euridEppContact
      */
     public function getContact() {
-        /*
-        printf("euridEppInfoContactResponse::getContact<br>\n");
-        $this->formatOutput = true;
-        $xml = $this->saveXML();
-        printf("<pre>%s</pre>", htmlentities($xml));
-        */
-
         $postalinfo = $this->getContactPostalInfo();
         $contact = new euridEppContact($postalinfo, $this->getContactEmail(), $this->getContactVoice(), $this->getContactFax());
 
