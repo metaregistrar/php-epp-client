@@ -13,6 +13,7 @@ class euridEppConnection extends eppConnection {
         parent::useExtension('contact-ext-1.3');
         parent::useExtension('registrarFinance-1.0');
 
+        /* parse the eurid extensions */
+        parent::addCommandResponse('Metaregistrar\EPP\eppInfoContactRequest', 'Metaregistrar\EPP\euridEppInfoContactResponse');
     }
-
 }
