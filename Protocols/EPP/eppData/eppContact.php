@@ -239,7 +239,7 @@ class eppContact {
         if (!strlen($number)) {
             return null;
         }
-        if ($number{0} != '+') {
+        if ($number[0] != '+') {
             throw new eppException('Phone number ' . $number . ' is not valid for EPP. Valid format is +cc.nnnnnnnnnnn');
         }
         if (strpos($number, '.') === false) {
