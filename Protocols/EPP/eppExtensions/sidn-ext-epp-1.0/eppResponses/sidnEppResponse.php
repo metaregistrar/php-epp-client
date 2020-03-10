@@ -10,9 +10,9 @@ class sidnEppResponse extends eppResponse {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:result/@code');
         $resultcode = $result->item(0)->nodeValue;
-        $success = ($resultcode{0} == '1');
+        $success = ($resultcode[0] == '1');
         if (!$success) {
-            switch ($resultcode{1}) {
+            switch ($resultcode[1]) {
                 case '0':
                     $this->setProblemtype('syntax');
                     break;
