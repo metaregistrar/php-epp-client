@@ -399,13 +399,17 @@ class eppConnection {
      * @throws eppException
      */
     public function logout() {
-        $logout = new eppLogoutRequest();
-        if ($response = $this->request($logout)) {
-            $this->writeLog("Logged out","LOGOUT");
-            $this->loggedin = false;
-            return true;
+        if ($this->loggedin) {
+            $logout = new eppLogoutRequest();
+            if ($response = $this->request($logout)) {
+                $this->writeLog("Logged out","LOGOUT");
+                $this->loggedin = false;
+                return true;
+            } else {
+                throw new eppException("Logout failed: ".$response->getResultMessage(),0,null,null,$logout->saveXML());
+            }
         } else {
-            throw new eppException("Logout failed: ".$response->getResultMessage(),0,null,null,$logout->saveXML());
+            return true;
         }
     }
 
