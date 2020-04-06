@@ -49,6 +49,7 @@ Currently supported registries:
 - DNS.PT (.pt)
 - Norid (.no)
 - Arnes (.si)
+- Nic.lv (.lv)
 
 
 All code changes are tested automatically with the phpunit tests in the Tests directory
