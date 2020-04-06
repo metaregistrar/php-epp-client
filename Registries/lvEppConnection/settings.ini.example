@@ -1,0 +1,6 @@
+interface=lvEppConnection
+hostname=tls://epp-sandbox.nic.lv
+port=700
+userid=LVNIC
+password=12345678
+logging=false
