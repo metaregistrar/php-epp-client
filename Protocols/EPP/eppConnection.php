@@ -969,8 +969,12 @@ class eppConnection {
         $this->retry = $retry;
     }
 
-    public function addDefaultNamespace($xmlns, $namespace) {
-        $this->defaultnamespace[$namespace] = 'xmlns:' . $xmlns;
+    public function addDefaultNamespace($xmlns, $namespace, $addxmlns=true) {
+        if ($addxmlns) {
+            $this->defaultnamespace[$namespace] = 'xmlns:' . $xmlns;
+        } else {
+            $this->defaultnamespace[$namespace] = $xmlns;
+        }
     }
 
     public function getDefaultNamespaces() {
