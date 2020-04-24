@@ -8,7 +8,7 @@ class dnsbeEppCreateDomainRequest extends eppCreateDomainRequest {
 
         if ($createinfo instanceof eppDomain) {
             $this->setForcehostattr(true);
-            parent::__construct($createinfo);
+            parent::__construct($createinfo, $this->getForcehostattr());
         } else {
             throw new eppException('DNSBE does not support Host objects');
         }
