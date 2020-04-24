@@ -50,6 +50,8 @@ try {
 function renewdomain($conn, $domainname) {
     // Create request to be sent to EPP service
     $domain = new eppDomain($domainname);
+    $domain->setPeriod(1);
+    $domain->setPeriodUnit('Y');
     $info = new eppInfoDomainRequest($domain);
     if ($response = $conn->request($info)) {
         /* @var $response eppInfoDomainResponse */
