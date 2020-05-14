@@ -38,16 +38,16 @@ class noridEppTransferRequest extends eppTransferRequest {
 
         $this->domainobject->appendChild($this->createElement('domain:name', $domain->getDomainname()));
 
-        if (strlen($domain->getAuthorisationCode())) {
-            $authinfo = $this->createElement('domain:authInfo');
-            $authinfo->appendChild($this->createElement('domain:pw', $domain->getAuthorisationCode()));
-            $this->domainobject->appendChild($authinfo);
-        }
-
         if ($domain->getPeriod()) {
             $domainperiod = $this->createElement('domain:period', $domain->getPeriod());
             $domainperiod->setAttribute('unit', eppDomain::DOMAIN_PERIOD_UNIT_Y);
             $this->domainobject->appendChild($domainperiod);
+        }
+
+        if (strlen($domain->getAuthorisationCode())) {
+            $authinfo = $this->createElement('domain:authInfo');
+            $authinfo->appendChild($this->createElement('domain:pw', $domain->getAuthorisationCode()));
+            $this->domainobject->appendChild($authinfo);
         }
 
         $transfer->appendChild($this->domainobject);
