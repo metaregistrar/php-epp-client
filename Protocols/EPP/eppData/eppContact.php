@@ -71,11 +71,15 @@ class eppContact {
         }
         $this->setId($this->generateContactId());
         $this->setEmail($email);
-        $this->setPassword($password);
+        if ($password) {
+            $this->setPassword($password);
+        } else {
+            $this->setPassword(self::generateRandomString(10));
+        }
         $this->setVoice($voice);
         $this->setFax($fax);
         $this->setStatus($status);
-        $this->setPassword(self::generateRandomString(10));
+
     }
 
     public function setDisclose($disclose) {
