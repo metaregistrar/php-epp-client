@@ -71,11 +71,7 @@ class eppContact {
         }
         $this->setId($this->generateContactId());
         $this->setEmail($email);
-        if ($password) {
-            $this->setPassword($password);
-        } else {
-            $this->setPassword(self::generateRandomString(10));
-        }
+        $this->setPassword($password);
         $this->setVoice($voice);
         $this->setFax($fax);
         $this->setStatus($status);
@@ -278,13 +274,5 @@ class eppContact {
         return uniqid('MRG');
     }
 
-    public static function generateRandomString($length = 10) {
-        $characters = '123456789ABCDEFGHIJKLMNPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
-    }
+
 }
