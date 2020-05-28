@@ -149,6 +149,11 @@ class eppConnection {
      */
     protected $verify_peer_name = true;
 
+    /**
+     * @var bool Using stream_set_blocking true or false on connections
+     */
+    protected $blocking = false;
+
     protected $logentries = array();
 
     protected $checktransactionids = true;
@@ -353,7 +358,7 @@ class eppConnection {
         }
         $this->connection = stream_socket_client($this->hostname.':'.$this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context);
         if (is_resource($this->connection)) {
-            stream_set_blocking($this->connection, false);
+            stream_set_blocking($this->connection, $this->blocking);
             stream_set_timeout($this->connection, $this->timeout);
             if ($errno == 0) {
                 $meta = stream_get_meta_data($this->connection);
@@ -991,6 +996,14 @@ class eppConnection {
 
     public function setLanguage($language) {
         $this->language = $language;
+    }
+
+    public function setBlocking($blocking) {
+        $this->blocking = $blocking;
+    }
+
+    public function getBlocking() {
+        return $this->blocking;
     }
 
     public function getResponses() {
