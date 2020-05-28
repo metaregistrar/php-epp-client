@@ -353,7 +353,7 @@ class eppConnection {
         }
         $this->connection = stream_socket_client($this->hostname.':'.$this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context);
         if (is_resource($this->connection)) {
-            stream_set_blocking($this->connection, false);
+            stream_set_blocking($this->connection, true);
             stream_set_timeout($this->connection, $this->timeout);
             if ($errno == 0) {
                 $meta = stream_get_meta_data($this->connection);
