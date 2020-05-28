@@ -64,7 +64,12 @@ class eppContactPostalInfo {
                 $this->street = [];
             }
             if (count($this->street) < 3) {
-                $this->street[count($this->street)] = htmlspecialchars($street, ENT_COMPAT, "UTF-8");
+                if ((is_string($street)) && (strlen($street)>0)) {
+                    $this->street[count($this->street)] = htmlspecialchars($street, ENT_COMPAT, "UTF-8");
+                } else {
+                    $this->street[count($this->street)] = $street;
+                }
+
             } else {
                 throw new eppException('Cannot add more than 3 street names to postal info');
             }
@@ -97,7 +102,12 @@ class eppContactPostalInfo {
      * @return void
      */
     public function setOrganisationName($organisationName) {
-        $this->organisationName = htmlspecialchars($organisationName, ENT_COMPAT, "UTF-8");
+        if ((is_string($organisationName)) && (strlen($organisationName)>0)) {
+            $this->organisationName = htmlspecialchars($organisationName, ENT_COMPAT, "UTF-8");
+        } else {
+            $this->organisationName = $organisationName;
+        }
+
     }
 
     /**
@@ -131,7 +141,12 @@ class eppContactPostalInfo {
      * @return void
      */
     public function setCity($city) {
-        $this->city = htmlspecialchars($city, ENT_COMPAT, "UTF-8");
+        if ((is_string($city)) && (strlen($city)>0)) {
+            $this->city = htmlspecialchars($city, ENT_COMPAT, "UTF-8");
+        } else {
+            $this->city = $city;
+        }
+
     }
 
     /**
@@ -165,7 +180,12 @@ class eppContactPostalInfo {
      * @return void
      */
     public function setProvince($province) {
-        $this->province = htmlspecialchars($province, ENT_COMPAT, "UTF-8");
+        if ((is_string($province)) && (strlen($province)>0)) {
+            $this->province = htmlspecialchars($province, ENT_COMPAT, "UTF-8");
+        } else {
+            $this->provice = $province;
+        }
+
     }
 
     /**
@@ -209,7 +229,7 @@ class eppContactPostalInfo {
      */
     public function setType($type) {
         $type = strtolower($type);
-        if (($type != eppContact::TYPE_AUTO) && ($type != eppContact::TYPE_LOC)&& ($type != eppContact::TYPE_INT)) {
+        if (($type != eppContact::TYPE_AUTO) && ($type != eppContact::TYPE_LOC) && ($type != eppContact::TYPE_INT)) {
             throw new eppException('PostalInfo type can only be INT or LOC');
         }
         $this->type = $type;
