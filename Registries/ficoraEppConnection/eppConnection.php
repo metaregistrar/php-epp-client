@@ -23,8 +23,7 @@ class ficoraEppConnection extends eppConnection {
         // Add the commands and responses specific to this registry
         // Please make sure the corresponding PHP files are present!
         // Not a real extension, but okay then
-        //parent::useExtension('ficora');
-
+        parent::useExtension('ficora');
     }
 
 }
