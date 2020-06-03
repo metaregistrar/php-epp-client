@@ -13,14 +13,17 @@ class ficoraEppConnection extends eppConnection {
         // Enable DNSSEC, Ficora supports this
         parent::enableDnssec();
 
-        // Make sure services are not added to the main EPP commands
-        parent::setServices(null);
+        // Make sure services are added
+        parent::setServices([
+            'urn:ietf:params:xml:ns:domain-1.0' => 'domain',
+            'urn:ietf:params:xml:ns:contact-1.0' => 'contact',
+            'urn:ietf:params:xml:ns:host-1.0' => 'host'
+        ]);
 
         // Add the commands and responses specific to this registry
         // Please make sure the corresponding PHP files are present!
         // Not a real extension, but okay then
-        parent::useExtension('ficora');
-
+        //parent::useExtension('ficora');
 
     }
 
