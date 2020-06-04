@@ -30,3 +30,6 @@ $this->addCommandResponse('Metaregistrar\EPP\eppCheckContactRequest', 'Metaregis
 
 include_once(dirname(__FILE__) . '/eppRequests/ficoraEppCreateContactRequest.php');
 $this->addCommandResponse('Metaregistrar\EPP\ficoraEppCreateContactRequest', 'Metaregistrar\EPP\eppCreateContactResponse');
+
+include_once(dirname(__FILE__). '/eppRequests/ficoraEppDnssecUpdateDomainRequest.php');
+$this->addCommandResponse('Metaregistrar\EPP\ficoraEppDnssecUpdateDomainRequest', 'Metaregistrar\EPP\eppUpdateDomainResponse');
