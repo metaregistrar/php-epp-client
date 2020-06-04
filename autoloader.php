@@ -1,5 +1,4 @@
 <?php
-date_default_timezone_set('UTC');
 
 function autoloadRegistry($className) {
     $fileName = str_replace('Metaregistrar\\EPP\\', '', $className);

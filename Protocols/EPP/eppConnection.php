@@ -1100,7 +1100,6 @@ class eppConnection {
      * Enables logging
      */
     private function enableLogging() {
-        //date_default_timezone_set("Europe/Amsterdam");
         $this->logging = true;
     }
 

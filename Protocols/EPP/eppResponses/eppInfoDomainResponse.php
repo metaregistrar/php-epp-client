@@ -156,7 +156,6 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string expiration_date
      */
     public function getDomainExpirationDate() {
-        date_default_timezone_set("UTC");
         return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:infData/domain:exDate');
     }
 
