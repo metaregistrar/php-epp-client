@@ -19,8 +19,6 @@ class teleinfoEppPollResponse extends eppPollResponse {
             $result['nv']['status'] = $this->getNVStatus();
             $result['nv']['message'] = $this->getNVMessage();
             $result['nv']['date'] = $this->getNVDate();
-        }else{
-            $result['queue']['next'] = $this->getMessageId();
         }
         return $result;
     }
