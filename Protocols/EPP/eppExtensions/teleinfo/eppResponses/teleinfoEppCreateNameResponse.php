@@ -6,10 +6,16 @@ class teleinfoEppCreateNameResponse extends eppResponse {
     public function getResult(){
         $result = [];
         $result['status'] = $this->getStatus();
-        $this->getType() && $result['type'] = $this->getType();
-        $this->getCreateDate() && $result['create_date'] = $this->getCreateDate();
-        $this->getCode() && $result['code'] = $this->getCode();
-        $this->getEncodedSignedCode() && $result['signed_code'] = $this->getEncodedSignedCode();
+        if ($result['status'] == 'nonCompliant'){
+            $result['reason'] = $this->getReason();
+        }else{
+            $result['type'] = $this->getType();
+            $result['create_date'] = $this->getCreateDate();
+            if ($result['status'] == 'compliant'){
+                $result['code'] = $this->getCode();
+                $result['signed_code'] = $this->getEncodedSignedCode();
+            }
+        }
         return $result;
     }
     public function getType(){
@@ -50,5 +56,11 @@ class teleinfoEppCreateNameResponse extends eppResponse {
     }
     public function getEncodedSignedCode(){
         return $this->queryPath('/epp:epp/epp:response/epp:resData/nv:creData/nv:success/nv:encodedSignedCode');
+    }
+    public function getReason(){
+        $path = '/epp:epp/epp:response/epp:resData/nv:creData/nv:failed';
+        if($this->hasElement([$path])){
+            return $this->queryPath($path.'/nv:msg');
+        }
     }
 }
