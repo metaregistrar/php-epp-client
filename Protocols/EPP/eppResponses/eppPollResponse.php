@@ -218,5 +218,23 @@ class eppPollResponse extends eppResponse {
         $this->messageType = $this->getMessageType();
         return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:acID');
     }
+	
+    /**
+     * Return the records inside getPollRes, used by DNS Belgium
+     * @return string|array
+     */
+    public function getPollRes($field = null) {
+		if(empty($field)) {
+			$fields = array('action','domainname','returncode','type');
+			$return = array();
+			foreach($fields as $field) {
+				$return[$field] = $this->queryPath('/epp:epp/epp:response/epp:resData/dnsbe:pollRes/dnsbe:'.$field);
+			}
+			return $return;
+		}
+		else {			
+			return $this->queryPath('/epp:epp/epp:response/epp:resData/dnsbe:pollRes/dnsbe:'.$field); 
+		}
+    }
 
 }
