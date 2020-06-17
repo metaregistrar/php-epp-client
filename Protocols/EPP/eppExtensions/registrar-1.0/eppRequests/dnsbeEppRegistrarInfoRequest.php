@@ -20,6 +20,7 @@ class dnsbeEppRegistrarInfoRequest extends eppRequest {
         $el = $this->createElement('registrar:info');
         $info->appendChild($el);
         $this->getCommand()->appendChild($info);
+        $this->addSessionId();
     }
 
 }
