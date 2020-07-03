@@ -23,6 +23,8 @@ class atEppConnection extends nicatEppConnection {
         parent::setServices(array('urn:ietf:params:xml:ns:domain-1.0' => 'domain', 'urn:ietf:params:xml:ns:contact-1.0' => 'contact'));
         parent::enableDnssec();
         parent::addExtension('at-ext-epp', atEppConstants::namespaceAtExt);
+        parent::useExtension('at-ext-domain-1.0');
+        parent::useExtension('at-ext-message-1.0');
 
         parent::addCommandResponse('Metaregistrar\EPP\atEppCreateContactRequest', 'Metaregistrar\EPP\atEppCreateResponse');
         parent::addCommandResponse('Metaregistrar\EPP\atEppUpdateContactRequest', 'Metaregistrar\EPP\atEppUpdateContactResponse');
