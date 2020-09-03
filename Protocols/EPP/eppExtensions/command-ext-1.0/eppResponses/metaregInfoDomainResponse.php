@@ -1,7 +1,7 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class metaregInfoDomainResponse extends eppInfoDomainResponse {
+class metaregInfoDomainResponse extends eppDnssecInfoDomainResponse {
 
     /**
      * Gets the domain command-ext-domain:autoRenew field as a boolean
@@ -10,7 +10,7 @@ class metaregInfoDomainResponse extends eppInfoDomainResponse {
      * @return bool autoRenew
      */
     public function getAutoRenew() {
-        $val = $this->queryPath('/epp:epp/epp:response/epp:extension/command-ext-domain:extInfData/autoRenew');
+        $val = $this->queryPath('/epp:epp/epp:response/epp:extension/command-ext-domain:extDomainInfData/command-ext-domain:autoRenew');
         if (!$val) {
             return false;
         }
@@ -24,7 +24,7 @@ class metaregInfoDomainResponse extends eppInfoDomainResponse {
      * @return int autoRenewPeriod
      */
     public function getAutoRenewPeriod() {
-        $val = $this->queryPath('/epp:epp/epp:response/epp:extension/command-ext-domain:extInfData/autoRenewPeriod');
+        $val = $this->queryPath('/epp:epp/epp:response/epp:extension/command-ext-domain:extDomainInfData/command-ext-domain:autoRenewPeriod');
         if (!$val) {
             return false;
         }
@@ -38,7 +38,7 @@ class metaregInfoDomainResponse extends eppInfoDomainResponse {
      * @return bool privacyOptions
      */
     public function getPrivacy() {
-        $val = $this->queryPath('/epp:epp/epp:response/epp:extension/command-ext-domain:extInfData/autoRenew');
+        $val = $this->queryPath('/epp:epp/epp:response/epp:extension/command-ext-domain:extDomainInfData/command-ext-domain:privacy');
         if (!$val) {
             return false;
         }
