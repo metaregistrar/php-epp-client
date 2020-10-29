@@ -10,11 +10,12 @@ class metaregEppTransferExtendedRequest extends eppTransferRequest
      * metaregEppTransferExtendedRequest constructor.
      * @param string $operation
      * @param eppDomain $object
+     * @param bool $usecdata
      * @throws eppException
      */
-    public function __construct($operation, eppDomain $object)
+    public function __construct($operation, eppDomain $object, $usecdata = true)
     {
-        parent::__construct($operation, $object);
+        parent::__construct($operation, $object, $usecdata);
         $this->addExtension('xmlns:command-ext-domain', 'http://www.metaregistrar.com/epp/command-ext-domain-1.0');
         $domainChild = $this->createElement('command-ext-domain:domain');
         $transfer = $this->createElement('command-ext-domain:transfer');
