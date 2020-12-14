@@ -45,6 +45,7 @@ class metaregUpdateDnsRequest extends metaregDnsRequest {
         if (!is_null($remRecords)) {
             $this->handleRemove($remRecords);
         }
+        $this->addSessionId();
     }
 
     /**

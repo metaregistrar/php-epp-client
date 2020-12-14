@@ -41,6 +41,7 @@ class metaregCreateDnsRequest extends metaregDnsRequest {
             }
             $this->dnsObject->appendChild($recordElem);
         }
+        $this->addSessionId();
     }
 
     /**

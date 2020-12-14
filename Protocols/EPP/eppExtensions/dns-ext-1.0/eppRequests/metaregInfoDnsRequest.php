@@ -26,6 +26,7 @@ class metaregInfoDnsRequest extends metaregDnsRequest {
         }
         $dname = $this->createElement('dns-ext:name', $domain->getDomainname());
         $this->dnsObject->appendChild($dname);
+        $this->addSessionId();
     }
 
 }

@@ -18,5 +18,6 @@ class metaregDnsRequest extends eppRequest {
         $this->dnsObject->setAttribute('xmlns:dns-ext', 'http://www.metaregistrar.com/epp/dns-ext-1.0');
         $check->appendChild($this->dnsObject);
         $this->getCommand()->appendChild($check);
+        $this->addSessionId();
     }
 }
