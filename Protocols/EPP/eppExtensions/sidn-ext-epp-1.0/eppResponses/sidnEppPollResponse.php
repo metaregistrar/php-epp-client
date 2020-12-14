@@ -26,6 +26,34 @@ namespace Metaregistrar\EPP;
     </resData>
 */
 
+/*
+
+<?xml version="1.0" encoding="UTF-8"?>
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:sidn="http://rxsd.domain-registry.nl/sidn-ext-epp-registry-contacts-delete-1.0">
+  <response>
+    <result code="1301">
+      <msg>The message has been picked up. Please confirm receipt to remove the message from the queue.</msg>
+    </result>
+    <msgQ id="1234" count="1">
+      <qDate>2020-12-14T14:05:50.000Z</qDate>
+      <msg>1103 Contacten verwijderd</msg>
+    </msgQ>
+    <resData>
+      <sidn:registryContactsDeleteData>
+        <sidn:id>ABC123-XYZ</sidn:id>
+        <sidn:id>ABC456-XYZ</sidn:id>
+        <sidn:id>ABC789-XYZ</sidn:id>
+      </sidn:registryContactsDeleteData>
+    </resData>
+    <trID>
+      <clTRID>123abcdefghij</clTRID>
+      <svTRID>XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX</svTRID>
+    </trID>
+  </response>
+</epp>
+
+ */
+
 class sidnEppPollResponse extends eppPollResponse {
     function __construct() {
         parent::__construct();
@@ -94,5 +122,18 @@ class sidnEppPollResponse extends eppPollResponse {
         return $result->item(0)->nodeValue;
     }
 
+    public function getRegistryContactsDeleteData() {
+        $xpath = $this->xPath();
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/sidn:registryContactsDeleteData/sidn:id');
+        if (is_object($result) && ($result->length > 0)) {
+            $registry_contacts_delete = [];
+            foreach ($result as $element) {
+                $registry_contacts_delete[] = $element->nodeValue;
+            }
+            return $registry_contacts_delete;
+        } else {
+            return null;
+        }
+    }
 
 }
