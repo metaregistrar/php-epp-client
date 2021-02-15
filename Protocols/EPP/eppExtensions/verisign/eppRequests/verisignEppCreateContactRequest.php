@@ -46,7 +46,7 @@ class verisignEppCreateContactRequest extends eppCreateContactRequest {
             $postalInfoElement->appendChild($this->createElement('contact:name', $eppContactPostalInfo->getName()));
         }
         if ($eppContactPostalInfo->getOrganisationName()) {
-            $postalInfoElement->appendChild($this->createElement('contact:org', $postal->getOrganisationName()));
+            $postalInfoElement->appendChild($this->createElement('contact:org', $eppContactPostalInfo->getOrganisationName()));
         }
         $addressElement = $this->createElement('contact:addr');
         $count = $eppContactPostalInfo->getStreetCount();
