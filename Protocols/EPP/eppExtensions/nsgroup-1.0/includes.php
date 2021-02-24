@@ -15,3 +15,8 @@ include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppDeleteNsgroupRequest.php'
 include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppDeleteNsgroupResponse.php');
 
 $this->addCommandResponse('Metaregistrar\EPP\dnsbeEppDeleteNsgroupRequest', 'Metaregistrar\EPP\dnsbeEppDeleteNsgroupResponse');
+
+include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppUpdateNsgroupRequest.php');
+include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppUpdateNsgroupResponse.php');
+
+$this->addCommandResponse('Metaregistrar\EPP\dnsbeEppUpdateNsgroupRequest', 'Metaregistrar\EPP\dnsbeEppUpdateNsgroupResponse');
