@@ -33,5 +33,8 @@ include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppDeleteDomainRequest.php')
 include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppDeleteDomainResponse.php');
 $this->addCommandResponse('Metaregistrar\EPP\dnsbeEppDeleteDomainRequest', 'Metaregistrar\EPP\dnsbeEppDeleteDomainResponse');
 
+include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppUndeleteDomainRequest.php');
+include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppUndeleteDomainResponse.php');
+$this->addCommandResponse('Metaregistrar\EPP\dnsbeEppUndeleteDomainRequest', 'Metaregistrar\EPP\dnsbeEppUndeleteDomainResponse');
 
 
