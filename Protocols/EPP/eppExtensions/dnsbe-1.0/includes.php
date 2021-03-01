@@ -37,4 +37,10 @@ include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppUndeleteDomainRequest.php
 include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppUndeleteDomainResponse.php');
 $this->addCommandResponse('Metaregistrar\EPP\dnsbeEppUndeleteDomainRequest', 'Metaregistrar\EPP\dnsbeEppUndeleteDomainResponse');
 
+include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppReactivateDomainRequest.php');
+include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppReactivateDomainResponse.php');
+$this->addCommandResponse('Metaregistrar\EPP\dnsbeEppReactivateDomainRequest', 'Metaregistrar\EPP\dnsbeEppReactivateDomainResponse');
 
+include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppInfoContactRequest.php');
+include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppInfoContactResponse.php');
+$this->addCommandResponse('Metaregistrar\EPP\dnsbeEppInfoContactRequest', 'Metaregistrar\EPP\dnsbeEppInfoContactResponse');
