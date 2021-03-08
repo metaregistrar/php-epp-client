@@ -20,11 +20,11 @@ namespace Metaregistrar\EPP;
 
 */
 class dnsbeEppAuthcodeRequest extends eppRequest {
-    function __construct($domainname) {
+    function __construct($domainname,$url=null) {
         parent::__construct();
         if (is_string($domainname)) {
             if (strlen($domainname) > 0) {
-                $this->addDnsbeExtension($domainname);
+                $this->addDnsbeExtension($domainname,$url);
             } else {
                 throw new eppException("Domain name length may not be 0 on eppAuthcodeRequest");
             }
@@ -34,14 +34,16 @@ class dnsbeEppAuthcodeRequest extends eppRequest {
 
     }
 
-    private function addDnsbeExtension($domainname) {
+    private function addDnsbeExtension($domainname,$url=null) {
         $this->addExtension('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
         $ext = $this->createElement('extension');
         $dnsext = $this->createElement('dnsbe:ext');
         $command = $this->createElement('dnsbe:command');
         $authcode = $this->createElement('dnsbe:requestAuthCode');
         $authcode->appendChild($this->createElement('dnsbe:domainName', $domainname));
-        $authcode->appendChild($this->createElement('dnsbe:url', 'http://www.metaregistrar.com/transfer?domainname=' . $domainname));
+        if($url!==null && preg_match("/^https?:\/\//",$url)) {
+           $authcode->appendChild($this->createElement('dnsbe:url', $url));
+        }
         $command->appendChild($authcode);
         $dnsext->appendChild($command);
         $ext->appendChild($dnsext);
