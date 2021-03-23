@@ -44,3 +44,7 @@ $this->addCommandResponse('Metaregistrar\EPP\dnsbeEppReactivateDomainRequest', '
 include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppInfoContactRequest.php');
 include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppInfoContactResponse.php');
 $this->addCommandResponse('Metaregistrar\EPP\dnsbeEppInfoContactRequest', 'Metaregistrar\EPP\dnsbeEppInfoContactResponse');
+
+include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppCheckDomainRequest.php');
+include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppCheckDomainResponse.php');
+$this->addCommandResponse('Metaregistrar\EPP\dnsbeEppCheckDomainRequest', 'Metaregistrar\EPP\dnsbeEppCheckDomainResponse');
