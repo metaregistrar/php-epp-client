@@ -21,10 +21,12 @@ class eppBalanceInfoRequest extends eppRequest {
      */
     function __construct() {
         parent::__construct();
+        $this->setNamespacesinroot(false);
         $info = $this->createElement('info');
         $balanceinfo = $this->createElement('balance:info');
         $balanceinfo->setAttribute('xmlns:balance','http://www.verisign.com/epp/balance-1.0');
         $info->appendChild($balanceinfo);
         $this->getCommand()->appendChild($info);
+        $this->addSessionId();
     }
 }
