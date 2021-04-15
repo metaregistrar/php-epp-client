@@ -197,17 +197,13 @@ class eppRequest extends \DOMDocument {
     public function addNamespaces($namespaces) {
         if (is_array($namespaces)) {
             foreach ($namespaces as $namespace => $xmlns) {
-                $this->getEpp()->setAttribute('xmlns:' . $xmlns, $namespace);
-                /*$object = $xmlns.'object';
-                if ($object == 'secDNSobject')
-                {
-                    // ADD SECDNS to domain string
-                    $object = 'domainobject';
+                if (strpos($namespace,'urn')!==false) {
+                    $this->getEpp()->setAttribute('xmlns:' . $xmlns, $namespace);
+                } else {
+                    if ($this->rootNamespaces()) {
+                        $this->getEpp()->setAttribute('xmlns:' . $xmlns, $namespace);
+                    }
                 }
-                if (property_exists($this, $object) && ($this->$object))
-                {
-                    $this->$object->setAttribute('xmlns:'.$xmlns,$namespace);
-                }*/
             }
         }
     }
