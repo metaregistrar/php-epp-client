@@ -114,7 +114,23 @@ class eppResponse extends \DOMDocument {
     }
 
     public function dumpContents() {
-        echo $this->saveXML();
+        $spacing = 2;
+        $text = $this->saveXML();
+        $text = str_replace("\n",'',$text);
+        $text = str_replace('><',">\n<",$text);
+        $text = str_replace(' <'," \n<",$text);
+        $output = explode("\n",$text);
+        $spaces = 0;
+        foreach ($output as $line) {
+            if (strpos($line,'</')===0) {
+                $spaces -= $spacing;
+            }
+            echo substr('                          ',0,$spaces).$line."\n";
+            $spaces += $spacing;
+            if (strpos($line,'</')!==false) {
+                $spaces -= $spacing;
+            }
+        }
     }
 
     /**
