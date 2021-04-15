@@ -848,7 +848,7 @@ class eppConnection {
                     restore_error_handler();
                     $response->preserveWhiteSpace = false;
                     $response->formatOutput = true;
-                    $this->writeLog($response->saveXML(null, LIBXML_NOEMPTYTAG), "READ");
+                    $this->writeLog($response->formatContents(), "READ");
                     $clienttransid = $response->getClientTransactionId();
                     if (($this->checktransactionids) && ($clienttransid) && ($clienttransid != $requestsessionid) && ($clienttransid!='{{clTRID}}')) {
                         throw new eppException("Client transaction id $requestsessionid does not match returned $clienttransid",0,null,null,$xml);
