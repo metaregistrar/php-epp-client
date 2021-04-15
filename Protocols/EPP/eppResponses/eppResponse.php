@@ -128,6 +128,9 @@ class eppResponse extends \DOMDocument {
             }
             $result .= substr('                          ',0,$spaces).$line."\n";
             $spaces += $spacing;
+            if (strpos($line,'?>')!==false) {
+                $spaces -= $spacing;
+            }
             if (strpos($line,'</')!==false) {
                 $spaces -= $spacing;
             }
