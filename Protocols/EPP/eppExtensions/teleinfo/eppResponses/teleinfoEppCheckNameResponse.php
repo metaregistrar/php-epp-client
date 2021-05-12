@@ -43,7 +43,7 @@ class teleinfoEppCheckNameResponse extends eppResponse {
                                     $checkedname['restricted'] = true;
                                     break;
                             }
-                            $checkedname['nname'] = $child->nodeValue;
+                            $checkedname['name'] = $child->nodeValue;
                         }
                         if ($child->localName=='reason') {
                             $checkedname['reason'] = $child->nodeValue;
