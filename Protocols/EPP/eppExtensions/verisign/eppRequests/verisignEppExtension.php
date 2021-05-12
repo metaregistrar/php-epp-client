@@ -25,6 +25,16 @@ trait verisignEppExtension{
         $this->getExtension()->appendChild($namestoreExt);
     }
     /**
+     * add idn language extension
+     * @param string $lang idn language tag value
+     * @see https://www.verisign.com/assets/idn-valid-language-tags.pdf
+     */
+    public function addIdnLang(string $lang='ENG'){
+        $idnLangExt = $this->createElement('idnLang:tag', $lang);
+        $idnLangExt->setAttribute('xmlns:idnLang', 'http://www.verisign.com/epp/idnLang-1.0');
+        $this->getExtension()->appendChild($idnLangExt);
+    }
+    /**
      * add verification code extendsion
      * @param string $rnvc real name verification code
      * @param string $dnvc domain name verification code
