@@ -76,7 +76,7 @@ class eppDomain {
 
     /**
      *
-     * @param eppContact $registrant
+     * @param eppContactHandle|string $registrant
      * @param string $authorisationCode
      */
     public function __construct($domainname, $registrant = null, $contacts = null, $hosts = null, $period = 0, $authorisationCode = null) {
@@ -369,7 +369,7 @@ class eppDomain {
 
     /**
      *
-     * @return string
+     * @return array
      */
     public function getStatuses() {
         return $this->statuses;
