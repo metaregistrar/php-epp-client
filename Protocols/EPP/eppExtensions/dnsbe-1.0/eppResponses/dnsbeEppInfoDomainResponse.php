@@ -1,6 +1,8 @@
 <?php
 namespace Metaregistrar\EPP;
 
+use phpseclib3\Math\BigInteger\Engines\PHP;
+
 /**
  * Class dnsbeEppInfoDomainResponse
  * @package Metaregistrar\EPP
@@ -63,13 +65,17 @@ class dnsbeEppInfoDomainResponse extends eppInfoDomainResponse {
 
     /**
      * Retrieve a string with the nameserver group
-     * @return null|string
+     * @return null|array
      */
     public function getNameserverGroup() {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/dnsbe:ext/dnsbe:infData/dnsbe:domain/dnsbe:nsgroup');
         if ($result->length > 0) {
-            return $result->item(0)->nodeValue;
+           $arr = [];
+           foreach ($result as $item){
+              $arr[]=$item->nodeValue;
+           }
+           return $arr;
         } else {
             return null;
         }
