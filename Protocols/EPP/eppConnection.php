@@ -423,7 +423,7 @@ class eppConnection {
      * @return eppResponse|null
      * @throws eppException
      */
-    public function request($eppRequest) {
+    public function request($eppRequest) : eppResponse|null{
         $check = null;
         foreach ($this->getResponses() as $req => $check) {
             if (get_class($eppRequest) == $req) {
