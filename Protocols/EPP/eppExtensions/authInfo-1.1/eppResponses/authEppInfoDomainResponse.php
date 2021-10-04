@@ -1,7 +1,7 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class euridEppInfoDomainResponse extends eppInfoDomainResponse {
+class authEppInfoDomainResponse extends eppInfoDomainResponse {
     function __construct() {
         parent::__construct();
     }
