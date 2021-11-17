@@ -48,3 +48,7 @@ $this->addCommandResponse('Metaregistrar\EPP\dnsbeEppInfoContactRequest', 'Metar
 include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppCheckDomainRequest.php');
 include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppCheckDomainResponse.php');
 $this->addCommandResponse('Metaregistrar\EPP\dnsbeEppCheckDomainRequest', 'Metaregistrar\EPP\dnsbeEppCheckDomainResponse');
+
+include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppUpdateDomainRequest.php');
+include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppUpdateDomainResponse.php');
+$this->addCommandResponse('Metaregistrar\EPP\dnsbeEppUpdateDomainRequest', 'Metaregistrar\EPP\dnsbeEppUpdateDomainResponse');
