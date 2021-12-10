@@ -79,7 +79,7 @@ class eppResponse extends \DOMDocument {
     /*
      * @var array of supported versions
      */
-    public $version;
+    public $versions;
 
     public $originalrequest;
     /**
