@@ -33,4 +33,8 @@ class lvEppInfoDomainResponse extends eppInfoDomainResponse {
     public function getLvDomainStatus() {
         return $this->getXpathQueryResult("/epp:epp/epp:response/epp:extension//*[name()='lvDomain:status']");
     }
+
+    public function getSecondaryDomainStatus() {
+        return $this->getXpathQueryResult("/epp:epp/epp:response/epp:resData/domain:infData/domain:status/@s");
+    }
 }
