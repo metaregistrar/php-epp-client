@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns:bnamed-domain="http://www.bNamed.net/xsd/bnamed-1.0">
+<xs:import namespace="http://www.bNamed.net/xsd/bnamed-1.0" schemaLocation="bnamed-domain.xsd"/>
+<xs:element name="extension">
+<xs:complexType>
+<xs:sequence>
+<xs:element ref="bnamed-domain:create"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="key" type="xs:string"/>
+<xs:element name="value" type="xs:string"/>
+</xs:schema>

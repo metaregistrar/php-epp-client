@@ -42,6 +42,7 @@ Currently supported registries:
 - Metaregistrar
 - Nic.AT (.at)
 - Key Systems RRPPROXY
+- bNamed.net
 - .PT
 - Switch (.ch)
 - Openprovider
