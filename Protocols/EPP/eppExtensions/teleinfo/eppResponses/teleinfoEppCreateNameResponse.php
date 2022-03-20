@@ -11,8 +11,8 @@ class teleinfoEppCreateNameResponse extends eppResponse {
         }else{
             $result['type'] = $this->getType();
             $result['create_date'] = $this->getCreateDate();
+            $result['code'] = $this->getCode();
             if ($result['status'] == 'compliant'){
-                $result['code'] = $this->getCode();
                 $result['signed_code'] = $this->getEncodedSignedCode();
             }
         }
