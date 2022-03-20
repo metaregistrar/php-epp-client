@@ -40,11 +40,13 @@ trait verisignEppExtension{
      * @param string $dnvc domain name verification code
      * @author:Jansen <jansen.shi@qq.com>
      */
-    public function addVerificationCode(string $rnvc, string $dnvc=null){
+    public function addVerificationCode(string $rnvc=null, string $dnvc=null){
         //添加实名认证拓展
         $verifyExt = $this->createElement('verificationCode:encodedSignedCode');
         $verifyExt->setAttribute('xmlns:verificationCode', 'urn:ietf:params:xml:ns:verificationCode-1.0');
-        $verifyExt->appendChild($this->createElement('verificationCode:code', $rnvc));
+        if (!empty($rnvc)) {
+            $verifyExt->appendChild($this->createElement('verificationCode:code', $rnvc));
+        }
         if(!empty($dnvc)){
             $verifyExt->appendChild($this->createElement('verificationCode:code', $dnvc));
         }
