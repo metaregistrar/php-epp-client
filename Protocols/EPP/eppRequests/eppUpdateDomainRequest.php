@@ -4,11 +4,11 @@ namespace Metaregistrar\EPP;
 class eppUpdateDomainRequest extends eppDomainRequest {
 
 
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false, $namespacesinroot=true) {
-
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false, $namespacesinroot=true, $usecdata = true) {
         $this->setNamespacesinroot($namespacesinroot);
         $this->setForcehostattr($forcehostattr);
         parent::__construct(eppRequest::TYPE_UPDATE);
+        $this->setUseCdata($usecdata);
         if ($objectname instanceof eppDomain) {
             $domainname = $objectname->getDomainname();
         } else {

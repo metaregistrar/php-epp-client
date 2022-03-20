@@ -2,10 +2,10 @@
 namespace Metaregistrar\EPP;
 
 class eppUpdateContactRequest extends eppContactRequest {
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $namespacesinroot = true) {
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $namespacesinroot = true, $usecdata = true) {
         $this->setNamespacesinroot($namespacesinroot);
         parent::__construct(eppRequest::TYPE_UPDATE);
-
+        $this->setUseCdata($usecdata);
         if ($objectname instanceof eppContactHandle) {
             $contacthandle = $objectname->getContactHandle();
         } else {
@@ -143,7 +143,11 @@ class eppUpdateContactRequest extends eppContactRequest {
         // Optional field, may be empty
         if (!is_null($contact->getPassword())) {
             $authinfo = $this->createElement('contact:authInfo');
-            $authinfo->appendChild($this->createElement('contact:pw', $contact->getPassword()));
+            if ($this->useCdata()) {
+                $authinfo->appendChild($this->createElement('contact:pw', $this->createCDATASection($contact->getPassword())));
+            } else {
+                $authinfo->appendChild($this->createElement('contact:pw', $contact->getPassword()));
+            }
             $element->appendChild($authinfo);
         }
         // Optional field, may be empty
