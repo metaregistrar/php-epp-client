@@ -13,11 +13,11 @@ class verisignEppCreateDomainRequest extends eppCreateDomainRequest {
         //add namestore extension
         $this->addNamestore($domain);
         //add idnlang extension
-        if (!empty($lang)) {
+        if (!empty($lang) && $lang!='ENG') {
             $this->addIdnLang($lang);
         }
         //add verificationCode extension
-        if (!empty($rnvc)){
+        if (!empty($rnvc) || !empty($dnvc)){
             $this->addVerificationCode($rnvc, $dnvc);
         }
         $this->addSessionId();

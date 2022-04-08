@@ -5,12 +5,12 @@ class eppCreateDomainRequest extends eppDomainRequest {
 
     
 
-    function __construct($createinfo, $forcehostattr = false, $namespacesinroot=true) {
+    function __construct($createinfo, $forcehostattr = false, $namespacesinroot=true, $usecdata = true) {
         $this->setNamespacesinroot($namespacesinroot);
         $this->setForcehostattr($forcehostattr);
         
         parent::__construct(eppRequest::TYPE_CREATE);
-
+        $this->setUseCdata($usecdata);
         if ($createinfo instanceof eppDomain) {
 
             $this->setDomain($createinfo);
@@ -86,9 +86,6 @@ class eppCreateDomainRequest extends eppDomainRequest {
         if (!strlen($domain->getDomainname())) {
             throw new eppException('No valid domain name in create domain request');
         }
-        if (!strlen($domain->getRegistrant())) {
-            throw new eppException('No valid registrant in create domain request');
-        }
         #
         # Object create structure
         #
@@ -111,7 +108,11 @@ class eppCreateDomainRequest extends eppDomainRequest {
             }
             $this->domainobject->appendChild($nameservers);
         }
-        $this->domainobject->appendChild($this->createElement('domain:registrant', $domain->getRegistrant()));
+        # Verisign's production environment does not require a registrant, but the OTE environment does,
+        # so remove the above exception and add the following check
+        if (strlen($domain->getRegistrant()) > 0) {
+            $this->domainobject->appendChild($this->createElement('domain:registrant', $domain->getRegistrant()));
+        }
         $contacts = $domain->getContacts();
         if ($domain->getContactLength() > 0) {
             foreach ($contacts as $contact) {
@@ -154,7 +155,7 @@ class eppCreateDomainRequest extends eppDomainRequest {
      * @param string $contactid
      * @param string $contacttype
      */
-    private function addDomainContact($domain, $contactid, $contacttype) {
+    protected function addDomainContact($domain, $contactid, $contacttype) {
         $domaincontact = $this->createElement('domain:contact', $contactid);
         $domaincontact->setAttribute('type', $contacttype);
         $domain->appendChild($domaincontact);
@@ -165,7 +166,7 @@ class eppCreateDomainRequest extends eppDomainRequest {
      * @param eppHost $host
      * @return \DOMElement
      */
-    private function addDomainHostAttr(eppHost $host) {
+    protected function addDomainHostAttr(eppHost $host) {
 
         $ns = $this->createElement('domain:hostAttr');
         $ns->appendChild($this->createElement('domain:hostName', $host->getHostname()));
@@ -185,7 +186,7 @@ class eppCreateDomainRequest extends eppDomainRequest {
      * @param eppHost $host
      * @return \DOMElement
      */
-    private function addDomainHostObj(eppHost $host) {
+    protected function addDomainHostObj(eppHost $host) {
         $ns = $this->createElement('domain:hostObj', $host->getHostname());
         return $ns;
     }

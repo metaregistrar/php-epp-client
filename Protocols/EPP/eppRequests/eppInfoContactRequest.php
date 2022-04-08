@@ -7,10 +7,10 @@ namespace Metaregistrar\EPP;
 
 class eppInfoContactRequest extends eppContactRequest {
 
-    function __construct($inforequest, $namespacesinroot = true) {
+    function __construct($inforequest, $namespacesinroot = true, $usecdata = true) {
         $this->setNamespacesinroot($namespacesinroot);
         parent::__construct(eppRequest::TYPE_INFO);
-
+        $this->setUseCdata($usecdata);
         if ($inforequest instanceof eppContactHandle) {
             $this->setContactHandle($inforequest);
         } else {
@@ -32,7 +32,11 @@ class eppInfoContactRequest extends eppContactRequest {
         if (!is_null($contacthandle->getPassword()))
         {
             $authinfo = $this->createElement('contact:authInfo');
-            $authinfo->appendChild($this->createElement('contact:pw', $contacthandle->getPassword()));
+            if ($this->useCdata()) {
+                $authinfo->appendChild($this->createElement('contact:pw', $this->createCDATASection($contacthandle->getPassword())));
+            } else {
+                $authinfo->appendChild($this->createElement('contact:pw', $contacthandle->getPassword()));
+            }
             $this->contactobject->appendChild($authinfo);
         }
     }
