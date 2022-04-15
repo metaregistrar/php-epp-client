@@ -52,4 +52,15 @@ trait verisignEppExtension{
         }
         $this->getExtension()->appendChild($verifyExt);
     }
+
+    /**
+     * add verification code info extendsion
+     * @return void
+     * @throws \DOMException
+     */
+    public function addVerificationCodeInfo(){
+        $verifyExt = $this->createElement('verificationCode:info');
+        $verifyExt->setAttribute('xmlns:verificationCode', 'urn:ietf:params:xml:ns:verificationCode-1.0');
+        $this->getExtension()->appendChild($verifyExt);
+    }
 }
