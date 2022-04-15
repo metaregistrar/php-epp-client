@@ -21,21 +21,25 @@ class verisignEppInfoDomainResponse extends eppInfoDomainResponse {
             $profiles = $xpath->query('/epp:epp/epp:response/epp:extension/verificationCode:infData/verificationCode:profile');
             $verifyCodes['profile'] = null;
             if ($profiles->length > 0){
-                foreach ($profiles as $profile){
-                    $profileName = $profile->getAttribute('name');
+                foreach ($profiles as $index => $profile){
+                    $verifyCodes['profile'][$index]['name'] = $profile->getAttribute('name');
                     foreach ($profile->childNodes as $profileChildNode){
                         if ($profileChildNode->nodeName == 'verificationCode:status'){
-                            $verifyCodes['profile'][$profileName]['status'] = $profileChildNode->nodeValue;
+                            $verifyCodes['profile'][$index]['status'] = $profileChildNode->nodeValue;
                         }elseif ($profileChildNode->nodeName == 'verificationCode:set'){
                             foreach ($profileChildNode->childNodes as $profileSetItem){
-                                $profileSetType = $profileSetItem->getAttribute('type');
-                                $verifyCodes['profile'][$profileName]['set'][$profileSetType]['date'] = $profileSetItem->getAttribute('date');
-                                $verifyCodes['profile'][$profileName]['set'][$profileSetType]['value'] = $profileSetItem->nodeValue;
+                                $verifyCodes['profile'][$index]['set'][] = [
+                                    'type'  => $profileSetItem->getAttribute('type'),
+                                    'date'  => $profileSetItem->getAttribute('date'),
+                                    'value' => $profileSetItem->nodeValue
+                                ];
                             }
                         }elseif ($profileChildNode->nodeName == 'verificationCode:missing'){
                             foreach ($profileChildNode->childNodes as $profileMissingItem){
-                                $profileMissingType = $profileMissingItem->getAttribute('type');
-                                $verifyCodes['profile'][$profileName]['missing'][$profileMissingType]['date'] = $profileMissingItem->getAttribute('due');
+                                $verifyCodes['profile'][$index]['missing'][] = [
+                                    'type'  => $profileMissingItem->getAttribute('type'),
+                                    'date'  => $profileMissingItem->getAttribute('due')
+                                ];
                             }
                         }
                     }
