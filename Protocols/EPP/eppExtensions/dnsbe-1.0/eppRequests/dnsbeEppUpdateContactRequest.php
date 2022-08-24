@@ -27,10 +27,10 @@ class dnsbeEppUpdateContactRequest extends eppUpdateContactRequest {
      * @param string $language
      * @throws eppException
      */
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $language = 'en') {
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $language = 'en',$vat='') {
         if ($updateinfo instanceof eppContact) {
             parent::__construct($objectname, $addinfo, $removeinfo, $updateinfo);
-            $this->addDnsbeExtension($language);
+            $this->addDnsbeExtension($language,$vat);
         } else {
             throw new eppException('DNSBE needs $updateinfo to be an eppContact for this update request');
         }
@@ -40,7 +40,7 @@ class dnsbeEppUpdateContactRequest extends eppUpdateContactRequest {
     /**
      * @param string $language
      */
-    public function addDnsbeExtension($language) {
+    public function addDnsbeExtension($language,$vat) {
         $this->addExtension('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
         $ext = $this->createElement('extension');
         $dnsbeext = $this->createElement('dnsbe:ext');
@@ -48,6 +48,9 @@ class dnsbeEppUpdateContactRequest extends eppUpdateContactRequest {
         $contact = $this->createElement('dnsbe:contact');
 		$change = $this->createElement('dnsbe:chg');
         $change->appendChild($this->createElement('dnsbe:lang', $language));
+        if(!empty($vat)){
+           $change->appendChild($this->createElement('dnsbe:vat', $vat));
+        }
         $contact->appendChild($change);
         $update->appendChild($contact);
         $dnsbeext->appendChild($update);
