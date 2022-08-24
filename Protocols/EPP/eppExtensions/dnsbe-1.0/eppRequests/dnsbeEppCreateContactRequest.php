@@ -40,10 +40,10 @@ class dnsbeEppCreateContactRequest extends eppCreateContactRequest {
         $create = $this->createElement('dnsbe:create');
         $contact = $this->createElement('dnsbe:contact');
         $contact->appendChild($this->createElement('dnsbe:type', $contacttype));
-        $contact->appendChild($this->createElement('dnsbe:lang', $language));
         if(!empty($vat)){
-           $contact->appendChild($this->createElement('dnsbe:vat', $vat));
+            $contact->appendChild($this->createElement('dnsbe:vat', $vat));
         }
+        $contact->appendChild($this->createElement('dnsbe:lang', $language));
         $create->appendChild($contact);
         $dnsbeext->appendChild($create);
         $this->getExtension()->appendChild($dnsbeext);

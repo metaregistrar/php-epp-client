@@ -46,11 +46,11 @@ class dnsbeEppUpdateContactRequest extends eppUpdateContactRequest {
         $dnsbeext = $this->createElement('dnsbe:ext');
         $update = $this->createElement('dnsbe:update');
         $contact = $this->createElement('dnsbe:contact');
-		$change = $this->createElement('dnsbe:chg');
-        $change->appendChild($this->createElement('dnsbe:lang', $language));
+        $change = $this->createElement('dnsbe:chg');
         if(!empty($vat)){
-           $change->appendChild($this->createElement('dnsbe:vat', $vat));
+          $change->appendChild($this->createElement('dnsbe:vat', $vat));
         }
+        $change->appendChild($this->createElement('dnsbe:lang', $language));
         $contact->appendChild($change);
         $update->appendChild($contact);
         $dnsbeext->appendChild($update);
