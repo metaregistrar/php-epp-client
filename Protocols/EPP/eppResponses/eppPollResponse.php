@@ -219,4 +219,20 @@ class eppPollResponse extends eppResponse {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/domain:'.$this->messageType.'Data/domain:acID');
     }
 
+    public function getBePollResActionField() {
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/dnsbe:pollRes/dnsbe:action');
+    }
+
+    public function getBePollResDomainnameField() {
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/dnsbe:pollRes/dnsbe:domainname');
+    }
+
+    public function getBePollResReturncodeField() {
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/dnsbe:pollRes/dnsbe:returncode');
+    }
+
+    public function getBePollResTypeField() {
+        return $this->queryPath('/epp:epp/epp:response/epp:resData/dnsbe:pollRes/dnsbe:type');
+    }
+
 }
