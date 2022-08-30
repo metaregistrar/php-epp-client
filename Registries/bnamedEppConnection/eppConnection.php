@@ -9,7 +9,7 @@ class bnamedEppConnection extends eppConnection {
         parent::__construct($logging, $settingsFile);
         parent::enableDnssec();
         // Add registry-specific EPP extensions
-        parent::useExtension('bNamed-1.0');
+        parent::useExtension('bnamed-1.0');
     }
 
     public function addCommandResponse($command, $response) {
