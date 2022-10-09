@@ -13,7 +13,7 @@ namespace Metaregistrar\EPP;
  */
 
 
-class iisEppUpdateDomainClientDeleteRequest extends eppUpdateRequest {
+class iisEppUpdateDomainClientDeleteRequest extends eppUpdateDomainRequest {
     function __construct(eppDomain $domain, $clientdelete) {
         $upd = new eppDomain($domain->getDomainname());
         parent::__construct($domain, null, null, $upd);
