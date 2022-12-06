@@ -24,7 +24,7 @@ $domainname = $argv[1];
 echo "Retrieving info on " . $domainname . "\n";
 try {
     // Please enter your own settings file here under before using this example
-    if ($conn = eppConnection::create('')) {
+    if ($conn = eppConnection::create()) {
         // Connect to the EPP server
         if ($conn->login()) {
             $result = infodomain($conn, $domainname);
@@ -49,6 +49,10 @@ function infodomain($conn, $domainname) {
         echo "Created on " . $response->getDomainCreateDate() . "\n";
         echo "Last update on ".$response->getDomainUpdateDate()."\n";
         echo "Registrant " . $d->getRegistrant() . "\n";
+        echo "Status info:\n";
+        foreach ($d->getStatuses() as $status) {
+            echo "  ".$status."\n";
+        }
         echo "Contact info:\n";
         foreach ($d->getContacts() as $contact) {
             /* @var $contact eppContactHandle */
