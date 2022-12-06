@@ -8,10 +8,10 @@ class eppCreateContactRequest extends eppContactRequest {
      * @param eppContact|null $createinfo
      * @throws eppException
      */
-    function __construct($createinfo, $namespacesinroot = true) {
+    function __construct($createinfo, $namespacesinroot = true, $usecdata = true) {
         $this->setNamespacesinroot($namespacesinroot);
         parent::__construct(eppRequest::TYPE_CREATE);
-        
+        $this->setUseCdata($usecdata);
         if ($createinfo){
             if ($createinfo instanceof eppContact) {
                 $this->setContact($createinfo);
@@ -116,7 +116,12 @@ class eppCreateContactRequest extends eppContactRequest {
         if (!is_null($password))
         {
             $authinfo = $this->createElement('contact:authInfo');
-            $authinfo->appendChild($this->createElement('contact:pw', $password));
+            if ($this->useCdata()) {
+                $pw = $authinfo->appendChild($this->createElement('contact:pw'));
+                $pw->appendChild($this->createCDATASection($password));
+            } else {
+                $authinfo->appendChild($this->createElement('contact:pw', $password));
+            }
             $this->contactobject->appendChild($authinfo);
         }
     }

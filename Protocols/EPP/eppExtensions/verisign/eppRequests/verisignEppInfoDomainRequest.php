@@ -13,6 +13,7 @@ class verisignEppInfoDomainRequest extends eppInfoDomainRequest {
         parent::__construct($domain, $hosts);
         //add namestore extension
         $this->addNamestore($domain);
+        $this->addVerificationCodeInfo();
         $this->addSessionId();
 
     }
