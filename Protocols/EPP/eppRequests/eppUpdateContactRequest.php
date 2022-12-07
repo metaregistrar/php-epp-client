@@ -115,7 +115,7 @@ class eppUpdateContactRequest extends eppContactRequest {
                 if (strlen($postal->getCity())) {
                     $postaladdr->appendChild($this->createElement('contact:city', $postal->getCity()));
                 }
-                if (strlen($postal->getProvince())) {
+                if (is_string($postal->getProvince()) && strlen($postal->getProvince())) {
                     $postaladdr->appendChild($this->createElement('contact:sp', $postal->getProvince()));
                 }
                 if (strlen($postal->getZipcode())) {
@@ -129,7 +129,7 @@ class eppUpdateContactRequest extends eppContactRequest {
             $element->appendChild($postalinfo);
         }
         // Mandatory field
-        if (strlen($contact->getVoice())) {
+        if (is_string($contact->getVoice()) && strlen($contact->getVoice())) {
             $element->appendChild($this->createElement('contact:voice', $contact->getVoice()));
         }
         // Optional field, may be empty
@@ -137,7 +137,7 @@ class eppUpdateContactRequest extends eppContactRequest {
             $element->appendChild($this->createElement('contact:fax', $contact->getFax()));
         }
         // Mandatory field
-        if (strlen($contact->getEmail())) {
+        if (is_string($contact->getEmail()) && strlen($contact->getEmail())) {
             $element->appendChild($this->createElement('contact:email', $contact->getEmail()));
         }
         // Optional field, may be empty

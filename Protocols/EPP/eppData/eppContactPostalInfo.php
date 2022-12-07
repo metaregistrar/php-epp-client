@@ -192,7 +192,7 @@ class eppContactPostalInfo {
 
     /**
      * Gets the province
-     * @return string
+     * @return string|null
      */
     public function getProvince() {
         return $this->province;

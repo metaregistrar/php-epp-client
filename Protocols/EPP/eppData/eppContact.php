@@ -163,7 +163,7 @@ class eppContact {
 
     /**
      * Gets the email address
-     * @return string
+     * @return string|null
      */
     public function getEmail() {
         return $this->email;
@@ -205,7 +205,7 @@ class eppContact {
 
     /**
      * Gets the phone number
-     * @return string
+     * @return string|null
      */
     public function getVoice() {
         return $this->voice;
