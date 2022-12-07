@@ -152,7 +152,7 @@ class eppTransferRequest extends eppRequest {
      * @param eppDomain $domain
      */
     private function addAuthcode($domain) {
-        if (strlen($domain->getAuthorisationCode())>0) {
+        if (is_string($domain->getAuthorisationCode()) && strlen($domain->getAuthorisationCode())>0) {
             $authinfo = $this->createElement('domain:authInfo');
             if ($this->useCdata()) {
                 $pw = $authinfo->appendChild($this->createElement('domain:pw'));
@@ -190,7 +190,7 @@ class eppTransferRequest extends eppRequest {
             $domainperiod->setAttribute('unit', eppDomain::DOMAIN_PERIOD_UNIT_Y);
             $this->domainobject->appendChild($domainperiod);
         }
-        if (strlen($domain->getAuthorisationCode())) {
+        if (is_string($domain->getAuthorisationCode()) && strlen($domain->getAuthorisationCode())) {
             $authinfo = $this->createElement('domain:authInfo');
             if ($this->useCdata()) {
                 $pw = $authinfo->appendChild($this->createElement('domain:pw'));

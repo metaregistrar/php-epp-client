@@ -336,7 +336,7 @@ class eppDomain {
 
     /**
      *
-     * @return string
+     * @return string|null
      */
     public function getAuthorisationCode() {
         return $this->authorisationCode;

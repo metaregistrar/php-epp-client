@@ -122,7 +122,7 @@ class eppCreateDomainRequest extends eppDomainRequest {
                 }
             }
         }
-        if (strlen($domain->getAuthorisationCode())) {
+        if (is_string($domain->getAuthorisationCode()) && strlen($domain->getAuthorisationCode())) {
             $authinfo = $this->createElement('domain:authInfo');
             if ($this->useCdata()) {
                 $pw = $authinfo->appendChild($this->createElement('domain:pw'));

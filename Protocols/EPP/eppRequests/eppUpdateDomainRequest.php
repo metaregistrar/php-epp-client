@@ -95,14 +95,15 @@ class eppUpdateDomainRequest extends eppDomainRequest {
                 $this->addDomainStatus($element, $status);
             }
         }
-        if (strlen($domain->getAuthorisationCode())) {
+        $authcode = $domain->getAuthorisationCode();
+        if (is_string($authcode) && strlen($authcode)) {
             $authinfo = $this->createElement('domain:authInfo');
             if ($this->useCdata()) {
                 $pw = $this->createElement('domain:pw');
-                $pw->appendChild($this->createCDATASection($domain->getAuthorisationCode()));
+                $pw->appendChild($this->createCDATASection($authcode));
             }
             else {
-                $pw = $this->createElement('domain:pw',$domain->getAuthorisationCode());
+                $pw = $this->createElement('domain:pw',$authcode);
             }
             $authinfo->appendChild($pw);
             $element->appendChild($authinfo);
