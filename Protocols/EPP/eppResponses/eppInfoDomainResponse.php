@@ -18,6 +18,9 @@ class eppInfoDomainResponse extends eppInfoResponse {
         $nameservers = $this->getDomainNameservers();
         $authinfo = $this->getDomainAuthInfo();
         $domain = new eppDomain($domainname, $registrant, $contacts, $nameservers, 1, $authinfo);
+        foreach ($this->getDomainStatuses() as $status) {
+            $domain->addStatus($status);
+        }
         return $domain;
     }
 
