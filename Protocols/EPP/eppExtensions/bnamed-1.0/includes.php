@@ -4,5 +4,5 @@ $this->addCommandResponse('Metaregistrar\EPP\bNamedEppCreateDomainRequest', 'Met
 
 include_once(dirname(__FILE__) . '/eppRequests/bNamedEppUndeleteDomainRequest.php');
 include_once(dirname(__FILE__) . '/eppResponses/bNamedEppUndeleteDomainResponse.php');
-$this->addCommandResponse('Metaregistrar\EPP\bNamedEppUndeleteDomainRequest', 'Metaregistrar\EPP\bnamedEppUndeleteDomainResponse');
+$this->addCommandResponse('Metaregistrar\EPP\bNamedEppUndeleteDomainRequest', 'Metaregistrar\EPP\bNamedEppUndeleteDomainResponse');
 

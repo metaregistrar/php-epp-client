@@ -1,7 +1,7 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class bnamedEppUndeleteDomainRequest extends eppUndeleteRequest {
+class bNamedEppUndeleteDomainRequest extends eppUndeleteRequest {
 
     function __construct($deleteinfo) {
         parent::__construct($deleteinfo);

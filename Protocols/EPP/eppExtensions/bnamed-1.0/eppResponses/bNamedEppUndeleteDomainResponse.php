@@ -1,7 +1,7 @@
 <?php
 namespace Metaregistrar\EPP;
 
-class bnamedEppUndeleteDomainResponse extends eppResponse {
+class bNamedEppUndeleteDomainResponse extends eppResponse {
     function __construct() {
         parent::__construct();
     }
