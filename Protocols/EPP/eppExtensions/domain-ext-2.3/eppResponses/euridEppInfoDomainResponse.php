@@ -26,8 +26,8 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
      */
     public function getQuarantined() {
         $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:extension/eurid:ext/eurid:infData/eurid:domain/eurid:quarantined');
-        if ($result->length > 0) {
+        $result = @$xpath->query('/epp:epp/epp:response/epp:extension/domain-ext:infData/domain-ext:quarantined');
+        if (is_object($result) && $result->length > 0) {
             if ($result->item(0)->nodeValue == 'true') {
                 return true;
             } else {
@@ -45,8 +45,8 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
      */
     public function getOnHold() {
         $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:extension/eurid:ext/eurid:infData/eurid:domain/eurid:onhold');
-        if ($result->length > 0) {
+        $result = @$xpath->query('/epp:epp/epp:response/epp:extension/domain-ext:infData/domain-ext:onhold');
+        if (is_object($result) && $result->length > 0) {
             if ($result->item(0)->nodeValue == 'true') {
                 return true;
             } else {
@@ -63,8 +63,8 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
      */
     public function getSuspended() {
         $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:extension/eurid:ext/eurid:infData/eurid:domain/eurid:suspended');
-        if ($result->length > 0) {
+        $result = @$xpath->query('/epp:epp/epp:response/epp:extension/domain-ext:infData/domain-ext:suspended');
+        if (is_object($result) && $result->length > 0) {
             if ($result->item(0)->nodeValue == 'true') {
                 return true;
             } else {
@@ -81,8 +81,8 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
      */
     public function getSeized() {
         $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:extension/eurid:ext/eurid:infData/eurid:domain/eurid:seized');
-        if ($result->length > 0) {
+        $result = @$xpath->query('/epp:epp/epp:response/epp:extension/domain-ext:infData/domain-ext:seized');
+        if (is_object($result) && $result->length > 0) {
             if ($result->item(0)->nodeValue == 'true') {
                 return true;
             } else {
@@ -99,8 +99,8 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
      */
     public function getAvailableDate() {
         $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:extension/eurid:ext/eurid:infData/eurid:domain/eurid:availableDate');
-        if ($result->length > 0) {
+        $result = @$xpath->query('/epp:epp/epp:response/epp:extension/domain-ext:infData/domain-ext:availableDate');
+        if (is_object($result) && $result->length > 0) {
             return (Date("Y-m-d",strtotime($result->item(0)->nodeValue)));
         } else {
             return null;
@@ -113,12 +113,25 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
      */
     public function getDeletionDate() {
         $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:extension/eurid:ext/eurid:infData/eurid:domain/eurid:deletionDate');
-        if ($result->length > 0) {
+        $result = @$xpath->query('/epp:epp/epp:response/epp:extension/domain-ext:infData/domain-ext:deletionDate');
+        if (is_object($result) && $result->length > 0) {
             return (Date("Y-m-d",strtotime($result->item(0)->nodeValue)));
         } else {
             return null;
         }
     }
-}
 
+    /**
+     *
+     * @return string|null
+     */
+    public function getMaxExtensionPeriod() {
+        $xpath = $this->xPath();
+        $result = @$xpath->query('/epp:epp/epp:response/epp:extension/domain-ext:infData/domain-ext:maxExtensionPeriod');
+        if (is_object($result) && $result->length > 0) {
+            return $result->item(0)->nodeValue;
+        } else {
+            return null;
+        }
+    }
+}
