@@ -120,6 +120,11 @@ class eppConnection {
     protected $launchphase = null;
 
     /**
+     * @var resource
+     */
+    protected $sslContext = null;
+
+    /**
      * Path to certificate file
      * @var string
      */
@@ -341,22 +346,25 @@ class eppConnection {
         if ($port) {
             $this->port = $port;
         }
-        $context = stream_context_create();
-        stream_context_set_option($context, 'ssl','verify_peer', $this->verify_peer);
-        stream_context_set_option($context, 'ssl', 'verify_peer_name', $this->verify_peer_name);
-        if ($this->local_cert_path) {
-            stream_context_set_option($context, 'ssl', 'local_cert', $this->local_cert_path);
-            if (isset($this->local_cert_pwd) && (strlen($this->local_cert_pwd)>0)) {
-                stream_context_set_option($context, 'ssl', 'passphrase', $this->local_cert_pwd);
+        if (!$this->sslContext) {
+            $context = stream_context_create();
+            stream_context_set_option($context, 'ssl', 'verify_peer', $this->verify_peer);
+            stream_context_set_option($context, 'ssl', 'verify_peer_name', $this->verify_peer_name);
+            if ($this->local_cert_path) {
+                stream_context_set_option($context, 'ssl', 'local_cert', $this->local_cert_path);
+                if (isset($this->local_cert_pwd) && (strlen($this->local_cert_pwd)>0)) {
+                    stream_context_set_option($context, 'ssl', 'passphrase', $this->local_cert_pwd);
+                }
+                if (isset($this->allow_self_signed)) {
+                    stream_context_set_option($context, 'ssl', 'allow_self_signed', $this->allow_self_signed);
+                    stream_context_set_option($context, 'ssl', 'verify_peer', false);
+                } else {
+                    stream_context_set_option($context, 'ssl', 'verify_peer', $this->verify_peer);
+                }
             }
-            if (isset($this->allow_self_signed)) {
-                stream_context_set_option($context, 'ssl', 'allow_self_signed', $this->allow_self_signed);
-                stream_context_set_option($context, 'ssl', 'verify_peer', false);
-            } else {
-                stream_context_set_option($context, 'ssl', 'verify_peer', $this->verify_peer);
-            }
+            $this->sslContext = $context;
         }
-        $this->connection = stream_socket_client($this->hostname.':'.$this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context);
+        $this->connection = stream_socket_client($this->hostname.':'.$this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $this->sslContext);
         if (is_resource($this->connection)) {
             stream_set_blocking($this->connection, $this->blocking);
             stream_set_timeout($this->connection, $this->timeout);
@@ -949,6 +957,14 @@ class eppConnection {
 
     public function setPort($port) {
         $this->port = $port;
+    }
+
+    public function getSslContext() {
+        return $this->sslContext;
+    }
+
+    public function setSslContext($sslContext) {
+        $this->sslContext = $sslContext;
     }
 
     public function setVerifyPeer($verify_peer) {
