@@ -28,6 +28,9 @@ class atEppConstants
 
     const w3SchemaLocation = "http://www.w3.org/2001/XMLSchema-instance";
 
+    const namespaceMessage="http://www.nic.at/xsd/at-ext-message-1.0";
+    const schemaLocationMessage="http://www.nic.at/xsd/at-ext-message-1.0 at-ext-message-1.0.xsd";
+
     /*
     |--------------------------------------------------------------------------
     | Epp and extension constants
