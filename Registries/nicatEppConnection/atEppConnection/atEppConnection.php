@@ -35,5 +35,6 @@ class atEppConnection extends nicatEppConnection {
         parent::addCommandResponse('Metaregistrar\EPP\eppInfoContactRequest', 'Metaregistrar\EPP\atEppInfoContactResponse');
         parent::addCommandResponse('Metaregistrar\EPP\atEppWithdrawRequest', 'Metaregistrar\EPP\atEppWithdrawResponse');
         parent::addCommandResponse('Metaregistrar\EPP\atEppUndeleteRequest', 'Metaregistrar\EPP\atEppUndeleteResponse');
+        parent::addCommandResponse('Metaregistrar\EPP\atEppPollRequest', 'Metaregistrar\EPP\atEppPollResponse');
     }
 }
