@@ -2,7 +2,7 @@
 namespace Metaregistrar\EPP;
 
 
-class apEppCreateContactExtension extends atEppExtensionChain
+class atEppCreateContactExtension extends atEppExtensionChain
 {
     protected $atEppContact=null;
 
