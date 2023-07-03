@@ -19,10 +19,16 @@ namespace Metaregistrar\EPP;
 </epp>
 */
 
-class atEppPollRequest extends eppPollRequest {
+class atEppPollRequest extends eppPollRequest
+{
+    use atEppCommandTrait;
 
-    function __construct($polltype, $messageid = null, $services = null, $extensions = null) {
-        parent::__construct($polltype, $messageid, $services, $extensions);
+    protected $atEppExtensionChain = null;
+
+    function __construct($polltype, $messageid = null, $services = null, atEppExtensionChain $atEppExtensionChain=null)
+    {
+        $this->atEppExtensionChain = $atEppExtensionChain;
+        parent::__construct($polltype, $messageid, $services);
+        $this->setAtExtensions();
     }
-
 }
