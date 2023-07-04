@@ -15,6 +15,9 @@ include_once(dirname(__FILE__) . '/eppResponses/atEppUpdateDomainResponse.php');
 include_once(dirname(__FILE__) . '/eppRequests/atEppDeleteRequest.php');
 include_once(dirname(__FILE__) . '/eppResponses/atEppDeleteResponse.php');
 
+include_once(dirname(__FILE__) . '/eppRequests/atEppDeleteDomainRequest.php');
+// Metaregistrar\EPP\eppDeleteResponse
+
 // Metaregistrar\EPP\eppInfoDomainRequest
 include_once(dirname(__FILE__) . '/eppResponses/atEppInfoContactResponse.php');
 
