@@ -15,13 +15,13 @@ class iisEppCreateContactRequest extends eppCreateContactRequest {
 
     private $create;
 
-    function __construct($createinfo, $orgno = null, $vatno = null) {
+    function __construct($createinfo, $orgno = null, $vatno = null, $contactid = null) {
         parent::__construct($createinfo);
         $contactname = $createinfo->getPostalInfo(0)->getOrganisationName();
         if ((!$contactname) || (strlen($contactname)==0)) {
             $contactname = $createinfo->getPostalInfo(0)->getName();
         }
-        $this->contactobject->getElementsByTagName('contact:id')->item(0)->nodeValue=$this->createContactId($contactname);
+        $this->contactobject->getElementsByTagName('contact:id')->item(0)->nodeValue = $contactid ?: $this->createContactId($contactname);
         $this->addExtension('xmlns:iis', 'urn:se:iis:xml:epp:iis-1.2');
         if ($orgno) {
             $this->addIISOrganization($orgno);
