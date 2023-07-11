@@ -107,7 +107,7 @@ class eppHttpConnection extends eppConnection {
         $this->writeLog("Writing: " . strlen($content),'WRITE');
 
         $ch = $this->initCurl();
-        if (!is_resource($ch)) {
+        if (false === $ch) {
             throw new eppException('Failed to init CURL resource.');
         }
 
