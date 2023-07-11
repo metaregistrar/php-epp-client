@@ -24,9 +24,9 @@ class dnsbeEppCreateContactRequest extends eppCreateContactRequest {
      * @param string $language
      * @throws eppException
      */
-    function __construct($createinfo, $contacttype='licensee', $language = 'en') {
+    function __construct($createinfo, $contacttype='licensee', $language = 'en',$vat='') {
         parent::__construct($createinfo);
-        $this->addDnsbeExtension($contacttype, $language);
+        $this->addDnsbeExtension($contacttype, $language,$vat);
         $this->addSessionId();
     }
 
@@ -34,12 +34,15 @@ class dnsbeEppCreateContactRequest extends eppCreateContactRequest {
      * @param string $contacttype
      * @param string $language
      */
-    public function addDnsbeExtension($contacttype, $language) {
+    public function addDnsbeExtension($contacttype, $language,$vat) {
         $this->setNamespace('xmlns:dnsbe', 'http://www.dns.be/xml/epp/dnsbe-1.0');
         $dnsbeext = $this->createElement('dnsbe:ext');
         $create = $this->createElement('dnsbe:create');
         $contact = $this->createElement('dnsbe:contact');
         $contact->appendChild($this->createElement('dnsbe:type', $contacttype));
+        if(!empty($vat)){
+            $contact->appendChild($this->createElement('dnsbe:vat', $vat));
+        }
         $contact->appendChild($this->createElement('dnsbe:lang', $language));
         $create->appendChild($contact);
         $dnsbeext->appendChild($create);
