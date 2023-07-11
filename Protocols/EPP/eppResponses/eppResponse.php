@@ -109,6 +109,7 @@ class eppResponse extends \DOMDocument {
         return false;
     }
 
+    #[\ReturnTypeWillChange]
     public function saveXML(\DOMNode $node = NULL, $options = NULL) {
         return str_replace("\t", '  ', parent::saveXML($node, LIBXML_NOEMPTYTAG));
     }
@@ -202,7 +203,7 @@ class eppResponse extends \DOMDocument {
                 $errorstring .= '; ' . $id;
             }
             $resultreason = $this->getResultReason();
-            if (strlen($resultreason)) {
+            if (is_string($resultreason) && strlen($resultreason)) {
                 $errorstring .= ' (' . $resultreason . ')';
             }
             if ((is_array($this->exceptions)) && (count($this->exceptions)>0)) {
