@@ -6,9 +6,9 @@ class atEppCreateContactExtension extends atEppExtensionChain
 {
     protected $atEppContact=null;
 
-    function __construct(atEppContact $atEppContact, atEppExtensionChain $additionaEppExtension=null) {
-        if(!is_null($additionaEppExtension)) {
-            parent::__construct($additionaEppExtension);
+    function __construct(atEppContact $atEppContact, atEppExtensionChain $additionalEppExtension=null) {
+        if(!is_null($additionalEppExtension)) {
+            parent::__construct($additionalEppExtension);
         }
         $this->atEppContact = $atEppContact;
     }
@@ -25,9 +25,9 @@ class atEppCreateContactExtension extends atEppExtensionChain
         $facet_->appendChild(new \DOMText($this->atEppContact->getPersonType()));
         $contactExt_->appendChild($facet_);
         $extension->appendchild($contactExt_);
-        if(!is_null($this->additionaEppExtension))
+        if(!is_null($this->additionalEppExtension))
         {
-            $this->additionaEppExtension->setEppRequestExtension($request,$extension);
+            $this->additionalEppExtension->setEppRequestExtension($request,$extension);
         }
 
 

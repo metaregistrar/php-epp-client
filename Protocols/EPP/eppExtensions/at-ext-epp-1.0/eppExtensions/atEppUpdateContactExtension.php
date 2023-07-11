@@ -6,9 +6,9 @@ class atEppUpdateContactExtension extends atEppExtensionChain
 {
     protected $atEppContact=null;
 
-    function __construct(atEppContact $atEppContact, atEppExtensionChain $additionaEppExtension=null) {
-        if(!is_null($additionaEppExtension)) {
-            parent::__construct($additionaEppExtension);
+    function __construct(atEppContact $atEppContact, atEppExtensionChain $additionalEppExtension=null) {
+        if(!is_null($additionalEppExtension)) {
+            parent::__construct($additionalEppExtension);
         }
         $this->atEppContact = $atEppContact;
     }
@@ -28,9 +28,11 @@ class atEppUpdateContactExtension extends atEppExtensionChain
         $extChange_->appendChild($facet_);
         $contactExt_->appendChild($extChange_);
         $extension->appendchild($contactExt_);
-        if(!is_null($this->additionaEppExtension))
+        if(!is_null($this->additionalEppExtension))
         {
-            $this->additionaEppExtension->setEppRequestExtension($request,$extension);
+            $this->additionalEppExtension->setEppRequestExtension($request,$extension);
         }
+
+
     }
 }
