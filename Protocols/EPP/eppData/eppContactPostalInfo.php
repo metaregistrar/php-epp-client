@@ -185,7 +185,7 @@ class eppContactPostalInfo {
         if ((is_string($province)) && (strlen($province)>0)) {
             $this->province = htmlspecialchars($province, ENT_COMPAT, "UTF-8");
         } else {
-            $this->provice = $province;
+            $this->province = $province;
         }
 
     }
