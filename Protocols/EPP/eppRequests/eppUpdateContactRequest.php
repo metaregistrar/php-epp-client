@@ -98,7 +98,7 @@ class eppUpdateContactRequest extends eppContactRequest {
             }
             $postalinfo->setAttribute('type', $postal->getType());
             // Mandatory field
-            if (strlen($postal->getName())>0) {
+            if (is_string($postal->getName()) && strlen($postal->getName()) > 0) {
                 $postalinfo->appendChild($this->createElement('contact:name', $postal->getName()));
             }
             // Optional field
