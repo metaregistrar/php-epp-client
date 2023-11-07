@@ -131,7 +131,7 @@ class eppContactPostalInfo {
 
     /**
      * Gets the name
-     * @return string
+     * @return string|null
      */
     public function getName() {
         return $this->name;
