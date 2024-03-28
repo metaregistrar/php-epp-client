@@ -30,7 +30,7 @@ class sidnEppContactPostalInfo extends eppContactPostalInfo {
             $this->legalForm = 'PERSOON';
         }
 
-        parent::__construct($name, $city, $countrycode, null, $street, $province, $zipcode, $type);
+        parent::__construct($name, $city, $countrycode, $organisationName, $street, $province, $zipcode, $type);
     }
 
     public function getLegalForm() {
