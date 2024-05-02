@@ -6,13 +6,13 @@ namespace Metaregistrar\EPP;
  *
  *
  * <extension>
-<domain-ext-2.3:infData>
-<domain-ext-2.3:onHold>false</domain-ext-2.3:onHold>
-<domain-ext-2.3:quarantined>true</domain-ext-2.3:quarantined>
-<domain-ext-2.3:suspended>false</domain-ext-2.3:suspended>
-<domain-ext-2.3:seized>false</domain-ext-2.3:seized>
-<domain-ext-2.3:availableDate>2021-07-11T10:35:00.000Z</domain-ext-2.3:availableDate>
-<domain-ext-2.3:deletionDate>2021-06-01T10:35:05.113Z</domain-ext-2.3:deletionDate>
+<domain-ext-2.5:infData>
+<domain-ext-2.5:onHold>false</domain-ext-2.5:onHold>
+<domain-ext-2.5:quarantined>true</domain-ext-2.5:quarantined>
+<domain-ext-2.5:suspended>false</domain-ext-2.5:suspended>
+<domain-ext-2.5:seized>false</domain-ext-2.5:seized>
+<domain-ext-2.5:availableDate>2021-07-11T10:35:00.000Z</domain-ext-2.5:availableDate>
+<domain-ext-2.5:deletionDate>2021-06-01T10:35:05.113Z</domain-ext-2.5:deletionDate>
  */
 
 class euridEppInfoDomainResponse extends eppInfoDomainResponse {
