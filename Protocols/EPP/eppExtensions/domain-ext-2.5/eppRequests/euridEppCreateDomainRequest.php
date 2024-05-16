@@ -21,7 +21,7 @@ namespace Metaregistrar\EPP;
           </domain:create>
         </create>
         <extension>
-          <domain-ext:create xmlns:domain-ext='http://www.eurid.eu/xml/epp/domain-ext-2.3'>
+          <domain-ext:create xmlns:domain-ext='http://www.eurid.eu/xml/epp/domain-ext-2.5'>
             <domain-ext:contact type='onsite'>xxxxx</domain-ext:contact>
             <domain-ext:contact type='reseller'>xxxxx</domain-ext:contact>
           </domain-ext:create>
@@ -47,7 +47,7 @@ class euridEppCreateDomainRequest extends eppCreateDomainRequest {
         $created = false;
         $create = $this->createElement('domain-ext:create');
         $this->setNamespace('xmlns:domain','urn:ietf:params:xml:ns:domain-1.0',$create);
-        $this->setNamespace('xmlns:domain-ext','http://www.eurid.eu/xml/epp/domain-ext-2.3',$create);
+        $this->setNamespace('xmlns:domain-ext','http://www.eurid.eu/xml/epp/domain-ext-2.5',$create);
 
         foreach ($domain->getContacts() as $contact) {
             /* @var $contact \Metaregistrar\EPP\eppContactHandle */
