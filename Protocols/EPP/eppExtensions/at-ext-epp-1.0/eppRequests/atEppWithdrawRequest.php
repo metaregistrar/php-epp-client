@@ -1,38 +1,89 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: martinha
- * Date: 10/04/2019
- * Time: 09:17
- */
+/** @noinspection PhpMissingReturnTypeInspection */
 
 namespace Metaregistrar\EPP;
 
+use DomElement;
+use DOMException;
+
 /**
- * Class atEppWithdrawRequest works only as adapter in order to map a atEppResponse.
  *
+ * @author christoph.goedel-pavlik@helloly.com
  * @package Metaregistrar\EPP
+ *
  */
 class atEppWithdrawRequest extends eppRequest
 {
     /**
-     * atEppWithdrawRequest constructor.
-     * @param $arguments
-     *
-     * @throws \atEppException
+     * @throws DOMException
      */
-    public function __construct($arguments)
+    public function __construct(eppDomain $domain, bool $zoneDelete = false)
     {
-        $this->validateArguments($arguments);
         parent::__construct();
+
+        $domainZd = $this->createElement('domain:zd');
+        $domainZd->setAttribute('value', intval($zoneDelete));
+
+        $domainWithdraw = $this->createElement('domain:withdraw');
+        $domainWithdraw->setAttribute('xmlns:domain', atEppConstants::namespaceAtExtDomain);
+        $domainWithdraw->setAttribute('xsi:schemaLocation', atEppConstants::schemaLocationAtExtDomain);
+        $domainWithdraw->appendChild($this->createElement('domain:name', $domain->getDomainname()));
+        $domainWithdraw->appendChild($domainZd);
+
+        $withdraw = $this->createElement('withdraw');
+        $withdraw->appendChild($domainWithdraw);
+
+        $this->getCommand()->appendChild($withdraw);
+        $this->addSessionId();
     }
 
-    protected function validateArguments($arguments)
+    /**
+     * Needs to be overwritten, because relation of extension and command is inverted in withdraw command.
+     *
+     * @return DomElement
+     * @throws DOMException
+     */
+    public function getExtension()
     {
-        if (! key_exists('domain_name', $arguments) || ! key_exists('zone_deletion', $arguments))
-        {
-            throw new \atEppException(
-                'atEppWithdrawRequest requires two arguments domain_name:string and zone_deletion:boolean.');
+        if (!$this->extension) {
+            #
+            # If it's not there, then create extension structure
+            #
+            $this->extension = $this->createElement('extension');
+            $this->getEpp()->appendChild($this->extension);
         }
+        return $this->extension;
+    }
+
+
+    /**
+     * Get the command element of the epp structure.
+     * Needs to be overwritten, because relation of extension and command is inverted in withdraw command.
+     *
+     * @return DomElement
+     * @throws DOMException
+     */
+    protected function getCommand() {
+        if (!$this->command) {
+            #
+            # If it's not there, then create command structure
+            #
+            $this->command = $this->createElement('command');
+            $this->command->setAttribute('xmlns', atEppConstants::namespaceAtExt);
+            $this->command->setAttribute('xsi:schemaLocation', atEppConstants::schemaLocationAtExt);
+            $this->getExtension()->appendChild($this->command);
+        }
+        return $this->command;
+    }
+
+    /**
+     * Get the epp element of the epp structure
+     * Overwrite necessary because error occurs if 'xmlns:xsi' attribute is not supplied.
+     *
+     * @return DomElement
+     */
+    public function getEpp() {
+        parent::getEpp()->setAttribute('xmlns:xsi', atEppConstants::w3SchemaLocation);
+        return $this->epp;
     }
 }
