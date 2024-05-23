@@ -14,7 +14,7 @@ class verisignEppRestoreDomainRequest extends eppUpdateDomainRequest {
      * @param string $reason   赎回原因
      * @throws eppException
      */
-    public function __construct(string $op, eppDomain $domain, string $expire=null, string $reason=null){
+    public function __construct(string $op, eppDomain $domain, ?string $expire=null, ?string $reason=null){
         if (!in_array($op, [self::TYPE_REQUEST,self::TYPE_REPORT])){
             throw new eppException('The op attribute is invalid,only request or report is allow.');
         }
