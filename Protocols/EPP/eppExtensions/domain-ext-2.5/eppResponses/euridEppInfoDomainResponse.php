@@ -45,7 +45,7 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
      */
     public function getOnHold() {
         $xpath = $this->xPath();
-        $result = @$xpath->query('/epp:epp/epp:response/epp:extension/domain-ext:infData/domain-ext:onhold');
+        $result = @$xpath->query('/epp:epp/epp:response/epp:extension/domain-ext:infData/domain-ext:onHold');
         if (is_object($result) && $result->length > 0) {
             if ($result->item(0)->nodeValue == 'true') {
                 return true;
