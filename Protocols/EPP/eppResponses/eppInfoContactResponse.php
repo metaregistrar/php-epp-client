@@ -66,7 +66,7 @@ class eppInfoContactResponse extends eppInfoResponse {
 
     /**
      *
-     * @return string contact_status
+     * @return array contact_status
      */
     public function getContactStatus() {
         $stat = null;
