@@ -361,7 +361,7 @@ class eppDomain {
     
     /**
      *
-     * @param string $status | eppStatus $status
+     * @param string|eppStatus $status
      */
     public function addStatus($status) {
         $this->statuses[] = $status;

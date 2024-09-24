@@ -114,7 +114,7 @@ class eppUpdateDomainRequest extends eppDomainRequest {
     /**
      *
      * @param \domElement $element
-     * @param string $status | eppStatus $status
+     * @param string|eppStatus $status
      */
     protected function addDomainStatus($element, $status) {
         $stat = $this->createElement('domain:status');

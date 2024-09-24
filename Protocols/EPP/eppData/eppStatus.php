@@ -31,27 +31,27 @@ class eppStatus {
 
     /**
      * Holds the status name
-     * @var <string>
+     * @var string 
      */
     private $statusname;
 
     /**
      * Holds the language from the status
-     * @var <string>
+     * @var string
      */
     private $language;
 
     /**
      * Holds the status message 
-    * @var <string>
+    * @var string
      */
     private $message;
 
     /**
      *
-     * @param <string> $statusname
-     * @param <string> $language
-     * @param <string> $message
+     * @param string $statusname
+     * @param ?string $language
+     * @param ?string $message
      */
     public function  __construct($statusname, $language = null, $message = null) {
         $this->setStatusname($statusname);
