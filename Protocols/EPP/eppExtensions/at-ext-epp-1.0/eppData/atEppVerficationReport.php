@@ -1,7 +1,9 @@
 <?php
 namespace Metaregistrar\EPP;
 
-
+/** 
+ * Implementation of https://github.com/nic-at/epp-verification-extension
+ */
 class atEppVerificationReport
 {
 
@@ -170,8 +172,17 @@ class atEppVerificationReport
     public function exportXML(eppRequest $request, \DomElement $ext) {
         $report = $request->createElement('at-ext-verification:report');
 
-        foreach (['result', 'verificationDate', 'method', 'reference', 'agent'] as $element) {
+        # mandatory fields
+        foreach (['result', 'verificationDate'] as $element) {
+        
             $report->appendChild($request->createElement('at-ext-verification:'.$element, $this->$element));
+        }
+
+        # optional fields
+        foreach (['method', 'reference', 'agent'] as $element) {
+            if (!is_null($this->$element)) {
+                $report->appendChild($request->createElement('at-ext-verification:'.$element, $this->$element));
+            }
         }
 
         $ext->appendChild($report);
