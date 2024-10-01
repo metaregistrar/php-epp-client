@@ -26,5 +26,8 @@ include_once(dirname(__FILE__) . '/eppRequests/sidnEppInfoDomainRequest.php');
 include_once(dirname(__FILE__) . '/eppResponses/sidnEppInfoDomainResponse.php');
 $this->addCommandResponse('Metaregistrar\EPP\sidnEppInfoDomainRequest', 'Metaregistrar\EPP\sidnEppInfoDomainResponse');
 
+include_once(dirname(__FILE__) . '/eppRequests/sidnEppCancelDeleteRequest.php');
+$this->addCommandResponse('Metaregistrar\EPP\sidnEppCancelDeleteRequest', 'Metaregistrar\EPP\eppResponse');
+
 include_once(dirname(__FILE__) . '/eppExceptions/sidnEppException.php');
 $this->addException('Metaregistrar\EPP\sidnEppException');
