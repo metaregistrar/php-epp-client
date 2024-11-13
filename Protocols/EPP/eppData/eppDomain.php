@@ -361,7 +361,7 @@ class eppDomain {
     
     /**
      *
-     * @param string $status
+     * @param string|eppStatus $status
      */
     public function addStatus($status) {
         $this->statuses[] = $status;
@@ -369,10 +369,32 @@ class eppDomain {
 
     /**
      *
+     * @param bool $fullobject
      * @return array
+     * 
      */
-    public function getStatuses() {
-        return $this->statuses;
+    public function getStatuses($fullobjects=false) {
+        $return_statuses=[];
+
+        if ($fullobjects) { // return full eppStatus Objects
+            foreach ($this->statuses as $status) {
+                if  ($status instanceof eppStatus) {
+                    $return_statuses[]=$status;
+                } else {
+                    $return_statuses[]=new eppStatus($status);
+                }
+            }
+        }  else {  // return just a list of statuses
+            foreach ($this->statuses as $status) {
+                if  ($status instanceof eppStatus) {
+                    $return_statuses[]=$status->getStatusname();
+                } else {
+                    $return_statuses[]=$status;
+                }
+            }
+        } 
+
+        return $return_statuses;
     }
 
 
