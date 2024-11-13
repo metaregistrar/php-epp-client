@@ -3,7 +3,7 @@ namespace Metaregistrar\EPP;
 
 class teleinfoEppInfoNameRequest extends teleinfoEppNameRequest {
 
-    function __construct(string $type, string $code, string $password=null) {
+    function __construct(string $type, string $code, ?string $password=null) {
         $this->setNamespacesinroot(false);
         parent::__construct(eppRequest::TYPE_INFO);
         if ($type!='signedCode' && $type!='input'){
