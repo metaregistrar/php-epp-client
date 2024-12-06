@@ -4,7 +4,7 @@ namespace Metaregistrar\EPP;
 class ficoraEppUpdateDomainRequest extends eppUpdateDomainRequest {
 
     // Note: default value for $namespacesinroot differs from parent
-    public function __construct($objectname, ficoraEppDomain $addinfo = null, ficoraEppDomain $removeinfo = null, ficoraEppDomain $updateinfo = null, $forcehostattr=false, $namespacesinroot=false)
+    public function __construct($objectname, ?ficoraEppDomain $addinfo = null, ?ficoraEppDomain $removeinfo = null, ?ficoraEppDomain $updateinfo = null, $forcehostattr=false, $namespacesinroot=false)
     {
         parent::__construct($objectname, $addinfo, $removeinfo, $updateinfo, $forcehostattr, $namespacesinroot);
     }
