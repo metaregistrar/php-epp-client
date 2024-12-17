@@ -49,9 +49,12 @@ class eppInfoDomainResponse extends eppInfoResponse {
     public function getDomainStatuses() {
         $statuses = null;
         $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:status/@s');
+    //    $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:status/@s');
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/domain:infData/domain:status');
         foreach ($result as $status) {
-            $statuses[] = $status->nodeValue;
+            $statuses[] = new eppStatus($status->getAttribute('s'),
+                                        $status->getAttribute('lang'),
+                                         $status->nodeValue);
         }
         return $statuses;
     }
