@@ -19,19 +19,27 @@ namespace Metaregistrar\EPP;
 
 */
 class authEppInfoDomainRequest extends eppInfoDomainRequest {
-    function __construct($infodomain, $hosts = null, $withAuthcode = false) {
+    function __construct($infodomain, $hosts = null, $withAuthcode = false, $cancelAuthCode = false) {
         parent::__construct($infodomain, $hosts);
-        if($withAuthcode == true) {
-            $this->addAuthExtension();
+
+        if ($withAuthcode && $cancelAuthCode) {
+            throw new eppException('Cannot request and cancel authcode at the same time');
         }
+
+        if ($withAuthcode) {
+            $this->addAuthExtension('authInfo:request');
+        } elseif ($cancelAuthCode) {
+            $this->addAuthExtension('authInfo:cancel');
+        }
+      
         $this->addSessionId();
     }
 
 
-    public function addAuthExtension() {
+    public function addAuthExtension(string $method) {
         $authext = $this->createElement('authInfo:info');
         $authext->setAttribute('xmlns:authInfo', 'http://www.eurid.eu/xml/epp/authInfo-1.1');
-        $authext->appendChild($this->createElement('authInfo:request'));
+        $authext->appendChild($this->createElement($method));
         $this->getExtension()->appendChild($authext);
     }
 
