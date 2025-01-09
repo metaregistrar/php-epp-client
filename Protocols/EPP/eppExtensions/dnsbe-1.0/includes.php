@@ -52,3 +52,6 @@ $this->addCommandResponse('Metaregistrar\EPP\dnsbeEppCheckDomainRequest', 'Metar
 include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppUpdateDomainRequest.php');
 include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppUpdateDomainResponse.php');
 $this->addCommandResponse('Metaregistrar\EPP\dnsbeEppUpdateDomainRequest', 'Metaregistrar\EPP\dnsbeEppUpdateDomainResponse');
+
+include_once(dirname(__FILE__) . '/eppExceptions/dnsbeEppException.php');
+$this->addException('Metaregistrar\EPP\dnsbeEppException');
