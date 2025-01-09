@@ -13,6 +13,8 @@ namespace Metaregistrar\EPP;
 <domain-ext-2.5:seized>false</domain-ext-2.5:seized>
 <domain-ext-2.5:availableDate>2021-07-11T10:35:00.000Z</domain-ext-2.5:availableDate>
 <domain-ext-2.5:deletionDate>2021-06-01T10:35:05.113Z</domain-ext-2.5:deletionDate>
+<domain-ext-2.5:contact type="onsite">c1234</domain-ext-2.5:contact>                
+<domain-ext-2.5:contact type="onsite">c5678</domain-ext-2.5:contact>
  */
 
 class euridEppInfoDomainResponse extends eppInfoDomainResponse {
@@ -133,5 +135,32 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
         } else {
             return null;
         }
+    }
+
+    /**
+     *
+     * @return null|eppContactHandle[]
+     */
+    public function getDomainContacts() {
+        $cont = parent::getDomainContacts();
+        
+        $xpath = $this->xPath();
+        $result = @$xpath->query('/epp:epp/epp:response/epp:extension/domain-ext:infData/domain-ext:contact');
+        if (is_object($result) && $result->length > 0) {
+            foreach ($result as $contact) {
+                /* @var $contact \DOMElement */
+                if (($contact->nodeValue) && (strlen($contact->nodeValue) > 0)) {
+                    $contacttype = $contact->getAttribute('type');
+                    if ($contacttype) {
+                        // DNSBE specific, but too much hassle to create an override for this
+                        if ($contacttype == 'onsite') {
+                            $contacttype = 'admin';
+                        }
+                        $cont[] = new eppContactHandle($contact->nodeValue, $contacttype);
+                    }
+                }
+            }
+        }
+        return $cont;
     }
 }
