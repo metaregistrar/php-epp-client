@@ -89,7 +89,7 @@ class eppUpdateDomainRequest extends eppDomainRequest {
                 $this->addDomainContact($element, $contact->getContactHandle(), $contact->getContactType());
             }
         }
-        $statuses = $domain->getStatuses();
+        $statuses = $domain->getStatuses(true);
         if (is_array($statuses)) {
             foreach ($statuses as $status) {
                 $this->addDomainStatus($element, $status);
@@ -114,11 +114,21 @@ class eppUpdateDomainRequest extends eppDomainRequest {
     /**
      *
      * @param \domElement $element
-     * @param string $status
+     * @param string|eppStatus $status
      */
     protected function addDomainStatus($element, $status) {
         $stat = $this->createElement('domain:status');
-        $stat->setAttribute('s', $status);
+
+        if ($status instanceof eppStatus) {
+            $stat = $this->createElement('domain:status',$status->getMessage());
+            $stat->setAttribute('s', $status->getStatusname());
+            if (!is_null($status->getLanguage())) {
+                $stat->setAttribute('lang', $status->getLanguage());
+            }
+
+        } else {
+            $stat->setAttribute('s', $status);
+        }
         $element->appendChild($stat);
     }
 
