@@ -47,3 +47,4 @@ class dnsbeEppException extends eppException
     {
         return $this->eppresponse->queryPath('/epp:epp/epp:response/epp:extension/dnsbe:ext/dnsbe:result/dnsbe:msg');
     }
+}
