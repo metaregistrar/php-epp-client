@@ -31,7 +31,7 @@ class sidnEppException extends eppException {
      */
     private $eppresponse;
 
-    public function __construct($message = "", $code = 0, \Exception $previous = null, $reason = null, $command = null) {
+    public function __construct($message = "", $code = 0, ?\Exception $previous = null, $reason = null, $command = null) {
         if ($command) {
             $this->eppresponse = new eppResponse();
             $this->eppresponse->loadXML($command);
