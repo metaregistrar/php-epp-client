@@ -5,6 +5,10 @@ namespace Metaregistrar\EPP;
 class sidnEppUpdateDomainRequest extends eppUpdateDomainRequest
 {
     function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false, $namespacesinroot = true, $usecdata = true, $scheduledDeleteOperation = null, $scheduledDeleteDate = null) {
+        if (!$updateinfo) {
+            $updateinfo = $objectname;
+        }
+
         parent::__construct($objectname, $addinfo, $removeinfo, $updateinfo, $forcehostattr, $namespacesinroot, $usecdata);
 
         if ($scheduledDeleteOperation) {
