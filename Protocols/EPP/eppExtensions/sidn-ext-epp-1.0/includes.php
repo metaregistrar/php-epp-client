@@ -1,5 +1,6 @@
 <?php
 $this->addExtension('sidn-ext-epp', 'http://rxsd.domain-registry.nl/sidn-ext-epp-1.0');
+$this->addExtension('scheduledDelete', 'http://rxsd.domain-registry.nl/sidn-ext-epp-scheduled-delete-1.0');
 
 include_once(dirname(__FILE__) . '/eppResponses/sidnEppResponse.php');
 
@@ -28,6 +29,9 @@ $this->addCommandResponse('Metaregistrar\EPP\sidnEppInfoDomainRequest', 'Metareg
 
 include_once(dirname(__FILE__) . '/eppRequests/sidnEppCancelDeleteRequest.php');
 $this->addCommandResponse('Metaregistrar\EPP\sidnEppCancelDeleteRequest', 'Metaregistrar\EPP\eppResponse');
+
+include_once(dirname(__FILE__) . '/eppRequests/sidnEppUpdateDomainRequest.php');
+$this->addCommandResponse('Metaregistrar\EPP\sidnEppUpdateDomainRequest', 'Metaregistrar\EPP\eppResponse');
 
 include_once(dirname(__FILE__) . '/eppExceptions/sidnEppException.php');
 $this->addException('Metaregistrar\EPP\sidnEppException');
