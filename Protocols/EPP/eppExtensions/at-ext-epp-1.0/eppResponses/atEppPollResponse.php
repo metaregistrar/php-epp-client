@@ -51,7 +51,7 @@ class atEppPollResponse extends eppPollResponse
     const TYPE_DOMAIN_UNLOCKED_BANKRUPTCY = "domain-unlocked-bankruptcy";
     const TYPE_DOMAIN_TRANSFER_ABORTED = "domain-transfer-aborted";
     const TYPE_DOMAIN_TRANSFERTOKEN_FORWARD = "domain-transfertoken-forward";
-    const TYPE_DOMAIN_VERIFICATION_REQUIRES = "domain-verification-required";
+    const TYPE_DOMAIN_VERIFICATION_REQUIRED = "domain-verification-required";
 
     const LOCKTYPE_SRP = "SRP"; # Sperre Rechtsabteilung
     const LOCKTYPE_SKW = "SKW"; # Sperre Kundenwunsch
