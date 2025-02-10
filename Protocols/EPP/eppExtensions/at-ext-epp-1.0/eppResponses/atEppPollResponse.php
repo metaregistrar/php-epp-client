@@ -51,6 +51,7 @@ class atEppPollResponse extends eppPollResponse
     const TYPE_DOMAIN_UNLOCKED_BANKRUPTCY = "domain-unlocked-bankruptcy";
     const TYPE_DOMAIN_TRANSFER_ABORTED = "domain-transfer-aborted";
     const TYPE_DOMAIN_TRANSFERTOKEN_FORWARD = "domain-transfertoken-forward";
+    const TYPE_DOMAIN_VERIFICATION_REQUIRES = "domain-verification-required";
 
     const LOCKTYPE_SRP = "SRP"; # Sperre Rechtsabteilung
     const LOCKTYPE_SKW = "SKW"; # Sperre Kundenwunsch
@@ -201,4 +202,33 @@ class atEppPollResponse extends eppPollResponse
         }
     }
 
+    /**
+     * @return null|string
+     */
+    public function getActionDate()
+    {
+        $xpath = $this->xPath();
+        $xpath->registerNamespace("at-ext", atEppConstants::namespaceMessage);
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/at-ext:message/at-ext:data/at-ext:entry[@name="actiondate"]');
+        if ($result->length > 0) {
+            return $result->item(0)->nodeValue;
+        } else {
+            return null;
+        }
+    }    
+
+    /**
+     * @return null|string
+     */
+    public function getReason()
+    {
+        $xpath = $this->xPath();
+        $xpath->registerNamespace("at-ext", atEppConstants::namespaceMessage);
+        $result = $xpath->query('/epp:epp/epp:response/epp:resData/at-ext:message/at-ext:data/at-ext:entry[@name="reason"]');
+        if ($result->length > 0) {
+            return $result->item(0)->nodeValue;
+        } else {
+            return null;
+        }
+    }    
 }
