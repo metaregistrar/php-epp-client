@@ -1,5 +1,5 @@
 {
-    "name": "EDNSAndrew/php-epp-client",
+    "name": "edns-andrew/php-epp-client",
     "type": "library",
     "description": "Object-oriented PHP EPP Client",
     "keywords": ["xml","epp","domains"],
