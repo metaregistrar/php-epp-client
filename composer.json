@@ -1,5 +1,5 @@
 {
-    "name": "metaregistrar/php-epp-client",
+    "name": "EDNSAndrew/php-epp-client",
     "type": "library",
     "description": "Object-oriented PHP EPP Client",
     "keywords": ["xml","epp","domains"],
@@ -9,6 +9,10 @@
         {
             "name": "Ewout de Graaf",
             "email": "ewout@metaregistrar.com"
+        },
+        {
+            "name": "Andrew W",
+            "email": "andrew@easydns.com"
         }
     ],
     "require": {
