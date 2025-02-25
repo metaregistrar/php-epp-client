@@ -290,6 +290,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
                 return $result->nodeValue;
             }
         }
+        return null;
     }
 
     /**
@@ -306,6 +307,28 @@ class eppInfoDomainResponse extends eppInfoResponse {
                 return $result->nodeValue;
             }
         }
+        return null;
+    }
+
+    /**
+     * Get the transfer lock value from the returned keysys data. Should actually be put under extensions/keysys but this is always the object returned!
+     * @return bool|null
+     */
+    public function getTransferLock() : ?bool
+    {
+        // Check if keysys is enabled on this interface
+        if ($this->findNamespace('keysys')) {
+            $xpath = $this->xPath();
+            $results = $xpath->query('/epp:epp/epp:response/epp:extension/keysys:resData/keysys:infData/keysys:transferlock');
+            foreach ($results as $result) {
+               if(intval($result->nodeValue) == 1) {
+                   return true;
+               } else {
+                   return false;
+               }
+            }
+        }
+        return null;
     }
 
 }
