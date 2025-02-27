@@ -7,3 +7,4 @@ vendor/*
 *.key
 Tests/testsetup*
 .DS_Store
+Examples/settings.ini
