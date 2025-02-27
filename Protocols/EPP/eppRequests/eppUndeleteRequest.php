@@ -10,7 +10,7 @@ class eppUndeleteRequest extends eppRequest {
         } else {
             throw new eppException('parameter of eppUndeleteRequest must be valid eppDomain object');
         }
-        //$this->addSessionId();
+        $this->addSessionId();
 
     }
 
