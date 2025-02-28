@@ -3,30 +3,45 @@
 namespace Metaregistrar\EPP;
 
 /**
- * <keysys:resData xmlns:keysys="http://www.key-systems.net/epp/keysys-1.0">
- * <keysys:contactInfData>
- * <keysys:validated>1</keysys:validated>
- * <keysys:verification-requested>1</keysys:verification-requested>
+ * <extension>
+ * <keysys:create xmlns:keysys="http://www.key-systems.net/epp/keysys-1.0">
+ * <keysys:contact>
+ * <keysys:preverify>1</keysys:preverify>
  * <keysys:verified>0</keysys:verified>
- * </keysys:contactInfData>
- * </keysys:resData>
+ * <keysys:validated>1</keysys:validated>
+ * </keysys:contact>
+ * </keysys:create>
+ * </extension>
  */
 
 class rrpproxyEppCreateContactRequest extends eppCreateContactRequest {
 
-    /**
-     * @var int
-     */
-    private int $validated = 0;
-    private int $verification_requested = 0;
-    private int $verified = 0;
+    private int $validation = 1;
+    private int $preverify = 0;
+    private int $checkonly = 0;
 
-    function __construct(eppContact $contact, int $validated = 0, int $verified = 0, int $verification_requested = 0, bool $namespacesinroot = true, bool $usecdata = true) {
+    /**
+     * Constructor for the class.
+     *
+     * @param eppContact $contact          The contact object of type eppContact.
+     * @param int        $validation       The validation level. Defaults to 1.
+     * @param int        $checkonly        Indicates if only a check should be performed. Defaults to 0.
+     * @param int        $preverify        Indicates if preverification is required. Defaults to 0.
+     * @param bool       $namespacesinroot Specifies if namespaces should be in the root. Defaults to true.
+     * @param bool       $usecdata         Specifies whether to use CDATA sections. Defaults to true.
+     *
+     * @return void
+     * @throws eppException If $contact is not of type eppContact or when conflicting options (checkonly and preverify) are set.
+     */
+    function __construct(eppContact $contact, int $validation = 1, int $checkonly = 0, int $preverify = 0, bool $namespacesinroot = true, bool $usecdata = true) {
         try {
             parent::__construct($contact, $namespacesinroot, $usecdata);
-            $this->setValidated($validated);
-            $this->setVerified($verified);
-            $this->setVerificationRequested($verification_requested);
+            if($checkonly && $preverify) {
+                throw new eppException('checkonly and preverify cannot be set at the same time');
+            }
+            $this->setValidation($validation);
+            $this->setCheckOnly($checkonly);
+            $this->setPreverify($preverify);
             $this->addElements();
         } catch(eppException $e) {
             throw new eppException('contact must be of type eppContact on rrpproxyEppCreateContactRequest');
@@ -34,54 +49,114 @@ class rrpproxyEppCreateContactRequest extends eppCreateContactRequest {
         parent::addSessionId();
     }
 
+    /**
+     * Destructor method that cleans up resources or performs any final tasks when the object is deleted.
+     *
+     * @return void
+     */
     function __destruct()
     {
         parent::__destruct();
     }
 
+    /**
+     * Adds elements to the XML structure based on the configured validation, preverify, or check-only settings.
+     *
+     * This method dynamically creates and appends XML nodes depending on the combination
+     * of validation, preverify, and check-only values. If none of these values are set, no elements will be added.
+     *
+     * @return void
+     */
     private function addElements() : void {
+        // Skip element additions if nothing set
+        if(!$this->getPreverify() && !$this->getCheckOnly() && !$this->getValidation()) {
+            return;
+        }
+
         $ext = $this->createElement('extension');
-        $resdata = $this->createElement('keysys:resData');
-        $resdata->setAttribute('xmlns:keysys', 'http://www.key-systems.net/epp/keysys-1.0');
-        $infdata = $this->createElement('keysys:contactInfData');
+        $cdata = $this->createElement('keysys:create');
+        $cdata->setAttribute('xmlns:keysys', 'http://www.key-systems.net/epp/keysys-1.0');
+        $infdata = $this->createElement('keysys:contact');
 
-        $vel = $this->createElement('keysys:validated', $this->getValidated());
-        $vereq = $this->createElement('keysys:verificationRequested', $this->getVerificationRequested());
-        $verel = $this->createElement('keysys:verified', $this->getVerified());
+        if($this->getValidation()) {
+            $vel = $this->createElement('keysys:validation', $this->getValidation());
+            $infdata->appendChild($vel);
+        }
 
-        $infdata->appendChild($vel);
-        $infdata->appendChild($vereq);
-        $infdata->appendChild($verel);
+        if($this->getPreverify() && !$this->getCheckOnly()) {
+            $vereq = $this->createElement('keysys:preverify', $this->getPreverify());
+            $infdata->appendChild($vereq);
+        }
 
-        $resdata->appendChild($infdata);
-        $ext->appendChild($resdata);
+        if($this->getCheckOnly()) {
+            $verel = $this->createElement('keysys:checkonly', $this->getCheckOnly());
+            $infdata->appendChild($verel);
+        }
+
+        $cdata->appendChild($infdata);
+        $ext->appendChild($cdata);
 
         $this->contactobject = $ext;
         $this->getCommand()->appendChild($ext);
-        var_dump($this->getCommand());
     }
 
-    public function setValidated(int $validated) : void {
-        $this->validated = $validated;
+    /**
+     * Sets the validation value to the specified integer.
+     *
+     * @param int $validation The value to set for validation.
+     *
+     * @return void
+     */
+    public function setValidation(int $validation) : void {
+        $this->validation = $validation;
     }
 
-    public function getValidated() : int {
-        return $this->validated;
+    /**
+     * Retrieves the validation value.
+     *
+     * @return int The current validation value.
+     */
+    public function getValidation() : int {
+        return $this->validation;
     }
 
-    public function setVerified(int $verified) : void {
-        $this->verified = $verified;
+    /**
+     * Sets the check-only flag to the specified value.
+     *
+     * @param int $checkonly The value to set for the check-only flag.
+     *
+     * @return void
+     */
+    public function setCheckOnly(int $checkonly) : void {
+        $this->checkonly = $checkonly;
     }
 
-    public function getVerified() : int {
-        return $this->verified;
+    /**
+     * Retrieves the check-only value.
+     *
+     * @return int The check-only value.
+     */
+    public function getCheckOnly() : int {
+        return $this->checkonly;
     }
 
-    public function setVerificationRequested(int $verification_requested) : void {
-        $this->verification_requested = $verification_requested;
+    /**
+     * Sets the preverify value.
+     *
+     * @param int $preverify The preverify value to set.
+     *
+     * @return void
+     */
+    public function setPreverify(int $preverify) : void {
+        $this->preverify = $preverify;
     }
 
-    public function getVerificationRequested() : int {
-        return $this->verification_requested;
+    /**
+     * Retrieves the preverify value.
+     *
+     * @return int The preverify value.
+     */
+    public function getPreverify() : int {
+        return $this->preverify;
     }
 }
