@@ -187,6 +187,11 @@ class eppConnection {
     /**
      * @var null|string
      */
+    protected $sourceIpAddr = null;
+
+    /**
+     * @var null|string
+     */
     protected $logFile = null;
 
     /**
@@ -373,6 +378,11 @@ class eppConnection {
                 } else {
                     stream_context_set_option($context, 'ssl', 'verify_peer', $this->verify_peer);
                 }
+            }
+            if ($this->sourceIpAddr && filter_var($this->sourceIpAddr, FILTER_VALIDATE_IP)) {
+                stream_context_set_option($context, 'socket', 'bindto', $this->sourceIpAddr . ":0");
+            } else if (defined("METAREGISTRAR_EPP_SOURCE_IPADDR") && filter_var(METAREGISTRAR_EPP_SOURCE_IPADDR, FILTER_VALIDATE_IP)) {
+                stream_context_set_option($context, 'socket', 'bindto', METAREGISTRAR_EPP_SOURCE_IPADDR . ":0");
             }
             $this->sslContext = $context;
         }
@@ -1294,6 +1304,15 @@ class eppConnection {
      */
     public function setConnectionComment($connectionComment) {
         $this->connectionComment = $connectionComment;
+        return $this;
+    }
+
+    /**
+     * @param null|string $sourceIpAddr
+     * @return eppConnection
+     */
+    public function setsourceIpAddr($sourceIpAddr) {
+        $this->sourceIpAddr = $sourceIpAddr;
         return $this;
     }
 
