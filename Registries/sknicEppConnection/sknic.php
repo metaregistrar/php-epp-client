@@ -595,38 +595,38 @@ try {
     if ($conn = sknicEppConnection::create('settings.ini', false)) {
         // Connect and login to the EPP server
         if ($conn->login()) {
-//            echo "Hellol\n";
-//            $hello = hello($conn);
-//            var_dump($hello);
+            echo "Hellol\n";
+            $hello = hello($conn);
+            var_dump($hello);
 
             echo "Checking poll\n";
             checkPoll($conn);
 
-//            echo "Checking " . count($domains) . " domain names\n";
-//            checkDomains($conn, $domains);
-//
-//            echo "Checking contact\n";
-//            checkContact($conn,'UBOM-0334');
-//
-//            echo "Checking hosts\n";
-//            checkHosts($conn,['ns1.unknow.sk','ns2.unknow.sk','ns3.unknow.sk']);
+            echo "Checking " . count($domains) . " domain names\n";
+            checkDomains($conn, $domains);
 
-//            echo "Creating hosts\n";
-//            $host_id1 = createHost($conn,'ns1.unknow.sk', ['1.2.3.4']);
-//            $host_id2 = createHost($conn,'ns2.unknow.sk', ['5.6.7.8']);
-//
-//            echo "Checking hosts after create\n";
-//            checkHosts($conn,['ns1.unknow.sk','ns2.unknow.sk','ns3.unknow.sk']);
-//
-//            echo "Get host info\n";
-//            getHostInfo($conn, 'ns1.unknow.sk');
+            echo "Checking contact\n";
+            checkContact($conn,'UBOM-0334');
 
-//            echo "Removing hosts\n";
-//            deleteHost($conn, 'ns1.unknow.sk');
-//            deleteHost($conn, 'ns2.unknow.sk');
-//
-//            echo "Checking hosts after delete\n";
-//            checkHosts($conn,['ns1.unknow.sk','ns2.unknow.sk','ns3.unknow.sk']);
+            echo "Checking hosts\n";
+            checkHosts($conn,['ns1.unknow.sk','ns2.unknow.sk','ns3.unknow.sk']);
+
+            echo "Creating hosts\n";
+            $host_id1 = createHost($conn,'ns1.unknow.sk', ['1.2.3.4']);
+            $host_id2 = createHost($conn,'ns2.unknow.sk', ['5.6.7.8']);
+
+            echo "Checking hosts after create\n";
+            checkHosts($conn,['ns1.unknow.sk','ns2.unknow.sk','ns3.unknow.sk']);
+
+            echo "Get host info\n";
+            getHostInfo($conn, 'ns1.unknow.sk');
+
+            echo "Removing hosts\n";
+            deleteHost($conn, 'ns1.unknow.sk');
+            deleteHost($conn, 'ns2.unknow.sk');
+
+            echo "Checking hosts after delete\n";
+            checkHosts($conn,['ns1.unknow.sk','ns2.unknow.sk','ns3.unknow.sk']);
 
             echo "Creating contact\n";
             $contactid = createcontact($conn, 'admin@unknow.sk','+421.901234567','IT' ,'Unknow.sk' ,'Pod mostom 1' ,'05201' , 'Spišská Nová Ves', 'SK', 'PERS', '1987-06-09');
@@ -642,51 +642,49 @@ try {
                 deleteContact($conn, $contactid);
             }
 
-//            echo "Creating domain\n";
-//            createDomain(
-//                $conn,
-//                $domains[0],
-//                [
-//                    new eppHost('ns1.unknow.sk'),
-//                    new eppHost('ns2.unknow.sk')
-//                ],
-//                $conn->getUsername(),
-//                [
-//                    new eppContactHandle($conn->getUsername(), eppContactHandle::CONTACT_TYPE_ADMIN),
-//                    new eppContactHandle($conn->getUsername(), eppContactHandle::CONTACT_TYPE_TECH),
-//                    new eppContactHandle($conn->getUsername(), eppContactHandle::CONTACT_TYPE_BILLING)
-//                ],
-//                2,
-//                generateValidAuthCode()
-//            );
-//
-//            echo "Updating domain\n";
-//            $updateInfo = new eppDomain($domains[0]);
-//
-//            updateDomain(
-//                $conn,
-//                $domains[0],
-//                null,
-//                null,
-//                $updateInfo,
-//                [
-//                    ['type' => 'abuse', 'id' => $conn->getUsername()]
-//                ],
-//                [
-//                    ['type' => 'abuse', 'id' => $conn->getUsername()]
-//                ]
-//            );
-//
-//            echo "Get domain info\n";
-//            getDomainInfo($conn, $domains[0]); // $domains[0]);
-//
-//            echo "Renewing domain\n";
-//            renewDomain($conn, $domains[0], 1);
-//
-//            echo "Removing domain\n";
-//            deleteDomain($conn, $domains[0]);
+            echo "Creating domain\n";
+            createDomain(
+                $conn,
+                $domains[0],
+                [
+                    new eppHost('ns1.unknow.sk'),
+                    new eppHost('ns2.unknow.sk')
+                ],
+                $conn->getUsername(),
+                [
+                    new eppContactHandle($conn->getUsername(), eppContactHandle::CONTACT_TYPE_ADMIN),
+                    new eppContactHandle($conn->getUsername(), eppContactHandle::CONTACT_TYPE_TECH),
+                    new eppContactHandle($conn->getUsername(), eppContactHandle::CONTACT_TYPE_BILLING)
+                ],
+                2,
+                generateValidAuthCode()
+            );
 
+            echo "Updating domain\n";
+            $updateInfo = new eppDomain($domains[0]);
 
+            updateDomain(
+                $conn,
+                $domains[0],
+                null,
+                null,
+                $updateInfo,
+                [
+                    ['type' => 'abuse', 'id' => $conn->getUsername()]
+                ],
+                [
+                    ['type' => 'abuse', 'id' => $conn->getUsername()]
+                ]
+            );
+
+            echo "Get domain info\n";
+            getDomainInfo($conn, $domains[0]);
+
+            echo "Renewing domain\n";
+            renewDomain($conn, $domains[0], 1);
+
+            echo "Removing domain\n";
+            deleteDomain($conn, $domains[0]);
 
             $conn->logout();
         }
