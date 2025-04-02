@@ -110,7 +110,7 @@ class eppResponse extends \DOMDocument {
     }
 
     #[\ReturnTypeWillChange]
-    public function saveXML(\DOMNode $node = NULL, $options = NULL) {
+    public function saveXML($node = null, $options = 0) {
         return str_replace("\t", '  ', parent::saveXML($node, LIBXML_NOEMPTYTAG));
     }
 
@@ -376,7 +376,7 @@ class eppResponse extends \DOMDocument {
      */
     public function xPath() {
         $xpath = new \DOMXpath($this);
-        $this->defaultnamespace = $this->documentElement->lookupNamespaceUri(NULL);
+        $this->defaultnamespace = $this->documentElement->lookupNamespaceUri(null);
         $xpath->registerNamespace('epp', $this->defaultnamespace);
         if (is_array($this->xpathuri)) {
             foreach ($this->xpathuri as $uri => $namespace) {
