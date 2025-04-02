@@ -131,6 +131,12 @@ class eppConnection {
     protected $local_cert_path = null;
 
     /**
+     * Path to private key file
+     * @var string
+     */
+    protected $local_pk_path = null;
+
+    /**
      * Password of certificate file
      * @var string
      */
@@ -301,18 +307,21 @@ class eppConnection {
      * @param string $certificatepath
      * @param string | null $certificatepassword
      * @param bool $selfsigned
+     * @param string | null $certificatekeypath
      *
      */
-    public function enableCertification($certificatepath, $certificatepassword, $selfsigned = false) {
+    public function enableCertification($certificatepath, $certificatepassword, $selfsigned = false, $certificatekeypath = null) {
         $this->local_cert_path = $certificatepath;
         $this->local_cert_pwd = $certificatepassword;
         $this->allow_self_signed = $selfsigned;
+        $this->local_pk_path = $certificatekeypath;
     }
 
     public function disableCertification() {
         $this->local_cert_path = null;
         $this->local_cert_pwd = null;
         $this->allow_self_signed = null;
+        $this->local_pk_path = null;
     }
 
 
@@ -352,6 +361,9 @@ class eppConnection {
             stream_context_set_option($context, 'ssl', 'verify_peer_name', $this->verify_peer_name);
             if ($this->local_cert_path) {
                 stream_context_set_option($context, 'ssl', 'local_cert', $this->local_cert_path);
+                if (isset($this->local_pk_path) && (strlen($this->local_pk_path)>0)) {
+                    stream_context_set_option($context, 'ssl', 'local_pk', $this->local_pk_path);
+                }
                 if (isset($this->local_cert_pwd) && (strlen($this->local_cert_pwd)>0)) {
                     stream_context_set_option($context, 'ssl', 'passphrase', $this->local_cert_pwd);
                 }
@@ -379,10 +391,10 @@ class eppConnection {
                 $this->read();
             }
             return $this->connected;
-        } else {
-            $this->writeLog("Connection could not be opened: $errno $errstr","ERROR");
-            return false;
         }
+
+        $this->writeLog("Connection could not be opened: $errno $errstr","ERROR");
+        return false;
 
     }
 
@@ -1148,14 +1160,6 @@ class eppConnection {
                 $this->enableLogging();
             }
         }
-
-        if (array_key_exists('certificatefile',$result) && array_key_exists('certificatepassword',$result)) {
-            // Enter the path to your certificate and the password here
-            $this->enableCertification($result['certificatefile'], $result['certificatepassword']);
-        } elseif (array_key_exists('certificatefile',$result)) {
-            // Enter the path to your certificate without password
-            $this->enableCertification($result['certificatefile'], null);
-        }
         if (array_key_exists('verifypeer',$result)) {
             if (($result['verifypeer']=='true') || ($result['verifypeer']=='yes') || ($result['verifypeer']=='1')) {
                 $this->verify_peer = true;
@@ -1176,6 +1180,14 @@ class eppConnection {
             } else {
                 $this->allow_self_signed = false;
             }
+        }
+        if (array_key_exists('certificatefile',$result)) {
+            $this->enableCertification(
+                $result['certificatefile'],
+                array_key_exists('certificatepassword',$result) ? $result['certificatepassword'] : null,
+                $this->allow_self_signed,
+                array_key_exists('certificatekey',$result) ? $result['certificatekey'] : null
+            );
         }
 
         $this->settingsloaded = true;

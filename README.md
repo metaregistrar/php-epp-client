@@ -50,6 +50,7 @@ Currently supported registries:
 - Norid (.no)
 - Arnes (.si)
 - Nic.lv (.lv)
+- SK-NIC (.sk)
 
 
 All code changes are tested automatically with the phpunit tests in the Tests directory
@@ -92,6 +93,7 @@ How to use this repository
         password=xxxxxxxxx
         logging=true
         certificatefile=/home/xxxxxx/xxxxxxx.pem
+        certificatekey=/home/xxxxxx/xxxxxxx.key
         certificatepassword=xxxxxxx
         verifypeer=true/false
         verifypeername=true/false

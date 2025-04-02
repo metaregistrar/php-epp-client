@@ -175,7 +175,7 @@ class tmchClaimData extends \DOMDocument {
 
     public function xPath() {
         $xpath = new \DOMXpath($this);
-        $this->publicnamespace = $this->documentElement->lookupNamespaceUri(NULL);
+        $this->publicnamespace = $this->documentElement->lookupNamespaceUri(null);
         $xpath->registerNamespace('tmNotice', $this->publicnamespace);
         return $xpath;
     }
