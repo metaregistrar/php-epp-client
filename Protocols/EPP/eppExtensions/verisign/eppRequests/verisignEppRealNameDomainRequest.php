@@ -10,7 +10,7 @@ class verisignEppRealNameDomainRequest extends eppDomainRequest {
      * @param string      $rnvc
      * @param string|null $dnvc
      */
-    public function __construct(eppDomain $domain, string $rnvc, string $dnvc=null) {
+    public function __construct(eppDomain $domain, string $rnvc, ?string $dnvc=null) {
         $this->setNamespacesinroot(true);
         $this->setForcehostattr(false);
         parent::__construct(eppRequest::TYPE_UPDATE);

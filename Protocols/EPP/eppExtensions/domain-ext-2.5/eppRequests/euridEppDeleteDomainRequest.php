@@ -21,7 +21,7 @@ namespace Metaregistrar\EPP;
 */
 
 class euridEppDeleteDomainRequest extends eppDeleteDomainRequest {
-    function __construct(eppDomain $deleteinfo, $namespacesinroot = true, \DateTime $deleteDate = null) {
+    function __construct(eppDomain $deleteinfo, $namespacesinroot = true, ?\DateTime $deleteDate = null) {
         parent::__construct($deleteinfo, $namespacesinroot);
         if($deleteDate !== null) {
             $this->addEURIDExtension($deleteDate->format('Y-m-d\TH:i:s\.\0\Z'));

@@ -11,7 +11,7 @@ abstract class atEppExtensionChain
 {
     protected $additionalEppExtension=null;
 
-    function __construct(atEppExtensionChain $additionalEppExtension=null) {
+    function __construct(?atEppExtensionChain $additionalEppExtension=null) {
 
         $this->additionalEppExtension = $additionalEppExtension;
     }
