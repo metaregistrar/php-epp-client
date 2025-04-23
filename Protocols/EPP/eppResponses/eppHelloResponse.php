@@ -30,7 +30,7 @@ class eppHelloResponse extends eppResponse {
             }
         }
         if (!$versionok) {
-            throw new eppException($this->version . ' is not a supported version, supported versions: ' . $supported);
+            throw new eppException($version . ' is not a supported version, supported versions: ' . $supported);
         }
         $languages = $this->getLanguages();
         $languageok = false;
@@ -44,7 +44,7 @@ class eppHelloResponse extends eppResponse {
             }
         }
         if (!$languageok) {
-            throw new eppException($this->language . ' is not a supported language, supported languages: ' . $supported);
+            throw new eppException($language . ' is not a supported language, supported languages: ' . $supported);
         }
         $servs = $this->getServices();
         if (is_array($this->objuri)) {

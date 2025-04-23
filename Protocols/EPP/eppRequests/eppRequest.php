@@ -191,7 +191,12 @@ class eppRequest extends \DOMDocument {
     
     
     protected static function isAscii($str) {
-        return mb_check_encoding($str, 'ASCII');
+        if ($str) {
+            return mb_check_encoding($str, 'ASCII');
+        } else {
+            return true;
+        }
+
     }
 
     public function addNamespaces($namespaces) {
