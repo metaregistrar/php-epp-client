@@ -109,7 +109,7 @@ class eppResponse extends \DOMDocument {
         return false;
     }
 
-    public function saveXML(?\DOMNode $node = NULL, $options = NULL) {
+    public function saveXML(?\DOMNode $node = NULL, $options = NULL): string {
         return str_replace("\t", '  ', parent::saveXML($node, LIBXML_NOEMPTYTAG));
     }
 
