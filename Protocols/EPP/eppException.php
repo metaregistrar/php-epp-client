@@ -29,7 +29,7 @@ class eppException extends \Exception {
      * @param string $command
      * @param \Metaregistrar\EPP\eppResponse|null $response
      */
-    public function __construct($message = "", $code = 0, \Exception $previous = null, $reason = null, $command = null, $response = null) {
+    public function __construct($message = "", $code = 0, \Exception $previous = null, string $reason = null, string $command = null, eppResponse $response = null) {
         $this->reason = $reason;
         $trace = $this->getTrace();
         $this->class = null;
