@@ -7,7 +7,7 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
     use atEppCommandTrait;
     protected $atEppExtensionChain = null;
 
-    function __construct($objectname, atEppContact $addinfo = null, atEppContact $removeinfo = null,atEppContact $updateinfo = null,atEppExtensionChain $atEppExtensionChain=null) {
+    function __construct($objectname, ?atEppContact $addinfo = null, ?atEppContact $removeinfo = null,?atEppContact $updateinfo = null,?atEppExtensionChain $atEppExtensionChain=null) {
         $this->atEppExtensionChain = $atEppExtensionChain;
         parent::__construct($objectname, $addinfo , $removeinfo , $updateinfo);
         $this->addSessionId();

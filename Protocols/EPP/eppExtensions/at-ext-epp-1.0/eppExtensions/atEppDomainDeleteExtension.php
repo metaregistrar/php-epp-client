@@ -28,7 +28,7 @@ class atEppDomainDeleteExtension extends atEppExtensionChain
      * @param array $domainExtArguments
      * @param atEppExtensionChain|null $additionalEppExtension
      */
-    public function __construct(array $domainExtArguments=[], atEppExtensionChain $additionalEppExtension = null)
+    public function __construct(array $domainExtArguments=[], ?atEppExtensionChain $additionalEppExtension = null)
     {
         $this->validateExtensionChain($domainExtArguments);
         if (!is_null($additionalEppExtension))

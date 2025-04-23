@@ -8,7 +8,7 @@ class atEppCreateDomainRequest extends eppCreateDomainRequest
 
     protected $atEppExtensionChain = null;
 
-    function __construct($createinfo,atEppExtensionChain $atEppExtensionChain=null, $forcehostattr = true) {
+    function __construct($createinfo,?atEppExtensionChain $atEppExtensionChain=null, $forcehostattr = true) {
         $this->atEppExtensionChain = $atEppExtensionChain;
         parent::__construct($createinfo,$forcehostattr);
     }
