@@ -165,21 +165,23 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
     }
 
     /**
-     * Retrieve the names for the nameserver groups
-     * @return null|array
+     * Retrieve the names for the nameserver groups.
+     *
+     * @return array|null
      */
     public function getNameserverGroups()
     {
         $xpath = $this->xPath();
-        $result = $xpath->query('/epp:epp/epp:response/epp:extension/domain-ext:infData/domain-ext:nsgroup');
-        if ($result->length > 0) {
+        $result = @$xpath->query('/epp:epp/epp:response/epp:extension/domain-ext:infData/domain-ext:nsgroup');
+        if (is_object($result) && $result->length > 0) {
             $arr = [];
             foreach ($result as $item) {
                 $arr[] = $item->nodeValue;
             }
+
             return $arr;
-        } else {
-            return null;
         }
+
+        return null;
     }
 }
