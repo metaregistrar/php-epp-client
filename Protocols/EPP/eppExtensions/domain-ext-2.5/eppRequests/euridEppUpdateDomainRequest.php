@@ -2,66 +2,69 @@
 
 namespace Metaregistrar\EPP;
 
+use DOMElement;
+
 class euridEppUpdateDomainRequest extends eppUpdateDomainRequest
 {
     public function __construct(
         $objectname,
-        $addinfo = null,
-        $removeinfo = null,
-        $updateinfo = null,
-        $forcehostattr = true,
-        $namespacesinroot = true,
-        $addnsgroup = null,
-        $removensgroup = null
+        ?eppDomain $addinfo = null,
+        ?eppDomain $removeinfo = null,
+        ?eppDomain $updateinfo = null,
+        bool $forcehostattr = true,
+        bool $namespacesinroot = true,
+        string|array|null $addnsgroup = null,
+        string|array|null $removensgroup = null
     ) {
         parent::__construct($objectname, $addinfo, $removeinfo, $updateinfo, $forcehostattr, $namespacesinroot);
         $this->updatensgroup($addnsgroup, $removensgroup);
+        parent::addSessionId();
     }
 
-    public function updatensgroup($addnsgroup = null, $removensgroup = null)
+    public function updatensgroup(string|array|null $addnsgroup = null, string|array|null $removensgroup = null): void
     {
         if ($addnsgroup === null && $removensgroup === null) {
             return;
         }
 
-        $this->addExtension('xmlns:dnsbe', 'http://www.eurid.eu/xml/epp/domain-ext-2.6');
-        $ext = $this->createElement('extension');
-        $dnsext = $this->createElement('domain-ext');
-        $update = $this->createElement('domain-ext:update');
-        $domain = $this->createElement('domain-ext:rem');
+        $create = $this->createElement('domain-ext:update');
+        $this->setNamespace('xmlns:domain', 'urn:ietf:params:xml:ns:domain-1.0', $create);
+        $this->setNamespace('xmlns:domain-ext', 'http://www.eurid.eu/xml/epp/domain-ext-2.5', $create);
+
         if ($addnsgroup !== null) {
-            if (is_array($addnsgroup) && !empty($addnsgroup)) {
-                $add = $this->createElement('domain-ext:add');
-                foreach ($addnsgroup as $nsgroupname) {
-                    $add->appendChild($this->createElement('domain-ext:nsgroup', $nsgroupname));
-                }
-            } elseif (is_string($addnsgroup)) {
-                $add = $this->createElement('domain-ext:add');
-                $add->appendChild($this->createElement('domain-ext:nsgroup', $addnsgroup));
-            } else {
-                throw new eppException("addnsgroup must either be an array or a string in updatensgroup");
-            }
-            $domain->appendChild($add);
+            $this->processNsgroup($create, 'domain-ext:add', $addnsgroup);
         }
+
         if ($removensgroup !== null) {
-            if (is_array($removensgroup) && !empty($removensgroup)) {
-                $rem = $this->createElement('domain-ext:rem');
-                foreach ($removensgroup as $nsgroupname) {
-                    $rem->appendChild($this->createElement('domain-ext:nsgroup', $nsgroupname));
-                }
-            } elseif (is_string($removensgroup)) {
-                $rem = $this->createElement('domain-ext:rem');
-                $rem->appendChild($this->createElement('domain-ext:nsgroup', $removensgroup));
-            } else {
-                throw new eppException("removensgroup must either be an array or a string in updatensgroup");
-            }
-            $domain->appendChild($rem);
+            $this->processNsgroup($create, 'domain-ext:rem', $removensgroup);
         }
-        $update->appendChild($domain);
-        $dnsext->appendChild($update);
-        $ext->appendChild($dnsext);
-        $this->getCommand()->appendChild($ext);
-        $this->addSessionId();
+
+        $this->getExtension()->appendChild($create);
     }
 
+    private function processNsgroup(DOMElement $parent, string $action, string|array $nsgroup): void
+    {
+        if (is_array($nsgroup) && !empty($nsgroup)) {
+            $element = $this->createElement($action);
+
+            foreach ($nsgroup as $nsgroupname) {
+                $element->appendChild($this->createElement('domain-ext:nsgroup', $nsgroupname));
+            }
+
+            $parent->appendChild($element);
+
+            return;
+        }
+
+        if (is_string($nsgroup)) {
+            $element = $this->createElement($action);
+            $element->appendChild($this->createElement('domain-ext:nsgroup', $nsgroup));
+            $parent->appendChild($element);
+
+            return;
+        }
+
+
+        throw new eppException("The data needed to update the nameserver group must either be an array or a string");
+    }
 }
