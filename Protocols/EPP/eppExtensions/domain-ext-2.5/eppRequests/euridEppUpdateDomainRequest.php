@@ -31,7 +31,7 @@ use DOMElement;
             </domain:update>
         </update>
         <extension>
-            <domain-ext:update xmlns:domain-ext="http://www.eurid.eu/xml/epp/domain-ext-2.6">
+            <domain-ext:update xmlns:domain-ext="http://www.eurid.eu/xml/epp/domain-ext-2.5">
                 <domain-ext:add>
                     <domain-ext:nsgroup>nsgroup-1573042729356</domain-ext:nsgroup>
                 </domain-ext:add>
