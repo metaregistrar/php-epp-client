@@ -59,7 +59,7 @@ class euridEppUpdateDomainRequest extends eppUpdateDomainRequest
         parent::addSessionId();
     }
 
-    public function updateNameserverGroups(string|array|null $addnsgroup = null, string|array|null $removensgroup = null): void
+    private function updateNameserverGroups(string|array|null $addnsgroup = null, string|array|null $removensgroup = null): void
     {
         if ($addnsgroup === null && $removensgroup === null) {
             return;
