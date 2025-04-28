@@ -6,13 +6,10 @@ use DOMElement;
 
 /*
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<epp
-    xmlns="urn:ietf:params:xml:ns:epp-1.0"
-    xmlns:eurid="http://www.eurid.eu/xml/epp/eurid-1.0">
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:eurid="http://www.eurid.eu/xml/epp/eurid-1.0">
     <command>
         <update>
-            <domain:update
-                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+            <domain:update xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
                 <domain:name>somedomain</domain:name>
                 <domain:add>
                     <domain:ns>
@@ -34,8 +31,7 @@ use DOMElement;
             </domain:update>
         </update>
         <extension>
-            <domain-ext:update
-                xmlns:domain-ext="http://www.eurid.eu/xml/epp/domain-ext-2.5">
+            <domain-ext:update xmlns:domain-ext="http://www.eurid.eu/xml/epp/domain-ext-2.6">
                 <domain-ext:add>
                     <domain-ext:nsgroup>nsgroup-1573042729356</domain-ext:nsgroup>
                 </domain-ext:add>
