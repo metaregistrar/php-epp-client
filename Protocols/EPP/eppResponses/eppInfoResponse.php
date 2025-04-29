@@ -16,6 +16,13 @@ class eppInfoResponse extends eppResponse {
                         $ret .= ',';
                     }
                     $ret .= $value;
+                } else {
+                    if ($value instanceof eppStatus) {
+                        if (strlen($ret)) {
+                            $ret .= ',';
+                        }
+                        $ret .= $value->getStatusname();
+                    }
                 }
             }
         }
