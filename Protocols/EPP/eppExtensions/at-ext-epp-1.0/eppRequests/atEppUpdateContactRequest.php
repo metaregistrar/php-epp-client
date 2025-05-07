@@ -124,10 +124,7 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
             $element->appendChild($postalinfo);
         }
 
-            $element->appendChild($this->createElement('contact:voice', $contact->getVoice()));
-
-
-            $element->appendChild($this->createElement('contact:fax', $contact->getFax()));
+        $element->appendChild($this->createElement('contact:voice', $contact->getVoice()));
 
         if (strlen($contact->getEmail())) {
             $element->appendChild($this->createElement('contact:email', $contact->getEmail()));
@@ -137,42 +134,6 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
             $authinfo->appendChild($this->createElement('contact:pw', $contact->getPassword()));
             $element->appendChild($authinfo);
         }
-        $this->setAtContactDisclosure($element,$contact);
-
-    }
-
-
-    protected function setAtContactDisclosure(\domElement $element,atEppContact $contact)
-    {
-
-        if (!is_null($contact->getDisclose())) {
-            $disclose = $this->createElement('contact:disclose');
-            $disclose->setAttribute('flag',$contact->getDisclose());
-
-            $disclPhone = $this->createElement('contact:voice');
-            if ($contact->getDisclose()==1) {
-                $disclPhone->setAttribute('type',eppContact::TYPE_LOC);
-            }
-            if($contact->getDisclose() != $contact->getWhoisHidePhone()) {
-                $disclose->appendChild($disclPhone);
-            }
-            $disclFax = $this->createElement('contact:fax');
-            if ($contact->getDisclose()==1) {
-                $disclFax->setAttribute('type',eppContact::TYPE_LOC);
-            }
-            if($contact->getWhoisHideFax() != $contact->getDisclose()) {
-                $disclose->appendChild($disclFax);
-            }
-            $disclEmail = $this->createElement('contact:email');
-            if ($contact->getDisclose()==1) {
-                $disclEmail->setAttribute('type',eppContact::TYPE_LOC);
-            }
-            if($contact->getWhoisHideEmail() != $contact->getDisclose()) {
-                $disclose->appendChild($disclEmail);
-            }
-            $element->appendChild($disclose);
-        }
-
 
     }
 
