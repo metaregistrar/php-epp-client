@@ -6,7 +6,7 @@ class atEppUpdateContactExtension extends atEppExtensionChain
 {
     protected $atEppContact=null;
 
-    function __construct(atEppContact $atEppContact, atEppExtensionChain $additionalEppExtension=null) {
+    function __construct(atEppContact $atEppContact, ?atEppExtensionChain $additionalEppExtension=null) {
         if(!is_null($additionalEppExtension)) {
             parent::__construct($additionalEppExtension);
         }

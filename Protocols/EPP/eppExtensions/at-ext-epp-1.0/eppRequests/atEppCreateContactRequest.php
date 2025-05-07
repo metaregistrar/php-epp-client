@@ -7,7 +7,7 @@ class atEppCreateContactRequest extends eppCreateContactRequest {
 
     protected $atEppExtensionChain = null;
 
-    function __construct($createinfo,atEppExtensionChain $atEppExtensionChain=null) {
+    function __construct($createinfo,?atEppExtensionChain $atEppExtensionChain=null) {
         $this->atEppExtensionChain = $atEppExtensionChain;
        parent::__construct($createinfo);
        $this->addSessionId();

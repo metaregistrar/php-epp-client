@@ -15,3 +15,6 @@ $this->addCommandResponse('Metaregistrar\EPP\rrpproxyEppRenewalmodeRequest', 'Me
 
 include_once(dirname(__FILE__) . '/eppRequests/rrpproxyEppTransferDomainRequest.php');
 $this->addCommandResponse('Metaregistrar\EPP\rrpproxyEppTransferDomainRequest', 'Metaregistrar\EPP\eppTransferResponse');
+
+include_once(dirname(__FILE__) . '/eppResponses/rrpproxyEppInfoContactResponse.php');
+$this->addCommandResponse('Metaregistrar\EPP\eppInfoContactRequest', 'Metaregistrar\EPP\rrpproxyEppInfoContactResponse');

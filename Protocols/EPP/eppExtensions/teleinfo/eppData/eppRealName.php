@@ -49,7 +49,7 @@ class eppRealName{
      * @param array  $documents
      * @param string $authorisationCode
      */
-    public function __construct(string $role=self::NAME_ROLE_PERSON, string $name='', string $number='', string $proof=self::NAME_PROOF_CITIZEN, array $documents=[], string $authorisationCode=null){
+    public function __construct(string $role=self::NAME_ROLE_PERSON, string $name='', string $number='', string $proof=self::NAME_PROOF_CITIZEN, array $documents=[], ?string $authorisationCode=null){
         !empty($role) && $this->setRole($role);
         !empty($name) && $this->setName($name);
         !empty($number) && $this->setNumber($number);
