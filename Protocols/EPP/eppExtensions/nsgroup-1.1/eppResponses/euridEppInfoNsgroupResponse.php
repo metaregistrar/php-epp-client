@@ -31,11 +31,6 @@ namespace Metaregistrar\EPP;
  */
 class euridEppInfoNsgroupResponse extends eppResponse
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
      *
      * @return string
