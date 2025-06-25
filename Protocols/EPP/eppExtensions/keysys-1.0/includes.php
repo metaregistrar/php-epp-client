@@ -20,4 +20,4 @@ include_once(dirname(__FILE__) . '/eppResponses/rrpproxyEppInfoContactResponse.p
 $this->addCommandResponse('Metaregistrar\EPP\eppInfoContactRequest', 'Metaregistrar\EPP\rrpproxyEppInfoContactResponse');
 
 include_once(dirname(__FILE__) . '/eppResponses/rrpproxyEppInfoDomainResponse.php');
-$this->addCommandResponse('Metaregistrar\EPP\eppInfoDomainRequest', 'Metaregistrar\EPP\rrpproxyEppInfoDomainResponse');
+$this->addCommandResponse('Metaregistrar\EPP\rrpproxyEppInfoDomainRequest', 'Metaregistrar\EPP\rrpproxyEppInfoDomainResponse');
