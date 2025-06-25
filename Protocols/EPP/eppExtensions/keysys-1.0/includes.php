@@ -19,5 +19,5 @@ $this->addCommandResponse('Metaregistrar\EPP\rrpproxyEppTransferDomainRequest', 
 include_once(dirname(__FILE__) . '/eppResponses/rrpproxyEppInfoContactResponse.php');
 $this->addCommandResponse('Metaregistrar\EPP\eppInfoContactRequest', 'Metaregistrar\EPP\rrpproxyEppInfoContactResponse');
 
-include_once(dirname(__FILE__) . '/eppResponses/rrpproxyEppInfoDomainResponse.php');
+include_once(dirname(__FILE__) . '/eppRequests/rrpproxyEppInfoDomainRequest.php');
 $this->addCommandResponse('Metaregistrar\EPP\rrpproxyEppInfoDomainRequest', 'Metaregistrar\EPP\rrpproxyEppInfoDomainResponse');
