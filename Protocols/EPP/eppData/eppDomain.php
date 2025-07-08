@@ -57,8 +57,8 @@ class eppDomain {
      */
     private $statuses = array();
 
-    /*
-     * @var array DNSSEC information for this domain name
+    /**
+     * @var array<eppSecdns> DNSSEC information for this domain name
      */
     private $secdns = array();
     /**
@@ -309,8 +309,10 @@ class eppDomain {
     }
 
     /**
-     * @param integer $row
-     * @return eppSecdns|null|array
+     * @param int|null $row
+     * @return eppSecdns|array<eppSecdns>
+     * 
+     * @phpstan-return ($row is null ? array<eppSecdns> : eppSecdns)
      */
     public function getSecdns($row = null) {
         if (!is_null($row)) {
