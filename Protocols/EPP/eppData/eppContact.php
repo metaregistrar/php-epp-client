@@ -37,7 +37,8 @@ class eppContact {
     const TYPE_INT = 'int';
     const TYPE_AUTO = 'auto';
 
-    private $id = null;
+    /** @var string */
+    private $id;
     private $postalInfo = array();
     private $voice=null;
     private $fax=null;
@@ -249,7 +250,7 @@ class eppContact {
     }
 
     /**
-     * @return null
+     * @return string
      */
     public function getId()
     {
@@ -257,7 +258,7 @@ class eppContact {
     }
 
     /**
-     * @param null $id
+     * @param string $id
      */
     public function setId($id)
     {
