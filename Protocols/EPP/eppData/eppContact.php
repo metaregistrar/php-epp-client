@@ -37,25 +37,34 @@ class eppContact {
     const TYPE_INT = 'int';
     const TYPE_AUTO = 'auto';
 
-    private $id = null;
+    /** @var string */
+    private $id;
+    /** @var array<eppContactPostalInfo> */
     private $postalInfo = array();
+    /** @var string|null */
     private $voice=null;
+    /** @var string|null */
     private $fax=null;
+    /** @var string|null */
     private $email=null;
+    /** @var string|null */
     private $password=null;
+    /** @var array<string>|string|null */
     private $status=null;
+    /** @var string */
     private $type = self::TYPE_AUTO;
+    /** @var string|null */
     private $disclose = null;
 
 
     /**
      *
-     * @param eppContactPostalInfo $postalInfo
-     * @param string $email
-     * @param string $voice
-     * @param string $fax
-     * @param string $password
-     * @param string $status
+     * @param eppContactPostalInfo|array<eppContactPostalInfo>|null $postalInfo
+     * @param string|null $email
+     * @param string|null $voice
+     * @param string|null $fax
+     * @param string|null $password
+     * @param array<string>|string|null $status
      */
     public function __construct($postalInfo = null, $email = null, $voice = null, $fax = null, $password = null, $status = null) {
         if ($postalInfo instanceof eppContactPostalInfo) {
@@ -78,19 +87,33 @@ class eppContact {
 
     }
 
+    /**
+     * @param string $disclose
+     * @return void
+     */
     public function setDisclose($disclose) {
         $this->disclose = $disclose;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDisclose() {
         return $this->disclose;
     }
 
 
+    /**
+     * @param string $type
+     * @return void
+     */
     public function setType($type) {
         $this->type = $type;
     }
 
+    /**
+     * @return string
+     */
     public function getType() {
         return $this->type;
     }
@@ -120,7 +143,7 @@ class eppContact {
      * Retrieve a postalInfo object by number
      *
      * @param int $line
-     * @return eppContactPostalInfo
+     * @return eppContactPostalInfo|null
      */
     public function getPostalInfo($line) {
         if ($this->postalInfo[$line]) {
@@ -132,7 +155,8 @@ class eppContact {
 
     /**
      * Sets the status
-     * @param string $status
+     * @param array<string>|string $status
+     * @return void
      */
     public function setStatus($status) {
         if (is_array($status)) {
@@ -146,7 +170,7 @@ class eppContact {
 
     /**
      * Sets the status
-     * @return string status
+     * @return array<string>|string|null
      */
     public function getStatus() {
         return $this->status;
@@ -188,7 +212,7 @@ class eppContact {
 
     /**
      * Gets the password
-     * @return string
+     * @return string|null
      */
     public function getPassword() {
         return $this->password;
@@ -196,7 +220,7 @@ class eppContact {
 
     /**
      * Sets the phone number
-     * @param int $voice
+     * @param string $voice
      * @return void
      */
     public function setVoice($voice) {
@@ -213,7 +237,7 @@ class eppContact {
 
     /**
      * Sets the fax number
-     * @param int $fax
+     * @param string $fax
      * @return void
      */
     public function setFax($fax) {
@@ -222,7 +246,7 @@ class eppContact {
 
     /**
      * Gets the fax number
-     * @return string
+     * @return string|null
      */
     public function getFax() {
         return $this->fax;
@@ -230,8 +254,8 @@ class eppContact {
 
     /**
      * Formats the phone number according to SIDN formatting rules
-     * @param int $number
-     * @return string
+     * @param string $number
+     * @return string|null
      * @throws eppException
      */
     protected function validatePhoneNumber($number) {
@@ -249,7 +273,7 @@ class eppContact {
     }
 
     /**
-     * @return null
+     * @return string
      */
     public function getId()
     {
@@ -257,7 +281,7 @@ class eppContact {
     }
 
     /**
-     * @param null $id
+     * @param string $id
      */
     public function setId($id)
     {
