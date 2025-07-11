@@ -24,19 +24,24 @@ class eppContactHandle {
     private $contactHandle;
     /**
      * Type of contact: ADMIN, TECH, BILLING
-     * @var string
+     * @var string|null
+     * 
+     * @phpstan-var self::CONTACT_TYPE_*|null
      */
     private $contactType;
     /**
      * Authcode to retrieve contact information
-     * @var string
+     * @var string|null
      */
     private $password=null;
 
     /**
      *
      * @param string $contactHandle
-     * @param string $contactType
+     * @param string|null $contactType
+     * 
+     * @phpstan-param self::CONTACT_TYPE_*|null $contactType
+     * 
      * @throws eppException
      */
     public function  __construct($contactHandle, $contactType = null) {
@@ -60,6 +65,7 @@ class eppContactHandle {
     /**
      * Set the handle of the desired contact
      * @param string $contactHandle
+     * @return void
      * @throws eppException
      */
     public function setContactHandle($contactHandle) {
@@ -71,7 +77,9 @@ class eppContactHandle {
 
     /**
      * Gets the contact handle
-     * @return string
+     * @return string|null
+     * 
+     * @phpstan-return self::CONTACT_TYPE_*|null
      */
     public function getContactType() {
         return $this->contactType;
@@ -80,6 +88,9 @@ class eppContactHandle {
     /**
      * Sets the contact type
      * @param string $contactType
+     * 
+     * @phpstan-type self::CONTACT_TYPE_* $contactType
+     * 
      * @return void
      */
     public function setContactType($contactType) {
@@ -100,7 +111,7 @@ class eppContactHandle {
 
     /**
      * Gets the password
-     * @return string
+     * @return string|null
      */
     public function getPassword() {
         return $this->password;
