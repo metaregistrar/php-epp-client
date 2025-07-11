@@ -9,22 +9,22 @@ class dnsbeEppPollResponse extends eppPollResponse
         parent::__construct();
     }
 
-    public function getPollResAction()
+    public function getAction()
     {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/dnsbe:pollRes/dnsbe:action');
     }
 
-    public function getPollResDomainname()
+    public function getDomainname()
     {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/dnsbe:pollRes/dnsbe:domainname');
     }
 
-    public function getPollResReturncode()
+    public function getReturncode()
     {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/dnsbe:pollRes/dnsbe:returncode');
     }
 
-    public function getPollResType()
+    public function getType()
     {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/dnsbe:pollRes/dnsbe:type');
     }
