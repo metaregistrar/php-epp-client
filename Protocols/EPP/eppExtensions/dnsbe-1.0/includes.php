@@ -55,3 +55,6 @@ $this->addCommandResponse('Metaregistrar\EPP\dnsbeEppUpdateDomainRequest', 'Meta
 
 include_once(dirname(__FILE__) . '/eppExceptions/dnsbeEppException.php');
 $this->addException('Metaregistrar\EPP\dnsbeEppException');
+
+include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppPollResponse.php');
+$this->addCommandResponse('Metaregistrar\EPP\eppPollRequest', 'Metaregistrar\EPP\dnsbeEppPollResponse');
