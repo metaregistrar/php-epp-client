@@ -25,27 +25,27 @@ class eppHost {
 
     /**
      * Holds the hostname of the nameserver
-     * @var <string>
+     * @var string
      */
     private $hostname;
 
     /**
      * Holds the IP address of the nameserver
-     * @var <array> of <string>
+     * @var array<string>
      */
     private $ipaddresses;
 
     /**
      * Holds the status of the nameserver as provided by SIDN nameserver info request
-     * @var <array> of <string>
+     * @var array<string>
      */
     private $hoststatus;
 
     /**
      *
-     * @param <string> $hostname
-     * @param <string> $ipaddress
-     * @param <string> $hoststatus
+     * @param string $hostname
+     * @param array<string>|string|null $ipaddress
+     * @param array<string>|string|null $hoststatus
      */
     public function  __construct($hostname, $ipaddress = null, $hoststatus = null) {
         $this->setHostname($hostname);
@@ -73,15 +73,23 @@ class eppHost {
         }
     }
 
-    // getters
+    /**
+     * @return string
+     */
     public function getHostname() {
         return $this->hostname;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getIpAddresses() {
         return $this->ipaddresses;
     }
 
+    /**
+     * @return int
+     */
     public function getIpAddressCount() {
         if (is_array($this->ipaddresses)) {
             return count($this->ipaddresses);
@@ -90,6 +98,9 @@ class eppHost {
 
     }
 
+    /**
+     * @return int
+     */
     public function getHostStatusCount() {
         if (is_array($this->hoststatus)) {
             return count($this->hoststatus);
@@ -97,15 +108,26 @@ class eppHost {
         return 0;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getHostStatuses() {
         return $this->hoststatus;
     }
 
+    /**
+     * @param string $hoststatus
+     * @return void
+     */
     public function setHostStatus($hoststatus) {
         $this->hoststatus[] = $hoststatus;
     }
 
-    // setters
+    /**
+     * @param string $hostname
+     * @return void
+     * @throws eppException
+     */
     public function setHostname($hostname) {
         if (strlen($hostname) > 0) {
             $this->hostname = $hostname;
@@ -114,6 +136,11 @@ class eppHost {
         }
     }
 
+    /**
+     * @param string $ipaddress
+     * @return void
+     * @throws eppException
+     */
     public function setIpAddress($ipaddress) {
 
         if (filter_var($ipaddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {

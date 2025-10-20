@@ -29,55 +29,32 @@ class eppDomain {
     const STATUS_CLIENT_TRANSFER_PROHIBITED = 'clientTransferProhibited';
     const STATUS_CLIENT_HOLD = 'clientHold';
 
-    /**
-     *
-     * @var string
-     */
+    /** @var string */
     private $domainname = '';
-    /**
-     *
-     * @var string
-     */
+    /** @var string */
     private $registrant = '';
-    /**
-     *
-     * @var array Contact information for this domain name
-     */
+    /** @var array<eppContactHandle> Contact information for this domain name */
     private $contacts = array();
-
-    /**
-     *
-     * @var array Host information for this domain name
-     */
+    /** @var array<eppHost> Host information for this domain name */
     private $hosts = array();
-
-    /**
-     *
-     * @var array Status information for this domain name
-     */
+    /** @var array<string|eppStatus> Status information for this domain name */
     private $statuses = array();
-
-    /*
-     * @var array DNSSEC information for this domain name
-     */
+    /** @var array<eppSecdns> DNSSEC information for this domain name */
     private $secdns = array();
-    /**
-     *
-     * @var string
-     */
+    /** @var string|null */
     private $authorisationCode = null;
-    /**
-     *
-     * @var integer
-     */
+    /** @var int */
     private $periodunit = self::DOMAIN_PERIOD_UNIT_Y;
 
     private $period = 1;
 
     /**
-     *
-     * @param eppContactHandle|string $registrant
-     * @param string $authorisationCode
+     * @param string $domainname
+     * @param eppContactHandle|string|null $registrant
+     * @param array<eppContactHandle>|eppContactHandle|null $contacts
+     * @param array<eppHost>|eppHost|null $hosts
+     * @param int $period
+     * @param string|null $authorisationCode
      */
     public function __construct($domainname, $registrant = null, $contacts = null, $hosts = null, $period = 0, $authorisationCode = null) {
 
@@ -136,7 +113,7 @@ class eppDomain {
 
     /**
      *
-     * @return string domain_name
+     * @return string
      */
     public function getDomainname() {
         return $this->domainname;
@@ -144,7 +121,7 @@ class eppDomain {
 
     /**
      *
-     * @param integer $period
+     * @param int $period
      */
     public function setPeriodUnit($periodunit) {
         if (($periodunit == eppDomain::DOMAIN_PERIOD_UNIT_Y) || ($periodunit == eppDomain::DOMAIN_PERIOD_UNIT_M)) {
@@ -156,17 +133,24 @@ class eppDomain {
 
     /**
      *
-     * @return integer
+     * @return int
      */
     public function getPeriodUnit() {
         return $this->periodunit;
     }
 
 
+    /**
+     * @return int
+     */
     public function getPeriod() {
         return $this->period;
     }
 
+    /**
+     * @param int $period
+     * @return void
+     */
     public function setPeriod($period) {
         if ($this->periodunit == self::DOMAIN_PERIOD_UNIT_Y) {
             if (($period > 10) || ($period < 0)) {
@@ -206,7 +190,7 @@ class eppDomain {
 
     /**
      *
-     * @param eppContact $contact
+     * @param eppContactHandle $contact
      * @return void
      */
     public function addContact(eppContactHandle $contact) {
@@ -219,7 +203,7 @@ class eppDomain {
     /**
      *
      * @param string $type
-     * @return eppContactHandle
+     * @return eppContactHandle|null
      */
     public function getContact($type) {
         if (is_array($this->contacts)) {
@@ -235,7 +219,7 @@ class eppDomain {
 
     /**
      *
-     * @return array contactHandles
+     * @return array<eppContactHandle> contactHandles
      */
     public function getContacts() {
         return $this->contacts;
@@ -269,7 +253,7 @@ class eppDomain {
 
     /**
      *
-     * @return array of eppHosts
+     * @return array<eppHost> of eppHosts
      */
     public function getHosts() {
         return $this->hosts;
@@ -285,8 +269,8 @@ class eppDomain {
 
     /**
      *
-     * @param int $line
-     * @return eppHost
+     * @param int|null $line
+     * @return eppHost|null
      */
     public function getHost($line=null) {
         if (!is_null($line)) {
@@ -298,19 +282,24 @@ class eppDomain {
     }
 
     /**
-     * @param eppSecdns $secdns
+     * @return void
      */
     public function addSecdns(eppSecdns $secdns) {
         $this->secdns[] = $secdns;
     }
 
+    /**
+     * @return int
+     */
     public function getSecdnsLength() {
         return count($this->secdns);
     }
 
     /**
-     * @param integer $row
-     * @return eppSecdns|null|array
+     * @param int|null $row
+     * @return eppSecdns|array<eppSecdns>
+     * 
+     * @phpstan-return ($row is null ? array<eppSecdns> : eppSecdns)
      */
     public function getSecdns($row = null) {
         if (!is_null($row)) {
@@ -344,7 +333,7 @@ class eppDomain {
 
     /**
      *
-     * @param string $authorisationCode
+     * @param string $password
      * @return void
      */
     public function setPassword($password) {
@@ -353,7 +342,7 @@ class eppDomain {
 
     /**
      *
-     * @return string
+     * @return string|null
      */
     public function getPassword() {
         return $this->authorisationCode;
@@ -369,8 +358,10 @@ class eppDomain {
 
     /**
      *
-     * @param bool $fullobject
-     * @return array
+     * @param bool $fullobjects
+     * @return array<string|eppStatus>
+     *
+     * @phpstan-return ($fullobjects is true ? array<eppStatus> : array<string>)
      * 
      */
     public function getStatuses($fullobjects=false) {
@@ -398,6 +389,10 @@ class eppDomain {
     }
 
 
+    /**
+     * @param int $length
+     * @return string
+     */
     public static function generateRandomString($length = 10) {
         $characters = '123456789ABCDEFGHIJKLMNPQRSTUVWXYZ';
         $charactersLength = strlen($characters);

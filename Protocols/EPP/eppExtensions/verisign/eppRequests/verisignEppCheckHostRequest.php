@@ -3,13 +3,8 @@ namespace Metaregistrar\EPP;
 
 class verisignEppCheckHostRequest extends eppCheckHostRequest {
     use verisignEppExtension;
-    /**
-     * verisignEppCheckHostRequest constructor.
-     *
-     * @param eppHost $host
-     */
-    public function __construct(eppHost $host) {
-        parent::__construct($host);
+    public function __construct($checkrequest) {
+        parent::__construct($checkrequest);
         //add namestore extension
         $this->addNamestore();
         $this->addSessionId();
