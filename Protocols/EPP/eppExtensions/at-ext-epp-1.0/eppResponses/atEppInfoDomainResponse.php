@@ -27,4 +27,18 @@ class atEppInfoDomainResponse extends eppInfoDomainResponse
         }
         return null;
     }
+
+    public function getValidationStatus()
+    {
+        $xpath = $this->xPath();
+        $xpath->registerNamespace ( "at-ext-verification" , atEppConstants::namespaceAtExtVerification );
+
+        $result = $xpath->query('/epp:epp/epp:response/epp:extension/at-ext-verification:infData/at-ext-verification:status/@s');
+        if (!is_null($result) && $result->length > 0) {
+            return $result->item(0)->nodeValue;
+        }
+
+        return null;
+    }
+
 }

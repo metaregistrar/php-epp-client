@@ -28,6 +28,15 @@ class atEppUpdateContactExtension extends atEppExtensionChain
         $extChange_->appendChild($facet_);
         $contactExt_->appendChild($extChange_);
         $extension->appendchild($contactExt_);
+        
+        if ($this->atEppContact->getVerificationReport()) {   // add validation report to request if set
+            $verficiationExt = $request->createElement('at-ext-verification:update');
+            $verficiationExt->setAttribute('xmlns:at-ext-verification', atEppConstants::namespaceAtExtVerification);
+            $verficiationExt->setAttribute('xsi:schemaLocation', atEppConstants::schemaLocationAtExtVerification);
+            $this->atEppContact->getVerificationReport()->exportXML($request, $verficiationExt);
+            $extension->appendchild($verficiationExt);
+        }
+
         if(!is_null($this->additionalEppExtension))
         {
             $this->additionalEppExtension->setEppRequestExtension($request,$extension);
