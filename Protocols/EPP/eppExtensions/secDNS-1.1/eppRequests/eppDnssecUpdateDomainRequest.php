@@ -19,6 +19,12 @@ C:               <secDNS:protocol>3</secDNS:protocol>
 C:               <secDNS:alg>0</secDNS:alg>
 C:               <secDNS:pubKey>AQPJ////4Q==</secDNS:pubKey>
 C:             </secDNS:keyData>
+C:             <secDNS:dsData>
+C:               <secDNS:keyTag>25632</secDNS:keyTag>
+C:               <secDNS:alg>13</secDNS:alg>
+C:               <secDNS:digestType>2</secDNS:digestType>
+				 <secDNS:digest>2A31FG84KJ</secDNS:digest>
+C:             </secDNS:dsData>
 C:           </secDNS:dsData>
 C:         </secDNS:add>
  */
