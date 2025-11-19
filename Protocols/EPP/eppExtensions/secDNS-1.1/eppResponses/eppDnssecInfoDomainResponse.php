@@ -43,17 +43,33 @@ class eppDnssecInfoDomainResponse extends eppInfoDomainResponse
 	}
 
 	/**
-	 * Retrieve the keyTag elements from the info response
+	 * Retrieve the keyTag elements from the info response using the Key Data interface
+	 *
+	 * <secDNS:infData>
+	 * <secDNS:keyData>
+	 * <secDNS:flags>257</secDNS:flags>
+	 * <secDNS:protocol>3</secDNS:protocol>
+	 * <secDNS:alg>1</secDNS:alg>
+	 * <secDNS:pubKey>AQPJ////4Q==</secDNS:pubKey>
+	 * </secDNS:keyData>
+	 * </secDNS:infData>
+	 *
+	 *  OR using the DS data interface
 	 *
 	 * <secDNS:dsData>
+	 * <secDNS:keyTag>12345</secDNS:keyTag>
+	 * <secDNS:alg>3</secDNS:alg>
+	 * <secDNS:digestType>1</secDNS:digestType>
+	 * <secDNS:digest>49FD46E6C4B45C55D4AC</secDNS:digest>
 	 * <secDNS:keyData>
-	 * <secDNS:flags>256</secDNS:flags>
+	 * <secDNS:flags>257</secDNS:flags>
 	 * <secDNS:protocol>3</secDNS:protocol>
-	 * <secDNS:alg>8</secDNS:alg>
-	 * <secDNS:pubKey>AwEAAbWM8nWQZbDZgJjyq+tLZwPLEXfZZjfvlRcmoAVZHgZJCPn/Ytu/iOsgci+yWgDT28ENzREAoAbKMflFFdhc5DNV27TZxhv8nMo9n2f+cyyRKbQ6oIAvMl7siT6WxrLxEBIMyoyFgDMbqGScn9k19Ppa8fwnpJgv0VUemfxGqHH9</secDNS:pubKey>
+	 * <secDNS:alg>1</secDNS:alg>
+	 * <secDNS:pubKey>AQPJ////4Q==</secDNS:pubKey>
 	 * </secDNS:keyData>
 	 * </secDNS:dsData>
-	 * @return array|null
+	 *
+     * @return array|null
 	 */
 	public function getKeys()
 	{
