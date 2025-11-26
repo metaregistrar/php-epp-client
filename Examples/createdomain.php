@@ -157,6 +157,8 @@ function createdomain($conn, $domainname, $registrant, $admincontact, $techconta
         $domain->addContact(new eppContactHandle($techcontact, eppContactHandle::CONTACT_TYPE_TECH));
         $domain->addContact(new eppContactHandle($billingcontact, eppContactHandle::CONTACT_TYPE_BILLING));
         $domain->setAuthorisationCode('rand0m');
+		$domain->setPeriodUnit(eppDomain::DOMAIN_PERIOD_UNIT_Y);
+		$domain->setPeriod(1);
         if (is_array($nameservers)) {
             foreach ($nameservers as $nameserver) {
                 $domain->addHost(new eppHost($nameserver));
