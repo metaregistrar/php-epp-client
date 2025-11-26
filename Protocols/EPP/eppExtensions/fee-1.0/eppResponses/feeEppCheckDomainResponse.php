@@ -102,10 +102,10 @@ namespace Metaregistrar\EPP;
 
 
 /**
- * Class feeEppCheckdomainResponse
+ * Class feeEppCheckDomainResponse
  * @package Metaregistrar\EPP
  */
-class feeEppCheckdomainResponse extends eppCheckDomainResponse {
+class feeEppCheckDomainResponse extends eppCheckDomainResponse {
     function __construct() {
         parent::__construct();
     }
