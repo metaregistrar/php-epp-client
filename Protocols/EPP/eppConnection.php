@@ -494,6 +494,11 @@ class eppConnection {
     private $readSleepTimeLimit = 100000;
 
     /**
+     * @var integer
+     */
+    private $maxMessageLength = 1000000;
+
+    /**
      * When using the readsleep incrementor, increment the sleep time with incrementor value 1 until the
      * the sleep time exceeds this value is exceeded then switch to the second incrementor value
      * @var integer
@@ -610,7 +615,7 @@ class eppConnection {
                 $length = $this->readInteger($read) - 4;
                 //$this->writeLog("Reading next: $length bytes","READ");
             }
-            if ($length > 1000000) {
+            if ($length > $this->maxMessageLength) {
                 throw new eppException("Packet size is too big: $length. Closing connection",0,null,null,$read);
             }
             //We know the length of what to read, so lets read the stuff
@@ -1141,6 +1146,23 @@ class eppConnection {
      */
     private function enableLogging() {
         $this->logging = true;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getMaxMessageLength()
+    {
+        return $this->maxMessageLength;
+    }
+
+    /**
+     * @param integer $maxMessageLength
+     * @return void
+     */
+    public function setMaxMessageLength($maxMessageLength)
+    {
+        $this->maxMessageLength = $maxMessageLength;
     }
 
     /**
