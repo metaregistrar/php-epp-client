@@ -2,14 +2,6 @@
 namespace Metaregistrar\EPP;
 
 class eppHelloResponse extends eppResponse {
-    function __construct() {
-        parent::__construct();
-    }
-
-    function __destruct() {
-        parent::__destruct();
-    }
-
     public function validateServices($language, $version) {
         $resultcode = $this->getResultCode();
         if ($resultcode != 1000) {
