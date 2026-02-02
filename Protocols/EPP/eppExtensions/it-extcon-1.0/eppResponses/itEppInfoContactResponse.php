@@ -1,7 +1,9 @@
 <?php
+
 namespace Metaregistrar\EPP;
 
-class itEppInfoContactResponse extends eppInfoContactResponse {
+class itEppInfoContactResponse extends eppInfoContactResponse
+{
 
   /**
    *
@@ -27,7 +29,9 @@ class itEppInfoContactResponse extends eppInfoContactResponse {
 
   public function getRegistrantEntityType()
   {
-    return (int) $this->queryPath('/epp:epp/epp:response/epp:extension/extcon:infData/extcon:registrant/extcon:entityType');
+    $value = $this->queryPath('/epp:epp/epp:response/epp:extension/extcon:infData/extcon:registrant/extcon:entityType');
+
+    return is_numeric($value) ? intval($value) : null;
   }
 
   public function getRegistrantNationalityCode()

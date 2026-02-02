@@ -1,15 +1,9 @@
 <?php
+
 namespace Metaregistrar\EPP;
 
-class itEppLoginResponse extends eppResponse {
-    function __construct() {
-        parent::__construct();
-    }
-
-    function __destruct() {
-        parent::__destruct();
-    }
-
+class itEppLoginResponse extends eppResponse
+{
     /**
      * Return the available credit in euros
      * @return float
