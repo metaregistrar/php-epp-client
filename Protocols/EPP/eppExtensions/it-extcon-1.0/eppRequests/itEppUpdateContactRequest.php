@@ -28,6 +28,7 @@ class itEppUpdateContactRequest extends eppUpdateContactRequest
     $update->setAttribute('xsi:schemaLocation', 'http://www.nic.it/ITNIC-EPP/extcon-1.0 extcon-1.0.xsd');
 
     $update->appendChild($this->createElement('extcon:consentForPublishing', $updateInfo->getConsentForPublishing()));
+
     $registrant = $updateInfo->getRegistrant();
     if (! is_null($registrant)) {
       $registrantElement = $this->createElement('extcon:registrant');
@@ -36,7 +37,6 @@ class itEppUpdateContactRequest extends eppUpdateContactRequest
       $registrantElement->appendChild($this->createElement('extcon:regCode', $registrant['regCode']));
       $update->appendChild($registrantElement);
     }
-
 
     $this->getExtension()->appendChild($update);
   }
