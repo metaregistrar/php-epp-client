@@ -25,5 +25,7 @@ class itEppTransferRequest extends eppTransferRequest
     $trade->appendChild($transferTrade);
 
     $this->getExtension()->appendChild($trade);
+
+    $this->addSessionId();
   }
 }
