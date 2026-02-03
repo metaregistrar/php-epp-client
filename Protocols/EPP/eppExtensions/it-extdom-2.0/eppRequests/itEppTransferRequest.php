@@ -6,6 +6,10 @@ class itEppTransferRequest extends eppTransferRequest
 {
   public function addTrade(eppContactHandle $contactHandle, string $authCode)
   {
+    $this->addExtension('xmlns', 'urn:ietf:params:xml:ns:epp-1.0');
+    $this->addExtension('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+    $this->addExtension('xsi:schemaLocation', 'urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd');
+
     $trade = $this->createElement('extdom:trade');
     $trade->setAttribute('xmlns:extdom', 'http://www.nic.it/ITNIC-EPP/extdom-2.0');
     $trade->setAttribute('xsi:schemaLocation', 'http://www.nic.it/ITNIC-EPP/extdom-2.0 extdom-2.0.xsd');
