@@ -12,9 +12,16 @@ class itEppTransferRequest extends eppTransferRequest
 
     $transferTrade = $this->createElement('extdom:transferTrade');
     $transferTrade->appendChild($this->createElement('extdom:newRegistrant', $contactHandle->getContactHandle()));
+
     $newAuthInfo = $this->createElement('extdom:newAuthInfo');
-    $newAuthInfo->appendChild($this->createElement('extdom:pw', $authCode));
+    if ($this->useCdata()) {
+      $pw = $newAuthInfo->appendChild($this->createElement('extdom:pw'));
+      $pw->appendChild($this->createCDATASection($authCode));
+    } else {
+      $newAuthInfo->appendChild($this->createElement('extdom:pw', $authCode));
+    }
     $transferTrade->appendChild($newAuthInfo);
+
     $trade->appendChild($transferTrade);
 
     $this->getExtension()->appendChild($trade);
