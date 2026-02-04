@@ -24,7 +24,9 @@ class itEppInfoContactResponse extends eppInfoContactResponse
 
   public function getConsentForPublishing()
   {
-    return (bool) $this->queryPath('/epp:epp/epp:response/epp:extension/extcon:infData/extcon:consentForPublishing');
+    $value = $this->queryPath('/epp:epp/epp:response/epp:extension/extcon:infData/extcon:consentForPublishing');
+
+    return is_null($value) ? null : filter_var($value, FILTER_VALIDATE_BOOLEAN);
   }
 
   public function getRegistrantEntityType()
