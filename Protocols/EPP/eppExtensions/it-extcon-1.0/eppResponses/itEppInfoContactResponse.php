@@ -1,7 +1,9 @@
 <?php
+
 namespace Metaregistrar\EPP;
 
-class itEppInfoContactResponse extends eppInfoContactResponse {
+class itEppInfoContactResponse extends eppInfoContactResponse
+{
 
   /**
    *
@@ -22,12 +24,16 @@ class itEppInfoContactResponse extends eppInfoContactResponse {
 
   public function getConsentForPublishing()
   {
-    return (bool) $this->queryPath('/epp:epp/epp:response/epp:extension/extcon:infData/extcon:consentForPublishing');
+    $value = $this->queryPath('/epp:epp/epp:response/epp:extension/extcon:infData/extcon:consentForPublishing');
+
+    return is_null($value) ? null : filter_var($value, FILTER_VALIDATE_BOOLEAN);
   }
 
   public function getRegistrantEntityType()
   {
-    return (int) $this->queryPath('/epp:epp/epp:response/epp:extension/extcon:infData/extcon:registrant/extcon:entityType');
+    $value = $this->queryPath('/epp:epp/epp:response/epp:extension/extcon:infData/extcon:registrant/extcon:entityType');
+
+    return is_numeric($value) ? intval($value) : null;
   }
 
   public function getRegistrantNationalityCode()

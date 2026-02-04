@@ -1,5 +1,7 @@
 <?php
+
 namespace Metaregistrar\EPP;
+
 /**
  * The Contact Info Object
  *
@@ -7,7 +9,8 @@ namespace Metaregistrar\EPP;
  *
  */
 
-class itEppContact extends eppContact {
+class itEppContact extends eppContact
+{
 
     private $entityTypes = [
         1, // Italian and foreign natural persons
@@ -24,7 +27,8 @@ class itEppContact extends eppContact {
     private $registrantNationalityCode;
     private $registrantRegCode;
 
-    public function __construct($postalInfo = null, $email = null, $voice = null, $fax = null, $password = null, $status = null, $consentForPublishing = null, $entityType = null, $nationalityCode = null, $regCode = null) {
+    public function __construct($postalInfo = null, $email = null, $voice = null, $fax = null, $password = null, $status = null, $consentForPublishing = null, $entityType = null, $nationalityCode = null, $regCode = null)
+    {
         parent::__construct($postalInfo, $email, $voice, $fax, $password, $status);
 
         $this->setConsentForPublishing($consentForPublishing);
@@ -43,10 +47,12 @@ class itEppContact extends eppContact {
 
     public function setRegistrantEntityType($entityType)
     {
-        if (!in_array($entityType, $this->entityTypes)) {
-            throw new eppException(sprintf('The entity type: \'%s\' is invalid', $entityType));
+        if (!empty($entityType)) {
+            if (!in_array($entityType, $this->entityTypes)) {
+                throw new eppException(sprintf('The entity type: \'%s\' is invalid', $entityType));
+            }
+            $this->registrantEntityType = $entityType;
         }
-        $this->registrantEntityType = $entityType;
     }
 
     public function setRegistrantNationalityCode($nationalityCode)
@@ -72,10 +78,14 @@ class itEppContact extends eppContact {
 
     public function getRegistrant()
     {
-        return [
-            'entityType' => $this->registrantEntityType,
-            'nationalityCode' => $this->registrantNationalityCode,
-            'regCode' => $this->registrantRegCode
-        ];
+        if (empty($this->registrantEntityType) || empty($this->registrantNationalityCode) || empty($this->registrantRegCode)) {
+            return null;
+        } else {
+            return [
+                'entityType' => $this->registrantEntityType,
+                'nationalityCode' => $this->registrantNationalityCode,
+                'regCode' => $this->registrantRegCode
+            ];
+        }
     }
 }

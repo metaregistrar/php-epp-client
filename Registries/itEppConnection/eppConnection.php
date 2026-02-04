@@ -1,7 +1,9 @@
 <?php
+
 namespace Metaregistrar\EPP;
 
-class itEppConnection extends eppHttpsConnection {
+class itEppConnection extends eppHttpsConnection
+{
 
     /*
     * Available credit in euros
@@ -9,7 +11,8 @@ class itEppConnection extends eppHttpsConnection {
     */
     protected float $credit = 0;
 
-    public function __construct($logging = false, $settingsfile = null) {
+    public function __construct($logging = false, $settingsfile = null)
+    {
         parent::__construct($logging, $settingsfile);
 
         parent::enableRgp();
@@ -27,12 +30,31 @@ class itEppConnection extends eppHttpsConnection {
         parent::useExtension('it-extepp-2.0');
     }
 
-    public function enableDnssec() {
+    /**
+     * Initialize cURL session
+     * Disable verbose output if log is active
+     * Prevents lot of data if used in console, XML data is still logged in log file
+     *
+     * @param bool $postMode
+     * @return \CurlHandle
+     */
+    protected function initCurl($postMode = true)
+    {
+        /** @var \CurlHandle $ch */
+        $ch = parent::initCurl($postMode);
+        curl_setopt($ch, CURLOPT_VERBOSE, 0);
+
+        return $ch;
+    }
+
+    public function enableDnssec()
+    {
         parent::enableDnssec();
         $this->useExtension('it-extsecdns-1.0');
     }
 
-    public function disableDnssec() {
+    public function disableDnssec()
+    {
         parent::disableDnssec();
         $this->removeExtension('it-extsecdns-1.0');
     }
