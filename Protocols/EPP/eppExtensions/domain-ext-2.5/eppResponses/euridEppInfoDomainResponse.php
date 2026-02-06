@@ -18,10 +18,6 @@ namespace Metaregistrar\EPP;
  */
 
 class euridEppInfoDomainResponse extends eppInfoDomainResponse {
-    function __construct() {
-        parent::__construct();
-    }
-
     /**
      *
      * @return boolean|null
