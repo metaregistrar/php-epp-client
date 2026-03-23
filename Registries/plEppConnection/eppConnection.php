@@ -82,4 +82,14 @@ class plEppConnection extends eppHttpsConnection
         $this->local_pk_path = null;
         $this->ca_path = null;
     }
+
+    public function enableDnssec()
+    {
+        $this->useExtension('pl-secDNS-2.1');
+    }
+
+    public function disableDnssec()
+    {
+        $this->removeExtension('pl-secDNS-2.1');
+    }
 }
