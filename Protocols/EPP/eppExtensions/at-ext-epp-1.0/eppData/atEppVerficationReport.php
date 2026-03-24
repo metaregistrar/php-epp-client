@@ -55,11 +55,11 @@ class atEppVerificationReport
     const AT_VERIFICATION_RESULT_SUCCESS = 'success';
     const AT_VERIFICATION_RESULT_FAILURE = 'failure';
 
-    const AT_VERFICATION_STATUS_NONE='none';
-    const AT_VERFICATION_STATUS_PENDING='pending';
-    const AT_VERFICATION_STATUS_SERVERHOLD='serverHold';
-    const AT_VERFICATION_STATUS_VERIFIED='verified';
-    const AT_VERFICATION_STATUS_FAILED='failed';
+    const AT_VERIFICATION_STATUS_NONE='none';
+    const AT_VERIFICATION_STATUS_PENDING='pending';
+    const AT_VERIFICATION_STATUS_SERVERHOLD='serverHold';
+    const AT_VERIFICATION_STATUS_VERIFIED='verified';
+    const AT_VERIFICATION_STATUS_FAILED='failed';
 
     /**
      *
