@@ -13,16 +13,6 @@ class plEppPollResponse extends eppPollResponse
   {
     $domainName = parent::getDomainName();
 
-    // BROKEN_DELEGATION
-    if ($domainName === null) {
-      $domainName =  $this->queryPath('/epp:epp/epp:response/epp:resData/extdom:dlgData/extdom:name');
-    }
-
-    // EXPIRATION_POSSIBLE
-    if ($domainName === null) {
-      $domainName =  $this->queryPath('/epp:epp/epp:response/epp:resData/extdom:expData/extdom:name');
-    }
-
     // DOMAIN_AUTHINFO
     if ($domainName === null) {
       $domainName =  $this->queryPath('/epp:epp/epp:response/epp:resData/extdom:pollAuthInfo/extdom:domain/extdom:name');
@@ -63,11 +53,45 @@ class plEppPollResponse extends eppPollResponse
       $domainName =  $this->queryPath('/epp:epp/epp:response/epp:resData/extdom:pollDomainUnlocked/extdom:domain/extdom:name');
     }
 
-    // DOMAIN_DELEGATION_ON_HOLD
-    if ($domainName === null) {
-      $domainName =  $this->queryPath('/epp:epp/epp:response/epp:resData/extdom:pollDomainDelegationOnHold/extdom:domain/extdom:name');
+    return $domainName;
+  }
+
+  /**
+   * Get domain names in this poll message, for some message types there can be multiple domains in one message.
+   *
+   * @return array|null
+   */
+  public function getDomainNames()
+  {
+    $domainNames = null;
+
+    // BROKEN_DELEGATION
+    if ($domainNames === null) {
+      $xpath = $this->xPath();
+      $result = $xpath->query('/epp:epp/epp:response/epp:resData/extdom:dlgData/extdom:name');
+      foreach ($result as $domain) {
+        $domainNames[] = $domain->nodeValue;
+      }
     }
 
-    return $domainName;
+    // EXPIRATION_POSSIBLE
+    if ($domainNames === null) {
+      $xpath = $this->xPath();
+      $result = $xpath->query('/epp:epp/epp:response/epp:resData/extdom:expData/extdom:name');
+      foreach ($result as $domain) {
+        $domainNames[] = $domain->nodeValue;
+      }
+    }
+
+    // DOMAIN_DELEGATION_ON_HOLD
+    if ($domainNames === null) {
+      $xpath = $this->xPath();
+      $result = $xpath->query('/epp:epp/epp:response/epp:resData/extdom:pollDomainDelegationOnHold/extdom:domain/extdom:name');
+      foreach ($result as $domain) {
+        $domainNames[] = $domain->nodeValue;
+      }
+    }
+
+    return $domainNames;
   }
 }
