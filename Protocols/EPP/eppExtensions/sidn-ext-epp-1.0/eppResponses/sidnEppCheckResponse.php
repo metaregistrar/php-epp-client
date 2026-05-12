@@ -12,9 +12,6 @@ namespace Metaregistrar\EPP;
 
  */
 class sidnEppCheckResponse extends eppCheckResponse {
-    function __construct() {
-        parent::__construct();
-    }
 
     public function getCheckResults() {
         $xpath = $this->xPath();
