@@ -3,10 +3,6 @@
 namespace Metaregistrar\EPP;
 
 class dnsbeEppCheckDomainResponse extends eppCheckDomainResponse {
-    function __construct() {
-        parent::__construct();
-    }
-
     public function getAdditionalInfo() {
         $xpath = $this->xPath();
         $nodes = $xpath->query('//dnsbe:cd[dnsbe:availableDate or dnsbe:status]');
