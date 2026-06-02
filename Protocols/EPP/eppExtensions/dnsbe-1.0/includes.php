@@ -53,5 +53,8 @@ include_once(dirname(__FILE__) . '/eppRequests/dnsbeEppUpdateDomainRequest.php')
 include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppUpdateDomainResponse.php');
 $this->addCommandResponse('Metaregistrar\EPP\dnsbeEppUpdateDomainRequest', 'Metaregistrar\EPP\dnsbeEppUpdateDomainResponse');
 
+include_once(dirname(__FILE__) . '/eppResponses/dnsbeEppPollResponse.php');
+$this->addCommandResponse('Metaregistrar\EPP\eppPollRequest', 'Metaregistrar\EPP\dnsbeEppPollResponse');
+
 include_once(dirname(__FILE__) . '/eppExceptions/dnsbeEppException.php');
 $this->addException('Metaregistrar\EPP\dnsbeEppException');
