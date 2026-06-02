@@ -6,11 +6,6 @@ namespace Metaregistrar\EPP;
  * @package Metaregistrar\EPP
  */
 class dnsbeEppPollResponse extends eppPollResponse {
-    function __construct() {
-        parent::__construct();
-    }
-
-
     /**
      * Retrieve the action from the poll response message
      * @return string|null
