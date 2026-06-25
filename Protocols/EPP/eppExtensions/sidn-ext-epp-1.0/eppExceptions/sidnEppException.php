@@ -26,24 +26,11 @@ namespace Metaregistrar\EPP;
  */
 class sidnEppException extends eppException {
 
-    /**
-     * @var eppResponse
-     */
-    private $eppresponse;
-
-    public function __construct($message = "", $code = 0, ?\Exception $previous = null, $reason = null, $command = null) {
-        if ($command) {
-            $this->eppresponse = new eppResponse();
-            $this->eppresponse->loadXML($command);
-        }
-        parent::__construct($message, $code, $previous, $reason, $command);
-    }
-
     public function getSidnErrorCode() {
-        return $this->eppresponse->queryPath('/epp:epp/epp:response/epp:extension/sidn-ext-epp:ext/sidn-ext-epp:response/sidn-ext-epp:msg/@code');
+        return $this->getResponse()->queryPath('/epp:epp/epp:response/epp:extension/sidn-ext-epp:ext/sidn-ext-epp:response/sidn-ext-epp:msg/@code');
     }
 
     public function getSidnErrorMessage() {
-        return $this->eppresponse->queryPath('/epp:epp/epp:response/epp:extension/sidn-ext-epp:ext/sidn-ext-epp:response/sidn-ext-epp:msg');
+        return $this->getResponse()->queryPath('/epp:epp/epp:response/epp:extension/sidn-ext-epp:ext/sidn-ext-epp:response/sidn-ext-epp:msg');
     }
 }
