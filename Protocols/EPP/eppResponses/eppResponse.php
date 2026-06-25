@@ -373,25 +373,22 @@ class eppResponse extends \DOMDocument {
     /**
      * @return \DOMXpath
      */
-    public function xPath() {
+    public function xPath()
+    {
         $xpath = new \DOMXpath($this);
         $this->defaultnamespace = $this->documentElement->lookupNamespaceUri(null);
         $xpath->registerNamespace('epp', $this->defaultnamespace);
+        $registeredPrefixes = array('epp' => true);
         if (is_array($this->xpathuri)) {
             foreach ($this->xpathuri as $uri => $namespace) {
-                if ($namespace != 'epp') { // epp was already registered as default namespace, see above
+                // Keep the first mapping for a prefix so service-specific namespaces are not overridden.
+                if (!isset($registeredPrefixes[$namespace])) {
                     $xpath->registerNamespace($namespace, $uri);
+                    $registeredPrefixes[$namespace] = true;
                 }
             }
         }
-#        if (is_array($this->exturi))
-#        {
-#            foreach($this->exturi as $uri=>$namespace)
-#            {
-#                echo "RegisterNamespace exturi $namespace $uri\n";
-#                $xpath->registerNamespace($namespace,$uri);
-#            }
-#        }
+        
         return $xpath;
     }
 
