@@ -398,7 +398,8 @@ class eppConnection {
                     $this->writeLog("Stream opened to ".$this->getHostname()." port ".$this->getPort(),"Connection made");
                 }
                 $this->connected = true;
-                $this->read();
+                $content = $this->read();
+				$this->writeLog($content,"GREETING");
             }
             return $this->connected;
         }
