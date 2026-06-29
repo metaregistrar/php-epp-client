@@ -1091,11 +1091,7 @@ class eppConnection {
      * @throws eppException
      */
     public function useExtension($namespace) {
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            $includepath = dirname(__FILE__).'\\eppExtensions\\'.$namespace.'\\includes.php';
-        } else {
-            $includepath = dirname(__FILE__).'/eppExtensions/'.$namespace.'/includes.php';
-        }
+        $includepath = dirname(__FILE__).'/eppExtensions/'.$namespace.'/includes.php';
         if (is_file($includepath)) {
             include($includepath);
         } else {
