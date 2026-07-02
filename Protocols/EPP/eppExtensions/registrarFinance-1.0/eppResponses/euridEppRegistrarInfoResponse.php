@@ -15,10 +15,6 @@ namespace Metaregistrar\EPP;
  */
 class euridEppRegistrarInfoResponse extends eppResponse {
 
-    function __construct() {
-        parent::__construct();
-    }
-    
     public function getPaymentMode() {
         $xpath = $this->xPath();
         $result = $xpath->query('//registrarFinance:paymentMode');

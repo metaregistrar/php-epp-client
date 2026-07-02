@@ -2,9 +2,6 @@
 namespace Metaregistrar\EPP;
 
 class ficoraEppCheckBalanceResponse extends eppResponse {
-    function __construct($originalrequest) {
-        parent::__construct($originalrequest);
-    }
 
     public function getBalanceAmount() {
         $xpath = $this->xPath();

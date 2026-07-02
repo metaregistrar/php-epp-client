@@ -59,13 +59,6 @@ class atEppPollResponse extends eppPollResponse
     const LOCKTYPE_SPT = "SPT"; # Sperre technische Probleme
     const LOCKTYPE_SKO = "SKO"; # Sperre Konkurs
 
-    /**
-     * atEppPollResponse constructor.
-     */
-    function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * @return null|string

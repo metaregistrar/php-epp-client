@@ -48,10 +48,6 @@ namespace Metaregistrar\EPP;
  */
 class siEppRegistrarInfoResponse extends eppResponse {
 
-    function __construct() {
-        parent::__construct();
-    }
-
     public function getBalance() {
         $xpath = $this->xPath();
         $result = $xpath->query('//dnssi:balance');

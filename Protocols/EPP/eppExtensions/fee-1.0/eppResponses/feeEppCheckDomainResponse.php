@@ -106,9 +106,6 @@ namespace Metaregistrar\EPP;
  * @package Metaregistrar\EPP
  */
 class feeEppCheckDomainResponse extends eppCheckDomainResponse {
-    function __construct() {
-        parent::__construct();
-    }
 
     public function getFees() {
         $xpath = $this->xPath();

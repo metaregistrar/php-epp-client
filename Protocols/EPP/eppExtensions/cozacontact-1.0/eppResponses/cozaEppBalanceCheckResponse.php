@@ -39,11 +39,6 @@ namespace Metaregistrar\EPP;
  */
 class cozaEppBalanceCheckResponse extends eppInfoContactResponse {
 
-    function __construct() {
-        parent::__construct();
-    }
-
-
     /**
      * Retrieve an array of domain names associated with this contact
      * @return array|null
