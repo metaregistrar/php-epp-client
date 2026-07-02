@@ -12,10 +12,10 @@ class furyCreateDomainRequest extends \Metaregistrar\EPP\eppCreateDomainRequest 
 	 */
 	public function addFuryProperties(array $properties) {
 		if (count($properties) >0) {
-			if (!$this->extension) {
-				$this->extension = $this->createElement('extension');
-				$this->getCommand()->appendChild($this->extension);
-			}
+//			if (!$this->extension) {
+//				$this->extension = $this->createElement('extension');
+//				$this->getCommand()->appendChild($this->extension);
+//			}
 			$furycreate = $this->createElement('fury:create');
 			$furycreate->setAttribute('xmlns:fury', 'urn:ietf:params:xml:ns:fury-2.1');
 			$furyproperties = $this->createElement('fury:properties');
