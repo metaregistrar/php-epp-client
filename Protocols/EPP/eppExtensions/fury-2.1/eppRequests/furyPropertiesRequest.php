@@ -6,7 +6,7 @@ class furyPropertiesRequest extends eppRequest {
 		parent::__construct();
 		if (!$this->extension) {
 			$this->extension = $this->createElement('extension');
-			$this->getCommand()->appendChild($this->extension);
+			$this->getEpp()->appendChild($this->extension);
 		}
 		$furycommand = $this->createElement('fury:command');
 		$furycommand->setAttribute('xmlns:fury', 'urn:ietf:params:xml:ns:fury-2.1');
@@ -31,6 +31,5 @@ class furyPropertiesRequest extends eppRequest {
 		$furyinfo->appendChild($furyproperties);
 		$furycommand->appendChild($furyinfo);
 		$this->extension->appendChild($furycommand);
-		$this->addSessionId();
 	}
 }
