@@ -2,9 +2,6 @@
 namespace Metaregistrar\EPP;
 
 class rrpproxyEppInfoDomainResponse extends eppInfoDomainResponse {
-    function __construct() {
-        parent::__construct();
-    }
 
     /**
      * Get the domain renewal date.

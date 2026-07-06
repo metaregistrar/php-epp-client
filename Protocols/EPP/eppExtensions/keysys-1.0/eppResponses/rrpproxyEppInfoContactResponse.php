@@ -13,10 +13,6 @@ namespace Metaregistrar\EPP;
  */
 
 class rrpproxyEppInfoContactResponse extends eppInfoContactResponse {
-    function __construct() {
-        parent::__construct();
-    }
-
 
     /**
      *

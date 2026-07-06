@@ -62,15 +62,6 @@ namespace Metaregistrar\EPP;
 class metaregEppInfoContactResponse extends eppInfoContactResponse  {
 
     /**
-     * metaregEppInfoContactResponse constructor.
-     * @param null $originalrequest
-     */
-    public function __construct($originalrequest) {
-        parent::__construct($originalrequest);
-    }
-
-
-    /**
      * @param $registry
      * @param $propertyname
      */

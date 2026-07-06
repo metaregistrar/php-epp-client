@@ -2,9 +2,6 @@
 namespace Metaregistrar\EPP;
 
 class teleinfoEppPollResponse extends eppPollResponse {
-    public function    __construct() {
-        parent::__construct();
-    }
     public function getNVResult(string $type='req'){
         if (!in_array($type, ['req','ack'])){
             throw new eppException('Poll action type '.$type.' is invalid, only req or ack is allowed.');

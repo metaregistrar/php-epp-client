@@ -4,11 +4,6 @@ namespace Metaregistrar\EPP;
 
 class dnsbeEppPollResponse extends eppPollResponse
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function getAction()
     {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/dnsbe:pollRes/dnsbe:action');
@@ -33,5 +28,4 @@ class dnsbeEppPollResponse extends eppPollResponse
     {
         return $this->queryPath('/epp:epp/epp:response/epp:resData/dnsbe:pollRes/dnsbe:contact');
     }
-
 }

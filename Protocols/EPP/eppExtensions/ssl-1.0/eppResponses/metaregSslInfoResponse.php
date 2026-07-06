@@ -29,10 +29,6 @@ namespace Metaregistrar\EPP;
 
 class metaregSslInfoResponse extends eppResponse {
 
-    function __construct() {
-        parent::__construct();
-    }
-
     /**
      * @return null|string
      */

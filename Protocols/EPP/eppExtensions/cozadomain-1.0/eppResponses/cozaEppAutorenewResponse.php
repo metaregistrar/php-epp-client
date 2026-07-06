@@ -26,9 +26,6 @@ namespace Metaregistrar\EPP;
 class cozaEppAutorenewResponse extends eppUpdateDomainResponse
 {
 
-    function __construct() {
-        parent::__construct();
-    }
 
     /**
      * Retrieve the response for the autorenew request

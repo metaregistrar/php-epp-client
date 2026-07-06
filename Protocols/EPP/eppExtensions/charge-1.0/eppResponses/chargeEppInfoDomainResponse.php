@@ -18,12 +18,6 @@ namespace Metaregistrar\EPP;
 </epp:extension>
  */
 class chargeEppInfoDomainResponse extends eppInfoDomainResponse {
-    /**
-     * chargeEppInfoDomainResponse constructor
-     */
-    function __construct() {
-        parent::__construct();
-    }
 
     /**
      * Get charges for the queried domain name

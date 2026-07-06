@@ -7,10 +7,6 @@ namespace Metaregistrar\EPP;
  */
 class dnsbeEppRegistrarInfoResponse extends eppResponse {
 
-    function __construct() {
-        parent::__construct();
-    }
-
     public function getAmountAvailable() {
         $xpath = $this->xPath();
         $result = $xpath->query('//dnsbe:amountAvailable');
