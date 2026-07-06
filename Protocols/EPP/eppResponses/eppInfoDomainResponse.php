@@ -210,10 +210,10 @@ class eppInfoDomainResponse extends eppInfoResponse {
             $ns = null;
             foreach ($result as $nameserver) {
                 /* @var $nameserver \DOMElement */
-                if (strstr($nameserver->tagName, ":hostObj")) {
+                if (strstr($nameserver->tagName, "hostObj")) {
                     $ns[] = new eppHost(trim($nameserver->nodeValue));
                 }
-                if (strstr($nameserver->tagName, ":hostAttr")) {
+                if (strstr($nameserver->tagName, "hostAttr")) {
                     $hostname = $nameserver->getElementsByTagName('hostName')->item(0)->nodeValue;
                     $ipaddresses = $nameserver->getElementsByTagName('hostAddr');
                     $ips = null;
