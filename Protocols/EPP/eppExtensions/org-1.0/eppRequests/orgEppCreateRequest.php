@@ -99,8 +99,9 @@ class orgEppCreateRequest extends eppCreateRequest {
 			}
 		}
 		$postalinfo->setAttribute('type', $postal->getType());
-		$postalinfo->appendChild($this->createElement('contact:name', $postal->getOrganisationName()));
 		if ($postal->getOrganisationName()) {
+			$postalinfo->appendChild($this->createElement('contact:name', $postal->getOrganisationName()));
+		} else {
 			$postalinfo->appendChild($this->createElement('contact:name', $postal->getOrganisationName()));
 		}
 		$postaladdr = $this->createElement('contact:addr');
