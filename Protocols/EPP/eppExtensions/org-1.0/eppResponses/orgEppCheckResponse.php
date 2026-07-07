@@ -4,9 +4,6 @@ namespace Metaregistrar\EPP;
 /**
  * <epp xmlns="urn:ietf:paramxml:nepp-1.0">
  *   <response>
- *     <result code="1000">
- *       <msg lang="en">Command completed successfully</msg>
- *     </result>
  *     <resData>
  *       <org:chkData
  *         xmlnorg="urn:ietf:paramxml:nepp:org-1.0">
@@ -22,23 +19,19 @@ namespace Metaregistrar\EPP;
  *         </org:cd>
  *       </org:chkData>
  *     </resData>
- *     <trID>
- *       <clTRID>ABC-12345</clTRID>
- *       <svTRID>54322-XYZ</svTRID>
- *     </trID>
  *   </response>
  * </epp>
  */
 
 class orgEppCheckResponse extends eppResponse {
-	public function getCheckedDomains() {
+	public function getCheckedOrgs() {
 		$result = null;
 		if ($this->getResultCode() == self::RESULT_SUCCESS) {
 			$result = array();
 			$xpath = $this->xPath();
 			$orgs = $xpath->query('/epp:epp/epp:response/epp:resData/org:chkData/org:cd');
 			foreach ($orgs as $org) {
-				$childs = $orgs->childNodes;
+				$childs = $org->childNodes;
 				$checkedorg = array('id' => null, 'available' => false, 'reason' => null);
 				foreach ($childs as $child) {
 					if ($child instanceof \DOMElement) {
