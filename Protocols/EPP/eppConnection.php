@@ -765,7 +765,7 @@ class eppConnection {
      */
     public function readResponse()
     {
-        $response = new eppResponse();
+        $response = new eppResponse(new eppRequest());
         $xml = $this->read(true);
         if (strlen($xml)) {
             if ($response->loadXML($xml)) {
