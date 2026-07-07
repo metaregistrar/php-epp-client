@@ -44,7 +44,7 @@ class orgEppCreateRequest extends eppCreateRequest {
 	 * @param bool $usecdata
 	 * @throws \DOMException
 	 */
-	function __construct(eppContact $createinfo, string $type, bool $namespacesinroot = true, bool $usecdata = true) {
+	function __construct(eppContact $createinfo, string $type = 'reseller', bool $namespacesinroot = true, bool $usecdata = true) {
 		$this->setNamespacesinroot($namespacesinroot);
 		parent::__construct();
 		$this->setUseCdata($usecdata);
