@@ -73,11 +73,11 @@ class orgEppCreateRequest extends eppCreateRequest {
 	}
 
 	/**
-	 * Create the contact:id field
+	 * Create the org:id field
 	 * @param $contactid
 	 */
 	public function setContactId($contactid) {
-		$this->createobject->appendChild($this->createElement('contact:id', $contactid));
+		$this->createobject->appendChild($this->createElement('org:id', $contactid));
 	}
 
 	/**
@@ -86,7 +86,7 @@ class orgEppCreateRequest extends eppCreateRequest {
 	 * @throws eppException
 	 */
 	public function setPostalInfo(eppContactPostalInfo $postal) {
-		$postalinfo = $this->createElement('contact:postalInfo');
+		$postalinfo = $this->createElement('org:postalInfo');
 		if (!$postal instanceof eppContactPostalInfo) {
 			throw new eppException('PostalInfo must be filled on eppCreateContact request');
 		}
@@ -100,21 +100,21 @@ class orgEppCreateRequest extends eppCreateRequest {
 		}
 		$postalinfo->setAttribute('type', $postal->getType());
 		if ($postal->getOrganisationName()) {
-			$postalinfo->appendChild($this->createElement('contact:name', $postal->getOrganisationName()));
+			$postalinfo->appendChild($this->createElement('org:name', $postal->getOrganisationName()));
 		} else {
-			$postalinfo->appendChild($this->createElement('contact:name', $postal->getOrganisationName()));
+			$postalinfo->appendChild($this->createElement('org:name', $postal->getOrganisationName()));
 		}
-		$postaladdr = $this->createElement('contact:addr');
+		$postaladdr = $this->createElement('org:addr');
 		$count = $postal->getStreetCount();
 		for ($i = 0; $i < $count; $i++) {
-			$postaladdr->appendChild($this->createElement('contact:street', $postal->getStreet($i)));
+			$postaladdr->appendChild($this->createElement('org:street', $postal->getStreet($i)));
 		}
-		$postaladdr->appendChild($this->createElement('contact:city', $postal->getCity()));
+		$postaladdr->appendChild($this->createElement('org:city', $postal->getCity()));
 		if ($postal->getProvince()) {
-			$postaladdr->appendChild($this->createElement('contact:sp', $postal->getProvince()));
+			$postaladdr->appendChild($this->createElement('org:sp', $postal->getProvince()));
 		}
-		$postaladdr->appendChild($this->createElement('contact:pc', $postal->getZipcode()));
-		$postaladdr->appendChild($this->createElement('contact:cc', $postal->getCountrycode()));
+		$postaladdr->appendChild($this->createElement('org:pc', $postal->getZipcode()));
+		$postaladdr->appendChild($this->createElement('org:cc', $postal->getCountrycode()));
 		$postalinfo->appendChild($postaladdr);
 		$this->createobject->appendChild($postalinfo);
 	}
@@ -124,19 +124,19 @@ class orgEppCreateRequest extends eppCreateRequest {
 	 */
 	public function setVoice($voice) {
 		if ($voice) {
-			$this->createobject->appendChild($this->createElement('contact:voice', $voice));
+			$this->createobject->appendChild($this->createElement('org:voice', $voice));
 		}
 	}
 
 	public function setFax($fax) {
 		if ($fax) {
-			$this->createobject->appendChild($this->createElement('contact:fax', $fax));
+			$this->createobject->appendChild($this->createElement('org:fax', $fax));
 		}
 	}
 
 	public function setEmail($email) {
 		if ($email) {
-			$this->createobject->appendChild($this->createElement('contact:email', $email));
+			$this->createobject->appendChild($this->createElement('org:email', $email));
 		}
 	}
 
