@@ -26,8 +26,7 @@ class orgEppCheckRequest extends eppRequest {
 	 */
 	function __construct(string|array $orgid) {
 		parent::__construct();
-		$epp = $this->getEpp();
-		$command = $this->createElement('command');
+		$command = $this->getCommand();
 		$check = $this->createElement('check');
 		$orgcheck = $this->createElement('org:check');
 		if (is_string($orgid)) {
@@ -42,6 +41,5 @@ class orgEppCheckRequest extends eppRequest {
 		}
 		$check->appendChild($orgcheck);
 		$command->appendChild($check);
-		$epp->appendChild($command);
 	}
 }

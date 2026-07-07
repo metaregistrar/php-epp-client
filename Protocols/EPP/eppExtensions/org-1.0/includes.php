@@ -13,5 +13,10 @@ include_once(dirname(__FILE__) . '/eppResponses/orgEppInfoResponse.php');
 $this->addCommandResponse('Metaregistrar\EPP\orgEppInfoRequest', 'Metaregistrar\EPP\orgEppInfoResponse');
 
 
+include_once(dirname(__FILE__) . '/eppRequests/orgEppCreateRequest.php');
+include_once(dirname(__FILE__) . '/eppResponses/orgEppCreateResponse.php');
+$this->addCommandResponse('Metaregistrar\EPP\orgEppCreateRequest', 'Metaregistrar\EPP\orgEppCreateResponse');
+
+
 include_once(dirname(__FILE__) . '/eppRequests/orgEppDeleteRequest.php');
 $this->addCommandResponse('Metaregistrar\EPP\orgEppDeleteRequest', 'Metaregistrar\EPP\eppDeleteResponse');

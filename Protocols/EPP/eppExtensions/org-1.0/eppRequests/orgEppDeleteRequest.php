@@ -24,14 +24,12 @@ class orgEppDeleteRequest extends eppRequest {
 	 */
 	function __construct(string $orgid) {
 		parent::__construct();
-		$epp = $this->getEpp();
-		$command = $this->createElement('command');
+		$command = $this->getCommand();
 		$delete = $this->createElement('delete');
 		$orgdelete = $this->createElement('org:delete');
 		$id = $this->createElement('org:id',$orgid);
 		$orgdelete->appendChild($id);
 		$delete->appendChild($orgdelete);
 		$command->appendChild($delete);
-		$epp->appendChild($command);
 	}
 }

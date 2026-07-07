@@ -20,14 +20,12 @@ namespace Metaregistrar\EPP;
 class orgEppInfoRequest extends eppRequest {
 	function __construct(string $orgid) {
 		parent::__construct();
-		$epp = $this->getEpp();
-		$command = $this->createElement('command');
+		$command = $this->getCommand();
 		$info = $this->createElement('info');
 		$orginfo = $this->createElement('org:info');
 		$id = $this->createElement('org:id',$orgid);
 		$orginfo->appendChild($id);
 		$info->appendChild($orginfo);
 		$command->appendChild($info);
-		$epp->appendChild($command);
 	}
 }
