@@ -50,4 +50,42 @@ class orgEppInfoResponse extends eppResponse {
 	function getOrgId(): string {
 		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:id');
 	}
+
+	function getOrgRoid(): string {
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:roid');
+	}
+
+	function getOrgRole(): string {
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:role/org:type');
+	}
+
+	function getOrgStatus(): string {
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:status');
+	}
+
+	function getOrgName(): string {
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:name');
+	}
+
+	function getOrgStreet(): string {
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:addr/org:street');
+	}
+
+	function getOrgCity(): string {
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:addr/org:city');
+	}
+
+	function getOrgPostcode(): string {
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:addr/org:pc');
+	}
+
+	function getOrgCountry(): string {
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:addr/org:cc');
+	}
+	function getOrgCreateDate(): string {
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:crDate');
+	}
+	function getOrgUpdateDate(): string {
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:upDate');
+	}
 }
