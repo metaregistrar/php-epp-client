@@ -47,5 +47,7 @@ namespace Metaregistrar\EPP;
  * </epp>
  */
 class orgEppInfoResponse extends eppResponse {
-
+	function getOrgId(): string {
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:id');
+	}
 }
