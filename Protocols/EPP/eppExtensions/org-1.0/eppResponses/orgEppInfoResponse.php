@@ -88,19 +88,19 @@ class orgEppInfoResponse extends eppResponse {
 	}
 
 	function getOrgPhone(): string {
-		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:voice');
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:voice');
 	}
 
 	function getOrgFax(): string {
-		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:fax');
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:fax');
 	}
 
 	function getOrgEmail(): string {
-		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:email');
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:email');
 	}
 
 	function getOrgUrl(): string {
-		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:url');
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:url');
 	}
 
 	function getOrgCreateDate(): string {
