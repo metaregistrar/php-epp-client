@@ -35,7 +35,7 @@ class orgEppCheckResponse extends eppResponse {
 				$checkedorg = array('id' => null, 'available' => false, 'reason' => null);
 				foreach ($childs as $child) {
 					if ($child instanceof \DOMElement) {
-						if (strpos($child->tagName, ':name')) {
+						if (strpos($child->tagName, ':id')) {
 							$available = $child->getAttribute('avail');
 							switch ($available) {
 								case '0':
