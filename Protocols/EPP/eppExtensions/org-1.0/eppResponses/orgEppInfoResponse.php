@@ -79,13 +79,97 @@ class orgEppInfoResponse extends eppResponse {
 		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:addr/org:pc');
 	}
 
+	function getOrgState(): string {
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:addr/org:sp');
+	}
+
 	function getOrgCountry(): string {
 		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:addr/org:cc');
 	}
+
+	function getOrgPhone(): string {
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:voice');
+	}
+
+	function getOrgFax(): string {
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:fax');
+	}
+
+	function getOrgEmail(): string {
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:email');
+	}
+
+	function getOrgUrl(): string {
+		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:url');
+	}
+
 	function getOrgCreateDate(): string {
 		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:crDate');
 	}
 	function getOrgUpdateDate(): string {
 		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:upDate');
+	}
+
+	public function getOrgPostalInfo() {
+		$xpath = $this->xPath();
+		$result = $xpath->query('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo');
+		$postalinfo = [];
+		foreach ($result as $postalresult) {
+			/* @var $postalresult \DOMElement */
+			$testtype = $postalresult->getAttributeNode('type');
+			$type = eppContact::TYPE_LOC;
+			if ($testtype) {
+				$type = $testtype->value;
+			}
+			$testname = $postalresult->getElementsByTagName('name');
+			$name = null;
+			if ($testname->length > 0) {
+				$name = $testname->item(0)->nodeValue;
+			}
+			$testorg = $postalresult->getElementsByTagName('org');
+			$org = null;
+			if ($testorg->length > 0) {
+				$org = $testorg->item(0)->nodeValue;
+			}
+			$city = null;
+			$country = null;
+			$zipcode = null;
+			$province = null;
+			$streets = null;
+			$testaddr = $postalresult->getElementsByTagName('addr');
+			if ($testaddr->length > 0) {
+				$addr = $testaddr->item(0);
+				/* @var $addr \DOMElement */
+				$testcity = $addr->getElementsByTagName('city');
+				/* @var $postalresult \DOMElement */
+
+				if ($testcity->length > 0) {
+					$city = $testcity->item(0)->nodeValue;
+				}
+				$testcc = $addr->getElementsByTagName('cc');
+
+				if ($testcc->length > 0) {
+					$country = $testcc->item(0)->nodeValue;
+				}
+				$testpc = $addr->getElementsByTagName('pc');
+
+				if ($testpc->length > 0) {
+					$zipcode = $testpc->item(0)->nodeValue;
+				}
+				$testsp = $addr->getElementsByTagName('sp');
+
+				if ($testsp->length > 0) {
+					$province = $testsp->item(0)->nodeValue;
+				}
+				$teststreet = $addr->getElementsByTagName('street');
+				if ($teststreet->length > 0) {
+					foreach ($teststreet as $street) {
+						$streets[] = $street->nodeValue;
+					}
+				}
+			}
+			$postalinfo[] = new eppContactPostalInfo($name, $city, $country, $org, $streets, $province, $zipcode, $type);
+		}
+		return $postalinfo;
 	}
 }
