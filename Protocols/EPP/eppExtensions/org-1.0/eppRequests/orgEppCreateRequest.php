@@ -99,9 +99,9 @@ class orgEppCreateRequest extends eppCreateRequest {
 			}
 		}
 		$postalinfo->setAttribute('type', $postal->getType());
-		$postalinfo->appendChild($this->createElement('contact:name', $postal->getName()));
+		$postalinfo->appendChild($this->createElement('contact:name', $postal->getOrganisationName()));
 		if ($postal->getOrganisationName()) {
-			$postalinfo->appendChild($this->createElement('contact:org', $postal->getOrganisationName()));
+			$postalinfo->appendChild($this->createElement('contact:name', $postal->getOrganisationName()));
 		}
 		$postaladdr = $this->createElement('contact:addr');
 		$count = $postal->getStreetCount();
@@ -139,42 +139,5 @@ class orgEppCreateRequest extends eppCreateRequest {
 		}
 	}
 
-	public function setPassword($password) {
-		if (!is_null($password))
-		{
-			$authinfo = $this->createElement('contact:authInfo');
-			if ($this->useCdata()) {
-				$pw = $authinfo->appendChild($this->createElement('contact:pw'));
-				$pw->appendChild($this->createCDATASection($password));
-			} else {
-				$authinfo->appendChild($this->createElement('contact:pw', $password));
-			}
-			$this->createobject->appendChild($authinfo);
-		}
-	}
 
-	public function setDisclose($contactdisclose) {
-		if (!is_null($contactdisclose)) {
-			$disclose = $this->createElement('contact:disclose');
-			$disclose->setAttribute('flag',$contactdisclose);
-			$name = $this->createElement('contact:name');
-			if ($contactdisclose==1) {
-				$name->setAttribute('type',eppContact::TYPE_LOC);
-			}
-			$disclose->appendChild($name);
-			$org = $this->createElement('contact:org');
-			if ($contactdisclose==1) {
-				$org->setAttribute('type',eppContact::TYPE_LOC);
-			}
-			$disclose->appendChild($org);
-			$addr = $this->createElement('contact:addr');
-			if ($contactdisclose==1) {
-				$addr->setAttribute('type',eppContact::TYPE_LOC);
-			}
-			$disclose->appendChild($addr);
-			$disclose->appendChild($this->createElement('contact:voice'));
-			$disclose->appendChild($this->createElement('contact:email'));
-			$this->createobject->appendChild($disclose);
-		}
-	}
 }
