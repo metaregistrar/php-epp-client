@@ -21,11 +21,13 @@ class orgEppInfoRequest extends eppRequest {
 	function __construct(string $orgid) {
 		parent::__construct();
 		$epp = $this->getEpp();
+		$command = $this->createElement('command');
 		$info = $this->createElement('info');
 		$orginfo = $this->createElement('org:info');
 		$id = $this->createElement('org:id',$orgid);
 		$orginfo->appendChild($id);
 		$info->appendChild($orginfo);
-		$epp->appendChild($info);
+		$command->appendChild($info);
+		$epp->appendChild($command);
 	}
 }
