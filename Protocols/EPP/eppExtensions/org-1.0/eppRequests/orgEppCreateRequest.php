@@ -44,20 +44,21 @@ class orgEppCreateRequest extends eppCreateRequest {
 	 * @param bool $usecdata
 	 * @throws \DOMException
 	 */
-	function __construct(eppContact $createinfo, bool $namespacesinroot = true, bool $usecdata = true) {
+	function __construct(eppContact $createinfo, string $type, bool $namespacesinroot = true, bool $usecdata = true) {
 		$this->setNamespacesinroot($namespacesinroot);
 		parent::__construct();
 		$this->setUseCdata($usecdata);
 		$create = $this->createElement('create');
 		$this->createobject = $this->createElement('org:create');
-		$this->setContact($createinfo);
+		$this->setContact($createinfo, $type);
 		$create->appendChild($this->createobject);
 		$this->getCommand()->appendChild($create);
 		$this->addSessionId();
 	}
 
-	public function setContact(eppContact $contact): void {
+	public function setContact(eppContact $contact, string $type): void {
 		$this->setContactId($contact->getId());
+		$this->setContactType($type);
 		$this->setPostalInfo($contact->getPostalInfo(0));
 		$this->setVoice($contact->getVoice());
 		$this->setFax($contact->getFax());
