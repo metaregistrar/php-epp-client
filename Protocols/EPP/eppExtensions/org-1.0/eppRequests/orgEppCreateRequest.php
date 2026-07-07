@@ -33,38 +33,30 @@ namespace Metaregistrar\EPP;
  *   </command>
  * </epp>
  *
- * @property \DOMElement|false $createobject
  */
 
 class orgEppCreateRequest extends eppCreateRequest {
 	private \DOMElement|false $createobject;
 
 	/**
-	 * orgEppCreateRequest constructor.
 	 * @param eppContact $createinfo
-	 * @throws eppException
+	 * @param bool $namespacesinroot
+	 * @param bool $usecdata
+	 * @throws \DOMException
 	 */
-	function __construct(eppContact $createinfo, $namespacesinroot = true, $usecdata = true) {
+	function __construct(eppContact $createinfo, bool $namespacesinroot = true, bool $usecdata = true) {
 		$this->setNamespacesinroot($namespacesinroot);
 		parent::__construct();
-		$command = $this->getCommand();
 		$this->setUseCdata($usecdata);
-		if ($createinfo){
-			if ($createinfo instanceof eppContact) {
-				$command = $this->getCommand();
-				$create = $this->createElement('create');
-				$this->createobject = $this->createElement('org:create');
-				$this->setContact($createinfo);
-				$create->appendChild($this->createobject);
-				$command->appendChild($create);
-			} else {
-				throw new eppException('createinfo must be of type eppContact on orgEppCreateRequest');
-			}
-		}
+		$create = $this->createElement('create');
+		$this->createobject = $this->createElement('org:create');
+		$this->setContact($createinfo);
+		$create->appendChild($this->createobject);
+		$this->getCommand()->appendChild($create);
 		$this->addSessionId();
 	}
 
-	public function setContact(eppContact $contact) {
+	public function setContact(eppContact $contact): void {
 		$this->setContactId($contact->getId());
 		$this->setPostalInfo($contact->getPostalInfo(0));
 		$this->setVoice($contact->getVoice());
@@ -73,11 +65,21 @@ class orgEppCreateRequest extends eppCreateRequest {
 	}
 
 	/**
-	 * Create the org:id field
 	 * @param $contactid
+	 * @return void
+	 * @throws \DOMException
 	 */
-	public function setContactId($contactid) {
+	public function setContactId($contactid): void {
 		$this->createobject->appendChild($this->createElement('org:id', $contactid));
+	}
+
+	public function setContactType(string $type): void {
+		$role = $this->createobject->appendChild($this->createElement('org:role'));
+		$role->appendChild($this->createElement('org:type',$type));
+	}
+
+	public function setContactUrl(string $url) {
+		$this->createobject->appendChild($this->createElement('org:url',$url));
 	}
 
 	/**
