@@ -29,7 +29,6 @@ class orgEppUpdateRequest extends eppRequest {
 		$this->setUseCdata($usecdata);
 		$update = $this->createElement('update');
 		$this->updateobject = $this->createElement('org:update');
-		//$this->setContact($updateinfo, $type);
 		$update->appendChild($this->updateobject);
 		$this->getCommand()->appendChild($update);
 		$this->updateContact($handle, $addinfo, $removeinfo, $updateinfo);
