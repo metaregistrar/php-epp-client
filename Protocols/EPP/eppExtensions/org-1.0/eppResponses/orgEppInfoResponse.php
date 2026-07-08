@@ -110,6 +110,16 @@ class orgEppInfoResponse extends eppResponse {
 		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:upDate');
 	}
 
+	function getOrgContacts(): array {
+		$result = [];
+		$xpath = $this->xPath();
+		$data = $xpath->query('/epp:epp/epp:response/epp:resData/org:infData/org:contact');
+		if ($data->length >0) {
+			var_dump($data);
+		}
+		return $result;
+	}
+
 	public function getOrgPostalInfo() {
 		$xpath = $this->xPath();
 		$result = $xpath->query('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo');
