@@ -37,6 +37,7 @@ namespace Metaregistrar\EPP;
 
 class orgEppCreateRequest extends eppCreateRequest {
 	private \DOMElement|false $createobject;
+	CONST TYPE_RESELLER = 'reseller';
 
 	/**
 	 * @param eppContact $createinfo
