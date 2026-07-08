@@ -115,7 +115,12 @@ class orgEppInfoResponse extends eppResponse {
 		$xpath = $this->xPath();
 		$data = $xpath->query('/epp:epp/epp:response/epp:resData/org:infData/org:contact');
 		if ($data->length >0) {
-			var_dump($data);
+			if ($data->length >0) {
+				foreach ($data as $contact) {
+					/* @var $contact \DOMElement */
+					$result[$contact->getAttribute('type')][] = $contact->nodeValue;
+				}
+			}
 		}
 		return $result;
 	}
