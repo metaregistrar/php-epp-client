@@ -79,7 +79,7 @@ class orgEppInfoResponse extends eppResponse {
 		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:addr/org:pc');
 	}
 
-	function getOrgState(): string {
+	function getOrgState(): ?string {
 		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:postalInfo/org:addr/org:sp');
 	}
 
@@ -91,7 +91,7 @@ class orgEppInfoResponse extends eppResponse {
 		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:voice');
 	}
 
-	function getOrgFax(): string {
+	function getOrgFax(): ?string {
 		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:fax');
 	}
 
@@ -99,7 +99,7 @@ class orgEppInfoResponse extends eppResponse {
 		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:email');
 	}
 
-	function getOrgUrl(): string {
+	function getOrgUrl(): ?string {
 		return $this->queryPath('/epp:epp/epp:response/epp:resData/org:infData/org:url');
 	}
 
