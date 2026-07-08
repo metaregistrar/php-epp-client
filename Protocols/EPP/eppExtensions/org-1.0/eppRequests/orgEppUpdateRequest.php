@@ -38,11 +38,12 @@ class orgEppUpdateRequest extends eppRequest {
 
 	public function updateContact($handle, $addInfo, $removeInfo, $updateInfo) {
 		$this->updateobject->appendChild($this->createElement('org:id', $handle));
-		if ($updateInfo instanceof eppContact) {
-			$chgcmd = $this->createElement('org:chg');
-			$this->addContactChanges($chgcmd, $updateInfo);
-			if ($chgcmd->hasChildNodes()) {
-				$this->updateobject->appendChild($chgcmd);
+		if ($addInfo instanceof eppContact) {
+			$addcmd = $this->createElement('org:add');
+			$this->addContactStatus($addcmd, $addInfo);
+			$this->addContactHandles($addcmd, $addInfo);
+			if ($addcmd->hasChildNodes()) {
+				$this->updateobject->appendChild($addcmd);
 			}
 		}
 		if ($removeInfo instanceof eppContact) {
@@ -53,12 +54,11 @@ class orgEppUpdateRequest extends eppRequest {
 				$this->updateobject->appendChild($remcmd);
 			}
 		}
-		if ($addInfo instanceof eppContact) {
-			$addcmd = $this->createElement('org:add');
-			$this->addContactStatus($addcmd, $addInfo);
-			$this->addContactHandles($addcmd, $addInfo);
-			if ($addcmd->hasChildNodes()) {
-				$this->updateobject->appendChild($addcmd);
+		if ($updateInfo instanceof eppContact) {
+			$chgcmd = $this->createElement('org:chg');
+			$this->addContactChanges($chgcmd, $updateInfo);
+			if ($chgcmd->hasChildNodes()) {
+				$this->updateobject->appendChild($chgcmd);
 			}
 		}
 	}
