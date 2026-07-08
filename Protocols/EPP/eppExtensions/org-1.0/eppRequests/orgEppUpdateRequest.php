@@ -70,13 +70,11 @@ class orgEppUpdateRequest extends eppRequest {
 				}
 			}
 			$postalinfo->setAttribute('type', $postal->getType());
-			// Mandatory field
-			if (is_string($postal->getName()) && strlen($postal->getName()) > 0) {
-				$postalinfo->appendChild($this->createElement('org:name', $postal->getName()));
-			}
 			// Optional field
 			if (!is_null($postal->getOrganisationName())) {
-				$postalinfo->appendChild($this->createElement('org:org', $postal->getOrganisationName()));
+				$postalinfo->appendChild($this->createElement('org:name', $postal->getOrganisationName()));
+			} else {
+				$postalinfo->appendChild($this->createElement('org:name', $postal->getName()));
 			}
 			if ((($postal->getStreetCount()) > 0) || strlen($postal->getCity()) || strlen($postal->getProvince()) || strlen($postal->getZipcode()) || strlen($postal->getCountrycode())) {
 				$postaladdr = $this->createElement('org:addr');
