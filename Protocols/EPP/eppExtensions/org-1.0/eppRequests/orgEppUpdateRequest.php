@@ -5,9 +5,24 @@ namespace Metaregistrar\EPP;
  *
  */
 
+
+
 class orgEppUpdateRequest extends eppRequest {
 	private \DOMElement|false $updateobject;
 
+	/**
+	 * @param string $handle
+	 * @param $addinfo
+	 * @param $removeinfo
+	 * @param $updateinfo
+	 * @param $namespacesinroot
+	 * @param $usecdata
+	 * @throws \DOMException
+	 *
+	 * Update reseller information
+	 * $updateinfo allows updating of company and address data
+	 * $addinfo and $removeinfo allows adding and removing contact statuses and linked contact objects
+	 */
 	function __construct(string $handle, $addinfo = null, $removeinfo = null, $updateinfo = null, $namespacesinroot = true, $usecdata = true) {
 		$this->setNamespacesinroot($namespacesinroot);
 		parent::__construct();
@@ -33,6 +48,7 @@ class orgEppUpdateRequest extends eppRequest {
 		if ($removeInfo instanceof eppContact) {
 			$remcmd = $this->createElement('org:rem');
 			$this->addContactStatus($remcmd, $removeInfo);
+			$this->addContactHandles($remcmd, $removeInfo);
 			if ($remcmd->hasChildNodes()) {
 				$this->updateobject->appendChild($remcmd);
 			}
@@ -40,6 +56,7 @@ class orgEppUpdateRequest extends eppRequest {
 		if ($addInfo instanceof eppContact) {
 			$addcmd = $this->createElement('org:add');
 			$this->addContactStatus($addcmd, $addInfo);
+			$this->addContactHandles($addcmd, $addInfo);
 			if ($addcmd->hasChildNodes()) {
 				$this->updateobject->appendChild($addcmd);
 			}
@@ -54,6 +71,16 @@ class orgEppUpdateRequest extends eppRequest {
 					$element->appendChild($this->createElement('org:status',$status));
 				}
 			}
+		}
+	}
+
+	private function addContactHandles(\DOMElement $element, eppContact $contact) {
+		if (is_string($contact->getId())) {
+			$contactadd = $this->createElement('org:contact',$contact->getId());
+			if (is_string($contact->getType())) {
+				$contactadd->setAttribute('type',$contact->getType());
+			}
+			$element->appendChild($contactadd);
 		}
 	}
 
