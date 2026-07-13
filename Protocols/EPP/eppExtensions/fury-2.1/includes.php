@@ -15,3 +15,6 @@ $this->addCommandResponse('Metaregistrar\EPP\furyUpdateContactRequest', 'Metareg
 
 include_once(dirname(__FILE__) . '/eppResponses/furyInfoDomainResponse.php');
 $this->addCommandResponse('Metaregistrar\EPP\eppInfoDomainRequest', 'Metaregistrar\EPP\furyInfoDomainResponse');
+
+include_once(dirname(__FILE__) . '/eppExceptions/furyEppException.php');
+$this->addException('Metaregistrar\EPP\furyEppException');
