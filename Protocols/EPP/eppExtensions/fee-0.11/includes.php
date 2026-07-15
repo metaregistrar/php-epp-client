@@ -1,3 +1,4 @@
+<?php
 #
 # Load the fee-0.11 specific additions
 # SOURCE: https://datatracker.ietf.org/doc/draft-ietf-regext-epp-fees/00/
