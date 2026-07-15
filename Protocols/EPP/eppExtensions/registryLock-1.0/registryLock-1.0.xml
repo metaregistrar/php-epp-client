@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+registryLock-1.0.xsd - XML schema for EPP Registry Lock extension
+
+Copyright (c) The Internet Infrastructure Foundation (2019) <hostmaster@internetstiftelsen.se>
+
+All rights reserved.
+
+-->
+<xs:schema xmlns:rl="urn:se:iis:xml:epp:registryLock-1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:se:iis:xml:epp:registryLock-1.0" elementFormDefault="qualified">
+
+    <xs:annotation>
+      <xs:documentation>
+        Extensible Provisioning Protocol v1.0
+      </xs:documentation>
+    </xs:annotation>
+
+    <!-- **************************************************************** -->
+    <!--                 extension to create and update                   -->
+    <!--                                                                  -->
+    <xs:element name="lock" type="rl:lockType"/>
+
+    <xs:complexType name="lockType">
+      <xs:sequence>
+        <xs:element name="unlock" type="rl:unlock"/>
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="unlock">
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="outofband"/>
+        <xs:enumeration value="password"/>
+      </xs:restriction>
+    </xs:simpleType>
+
+    <!-- **************************************************************** -->
+    <!--                 extension to infData                             -->
+    <!--                                                                  -->
+    <xs:element name="infData" type="rl:infDataType"/>
+
+    <xs:complexType name="infDataType">
+      <xs:sequence>
+        <xs:element name="locked" type="xs:boolean"/>
+        <xs:element name="unlockedUntil" type="xs:dateTime" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+</xs:schema>
