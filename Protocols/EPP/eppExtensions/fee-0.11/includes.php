@@ -1,0 +1,6 @@
+#
+# Load the fee-0.11 specific additions
+# SOURCE: https://datatracker.ietf.org/doc/draft-ietf-regext-epp-fees/00/
+#
+include_once(dirname(__FILE__) . '/eppRequests/fee011EppCheckDomainRequest.php');
+include_once(dirname(__FILE__) . '/eppResponses/fee011EppCheckDomainResponse.php');

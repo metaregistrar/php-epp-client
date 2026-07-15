@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="urn:ietf:params:xml:ns:fury-2.1"
+        xmlns:fury="urn:ietf:params:xml:ns:fury-2.1"
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        elementFormDefault="qualified">
+
+	<annotation>
+		<documentation>
+			Extensible Provisioning Protocol v1.0
+			contact and domain
+			extension schema for framework for
+			provisioning of Fury additional
+			information.
+		</documentation>
+	</annotation>
+
+	<!-- Command and Response elements -->
+	<element name="command" type="fury:commandType"/>
+	<element name="response" type="fury:responseType"/>
+
+	<!-- Child elements of command -->
+	<element name="ciraCode" type="fury:ciraCodeType"/>
+	<element name="create" type="fury:createType"/>
+	<element name="info" type="fury:infoType"/>
+	<element name="update" type="fury:updateType"/>
+	<element name="check" type="fury:checkType"/>
+
+	<!-- Child elements of <ciraCode> command -->
+	<simpleType name="ciraCodeType">
+		<restriction base="unsignedShort">
+			<totalDigits value="4"/>
+			<minInclusive value="3000"/>
+			<maxInclusive value="9999"/>
+		</restriction>
+	</simpleType>
+
+	<!-- Child elements of <create> command -->
+	<complexType name="createType">
+		<sequence>
+			<element name="properties" type="fury:properties" minOccurs="0"/>
+		</sequence>
+	</complexType>
+
+	<!-- Child elements of <info> command -->
+	<complexType name="infoType">
+		<sequence>
+			<element name="properties" type="fury:properties" minOccurs="0"/>
+			<element name="bundle" type="fury:bundle" minOccurs="0"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="bundle">
+		<sequence>
+			<element name="name" type="string"/>
+			<element name="domains" type="fury:domains"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="domains">
+		<sequence>
+			<element name="name" type="string" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<!-- Child elements of <update> command -->
+	<complexType name="updateType">
+		<sequence>
+			<element name="add" type="fury:addType" minOccurs="0"/>
+			<element name="rem" type="fury:rmType" minOccurs="0"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="addType">
+		<sequence>
+			<element name="properties" type="fury:properties" minOccurs="0"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="rmType">
+		<sequence>
+			<element name="properties" type="fury:properties" minOccurs="0"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="commandType">
+		<choice>
+			<element name="info" type="fury:infoCommandType"/>
+			<element name="check" type="fury:chkCommandType"/>
+		</choice>
+	</complexType>
+
+	<complexType name="infoCommandType">
+		<sequence>
+			<element name="language" type="normalizedString" minOccurs="0"/>
+			<choice>
+				<element name="properties" type="fury:infoCommandPropertiesType"/>
+			</choice>
+		</sequence>
+	</complexType>
+
+	<complexType name="infoCommandPropertiesType">
+		<sequence>
+			<element name="property" type="fury:infoCommandKvpEntry" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="infoCommandKvpEntry">
+		<sequence>
+			<element name="key" type="normalizedString"/>
+			<element name="value" type="fury:valueType" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="properties">
+		<sequence>
+			<element name="property" type="fury:kvpEntry" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="kvpEntry">
+		<sequence>
+			<element name="key" type="normalizedString"/>
+			<choice>
+				<element name="value" type="fury:valueType" maxOccurs="unbounded"/>
+				<element name="remAll" type="boolean"/>
+			</choice>
+		</sequence>
+	</complexType>
+
+	<complexType name="responseType">
+		<choice>
+			<element name="infData" type="fury:infoResponseType"/>
+			<element name="chkData" type="fury:chkResponseType"/>
+		</choice>
+	</complexType>
+
+	<complexType name="infoResponseType">
+		<sequence>
+			<element name="language" type="normalizedString" minOccurs="0"/>
+			<choice>
+				<element name="properties" type="fury:infoResponsePropertyType"/>
+			</choice>
+		</sequence>
+	</complexType>
+
+	<complexType name="infoResponsePropertyType">
+		<sequence>
+			<element name="property" type="fury:infoResponseKvpEntry" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="infoResponseKvpEntry">
+		<sequence>
+			<element name="key" type="normalizedString"/>
+			<element name="localizedKey" type="normalizedString" minOccurs="0"/>
+			<element name="propertyValues" type="fury:infoResponsePropertyValuesType" minOccurs="0"/>
+			<element name="propertyAttributes" type="fury:infoResponsePropertyAttributesType" minOccurs="0"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="infoResponsePropertyValuesType">
+		<sequence>
+			<choice>
+				<element name="propertyValue" type="fury:infoResponsePropertyValueType" minOccurs="0" maxOccurs="unbounded"/>
+			</choice>
+		</sequence>
+	</complexType>
+
+	<complexType name="infoResponsePropertyValueType">
+		<sequence>
+			<element name="value" type="fury:valueType"/>
+			<element name="localizedValue" type="normalizedString" minOccurs="0"/>
+			<element name="localizedDetail" type="string" minOccurs="0"/>
+			<element name="propertyValueAttributes" type="fury:infoResponsePropertyValueAttributesType" minOccurs="0"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="infoResponsePropertyValueAttributesType">
+		<sequence>
+			<element name="propertyValueAttribute" type="fury:infoResponsePropertyAttributeType" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="infoResponsePropertyAttributesType">
+		<sequence>
+			<element name="propertyAttribute" type="fury:infoResponsePropertyAttributeType" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="infoResponsePropertyAttributeType">
+		<sequence>
+			<element name="key" type="normalizedString"/>
+			<element name="value" type="fury:valueType" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="checkType">
+		<sequence>
+			<element name="properties" type="fury:properties" minOccurs="0"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="chkCommandType">
+		<sequence>
+			<choice>
+				<element name="properties" type="fury:chkCommandPropertiesType"/>
+			</choice>
+		</sequence>
+	</complexType>
+
+	<complexType name="chkCommandPropertiesType">
+		<sequence>
+			<element name="property" type="fury:chkCommandEntry" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="chkCommandEntry">
+		<sequence>
+			<element name="key" type="normalizedString"/>
+			<element name="value" type="fury:valueType" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="chkResponseType">
+		<sequence>
+			<choice>
+				<element name="properties" type="fury:chkResponsePropertyType"/>
+			</choice>
+		</sequence>
+	</complexType>
+
+	<complexType name="chkResponsePropertyType">
+		<sequence>
+			<element name="property" type="fury:chkResponseEntry" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="chkResponseEntry">
+		<sequence>
+			<element name="key" type="normalizedString"/>
+			<element name="propertyValues" type="fury:chkResponsePropertyValuesType" minOccurs="0"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="chkResponsePropertyValuesType">
+		<sequence>
+			<choice>
+				<element name="propertyValue" type="fury:chkResponsePropertyValueType" minOccurs="0" maxOccurs="unbounded"/>
+			</choice>
+		</sequence>
+	</complexType>
+
+	<complexType name="chkResponsePropertyValueType">
+		<sequence>
+			<element name="value" type="fury:valueType"/>
+			<element name="result" type="normalizedString"/>
+			<element name="reason" type="normalizedString" minOccurs="0"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="valueType">
+		<simpleContent>
+			<extension base="normalizedString">
+				<attribute name="default" type="boolean" default="false" use="optional"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+
+</schema>
