@@ -1,4 +1,5 @@
 <?php
+$this->addExtension('fee-0.11','urn:ietf:params:xml:ns:fee-0.11');
 #
 # Load the fee-0.11 specific additions
 # SOURCE: https://datatracker.ietf.org/doc/draft-ietf-regext-epp-fees/00/
