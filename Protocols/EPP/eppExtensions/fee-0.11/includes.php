@@ -7,4 +7,4 @@ $this->addExtension('fee-0.11','urn:ietf:params:xml:ns:fee-0.11');
 include_once(dirname(__FILE__) . '/eppRequests/fee011EppCheckDomainRequest.php');
 include_once(dirname(__FILE__) . '/eppResponses/fee011EppCheckDomainResponse.php');
 
-$this->addCommandResponse('Metaregistrar\EPP\fee011EppCheckDomainRequest.php','Metaregistrar\EPP\fee011EppCheckDomainResponse');
+$this->addCommandResponse('Metaregistrar\EPP\fee011EppCheckDomainRequest','Metaregistrar\EPP\fee011EppCheckDomainResponse');
