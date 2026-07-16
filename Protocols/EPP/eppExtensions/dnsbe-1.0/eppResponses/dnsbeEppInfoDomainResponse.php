@@ -91,14 +91,17 @@ class dnsbeEppInfoDomainResponse extends eppInfoDomainResponse
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/dnsbe:ext/dnsbe:infData/dnsbe:domain/dnsbe:nameserversOverridden');
 
-        $nameserversOveridden = $result->item(0)?->nodeValue;
+        $node = $result->item(0);
+        $nameserversOveridden = $node !== null ? $node->nodeValue : null;
 
         // If the nameservers are not overridden, the domain is not awaiting verification.
         if (!$nameserversOveridden) {
             return false;
         }
 
-        $reason = $result->item(0)?->attributes?->item(0)?->nodeValue;
+        $attributes = $node !== null ? $node->attributes : null;
+        $attribute = $attributes !== null ? $attributes->item(0) : null;
+        $reason = $attribute !== null ? $attribute->nodeValue : null;
 
         return $nameserversOveridden === 'true' && $reason === 'Pending registrant verification';
     }
