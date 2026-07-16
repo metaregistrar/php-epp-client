@@ -31,7 +31,10 @@ class furyInfoDomainResponse extends eppInfoDomainResponse {
 		return $result;
 	}
 
-	public function getFuryBundle(): null {
+	/**
+	 * @return null
+	 */
+	public function getFuryBundle() {
 		/**
 		 * This function was not implemented yet because we were not able to test it in the wild
 		 *

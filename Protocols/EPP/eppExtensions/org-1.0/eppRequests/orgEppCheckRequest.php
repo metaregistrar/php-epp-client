@@ -24,7 +24,7 @@ class orgEppCheckRequest extends eppRequest {
 	 *
 	 * Check on or more reseller ID's to see if they are taken or free
 	 */
-	function __construct(string|array $orgid) {
+	function __construct($orgid) {
 		parent::__construct();
 		$command = $this->getCommand();
 		$check = $this->createElement('check');

@@ -8,7 +8,8 @@ namespace Metaregistrar\EPP;
 
 
 class orgEppUpdateRequest extends eppRequest {
-	private \DOMElement|false $updateobject;
+	/** @var \DOMElement|false */
+	private $updateobject;
 
 	/**
 	 * @param string $handle
