@@ -12,7 +12,7 @@ class verisignEppCreateHostRequest extends eppCreateHostRequest {
     public function __construct(eppHost $host) {
         parent::__construct($host);
         //add namestore extension
-        $this->addNamestore();
+        $this->addNamestore($host);
         $this->addSessionId();
     }
 }
