@@ -6,7 +6,7 @@ class verisignEppCheckHostRequest extends eppCheckHostRequest {
     public function __construct($checkrequest) {
         parent::__construct($checkrequest);
         //add namestore extension
-        $this->addNamestore();
+        $this->addNamestore(is_array($checkrequest) ? $checkrequest[0] : $checkrequest);
         $this->addSessionId();
 
     }

@@ -15,7 +15,7 @@ class verisignEppUpdateHostRequest extends eppUpdateHostRequest {
     public function __construct(eppHost $host, $add=null, $remove=null, $update=null) {
         parent::__construct($host, $add, $remove, $update);
         //add namestore extension
-        $this->addNamestore();
+        $this->addNamestore($host);
         $this->addSessionId();
 
     }

@@ -10,12 +10,16 @@ namespace Metaregistrar\EPP;
 trait verisignEppExtension{
     /**
      * add verisign namestore extension
-     * @param eppDomain $domain
+     * @param eppDomain|eppHost|string|null $object
      * @author:Jansen <jansen.shi@qq.com>
      */
-    public function addNamestore(?eppDomain $domain=null){
-        if ($domain instanceof eppDomain){
-            $tld = substr(strrchr($domain->getDomainname(), '.'), 1);
+    public function addNamestore($object=null){
+        if ($object instanceof eppDomain){
+            $tld = substr(strrchr($object->getDomainname(), '.'), 1);
+        }elseif ($object instanceof eppHost){
+            $tld = substr(strrchr($object->getHostname(), '.'), 1);
+        }elseif (is_string($object)){
+            $tld = substr(strrchr($object, '.'), 1);
         }else{
             $tld = 'com';
         }
