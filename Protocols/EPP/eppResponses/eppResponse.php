@@ -91,7 +91,7 @@ class eppResponse extends \DOMDocument {
      */
     public $defaultnamespace;
 
-    public function __construct(eppRequest|null $originalrequest=null) {
+    public function __construct(?eppRequest $originalrequest = null) {
         parent::__construct();
         $this->formatOutput = true;
         $this->originalrequest = $originalrequest;

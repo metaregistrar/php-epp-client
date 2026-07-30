@@ -43,6 +43,10 @@ use DOMElement;
 */
 class euridEppUpdateDomainRequest extends eppUpdateDomainRequest
 {
+    /**
+     * @param string|array|null $addnsgroup
+     * @param string|array|null $removensgroup
+     */
     public function __construct(
         $objectname,
         ?eppDomain $addinfo = null,
@@ -51,15 +55,19 @@ class euridEppUpdateDomainRequest extends eppUpdateDomainRequest
         bool $forcehostattr = true,
         bool $namespacesinroot = true,
         bool $usecdata = true,
-        string|array|null $addnsgroup = null,
-        string|array|null $removensgroup = null
+        $addnsgroup = null,
+        $removensgroup = null
     ) {
         parent::__construct($objectname, $addinfo, $removeinfo, $updateinfo, $forcehostattr, $namespacesinroot, $usecdata);
         $this->updateNameserverGroups($addnsgroup, $removensgroup);
         parent::addSessionId();
     }
 
-    private function updateNameserverGroups(string|array|null $addnsgroup = null, string|array|null $removensgroup = null): void
+    /**
+     * @param string|array|null $addnsgroup
+     * @param string|array|null $removensgroup
+     */
+    private function updateNameserverGroups($addnsgroup = null, $removensgroup = null): void
     {
         if ($addnsgroup === null && $removensgroup === null) {
             return;
@@ -79,7 +87,10 @@ class euridEppUpdateDomainRequest extends eppUpdateDomainRequest
         $this->getExtension()->appendChild($update);
     }
 
-    private function processNameservergroup(DOMElement $parent, string $action, string|array $nsgroup): void
+    /**
+     * @param string|array $nsgroup
+     */
+    private function processNameservergroup(DOMElement $parent, string $action, $nsgroup): void
     {
         if (is_array($nsgroup) && !empty($nsgroup)) {
             $element = $this->createElement($action);
