@@ -26,7 +26,7 @@ class furyPropertiesResponse extends eppResponse {
 						$attributevalue = $attribute->getElementsByTagName('value')->item(0)->nodeValue;
 						$as [$attributekey] = $attributevalue;
 					}
-					$pvs[$name] = $as;
+					$pvs[$key][$name] = $as;
 				}
 
 			}
@@ -38,7 +38,7 @@ class furyPropertiesResponse extends eppResponse {
 					$pas [$attributekey] = $attributevalue;
 				}
 			}
-			$result[$key] = ['propertyValues'=>$pvs, 'propertyAttributes'=>$pas];
+			$result[$key] = ['propertyValues'=>$pvs[$key], 'propertyAttributes'=>$pas];
 		}
 		return $result;
 	}
