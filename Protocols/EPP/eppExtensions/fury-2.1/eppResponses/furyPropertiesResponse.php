@@ -38,7 +38,10 @@ class furyPropertiesResponse extends eppResponse {
 					$pas [$attributekey] = $attributevalue;
 				}
 			}
-			$result[$key] = ['propertyValues'=>$pvs[$key], 'propertyAttributes'=>$pas];
+			if (isset($pvs[$key])) {
+				$result[$key]['propertyValues'] = $pvs[$key];
+			}
+			$result[$key]['propertyAttributes'] = $pas;
 		}
 		return $result;
 	}
