@@ -1,6 +1,9 @@
 <?php
 namespace Metaregistrar\EPP;
 /**
+*
+https://datatracker.ietf.org/doc/rfc8748/
+
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
   <command>
@@ -33,7 +36,10 @@ namespace Metaregistrar\EPP;
  * @package Metaregistrar\EPP
  */
 class feeEppCheckDomainRequest extends eppCheckDomainRequest {
-    function __construct($checkrequest, $namespacesinroot) {
+
+	private $checkcommand = null;
+
+    function __construct($checkrequest, $namespacesinroot=true) {
         parent::__construct($checkrequest, $namespacesinroot);
 
     }
@@ -42,21 +48,25 @@ class feeEppCheckDomainRequest extends eppCheckDomainRequest {
         if (!in_array($command,['renew','transfer','restore','create','delete','update','custom'])) {
             throw new eppException('Command must be create, delete, renew, update, transfer, restore, or custom on addFee command');
         }
-        $check = $this->createElement('fee:check');
-        $check->setAttribute('xmlns:fee', 'urn:ietf:params:xml:ns:epp:fee-1.0');
-        $check->appendChild($this->createElement('fee:currency',$currency));
-        $cmd = $this->createElement('fee:command');
-        $cmd->setAttribute('name',$command);
-        if ($period) {
-            $per = $this->createElement('fee:period',$period);
-            $per->setAttribute('unit','y');
-            $cmd->appendChild($per);
-        }
-        if ($phase) {
-            $cmd->setAttribute('phase',$phase);
-        }
-        $check->appendChild($cmd);
-        $this->getExtension()->appendChild($check);
+	    $cmd = $this->createElement('fee:command');
+	    $cmd->setAttribute('name',$command);
+	    if ($period) {
+		    $per = $this->createElement('fee:period',$period);
+		    $per->setAttribute('unit','y');
+		    $cmd->appendChild($per);
+	    }
+	    if ($phase) {
+		    $cmd->setAttribute('phase',$phase);
+	    }
+		if (!$this->checkcommand) {
+			$this->checkcommand = $this->createElement('fee:check');
+			$this->checkcommand->setAttribute('xmlns:fee', 'urn:ietf:params:xml:ns:epp:fee-1.0');
+			$this->checkcommand->appendChild($this->createElement('fee:currency',$currency));
+			$this->checkcommand->appendChild($cmd);
+			$this->getExtension()->appendChild($this->checkcommand);
+		} else {
+			$this->checkcommand->appendChild($cmd);
+		}
         $this->addSessionId();
     }
 }
