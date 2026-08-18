@@ -8,13 +8,25 @@ namespace Metaregistrar\EPP;
  */
 
 class eppContactPostalInfo {
+    /** @var string|null */
     private $name;
+    /** @var string|null */
     private $organisationName;
+    /** @var array<string> */
     private $street = array();
+    /** @var string|null */
     private $city;
+    /** @var string|null */
     private $province;
+    /** @var string|null */
     private $zipcode;
+    /** @var string|null */
     private $countrycode;
+    /** 
+     * @var string 
+     * 
+     * @phpstan-var self::POSTAL_TYPE_*
+     */
     private $type;
 
     const POSTAL_TYPE_LOC = 'loc';
@@ -23,14 +35,16 @@ class eppContactPostalInfo {
 
     /**
      *
-     * @param string $name
-     * @param string $city
-     * @param string $countrycode
-     * @param string $organisationName
-     * @param string $street
-     * @param string $province
-     * @param string $zipcode
+     * @param string|null $name
+     * @param string|null $city
+     * @param string|null $countrycode
+     * @param string|null $organisationName
+     * @param string|null $street
+     * @param string|null $province
+     * @param string|null $zipcode
      * @param string $type POSTAL_TYPE_LOC or POSTAL_TYPE_INT
+     * 
+     * @phpstan-param self::POSTAL_TYPE_* $type
      */
     public function __construct($name = null, $city = null, $countrycode = null, $organisationName = null, $street = null, $province = null, $zipcode = null, $type = eppContact::TYPE_AUTO) {
         if (null !== $name) {
@@ -57,7 +71,8 @@ class eppContactPostalInfo {
     }
 
     /**
-     * @param $street
+     * @param string $street
+     * @return void
      * @throws eppException
      */
     public function addStreet($street) {
@@ -81,7 +96,7 @@ class eppContactPostalInfo {
     /**
      * Gets a street by given line number
      * @param int $line
-     * @return string
+     * @return string|null
      */
     public function getStreet($line) {
         if ((is_array($this->street)) && (array_key_exists($line, $this->street))) {
@@ -90,10 +105,16 @@ class eppContactPostalInfo {
         return null;
     }
 
+    /**
+     * @return int
+     */
     public function getStreetCount() {
         return (is_array($this->street) ? count($this->street) : 0);
     }
 
+    /**
+     * @return array<string>
+     */
     public function getStreets() {
         return $this->street;
     }
@@ -114,7 +135,7 @@ class eppContactPostalInfo {
 
     /**
      * Gets the organisation name
-     * @return string
+     * @return string|null
      */
     public function getOrganisationName() {
         return $this->organisationName;
@@ -153,7 +174,7 @@ class eppContactPostalInfo {
 
     /**
      * Gets the city
-     * @return string
+     * @return string|null
      */
     public function getCity() {
         return $this->city;
@@ -170,7 +191,7 @@ class eppContactPostalInfo {
 
     /**
      * Gets the zipcode
-     * @return string
+     * @return string|null
      */
     public function getZipcode() {
         return $this->zipcode;
@@ -220,13 +241,19 @@ class eppContactPostalInfo {
     /**
      *
      * @return string int or loc
+     * 
+     * @phpstan-return self::POSTAL_TYPE_*
      */
     public function getType() {
         return $this->type;
     }
 
     /**
-     * @param $type
+     * @param string $type
+     * @return void
+     * 
+     * @phpstan-type self::POSTAL_TYPE_* $type
+     * 
      * @throws eppException
      */
     public function setType($type) {

@@ -14,12 +14,6 @@ namespace Metaregistrar\EPP;
 </balance:infData>
  */
 class eppBalanceInfoResponse extends eppResponse {
-    /**
-     * eppBalanceInfoResponse constructor
-     */
-    function __construct() {
-        parent::__construct();
-    }
 
     /**
      * @return string|null

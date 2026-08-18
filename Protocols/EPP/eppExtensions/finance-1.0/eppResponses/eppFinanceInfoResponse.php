@@ -14,10 +14,6 @@ namespace Metaregistrar\EPP;
  */
 class eppFinanceInfoResponse extends eppResponse {
 
-    function __construct() {
-        parent::__construct();
-    }
-
     public function getBalance() {
         $xpath = $this->xPath();
         $result = $xpath->query('//finance:balance');

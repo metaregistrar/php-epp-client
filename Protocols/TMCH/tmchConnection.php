@@ -92,11 +92,7 @@ class tmchConnection {
 
     public function __construct($logging = false, $settingsfile = null) {
         $this->logging = $logging;
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            $path = str_replace('Metaregistrar\TMCH\\',dirname(__FILE__).'\..\..\Registries\\',get_called_class());
-        } else {
-            $path = str_replace('Metaregistrar\TMCH\\',dirname(__FILE__).'/../../Registries/',get_called_class());
-        }
+        $path = str_replace('Metaregistrar\TMCH\\', dirname(__FILE__).'/../../Registries/', get_called_class());
         if ($settings = $this->loadSettings($path,$settingsfile)) {
             $this->setConnectionDetails($settings);
         }

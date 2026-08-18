@@ -1,4 +1,5 @@
 <?php
+$this->addExtension('fee','urn:ietf:params:xml:ns:fee-0.23');
 #
 # Load the fee-0.9 specific additions
 # SOURCE: https://tools.ietf.org/html/draft-brown-epp-fees-06

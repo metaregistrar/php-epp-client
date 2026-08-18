@@ -39,9 +39,6 @@ class verisignEppPollResponse extends eppPollResponse {
     const OBJECT_UNKNOWN = 'unknown';
     private $objectType = null;
     private $messageType = null;
-    public function __construct() {
-        parent::__construct();
-    }
 
     public function __destruct() {
         parent::__destruct();

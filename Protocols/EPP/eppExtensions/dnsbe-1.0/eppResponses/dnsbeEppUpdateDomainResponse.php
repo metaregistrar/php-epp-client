@@ -2,6 +2,4 @@
 
 namespace Metaregistrar\EPP;
 
-class dnsbeEppUpdateDomainResponse extends eppUpdateDomainResponse {
-
-}
+class dnsbeEppUpdateDomainResponse extends eppUpdateDomainResponse {}

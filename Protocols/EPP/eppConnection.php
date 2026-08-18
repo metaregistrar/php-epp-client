@@ -187,6 +187,11 @@ class eppConnection {
     /**
      * @var null|string
      */
+    protected $sourceIpAddr = null;
+
+    /**
+     * @var null|string
+     */
     protected $logFile = null;
 
     /**
@@ -374,6 +379,11 @@ class eppConnection {
                     stream_context_set_option($context, 'ssl', 'verify_peer', $this->verify_peer);
                 }
             }
+            if ($this->sourceIpAddr && filter_var($this->sourceIpAddr, FILTER_VALIDATE_IP)) {
+                stream_context_set_option($context, 'socket', 'bindto', $this->sourceIpAddr . ":0");
+            } else if (defined("METAREGISTRAR_EPP_SOURCE_IPADDR") && filter_var(METAREGISTRAR_EPP_SOURCE_IPADDR, FILTER_VALIDATE_IP)) {
+                stream_context_set_option($context, 'socket', 'bindto', METAREGISTRAR_EPP_SOURCE_IPADDR . ":0");
+            }
             $this->sslContext = $context;
         }
         $this->connection = stream_socket_client($this->hostname.':'.$this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $this->sslContext);
@@ -388,7 +398,8 @@ class eppConnection {
                     $this->writeLog("Stream opened to ".$this->getHostname()." port ".$this->getPort(),"Connection made");
                 }
                 $this->connected = true;
-                $this->read();
+                $content = $this->read();
+				$this->writeLog($content,"GREETING");
             }
             return $this->connected;
         }
@@ -482,6 +493,11 @@ class eppConnection {
      * @var integer
      */
     private $readSleepTimeLimit = 100000;
+
+    /**
+     * @var integer
+     */
+    private $maxMessageLength = 1000000;
 
     /**
      * When using the readsleep incrementor, increment the sleep time with incrementor value 1 until the
@@ -600,7 +616,7 @@ class eppConnection {
                 $length = $this->readInteger($read) - 4;
                 //$this->writeLog("Reading next: $length bytes","READ");
             }
-            if ($length > 1000000) {
+            if ($length > $this->maxMessageLength) {
                 throw new eppException("Packet size is too big: $length. Closing connection",0,null,null,$read);
             }
             //We know the length of what to read, so lets read the stuff
@@ -749,7 +765,7 @@ class eppConnection {
      */
     public function readResponse()
     {
-        $response = new eppResponse();
+        $response = new eppResponse(new eppRequest());
         $xml = $this->read(true);
         if (strlen($xml)) {
             if ($response->loadXML($xml)) {
@@ -1076,11 +1092,7 @@ class eppConnection {
      * @throws eppException
      */
     public function useExtension($namespace) {
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            $includepath = dirname(__FILE__).'\\eppExtensions\\'.$namespace.'\\includes.php';
-        } else {
-            $includepath = dirname(__FILE__).'/eppExtensions/'.$namespace.'/includes.php';
-        }
+        $includepath = dirname(__FILE__).'/eppExtensions/'.$namespace.'/includes.php';
         if (is_file($includepath)) {
             include($includepath);
         } else {
@@ -1131,6 +1143,23 @@ class eppConnection {
      */
     private function enableLogging() {
         $this->logging = true;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getMaxMessageLength()
+    {
+        return $this->maxMessageLength;
+    }
+
+    /**
+     * @param integer $maxMessageLength
+     * @return void
+     */
+    public function setMaxMessageLength($maxMessageLength)
+    {
+        $this->maxMessageLength = $maxMessageLength;
     }
 
     /**
@@ -1294,6 +1323,15 @@ class eppConnection {
      */
     public function setConnectionComment($connectionComment) {
         $this->connectionComment = $connectionComment;
+        return $this;
+    }
+
+    /**
+     * @param null|string $sourceIpAddr
+     * @return eppConnection
+     */
+    public function setsourceIpAddr($sourceIpAddr) {
+        $this->sourceIpAddr = $sourceIpAddr;
         return $this;
     }
 

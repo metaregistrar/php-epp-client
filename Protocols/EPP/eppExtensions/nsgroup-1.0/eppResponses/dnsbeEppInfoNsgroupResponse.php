@@ -1,5 +1,7 @@
 <?php
+
 namespace Metaregistrar\EPP;
+
 /**
 <epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:nsgroup="http://www.dns.be/xml/epp/nsgroup-1.0">
     <response>
@@ -21,16 +23,14 @@ namespace Metaregistrar\EPP;
  * Class dnsbeEppInfoNsgroupResponse
  * @package Metaregistrar\EPP
  */
-class dnsbeEppInfoNsgroupResponse extends eppResponse {
-    function __construct() {
-        parent::__construct();
-    }
-
+class dnsbeEppInfoNsgroupResponse extends eppResponse
+{
     /**
      *
      * @return string
      */
-    public function getNsgroupName() {
+    public function getNsgroupName()
+    {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/nsgroup:infData/nsgroup:name');
         if ($result->length > 0) {
@@ -43,7 +43,8 @@ class dnsbeEppInfoNsgroupResponse extends eppResponse {
     /**
      * @return array
      */
-    public function getNsgroupHosts() {
+    public function getNsgroupHosts()
+    {
         $return = [];
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:resData/nsgroup:infData/nsgroup:ns');

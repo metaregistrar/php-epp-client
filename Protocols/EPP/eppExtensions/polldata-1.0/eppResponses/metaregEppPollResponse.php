@@ -2,9 +2,6 @@
 namespace Metaregistrar\EPP;
 
 class metaregEppPollResponse extends eppPollResponse {
-    public function    __construct() {
-        parent::__construct();
-    }
 
     public function getDelDataName() {
         $xpath = $this->xPath();

@@ -32,12 +32,6 @@ namespace Metaregistrar\EPP;
 </extension>
  */
 class chargeEppCheckDomainResponse extends eppCheckDomainResponse {
-    /**
-     * chargeEppCheckDomainResponse constructor.
-     */
-    function __construct() {
-        parent::__construct();
-    }
 
     /**
      * Get all charges for all domain names

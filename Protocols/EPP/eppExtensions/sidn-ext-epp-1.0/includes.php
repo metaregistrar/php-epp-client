@@ -35,3 +35,6 @@ $this->addCommandResponse('Metaregistrar\EPP\sidnEppUpdateDomainRequest', 'Metar
 
 include_once(dirname(__FILE__) . '/eppExceptions/sidnEppException.php');
 $this->addException('Metaregistrar\EPP\sidnEppException');
+
+include_once(dirname(__FILE__) . '/eppResponses/sidnEppInfoContactResponse.php');
+$this->addCommandResponse('Metaregistrar\EPP\eppInfoContactRequest', 'Metaregistrar\EPP\sidnEppInfoContactResponse');

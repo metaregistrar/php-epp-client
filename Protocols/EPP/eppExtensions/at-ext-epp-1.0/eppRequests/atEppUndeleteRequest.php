@@ -11,7 +11,7 @@ class atEppUndeleteRequest extends eppDomainRequest
      * @param eppDomain $domain
      * @param atEppExtensionChain|null $atEppExtensionChain
      */
-    function __construct(eppDomain $domain, atEppExtensionChain $atEppExtensionChain = null) {
+    function __construct(eppDomain $domain, ?atEppExtensionChain $atEppExtensionChain = null) {
         $this->atEppExtensionChain = $atEppExtensionChain;
 
         parent::__construct(eppRequest::TYPE_UPDATE);

@@ -168,7 +168,7 @@ class tmchClaimData extends \DOMDocument {
      * @return mixed
      */
     #[\ReturnTypeWillChange]
-    public function saveXML(\DOMNode $node = null, $options = null) {
+    public function saveXML(?\DOMNode $node = null, $options = null) {
         return str_replace("\t", '  ', parent::saveXML($node, LIBXML_NOEMPTYTAG));
     }
 

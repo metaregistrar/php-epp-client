@@ -18,10 +18,6 @@ namespace Metaregistrar\EPP;
  */
 
 class euridEppInfoDomainResponse extends eppInfoDomainResponse {
-    function __construct() {
-        parent::__construct();
-    }
-
     /**
      *
      * @return boolean|null
@@ -162,5 +158,26 @@ class euridEppInfoDomainResponse extends eppInfoDomainResponse {
             }
         }
         return $cont;
+    }
+
+    /**
+     * Retrieve the names for the nameserver groups.
+     *
+     * @return array|null
+     */
+    public function getNameserverGroups()
+    {
+        $xpath = $this->xPath();
+        $result = @$xpath->query('/epp:epp/epp:response/epp:extension/domain-ext:infData/domain-ext:nsgroup');
+        if (is_object($result) && $result->length > 0) {
+            $arr = [];
+            foreach ($result as $item) {
+                $arr[] = $item->nodeValue;
+            }
+
+            return $arr;
+        }
+
+        return null;
     }
 }

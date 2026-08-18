@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
+        xmlns:idn="urn:ietf:params:xml:ns:idn-1.0"
+        targetNamespace="urn:ietf:params:xml:ns:idn-1.0"
+        elementFormDefault="qualified">
+	<annotation>
+		<documentation>
+			Extensible Provisioning Protocol v1.0 domain name extension
+			schema for IDN Table selection.
+		</documentation>
+	</annotation>
+	<import namespace="urn:ietf:params:xml:ns:eppcom-1.0"
+	        schemaLocation="eppcom-1.0.xsd"/>
+	<!-- Child elements found in IDN -->
+	<element name="data" type="idn:idnDataType"/>
+	<complexType name="idnDataType">
+		<sequence>
+			<element name="table" type="eppcom:minTokenType"/>
+			<element name="uname" type="eppcom:labelType" minOccurs="0"/>
+		</sequence>
+	</complexType>
+</schema>

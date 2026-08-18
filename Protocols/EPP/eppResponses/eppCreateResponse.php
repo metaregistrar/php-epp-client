@@ -2,14 +2,6 @@
 namespace Metaregistrar\EPP;
 
 class eppCreateResponse extends eppResponse {
-    function __construct() {
-        parent::__construct();
-    }
-
-    function __destruct() {
-        parent::__destruct();
-    }
-
     /**
      * CONTACT CREATE RESPONSES
      */

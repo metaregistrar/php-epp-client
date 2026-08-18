@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="urn:ietf:params:xml:ns:epp:orgext-1.0" elementFormDefault="qualified">
+	<annotation>
+		<documentation>
+			Extensible Provisioning Protocol v1.0 Organization Extension Schema v1.0
+		</documentation>
+	</annotation>
+	<!-- Child elements found in EPP commands -->
+	<element name="create" type="orgext:createType"/>
+	<element name="update" type="orgext:updateType"/>
+	<!--
+		Organization identifier with required role
+	  -->
+	<complexType name="orgIdType">
+		<simpleContent>
+			<extension base="token">
+				<attribute name="role" type="token" use="required"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<!--
+
+		Child elements of the <orgext:create> command.
+		All elements must be present at time of creation.
+
+	-->
+	<complexType name="createType">
+		<sequence>
+			<!--
+			 Agent identifier or the organization,
+					e.g., registrar, reseller, privacy proxy, etc.
+			-->
+			<element name="id" type="orgext:orgIdType" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	<!--
+		Child elements of <orgext:update> command
+	  -->
+	<complexType name="updateType">
+		<sequence>
+			<element name="add" type="orgext:addRemChgType" minOccurs="0"/>
+			<element name="rem" type="orgext:addRemChgType" minOccurs="0"/>
+			<element name="chg" type="orgext:addRemChgType" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	<complexType name="addRemChgType">
+		<sequence>
+			<!--
+			 Agent identifier of the organization,
+					e.g., registrar, reseller, privacy proxy, etc.
+			-->
+			<element name="id" type="orgext:orgIdType" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	<!-- Child response element -->
+	<element name="infData" type="orgext:infDataType"/>
+	<!-- <orgext:infData> response elements -->
+	<complexType name="infDataType">
+		<sequence>
+			<!--
+			 Agent identifier the organization,
+					e.g., registrar, reseller, privacy proxy, etc.
+			-->
+			<element name="id" type="orgext:orgIdType" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	<!-- End of schema -->
+</schema>

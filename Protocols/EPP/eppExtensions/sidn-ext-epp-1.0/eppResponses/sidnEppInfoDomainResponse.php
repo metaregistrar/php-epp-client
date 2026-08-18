@@ -2,10 +2,6 @@
 namespace Metaregistrar\EPP;
 
 class sidnEppInfoDomainResponse extends eppInfoDomainResponse {
-    function __construct() {
-        parent::__construct();
-    }
-
 
     /**
      *

@@ -2,14 +2,6 @@
 namespace Metaregistrar\EPP;
 
 class eppTransferResponse extends eppResponse {
-    function __construct() {
-        parent::__construct();
-    }
-
-    function __destruct() {
-        parent::__destruct();
-    }
-
     #
     # DOMAIN TRANSFER RESPONSES
     #

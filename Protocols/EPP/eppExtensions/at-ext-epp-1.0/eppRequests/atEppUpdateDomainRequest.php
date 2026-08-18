@@ -8,7 +8,7 @@ class atEppUpdateDomainRequest extends eppUpdateDomainRequest
 
     protected $atEppExtensionChain = null;
 
-    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false,atEppExtensionChain $atEppExtensionChain=null)
+    function __construct($objectname, $addinfo = null, $removeinfo = null, $updateinfo = null, $forcehostattr=false,?atEppExtensionChain $atEppExtensionChain=null)
     {
         $this->atEppExtensionChain = $atEppExtensionChain;
         parent::__construct($objectname, $addinfo, $removeinfo, $updateinfo, $forcehostattr);

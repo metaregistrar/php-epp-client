@@ -29,7 +29,4 @@ namespace Metaregistrar\EPP;
 
 class metaregSslReissueResponse extends metaregSslRenewResponse  {
 
-    function __construct() {
-        parent::__construct();
-    }
 }

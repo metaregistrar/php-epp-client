@@ -17,6 +17,12 @@ class eppStatus {
     const STATUS_PENDING_TRANSFER = 'pendingTransfer';
     const STATUS_PENDING_UPDATE = 'pendingUpdate';
     const STATUS_PENDING_RENEW = 'pendingRenew';
+    const REDEMPTION_PERIOD = 'redemptionPeriod';
+    const PENDING_RESTORE = 'pendingRestore';
+    const ADD_PERIOD = 'addPeriod';
+    const AUTO_RENEW_PERIOD = 'autoRenewPeriod';
+    const RENEW_PERIOD = 'renewPeriod';
+    const TRANSFER_PERIOD = 'transferPeriod';
 
     #
     # These status values can be set

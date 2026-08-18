@@ -7,12 +7,6 @@ namespace Metaregistrar\EPP;
 **/
 
 class chargeEppCreateDomainResponse extends eppCreateDomainResponse {
-    /**
-     * chargeEppCreateDomainResponse constructor.
-     */
-    function __construct() {
-        parent::__construct();
-    }
 
     /**
      * Retrieve charges for the created domain name

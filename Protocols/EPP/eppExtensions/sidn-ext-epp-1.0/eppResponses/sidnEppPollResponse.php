@@ -55,9 +55,6 @@ namespace Metaregistrar\EPP;
  */
 
 class sidnEppPollResponse extends eppPollResponse {
-    function __construct() {
-        parent::__construct();
-    }
 
     public function getPolledCommand() {
         $xpath = $this->xPath();

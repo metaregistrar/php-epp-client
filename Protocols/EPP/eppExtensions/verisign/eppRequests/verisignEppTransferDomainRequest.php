@@ -14,7 +14,7 @@ class verisignEppTransferDomainRequest extends eppTransferRequest {
      * @param string|null $lang
      * @throws eppException
      */
-    public function __construct(string $op, eppDomain $domain, string $rnvc=null, string $dnvc=null, string $lang=null) {
+    public function __construct(string $op, eppDomain $domain, ?string $rnvc=null, ?string $dnvc=null, ?string $lang=null) {
         parent::__construct($op, $domain);
         //add namestore extension
         $this->addNamestore($domain);

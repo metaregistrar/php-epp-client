@@ -11,10 +11,6 @@ namespace Metaregistrar\EPP;
  */
 
 class iisEppInfoDomainResponse extends eppInfoDomainResponse {
-    function __construct() {
-        parent::__construct();
-    }
-
 
     /**
      *

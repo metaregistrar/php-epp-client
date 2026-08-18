@@ -15,7 +15,9 @@ class dnlTmchConnection extends tmchConnection {
             throw new tmchException(curl_error($ch));
         }
         $this->setLastinfo(curl_getinfo($ch));
-        curl_close($ch);
+        if (PHP_VERSION_ID < 80000) {
+            curl_close($ch);
+        }
         return explode("\n", $output);
     }
 }

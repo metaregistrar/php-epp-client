@@ -31,6 +31,10 @@ class atEppConstants
     const namespaceMessage="http://www.nic.at/xsd/at-ext-message-1.0";
     const schemaLocationMessage="http://www.nic.at/xsd/at-ext-message-1.0 at-ext-message-1.0.xsd";
 
+    const namespaceAtExtVerification="http://www.nic.at/xsd/at-ext-verification-1.0";
+    const schemaLocationAtExtVerification="http://www.nic.at/xsd/at-ext-verification-1.0 at-ext-verification-1.0.xsd";
+
+
     /*
     |--------------------------------------------------------------------------
     | Epp and extension constants

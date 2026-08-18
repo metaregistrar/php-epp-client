@@ -31,7 +31,9 @@ class cnisTmchConnection extends tmchConnection {
             throw new tmchException("Empty output received from CNIS service");
         }
         $this->setLastInfo(curl_getinfo($ch));
-        curl_close($ch);
+        if (PHP_VERSION_ID < 80000) {
+            curl_close($ch);
+        }
         if (strpos($output,'404 Not Found')!==false)
         {
             throw new tmchException("Requested URL was not found on this server");

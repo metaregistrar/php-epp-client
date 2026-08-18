@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+iis-1.2.xsd - XML schema for .SE EPP extensions
+
+Copyright (c) .SE, The Internet Infrastructure Foundation (2009) <hostmaster@iis.se>
+
+All rights reserved.
+
+$Id: iis-1.1.xsd 11343 2009-11-20 11:42:57Z Ulrich Wisser $
+$Date: 2009-11-20 11:42:57 +0000 (Fri, 20 Nov 2009) $
+$LastChangedBy: Ulrich Wisser $
+-->
+<xs:schema targetNamespace="urn:se:iis:xml:epp:iis-1.2"
+          xmlns:iis="urn:se:iis:xml:epp:iis-1.2"
+          xmlns:epp="urn:ietf:params:xml:ns:epp-1.0"
+          xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
+          xmlns:contact="urn:ietf:params:xml:ns:contact-1.0"
+          xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"
+          xmlns:host="urn:ietf:params:xml:ns:host-1.0"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema"
+          elementFormDefault="qualified">
+
+    <!-- Import IETF schemas. -->
+    <xs:import namespace="urn:ietf:params:xml:ns:eppcom-1.0"  />
+    <xs:import namespace="urn:ietf:params:xml:ns:epp-1.0"     />
+    <xs:import namespace="urn:ietf:params:xml:ns:contact-1.0" />
+    <xs:import namespace="urn:ietf:params:xml:ns:domain-1.0"  />
+    <xs:import namespace="urn:ietf:params:xml:ns:host-1.0"    />
+
+    <xs:annotation>
+      <xs:documentation>
+        Extensible Provisioning Protocol v1.0
+        Extensions for .SE
+      </xs:documentation>
+    </xs:annotation>
+
+    <!-- **************************************************************** -->
+    <!--                 extension to create                              -->
+    <!--                                                                  -->
+    <xs:element name="create" type="iis:createType" />
+
+    <xs:complexType name="createType">
+      <xs:sequence>
+        <xs:element name="orgno"        type="iis:orgnoType" />
+        <xs:element name="vatno"        type="iis:vatnoType" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="eid">
+      <xs:complexType>
+        <xs:attribute name="verified" type="xs:boolean" use="required"/>
+      </xs:complexType>
+    </xs:element>
+
+    <xs:element name="creData" type="iis:creDataType" />
+
+    <xs:complexType name="creDataType">
+      <xs:sequence>
+        <xs:element name="pw" type="iis:pwType" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+
+    <!-- **************************************************************** -->
+    <!--                 extension to update                              -->
+    <!--                                                                  -->
+    <xs:element name="update" type="iis:updateType" />
+
+    <xs:complexType name="updateType">
+      <xs:sequence>
+        <xs:element name="vatno"        type="iis:vatnoType"        minOccurs="0" />
+        <xs:element name="clientDelete" minOccurs="0">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:boolean">
+                <xs:attribute name="atExpDate" type="xs:boolean" default="false"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="updData" type="iis:updDataType" />
+
+    <xs:complexType name="updDataType">
+      <xs:sequence>
+        <xs:element name="pw" type="iis:pwType" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+
+    <!-- **************************************************************** -->
+    <!--                 extension to transfer                            -->
+    <!--                                                                  -->
+    <xs:element name="transfer" type="iis:transferType" />
+
+    <xs:complexType name="transferType">
+      <xs:sequence>
+        <xs:element name="ns" type="iis:nsType" minOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+
+    <!-- **************************************************************** -->
+    <!--                 extension to infData                             -->
+    <!--                                                                  -->
+    <xs:element name="infData" type="iis:infDataType"/>
+
+    <xs:complexType name="infDataType">
+      <xs:sequence>
+        <xs:element name="orgno"        type="iis:orgnoType" minOccurs="0" />
+        <xs:element name="vatno"        type="iis:vatnoType" minOccurs="0" />
+        <xs:element name="deactDate"    type="xs:dateTime"   minOccurs="0" />
+        <xs:element name="delDate"      type="xs:dateTime"   minOccurs="0" />
+        <xs:element name="relDate"      type="xs:dateTime"   minOccurs="0" />
+        <xs:element name="state"        type="xs:string"     minOccurs="0" />
+        <xs:element name="clientDelete" type="xs:boolean"    minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+
+    <!-- **************************************************************** -->
+    <!--               Define the extension element types                 -->
+    <!--                                                                  -->
+    <xs:simpleType name="orgnoType">
+      <xs:restriction base="xs:string">
+        <!-- EITHER [SE] 123456-1234 OR [2-letter country code] then 1 to 123 characters -->
+        <xs:pattern value="\[[A-Z][A-Z]\].{1,123}" />
+        <xs:maxLength value="127" />
+      </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="vatnoType">
+      <xs:restriction base="xs:string">
+        <!-- 2-letter country code then country-specific string -->
+        <!-- Vatno outside EU can not be checked <xs:pattern value="[A-Z][A-Z] ?[A-Za-z0-9]+" />  -->
+        <xs:maxLength value="32" />
+      </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="nsType">
+      <xs:choice>
+        <xs:element name="hostObj" type="eppcom:labelType" maxOccurs="10" />
+      </xs:choice>
+    </xs:complexType>
+
+    <xs:simpleType name="pwType">
+      <xs:restriction base="xs:string">
+        <xs:minLength value="9" />
+        <xs:maxLength value="64" />
+      </xs:restriction>
+    </xs:simpleType>
+
+    <!-- **************************************************************** -->
+    <!--                         Notify                                   -->
+    <!--                                                                  -->
+    <xs:element name="createNotify"      type="iis:createNotifyType" />
+    <xs:element name="updateNotify"      type="iis:updateNotifyType" />
+    <xs:element name="deleteNotify"      type="iis:deleteNotifyType" />
+    <xs:element name="transferNotify"    type="iis:transferNotifyType" />
+
+    <!-- **************************************************************** -->
+    <!--                 Define the Notify types                          -->
+    <!--                                                                  -->
+    <xs:complexType name="createNotifyType">
+      <xs:choice>
+        <xs:element ref="contact:infData" />
+        <xs:element ref="domain:infData" />
+        <xs:element ref="host:infData" />
+      </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="updateNotifyType">
+      <xs:choice>
+        <xs:element ref="contact:infData" />
+        <xs:element ref="domain:infData" />
+        <xs:element ref="host:infData" />
+      </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="deleteNotifyType">
+      <xs:choice>
+        <xs:element ref="contact:delete" />
+        <xs:element ref="domain:delete" />
+        <xs:element ref="host:delete" />
+      </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="transferNotifyType">
+      <xs:choice>
+        <xs:element ref="contact:trnData" />
+        <xs:element ref="domain:trnData" />
+        <!-- There is no host:trnData as hosts are only transferred along with their domains -->
+      </xs:choice>
+    </xs:complexType>
+
+</xs:schema>

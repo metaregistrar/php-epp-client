@@ -25,7 +25,7 @@ class atEppPollRequest extends eppPollRequest
 
     protected $atEppExtensionChain = null;
 
-    function __construct($polltype, $messageid = null, $services = null, atEppExtensionChain $atEppExtensionChain=null)
+    function __construct($polltype, $messageid = null, $services = null, ?atEppExtensionChain $atEppExtensionChain=null)
     {
         $this->atEppExtensionChain = $atEppExtensionChain;
         parent::__construct($polltype, $messageid, $services);

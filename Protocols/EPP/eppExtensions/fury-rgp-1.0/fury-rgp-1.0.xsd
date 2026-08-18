@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="urn:ietf:params:xml:ns:fury-rgp-1.0"
+        xmlns:fury-rgp="urn:ietf:params:xml:ns:fury-rgp-1.0"
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        elementFormDefault="qualified">
+
+	<annotation>
+		<documentation>
+			Extensible Provisioning Protocol v1.0
+			contact and domain
+			extension schema for framework for
+			provisioning of Fury additional
+			information.
+		</documentation>
+	</annotation>
+
+	<element name="rgpInfo" type="fury-rgp:infDataType" />
+
+	<!-- child elements of the <info> response. -->
+	<complexType name="infDataType">
+		<sequence>
+			<!-- cira domain extension data -->
+			<element name="rgpStatusEnd" type="dateTime" minOccurs="0" />
+		</sequence>
+	</complexType>
+
+</schema>

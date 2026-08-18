@@ -2,14 +2,6 @@
 namespace Metaregistrar\EPP;
 
 class eppCheckContactResponse extends eppResponse {
-    function __construct() {
-        parent::__construct();
-    }
-
-    function __destruct() {
-        parent::__destruct();
-    }
-
     /**
      *
      * @return array of checked contacts with status true/false

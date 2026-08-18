@@ -44,7 +44,7 @@ class eppInfoDomainResponse extends eppInfoResponse {
     /**
      * Receive an array of statuses
      *
-     * @return null|string[]
+     * @return null|eppStatus[]
      */
     public function getDomainStatuses() {
         $statuses = null;
@@ -65,7 +65,12 @@ class eppInfoDomainResponse extends eppInfoResponse {
      * @return string statuses
      */
     public function getDomainStatusCSV() {
-        return parent::arrayToCSV($this->getDomainStatuses());
+        $statuses = [];
+        foreach ($this->getDomainStatuses() as $status) {
+            /* @var $status eppStatus */
+            $statuses[] = $status->getStatusname();
+        }
+        return parent::arrayToCSV($statuses);
     }
 
     /**
@@ -205,10 +210,10 @@ class eppInfoDomainResponse extends eppInfoResponse {
             $ns = null;
             foreach ($result as $nameserver) {
                 /* @var $nameserver \DOMElement */
-                if (strstr($nameserver->tagName, ":hostObj")) {
+                if (strstr($nameserver->tagName, "hostObj")) {
                     $ns[] = new eppHost(trim($nameserver->nodeValue));
                 }
-                if (strstr($nameserver->tagName, ":hostAttr")) {
+                if (strstr($nameserver->tagName, "hostAttr")) {
                     $hostname = $nameserver->getElementsByTagName('hostName')->item(0)->nodeValue;
                     $ipaddresses = $nameserver->getElementsByTagName('hostAddr');
                     $ips = null;

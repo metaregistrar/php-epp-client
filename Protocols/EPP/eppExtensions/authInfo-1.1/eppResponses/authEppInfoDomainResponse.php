@@ -2,10 +2,6 @@
 namespace Metaregistrar\EPP;
 
 class authEppInfoDomainResponse extends eppInfoDomainResponse {
-    function __construct() {
-        parent::__construct();
-    }
-
 
     /**
      * Return EURid specific contact type 'onsite', which is not EPP standard

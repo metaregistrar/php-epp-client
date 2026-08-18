@@ -42,15 +42,6 @@ class eppPollResponse extends eppResponse {
 
     private $messageType = null;
 
-    function __construct() {
-        parent::__construct();
-    }
-
-    function __destruct() {
-        parent::__destruct();
-    }
-
-
     /**
      * Return the identifier of the message
      * Use this identifier to acknowledge the poll message

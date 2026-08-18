@@ -28,7 +28,7 @@ class atEppDeleteDomainRequest extends eppDeleteDomainRequest
     const SCHEDULE_DELETE_NOW = "now";
     const SCHEDULE_DELETE_EXPIRATION = "expiration";
 
-    function __construct(eppDomain $deleteinfo, $namespacesinroot = true, $scheduledate = self::SCHEDULE_DELETE_NOW, atEppExtensionChain $atEppExtensionChain=null) {
+    function __construct(eppDomain $deleteinfo, $namespacesinroot = true, $scheduledate = self::SCHEDULE_DELETE_NOW, ?atEppExtensionChain $atEppExtensionChain=null) {
         $this->atEppExtensionChain = $atEppExtensionChain;
         parent::__construct($deleteinfo, $namespacesinroot);
         $this->addATScheduledateExtension($scheduledate);

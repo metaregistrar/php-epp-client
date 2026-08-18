@@ -34,6 +34,12 @@ $this->addCommandResponse('Metaregistrar\EPP\verisignEppRenewDomainRequest', 'Me
 include_once(dirname(__FILE__) . '/eppRequests/verisignEppUpdateDomainRequest.php');
 $this->addCommandResponse('Metaregistrar\EPP\verisignEppUpdateDomainRequest', 'Metaregistrar\EPP\eppUpdateDomainResponse');
 
+include_once(dirname(__FILE__) . '/eppRequests/verisignEppDnssecUpdateDomainRequest.php');
+$this->addCommandResponse('Metaregistrar\EPP\verisignEppDnssecUpdateDomainRequest', 'Metaregistrar\EPP\eppUpdateDomainResponse');
+
+//include_once(dirname(__FILE__) . '/eppResponses/eppDnssecInfoDomainResponse.php');
+$this->addCommandResponse('Metaregistrar\\EPP\\verisignEppInfoDomainRequest', 'Metaregistrar\\EPP\\eppDnssecInfoDomainResponse');
+
 include_once(dirname(__FILE__) . '/eppRequests/verisignEppRealNameDomainRequest.php');
 $this->addCommandResponse('Metaregistrar\EPP\verisignEppRealNameDomainRequest', 'Metaregistrar\EPP\eppUpdateDomainResponse');
 
