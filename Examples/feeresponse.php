@@ -99,7 +99,7 @@ $xml = '<?xml version="1.0" encoding="utf-8" standalone="no"?>
 	</response>
 </epp>';
 
-$conn = Metaregistrar\EPP\eppConnection::create('settings.ini');
+$conn = Metaregistrar\EPP\eppConnection::create();
 $conn->useExtension('fee-1.0');
 $feeresponse = new Metaregistrar\EPP\feeEppCheckDomainResponse();
 $feeresponse->loadXML($xml);
