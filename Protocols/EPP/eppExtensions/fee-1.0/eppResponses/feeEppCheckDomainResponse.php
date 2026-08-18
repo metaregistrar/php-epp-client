@@ -125,7 +125,7 @@ class feeEppCheckDomainResponse extends eppCheckDomainResponse {
         $xpath = $this->xPath();
         $result = $xpath->query('/epp:epp/epp:response/epp:extension/fee:chkData/fee:currency');
         if ($result->length > 0) {
-            return $result->item[0]->nodeValue;
+            return $result->item(0)->nodeValue;
         }
         return null;
     }
