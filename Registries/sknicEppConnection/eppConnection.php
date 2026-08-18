@@ -25,4 +25,13 @@ class sknicEppConnection extends eppConnection {
         parent::useExtension('sk-contact-ident-0.2');
         parent::useExtension('auxcontact-0.1');
     }
+
+    public function read($nonBlocking = false) {
+        $xml = parent::read($nonBlocking);
+        if (is_string($xml) && strlen($xml)) {
+            // SK-NIC sometimes sends control chars (e.g. form feed 0x0C) invalid in XML 1.0
+            $xml = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F]/', '', $xml);
+        }
+        return $xml;
+    }
 }
