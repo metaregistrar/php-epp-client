@@ -82,7 +82,7 @@ class eppHttpConnection extends eppConnection {
             }
 
             if ($this->timeout) {
-                curl_setopt($ch, CURLOPT_POST, CURLOPT_CONNECTTIMEOUT);
+                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
             }
 
             // Set cookie file
