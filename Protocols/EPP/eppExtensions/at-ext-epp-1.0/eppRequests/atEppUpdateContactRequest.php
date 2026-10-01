@@ -46,6 +46,11 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
             $this->contactobject->appendChild($addcmd);
         }
 
+        // Empty update shall produce a <contact:chg /> to allow verification extension
+        if (is_null($addInfo) && is_null($updateInfo) && is_null($removeInfo)) {
+            $this->contactobject->appendChild($this->createElement('contact:chg'));
+        }
+
         $this->setAtExtensions();
         $this->epp->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
     }
