@@ -24,7 +24,9 @@ class atEppUpdateContactExtension extends atEppExtensionChain
         $contactExt_->setAttribute('xmlns:at-ext-contact', atEppConstants::namespaceAtExtContact);
         $contactExt_->setAttribute('xsi:schemaLocation', atEppConstants::schemaLocationAtExtContact);
 
-        if ($this->persTypeChanged) {
+        $verificationReport = $this->atEppContact->getVerificationReport();
+
+        if (!$verificationReport || $this->persTypeChanged) {
             $extChange_ = $request->createElement('at-ext-contact:chg');
             $facet_ = $request->createElement('at-ext-contact:type');
             $facet_->appendChild(new \DOMText($this->atEppContact->getPersonType()));
@@ -33,12 +35,12 @@ class atEppUpdateContactExtension extends atEppExtensionChain
             $extension->appendchild($contactExt_);
         }
         
-        if ($this->atEppContact->getVerificationReport()) {   // add validation report to request if set
-            $verficiationExt = $request->createElement('at-ext-verification:update');
-            $verficiationExt->setAttribute('xmlns:at-ext-verification', atEppConstants::namespaceAtExtVerification);
-            $verficiationExt->setAttribute('xsi:schemaLocation', atEppConstants::schemaLocationAtExtVerification);
-            $this->atEppContact->getVerificationReport()->exportXML($request, $verficiationExt);
-            $extension->appendchild($verficiationExt);
+        if ($verificationReport) {   // add validation report to request if set
+            $verificiationExt = $request->createElement('at-ext-verification:update');
+            $verificiationExt->setAttribute('xmlns:at-ext-verification', atEppConstants::namespaceAtExtVerification);
+            $verificiationExt->setAttribute('xsi:schemaLocation', atEppConstants::schemaLocationAtExtVerification);
+            $verificationReport->exportXML($request, $verificiationExt);
+            $extension->appendchild($verificiationExt);
         }
 
         if(!is_null($this->additionalEppExtension))
