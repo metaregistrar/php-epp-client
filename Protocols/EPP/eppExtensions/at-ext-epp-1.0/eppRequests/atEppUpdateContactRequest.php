@@ -105,24 +105,24 @@ class atEppUpdateContactRequest extends eppUpdateContactRequest
             if(!empty($organisation)) {
                 $postalinfo->appendChild($this->createElement('contact:org', $organisation));
             }
-            if ((($postal->getStreetCount()) > 0) || strlen($postal->getCity()) || strlen($postal->getProvince()) || strlen($postal->getZipcode()) || strlen($postal->getCountrycode())) {
+            if (($postal->getStreetCount() > 0) || $postal->getCity() || $postal->getProvince() || $postal->getZipcode() || $postal->getCountrycode()) {
                 $postaladdr = $this->createElement('contact:addr');
                 if (($count = $postal->getStreetCount()) > 0) {
                     for ($i = 0; $i < $count; $i++) {
                         $postaladdr->appendChild($this->createElement('contact:street', $postal->getStreet($i)));
                     }
                 }
-                if (strlen($postal->getCity())) {
-                    $postaladdr->appendChild($this->createElement('contact:city', $postal->getCity()));
+                if ($city = $postal->getCity()) {
+                    $postaladdr->appendChild($this->createElement('contact:city', $city));
                 }
-                if (strlen($postal->getProvince())) {
-                    $postaladdr->appendChild($this->createElement('contact:sp', $postal->getProvince()));
+                if ($province = $postal->getProvince()) {
+                    $postaladdr->appendChild($this->createElement('contact:sp', $province));
                 }
-                if (strlen($postal->getZipcode())) {
-                    $postaladdr->appendChild($this->createElement('contact:pc', $postal->getZipcode()));
+                if ($zip = $postal->getZipcode()) {
+                    $postaladdr->appendChild($this->createElement('contact:pc', $zip));
                 }
-                if (strlen($postal->getCountrycode())) {
-                    $postaladdr->appendChild($this->createElement('contact:cc', $postal->getCountrycode()));
+                if ($country = $postal->getCountrycode()) {
+                    $postaladdr->appendChild($this->createElement('contact:cc', $country));
                 }
                 $postalinfo->appendChild($postaladdr);
             }
