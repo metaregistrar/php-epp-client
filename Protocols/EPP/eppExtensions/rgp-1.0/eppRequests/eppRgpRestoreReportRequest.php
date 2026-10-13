@@ -23,10 +23,10 @@ class eppRgpRestoreReportRequest extends eppUpdateDomainRequest
 		$report->appendChild($this->createElement('rgp:preData',''));
 		$report->appendChild($this->createElement('rgp:postData',''));
 		if ($delTime) {
-			$report->appendChild($this->createElement('rgp:delTime',$delTime));
+			$report->appendChild($this->createElement('rgp:delTime',date('Y-m-d\TH:i:s\Z',strtotime($delTime))));
 		}
 		if ($resTime) {
-			$report->appendChild($this->createElement('rgp:resTime',$resTime));
+			$report->appendChild($this->createElement('rgp:resTime',date('Y-m-d\TH:i:s\Z',strtotime($resTime))));
 		}
 		if ($message) {
 			$report->appendChild($this->createElement('rgp:resReason',$message));
