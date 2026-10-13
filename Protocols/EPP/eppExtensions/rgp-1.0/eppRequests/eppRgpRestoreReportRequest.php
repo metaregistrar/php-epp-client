@@ -15,7 +15,7 @@ class eppRgpRestoreReportRequest extends eppUpdateDomainRequest
 	 */
 	public function __construct(eppDomain $objectname, $delTime = null, $resTime = null, $message = null)
 	{
-		parent::__construct($objectname);
+		parent::__construct($objectname,null,null,$objectname);
 		$rgp = $this->createElement('rgp:update');
 		$restore = $this->createElement('rgp:restore');
 		$restore->setAttribute('op', 'report');
