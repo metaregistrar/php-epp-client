@@ -5,5 +5,8 @@ include_once(dirname(__FILE__) . '/eppRequests/eppRgpRestoreRequest.php');
 include_once(dirname(__FILE__) . '/eppResponses/eppRgpRestoreResponse.php');
 $this->addCommandResponse('Metaregistrar\\EPP\\eppRgpRestoreRequest', 'Metaregistrar\\EPP\\eppRgpRestoreResponse');
 
+include_once(dirname(__FILE__) . '/eppRequests/eppRgpRestoreReportRequest.php');
+$this->addCommandResponse('Metaregistrar\\EPP\\eppRgpRestoreReportRequest', 'Metaregistrar\\EPP\\eppRgpRestoreResponse');
+
 include_once(dirname(__FILE__) . '/eppResponses/eppRgpInfoDomainResponse.php');
 $this->addCommandResponse('Metaregistrar\EPP\eppInfoDomainRequest', 'Metaregistrar\EPP\eppRgpInfoDomainResponse');
