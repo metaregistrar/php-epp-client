@@ -239,8 +239,8 @@ trait atEppResponseTrait
             if ($id) {
                 $errorstring .= '; ' . $id;
             }
-            $resultreason = $this->getResultReason();
-            if (strlen($resultreason)) {
+            
+            if ($resultreason = $this->getResultReason()) {
                 $errorstring .= ' (' . $resultreason . ')';
             }
 
