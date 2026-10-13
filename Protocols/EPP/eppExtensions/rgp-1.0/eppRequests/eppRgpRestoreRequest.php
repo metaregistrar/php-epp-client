@@ -13,17 +13,14 @@ class eppRgpRestoreRequest extends eppUpdateDomainRequest
      * @param eppDomain|null $removeinfo
      * @param eppDomain|null $updateinfo
      */
-    public function __construct(eppDomain $objectname, $addinfo = null, $removeinfo = null, $updateinfo = null)
+    public function __construct(?eppDomain $objectname)
     {
         if ($objectname instanceof eppDomain) {
             $domainname = $objectname->getDomainname();
         } else {
             $domainname = $objectname;
         }
-        if ($updateinfo == null) {
-            $updateinfo = new eppDomain($domainname);
-        }
-        parent::__construct($domainname, null, null, $updateinfo);
+        parent::__construct($domainname, null, null, new eppDomain($domainname));
         $rgp = $this->createElement('rgp:update');
         $restore = $this->createElement('rgp:restore');
         $restore->setAttribute('op', 'request');
